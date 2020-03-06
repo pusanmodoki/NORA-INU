@@ -13,11 +13,11 @@ TagManager:
   - UI
   - 
   - 
-  - MarkingObject
+  - StageObject
+  - 'MarkingTarget '
   - MarkerCollision
-  - 
-  - 
-  - 
+  - WorkingDog
+  - PlayerDog
   - 
   - 
   - 
