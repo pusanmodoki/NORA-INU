@@ -1,135 +1,135 @@
-[�K��]
-�@�ϐ� -> camelCase
-�@�֐� -> PascalCase
-�@private -> m_�Z�Z
+﻿[規約]
+　変数 -> camelCase
+　関数 -> PascalCase
+　private -> m_〇〇
 
-�@�E�f�o�b�O��p�ŕϐ�����Ă��ȁ`���ĂƂ��́��݂����Ȋ�����
-�@�@#ifdef UNITY_EDITOR
-�@�@[SerializeField]
-�@�@int m_dCounter = 0;
-�@�@#endif
+　・デバッグ専用で変数つくりてえな～ってときは↓みたいな感じで
+　　#ifdef UNITY_EDITOR
+　　[SerializeField]
+　　int m_dCounter = 0;
+　　#endif
 
-�@�Econst�ϐ����Ă��ȁ`���ĂƂ��́��݂����Ȋ�����
-�@�@not static -> const int m_cCounter = 0;
-�@�@static -> static readonly int m_cCounter = 0;
+　・const変数作りてえな～ってときは↓みたいな感じで
+　　not static -> const int m_cCounter = 0;
+　　static -> static readonly int m_cCounter = 0;
 
-�@�E�C���X�y�N�^�[�ɏo���Ă��ȁ`�`���Ď��͊�{[SerializeField]���g����
-�@�Epublic�ȃQ�b�^�[�ق����ȁ`�`�`���Ď��͊�{�v���p�e�B���g���� (�֗����ɋL��)
+　・インスペクターに出してえな～～って時は基本[SerializeField]を使おう
+　・publicなゲッターほしいな～～～って時は基本プロパティを使おう (便利情報に記載)
 
-�@�E��̏������͔C����B�Ȃ�Ȃ�C�ɓ���Ȃ������瑊�k���悤�B�l�����Ȃ����B
-
-
-
-[�t�@�C���֌W]
-�@�E��{�͑�J�e�S���[�����J�e�S���[�����J�e�S���[���Ċ����ł�肽���B
-�@�@<��1>
-�@�@�@Model -> Player -> Player.fbx
-�@�@�@Material -> White.mat?�g���q�Y�ꂽ
-
-�@�E�X�N���v�g�͊��S�ɂ��̃L������p�Ƃ��Ȃ灪�̃��[����K�p���āA
-�@�@�����łȂ��Ȃ�Ջ@���ςɍs�����B�@(���ł�DogGenerics, Generics�t�@�C���Ȃǂ�����܂�)
+　・後の書き方は任せる。なんなら気に入らなかったら相談しよう。人数少ないし。
 
 
-�@�E���̃t�@�C���́A��{UserFolder�ɓ˂�����ł���B
-�@�@<��2>
-�@�@�@(�G������Ă��邯�ǁA�Ƃ肠��������Player������̂ŊȈՓI�ȃX�N���v�g���쐬����ꍇ)
-�@�@ �@UserFolder -> Shacho -> TestPlayer.cs 
-�@�@
-�@�@�@(��������Ƃ���p�̃V�[����p�ӂ���ꍇ)
-�@�@ �@UserFolder -> Shacho -> ShachoSceneVer0.unity
 
-�@�E�Ƃ肠�������L����t�@�C���́A�S��SharedSquare�t�H���_�ɂԂ�����ł�낤�B
-�@�@<��3>
-�@�@�@(�Ƃ肠�����l���������Ă݂����̃v���t�@�u�����L������)
-�@�@�@SharedSquare�@-> Test.prefab
+[ファイル関係]
+　・基本は大カテゴリー→中カテゴリー→小カテゴリーって感じでやりたい。
+　　<例1>
+　　　Model -> Player -> Player.fbx
+　　　Material -> White.mat?拡張子忘れた
+
+　・スクリプトは完全にそのキャラ専用とかなら↑のルールを適用して、
+　　そうでないなら臨機応変に行こう。　(すでにDogGenerics, Genericsファイルなどがあります)
 
 
-[�֗����]
-�@�E�v���p�e�B
-�@�@C#�ŋ��@�\��1�B�Q�b�^�[�A�Z�b�^�[��ϐ��̂悤�Ɉ�����
-�@�@
-�@�@<��1>
-�@�@��{�I�Ȑ錾���@�B�����counter�͎���public�Ŏg����ϐ��ɂȂ���������B
-�@�@�@�@[SerializeField]
-�@�@�@�@int m_counter = 0;
+　・仮のファイルは、基本UserFolderに突っ込んでくれ。
+　　<例2>
+　　　(敵を作っているけど、とりあえず動くPlayerがいるので簡易的なスクリプトを作成する場合)
+　　 　UserFolder -> Shacho -> TestPlayer.cs 
+　　
+　　　(自分が作業する用のシーンを用意する場合)
+　　 　UserFolder -> Shacho -> ShachoSceneVer0.unity
+
+　・とりあえず共有するファイルは、全てSharedSquareフォルダにぶっこんでやろう。
+　　<例3>
+　　　(とりあえず値をいじってみた仮のプレファブを共有したい)
+　　　SharedSquare　-> Test.prefab
+
+
+[便利情報]
+　・プロパティ
+　　C#最強機能の1つ。ゲッター、セッターを変数のように扱える
+　　
+　　<例1>
+　　基本的な宣言方法。これでcounterは実質publicで使える変数になりもうした。
+　　　　[SerializeField]
+　　　　int m_counter = 0;
 
 	public int counter { get { return m_counter; } set { m_counter = value; } }
 
-�@�@<��2>
-�@�@�v���p�e�B��get�̂݁Aset�݂̂ɂ��鎖���\�B��Ԏg���̂�get�݂̂̃Q�b�^�[�B�܂��_
-�@�@�@�@[SerializeField]
-�@�@�@�@int m_counter = 0;
+　　<例2>
+　　プロパティはgetのみ、setのみにする事も可能。一番使うのはgetのみのゲッター。まじ神
+　　　　[SerializeField]
+　　　　int m_counter = 0;
 
 	public int counter { get { return m_counter; } }
 
-�@�@<��3>
-�@�@get, set�ɂ̓A�N�Z�X�w��q��t�����B�f�t�H���g�̓v���p�e�B�̃A�N�Z�X�w��q�B(public�v���p�e�B�Ȃ�public�ɂȂ�)
-�@�@�@�@[SerializeField]
-�@�@�@�@int m_counter = 0;
+　　<例3>
+　　get, setにはアクセス指定子を付けれる。デフォルトはプロパティのアクセス指定子。(publicプロパティならpublicになる)
+　　　　[SerializeField]
+　　　　int m_counter = 0;
 
 	public int counter { get { return m_counter; } private set { m_counter = value; } }
 
-�@�@<��4>
-�@�@�Ȃ�ƃv���p�e�B���̂�ϐ��Ƃ��Đ錾���鎖���ł���B���ꂪ�A�z�֗��B
-�@�@�������C���X�y�N�^�[�ɏo�����Ƃ͂ł��Ȃ��Ȃ�B�o�������ꍇ�͗�1�`3�݂����Ȋ����ōs����
+　　<例4>
+　　なんとプロパティ自体を変数として宣言する事もできる。これがアホ便利。
+　　しかしインスペクターに出すことはできなくなる。出したい場合は例1～3みたいな感じで行おう
 
 	public int counter0 { get; set; } = 0;
 	public int counter1 { get; private set; } = 0;
 
-�@�@<�㋉�Ҍ���>
-�@�@�����܂ŗ�������Ɨ�1��public�ϐ��ł��悭�ˁH�Ǝv�����������ł��낤�B�������Ⴄ�̂����[�����B
-�@�@UnityEditor�Ƃ����P��𕷂������Ƃ�����l������Ǝv���B�C���X�y�N�^�[���������肷���B
-�@�@���́A�C���X�y�N�^�[�ŕϐ�����͂��镔����������ꍇ�A���Ȃ炸[SerializeField]���K�v�ɂȂ�̂��B
-�@�@������A���ɗ\�肪�Ȃ��Ƃ��A�Ƃ肠�����͗�1�̂悤�Ɏ�����������ǂ��̂ł���B��X�Ȃɂ��邩�킩��񂵂ˁB
+　　<上級者向け>
+　　ここまで理解すると例1はpublic変数でもよくね？と思ったりもするであろう。しかし違うのが奥深い所。
+　　UnityEditorという単語を聞いたことがある人もいると思う。インスペクターいじったりするやつ。
+　　実は、インスペクターで変数を入力する部分をいじる場合、かならず[SerializeField]が必要になるのだ。
+　　だから、特に予定がなくとも、とりあえずは例1のように実装する方が良いのである。後々なにあるかわからんしね。
 
 
-�@�EAttribute
-�@�@�Ƃ肠���������āB
-�@�@http://tsubakit1.hateblo.jp/entry/2015/01/03/203843
-�@�@
-�@�@[SerializeField]�́A����Attribute�̂����ԂȂ̂ł��B
-�@�@����URL���ł悭�g���̂�Tooltip�Ƃ��B��X�֗����ȂƊ�����B
-�@�@�����g���ꍇ�́��̂悤�ɂȂ�B
-�@�@<��1>
-�@�@[Tooltip("Distance of BoxCast"), SerializeField]
-�@�@float m_distance = 1.0f;
+　・Attribute
+　　とりあえず↓見て。
+　　http://tsubakit1.hateblo.jp/entry/2015/01/03/203843
+　　
+　　[SerializeField]は、実はAttributeのお仲間なのです。
+　　↑のURL中でよく使うのはTooltipとか。後々便利だなと感じる。
+　　複数使う場合は↓のようになる。
+　　<例1>
+　　[Tooltip("Distance of BoxCast"), SerializeField]
+　　float m_distance = 1.0f;
 
-�@�@���h�������Ȃ�ς��̂ŁA�g���Ă݂悤
-
-
-�@�E�R�����g�ƃC���e���Z���X
-�@�@�C�Â��Ă��邩������Ȃ����ǁAC#�ł͂����̃R�����g��ϐ���֐��̏�ɏ������ꍇ�A
-�@�@�ϐ���֐��ɃJ�[�\�������킹�Ă������\������܂���B
-�@�@<��1>
-
-�@�@//C++�ł͂����������肷��ƁA�J�[�\�����킹����R�����g���łĂ����ˁB
-�@�@int counter = 0;
-
-�@�@���͏o�����@������܂��B�ڂ����͒m��Ȃ�����C#��XML�Ɩ��ڂɊւ���Ă���炵���A
-�@�@XML�`�b�N�ɃR�����g��������C++�̂悤�ɂłĂ���悤�ɂȂ�܂��B
-�@�@///���ē��͂���Ƒ��������łłĂ���B
-�@�@<��2>
-
-�@�@�@/// <summary>BoxCast result flag->Always true on hit</summary>
-�@�@�@public bool isStay { get; protected set; } = false;
-
-�@�@�@/// <summary>Distance of BoxCast</summary>
-�@�@�@[Tooltip("Distance of BoxCast"), SerializeField]
-�@�@�@float m_distance = 1.0f;
-
-�@�@�{����XML�I�ɂ�summary�^�O�͊T�v�H�����H�Ƃɂ������������F�X�f�l�炵���񂾂��ǁA
-�@�@�ʂɂ����͋C�ɂ��Ȃ��Ă����Ǝv���B�Ƃɂ������ꂾ������Ƃ���OK�B
+　　見栄えがかなり変わるので、使ってみよう
 
 
+　・コメントとインテリセンス
+　　気づいているかもしれないけど、C#ではただのコメントを変数や関数の上に書いた場合、
+　　変数や関数にカーソルをあわせても何も表示されません。
+　　<例1>
 
-�@�Eclass��struct
-�@�@C++�ł�class��struct�ɍ��͂قƂ�ǂȂ����AC#�ł͑傫�ȍ�������܂��B
-�@�@
-�@�@�������@�@class: �Q�ƈ����̕ϐ��Ƃ��Đ���(����������new���Ă���)�@struct: C++�Ɠ������A���ڃ������ɐ�������܂�
-�@�@���x�@�@�@class: �x�����Q�ƈ����Ȃ̂ŃN���X�Ԏ󂯓n�����ȒP�@struct: �������R�s�[�����������_����
-�@�@�A�N�Z�X�@class: C++�Ɠ��������ł����� (x.x = 3�݂����ȂˁB)�@struct: �����o�ɑ΂��Ă̑���͍s���Ȃ� (x = new X(0)�͂ł��邯��x.x = 0�͂ł��Ȃ�)
-�@�@�Q�Ɠn���@class: ���̂܂ܑ�������OK�B�@struct: ref�L�[���[�h���g�� (void Z(ref X x), Z(ref x))
+　　//C++ではこう書いたりすると、カーソル合わせたらコメントがでてくるよね。
+　　int counter = 0;
+
+　　実は出す方法があります。詳しくは知らないけどC#はXMLと密接に関わっているらしく、
+　　XMLチックにコメントを書くとC++のようにでてくるようになります。
+　　///って入力すると多分自動ででてくる。
+　　<例2>
+
+　　　/// <summary>BoxCast result flag->Always true on hit</summary>
+　　　public bool isStay { get; protected set; } = false;
+
+　　　/// <summary>Distance of BoxCast</summary>
+　　　[Tooltip("Distance of BoxCast"), SerializeField]
+　　　float m_distance = 1.0f;
+
+　　本当はXML的にはsummaryタグは概要？説明？とにかく書き方が色々素人らしいんだけど、
+　　別にそこは気にしなくていいと思う。とにかくこれだけやっときゃOK。
 
 
-�@�Eref
+
+　・classとstruct
+　　C++ではclassとstructに差はほとんどないが、C#では大きな差があります。
+　　
+　　生成方法　class: 参照扱いの変数として生成(多分内部でnewしている)　struct: C++と同じく、直接メモリに生成されます
+　　速度　　　class: 遅いが参照扱いなのでクラス間受け渡しが簡単　struct: 速いがコピーがいちいちダルい
+　　アクセス　class: C++と同じ感じでいける (x.x = 3みたいなね。)　struct: メンバに対しての代入は行えない (x = new X(0)はできるけどx.x = 0はできない)
+　　参照渡し　class: そのまま代入すればOK。　struct: refキーワードを使う (void Z(ref X x), Z(ref x))
+
+
+　・ref
 
