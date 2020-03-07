@@ -83,6 +83,7 @@
 　　だから、特に予定がなくとも、とりあえずは例1のように実装する方が良いのである。後々なにあるかわからんしね。
 
 
+
 　・Attribute
 　　とりあえず↓見て。
 　　http://tsubakit1.hateblo.jp/entry/2015/01/03/203843
@@ -95,6 +96,7 @@
 　　float m_distance = 1.0f;
 
 　　見栄えがかなり変わるので、使ってみよう
+
 
 
 　・コメントとインテリセンス
@@ -128,8 +130,56 @@
 　　生成方法　class: 参照扱いの変数として生成(多分内部でnewしている)　struct: C++と同じく、直接メモリに生成されます
 　　速度　　　class: 遅いが参照扱いなのでクラス間受け渡しが簡単　struct: 速いがコピーがいちいちダルい
 　　アクセス　class: C++と同じ感じでいける (x.x = 3みたいなね。)　struct: メンバに対しての代入は行えない (x = new X(0)はできるけどx.x = 0はできない)
-　　参照渡し　class: そのまま代入すればOK。　struct: refキーワードを使う (void Z(ref X x), Z(ref x))
+　　関数への参照渡し　class: そのままつっこめばOK。　struct: refキーワードを使う (void Z(ref X x), Z(ref x))
+
+　　構造体は基本クラス内宣言でしか使わないと思う。
 
 
-　・ref
+
+　・グローバル変数、マクロ定数
+　　C#ではグローバル変数やマクロなどで宣言する定数は、C++のようにその場で宣言することができません。
+　　基本的には、static classを使ってやることが多いと思う。
+　　<例>
+　　　static class Constants
+　　　{
+　　　　static readonly int cBit0 = 0x0;
+　　　　static readonly int cBit1 = 0x1;
+
+　　　　static int bit = 0;
+　　　};
+
+
+
+　・インスペクターに自作クラスを出してえ～～
+　　やったらわかると思うけど、基本自作のクラスや構造体をインスペクターに出すことはできません。
+　　<例1> (こうしてもインスペクターには出ない)
+　　　{
+　　　　struct InsideStructure
+　　　　{
+　　　　　int i;
+　　　　};
+
+　　　　[SerializeField]
+　　　　InsideStructure structure;
+　　　};
+　　
+　　出すためには、フィールドの指定と変数に対応したコンストラクタが必要 (コンストラクタはバージョンによって諸説あり)
+　　<例2> (こうするとインスペクターに出てきます)
+　　　{
+	[System.Serializable] //←new!!
+　　　　struct InsideStructure
+　　　　{
+　　　　　//↓new!!
+　　　　　public InsideStructure(int i)
+　　　　　{
+　　　　　　this.i = i;
+　　　　　}
+
+　　　　　int i;
+　　　　};
+
+　　　　[SerializeField]
+　　　　InsideStructure structure;
+　　　};
+　　
 

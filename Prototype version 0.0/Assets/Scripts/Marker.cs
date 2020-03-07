@@ -66,6 +66,7 @@ public class Marker : MonoBehaviour
 
 	void LateUpdate()
 	{
+		
 		switch(m_state)
 		{
 			case State.StartRotation:
