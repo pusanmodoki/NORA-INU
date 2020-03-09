@@ -50,19 +50,32 @@ public class TimeSignal
 /// </summary>
 public class Timer
 {
-    /// <summary>Measure Start Time</summary>
-    public float startTime { get; protected set; }
+	/// <summary>Measure Start Time</summary>
+	public float startTime { get; protected set; } = 0.0f;
     /// <summary>Measure Elapased Time</summary>
     public float elapasedTime { get { return Time.time - startTime; } set { startTime = Time.time - value; } }
+	/// <summary>Is Start?</summary>
+	public bool isStart { get { return startTime > 0.0f; } }
+	/// <summary>Is Stop?</summary>
+	public bool isStop { get { return startTime < Mathf.Epsilon; } }
 
-    /// <summary>
-    /// [Start]
-    /// 計測を開始する
-    /// </summary>
-    public void Start()
+	/// <summary>
+	/// [Start]
+	/// 計測を開始する
+	/// </summary>
+	public void Start()
     {
         startTime = Time.time;
-    }
+	}
+
+	/// <summary>
+	/// [Stop]
+	/// 計測を停止する
+	/// </summary>
+	public void Stop()
+	{
+		startTime = 0;
+	}
 }
 
 

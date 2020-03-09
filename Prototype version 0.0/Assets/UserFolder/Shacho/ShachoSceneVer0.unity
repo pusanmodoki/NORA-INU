@@ -456,7 +456,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 353335744}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.9, y: 13.03, z: -44.8}
+  m_LocalPosition: {x: -0.9, y: 13.03, z: -79.03}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 1487445079}
@@ -1170,8 +1170,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1193764964}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.997, z: -45.698}
-  m_LocalScale: {x: 10, y: 20, z: 15.550001}
+  m_LocalPosition: {x: 0, y: 0.997, z: -61.49}
+  m_LocalScale: {x: 10, y: 20, z: 47.07}
   m_Children: []
   m_Father: {fileID: 929784859}
   m_RootOrder: 2
@@ -1941,7 +1941,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1946413939}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 48.929}
+  m_LocalPosition: {x: 0, y: 0.5, z: 45.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 979648687}
@@ -1980,8 +1980,13 @@ MonoBehaviour:
   m_groundFlags: {fileID: 1946413945}
   m_gradientFlags: {fileID: 1911289058}
   m_targetSpeed: 3.5
-  m_gradientAcceleration: 1
+  m_minSpeed: 0.1
+  m_maxSpeed: 20
+  m_gradientDecelerationRatio: 0.5
+  m_gradientAcceleration: 5
   m_maxAcceleration: 10
+  m_decelerationSeconds: 0.1
+  m_gradientModeSeconds: 0.05
   m_isEnabledChangeSpeed: 1
 --- !u!114 &1946413945
 MonoBehaviour:

@@ -44,6 +44,7 @@
 　　　SharedSquare　-> Test.prefab
 
 
+
 [便利情報]
 　・プロパティ
 　　C#最強機能の1つ。ゲッター、セッターを変数のように扱える
@@ -181,5 +182,26 @@
 　　　　[SerializeField]
 　　　　InsideStructure structure;
 　　　};
-　　
 
+
+
+　・Transformへのアクセス
+　　Transformへのアクセスはget, set共にとてもコストが高い。(重い)
+　　positionなどに何度もアクセスを行うなら、それぞれバッファを確保しよう！
+　　そして、transformにも大量にアクセスするなら、transform自体も確保した方がよい。はず。
+　　<例1>(だめな方)
+　　
+　　　float sam0 = transform.position.x + transform.position.y + transform.position.z;
+　　　float sam1 = transform.lossyScale.x + transform.lossyScale.y + transform.lossyScale.z;
+　　　float sam2 = transform.rotation.x + transform.rotation.y + transform.rotation.z + transform.rotation.w;
+
+　　<例2>(よい方)
+　　
+　　　Transform thisTransform = transform;
+　　　Vector3 position = thisTransform.position;
+　　　Vector3 scale = thisTransform.lossyScale;
+　　　Quaternion rotation = thisTransform.rotation;
+
+　　　float sam0 = position.x + position.y + position.z;
+　　　float sam1 = scale.x + scale.y + scale.z;
+　　　float sam2 = rotation.x + rotation.y + rotation.z + rotation.w;
