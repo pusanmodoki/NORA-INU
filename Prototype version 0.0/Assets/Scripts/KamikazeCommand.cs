@@ -21,7 +21,7 @@ public class KamikazeCommand : MonoBehaviour
 	/// <summary>
 	/// [InvokeCommand]
 	/// 神風特攻を指示する
-	/// 引数1: 神風特攻をするオブジェクトから見た方向
+	/// 引数1: 方向 (world)
 	/// 引数2: 神風特攻をする最長時間
 	/// </summary>
 	public void InvokeCommand(Vector3 direction, float timeoutSeconds)
