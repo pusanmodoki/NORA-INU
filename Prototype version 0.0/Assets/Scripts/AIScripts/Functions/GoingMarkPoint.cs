@@ -13,6 +13,8 @@ namespace AIComponent
 	/// </summary>
 	public class GoingMarkPoint : BaseAIFunction
 	{
+		public Transform markTarget { get { return m_target; } }
+
 		/// <summary>This visibility</summary>
 		[SerializeField, Header("Reference"), Tooltip("This visibility")]
 		AIVisibility m_visibility = null;
@@ -25,6 +27,8 @@ namespace AIComponent
 		/// <summary>Overlap radius</summary>
 		[SerializeField, Tooltip("Overlap radius")]
 		float m_overlapRadius = 2.0f;
+		[SerializeField, Header("Other"), Tooltip("Timeout seconds")]
+		float m_timeoutSeconds = 5.0f;
 
 		//debug only
 #if UNITY_EDITOR
@@ -91,10 +95,28 @@ namespace AIComponent
 				EndAIFunction(updateIdentifier);
 			}
 
-			//マーキング実行範囲に入った
-			if (Physics.CheckSphere(transform.position, m_overlapRadius, m_overlapLayerMask))
+			if (timer.elapasedTime > m_timeoutSeconds)
+				EndAIFunction(updateIdentifier);
+
+			//マーキング実行範囲に入ったか判定する
+			var collisions = Physics.OverlapSphere(transform.position, m_overlapRadius, m_overlapLayerMask);
+
+			if (collisions.Length == 0)
+				return;
+
+			//該当しているか検索ループ
+			foreach (var e in collisions)
 			{
-				aiAgent.ForceSpecifyFunction(m_function);
+				Transform useTransform = e.gameObject.transform;
+				ProvideMainObject provideMainObject = useTransform.GetComponent<ProvideMainObject>();
+
+				if ((provideMainObject != null
+						&& m_target.GetInstanceID() == provideMainObject.mainObject.GetInstanceID())
+					|| provideMainObject == null
+						&& m_target.GetInstanceID() == useTransform.GetInstanceID())
+				{
+					aiAgent.ForceSpecifyFunction(m_function);
+				}
 			}
 		}
 

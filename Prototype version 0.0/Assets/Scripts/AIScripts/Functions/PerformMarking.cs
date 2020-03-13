@@ -13,7 +13,49 @@ namespace AIComponent
 	/// </summary>
 	public class PerformMarking : BaseAIFunction
 	{
+		enum State
+		{
+			Rotation,
+			Marking,
+		}
+
+		class MarkPointInfo
+		{
+			public MarkPointInfo(Transform transform,
+				MarkingMessage message, Transform thisTransform, Vector3 goalRotation)
+			{
+				this.transform = transform;
+				this.message = message;
+				this.goalRotation = Quaternion.LookRotation((transform.position - thisTransform.position).normalized, thisTransform.up) * Quaternion.Euler(goalRotation);
+				this.position = transform.position;
+			}
+
+			public Transform transform;
+			public MarkingMessage message;
+			public Quaternion goalRotation;
+			public Vector3 position;
+		}
+
+		public bool isNowMarking { get { return timer.isStart; } }
+
+		[SerializeField]
+		GameObject m_rotationApplyObject = null;
+		[SerializeField]
+		GoingMarkPoint m_thisGoingFunction = null;
 		
+		[SerializeField]
+		Vector3 m_markingRotation = Vector3.zero;
+		[SerializeField]
+		float m_attack = 1.0f;
+		[SerializeField]
+		float m_rotationSpeed = 0.9f;
+		[SerializeField]
+		float m_rotationTime = 1.0f;
+
+		MarkPointInfo m_markingObjectInfo = null;
+		Transform m_markTarget = null;
+		State m_state;
+
 		/// <summary>
 		/// [AIBegin]
 		/// 関数初回実行時に呼ばれるコールバック関数
@@ -22,8 +64,14 @@ namespace AIComponent
 		/// </summary>
 		public override void AIBegin(BaseAIFunction beforeFunction, bool isParallel)
 		{
-			Debug.Log("Go!!");
-			//throw new System.NotImplementedException();
+			m_markTarget = m_thisGoingFunction.markTarget;
+			if (m_markTarget == null) return;
+
+			var message = m_markTarget.GetComponent<MarkingMessage>();
+			if (message == null) return;
+
+			m_markingObjectInfo = new MarkPointInfo(m_markTarget,
+				message, transform, m_markingRotation);
 		}
 		/// <summary>
 		/// [AIEnd]
@@ -33,7 +81,8 @@ namespace AIComponent
 		/// </summary>
 		public override void AIEnd(BaseAIFunction nextFunction, bool isParallel)
 		{
-			//throw new System.NotImplementedException();
+			m_markTarget = null;
+			m_markingObjectInfo = null;
 		}
 
 		/// <summary>
@@ -43,8 +92,22 @@ namespace AIComponent
 		/// </summary>
 		public override void AIUpdate(UpdateIdentifier updateIdentifier)
 		{
-			EndAIFunction(updateIdentifier);
-			//throw new System.NotImplementedException();
+			if (m_markTarget == null || m_markingObjectInfo == null)
+			{
+				EndAIFunction(updateIdentifier);
+				return;
+			}
+
+			if (timer.elapasedTime >= m_rotationTime)
+			{
+				m_markingObjectInfo.message.SendMessage(new MarkerInfo(m_attack));
+				EndAIFunction(updateIdentifier);
+				Debug.Log("GO!!");
+				return;
+			}
+
+			m_rotationApplyObject.transform.rotation =
+				Quaternion.Slerp(transform.rotation, m_markingObjectInfo.goalRotation, m_rotationSpeed * Time.deltaTime);			
 		}
 	}
 }

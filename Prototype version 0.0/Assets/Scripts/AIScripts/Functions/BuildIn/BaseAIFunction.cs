@@ -63,7 +63,7 @@ namespace AIComponent
             this.aiAgent = aiAgent;
             this.aiTable = aiTable;
             navMeshAgent = aiAgent.navMeshAgent;
-            tableName = this.aiTable.tableName;
+            tableName = aiTable != null ? aiTable.tableName : "Not table";
             instanceFunctionID = m_instanceIDCounter++;
         }
 
@@ -108,6 +108,9 @@ namespace AIComponent
         /// </summary>
         public void EndAIFunction(UpdateIdentifier updateIdentifier)
         {
+			//停止
+			timer.Stop();
+
             //非割り込み
             if (!updateIdentifier.isParallel)
             {

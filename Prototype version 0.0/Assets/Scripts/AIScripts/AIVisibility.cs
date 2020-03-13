@@ -159,9 +159,8 @@ namespace AIComponent
 				return m_isResult = false;
 			}
 
-			//ソートとかすんのかな
-			//とりあえず追跡してなかったら一番上のものを使うぜ	
-			GameObject useCollisionObject = collisions[0].gameObject;
+			//使用オブジェクト取得
+			GameObject useCollisionObject = SearchUseCollisionObject(collisions);
 			Vector3 targetPosition;
 
 			//追跡してたら追跡オブジェクトにしちゃうんだな
@@ -253,6 +252,17 @@ namespace AIComponent
 			}
 		}
 
+		/// <summary>
+		/// [SearchUseCollisionObject]
+		/// Collidersの中から使用するオブジェクトを選択する
+		/// </summary>
+		public static GameObject SearchUseCollisionObject(Collider[] colliders)
+		{
+			//ソートとかすんのかな
+			//とりあえず一番上のものを使うぜ	
+			return colliders.Length > 0 ?  colliders[0].gameObject : null;
+		}
+			
 		/// <summary>
 		/// [CalculateCenters]
 		/// Raycast, Overlapで使用するCenterを計算する

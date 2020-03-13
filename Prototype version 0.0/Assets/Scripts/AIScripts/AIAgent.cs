@@ -298,6 +298,9 @@ namespace AIComponent
 			foreach (AITable table in m_aiTables)
 				table.Start(this);
 
+			foreach (var e in m_notTableMembers)
+				e.StartAIFunction(this, null);
+
 			//初期実行関数クラス取得
 			nowFunction = m_aiTables[m_beginTableIndex].SelectionFunction();
 			nowFunction.timer.Start();
@@ -324,7 +327,8 @@ namespace AIComponent
 #if UNITY_EDITOR
 			m_dNowTable = nowFunction.tableName;
 			m_dNowFunction = nowFunction.functionName;
-			m_dNowTableCondition = nowFunction.aiTable.condition.dConditionName;
+			m_dNowTableCondition = nowFunction.aiTable != null ?
+				nowFunction.aiTable.condition.dConditionName : "Not condition";
 #endif
 
 			//Callback未呼び出しならTimer初期化, Callback呼び出し, フラグ初期化

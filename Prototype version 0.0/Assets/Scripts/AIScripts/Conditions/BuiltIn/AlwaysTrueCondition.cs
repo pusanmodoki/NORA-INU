@@ -9,9 +9,9 @@ using UnityEngine;
 namespace AIComponent
 {
 	/// <summary>
-	///常にTrueを返す AlwaysTrueAITableCondition 
+	///常にTrueを返す AlwaysTrueCondition 
 	/// </summary>
-	public class AlwaysTrueAITableCondition : BaseAICondition
+	public class AlwaysTrueCondition : BaseAICondition
 	{
 		/// <summary>
 		/// [IsAITableCondition]

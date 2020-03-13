@@ -7,13 +7,13 @@ public class MarkingMessage : MonoBehaviour
 	[System.Serializable]
 	public struct Message
 	{
-		public Message(Marker marker)
+		public Message(MarkerInfo marker)
 		{
-			this.marker = marker;
+			this.markerInfo = marker;
 			this.attack = marker.attack;
 		}
 
-		public Marker marker;
+		public MarkerInfo markerInfo;
 		public float attack;
 	}
 
@@ -23,7 +23,7 @@ public class MarkingMessage : MonoBehaviour
 	[SerializeField, Tooltip("drawing messages")]
 	List<Message> m_messages = new List<Message>();
 
-	public void SendMessage(Marker marker)
+	public void SendMessage(MarkerInfo marker)
 	{
 		m_messages.Add(new Message(marker));
 	}
