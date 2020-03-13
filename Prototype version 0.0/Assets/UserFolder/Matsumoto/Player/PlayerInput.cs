@@ -25,8 +25,7 @@ public class PlayerInput : MonoBehaviour
 
 
     private Vector3 inputVector = Vector3.zero;
-
-    private float inputAngleRad = 0.0f;
+    
 
 	// Update is called once per frame
 	void Update() {
@@ -38,6 +37,7 @@ public class PlayerInput : MonoBehaviour
 	}
 
 
+
     private void InputPlayer()
     {
         inputVector = Vector3.zero;
@@ -46,8 +46,6 @@ public class PlayerInput : MonoBehaviour
         {
             inputVector.x = Input.GetAxis("Horizontal");
             inputVector.z = Input.GetAxis("Vertical");
-
-            inputAngleRad = Mathf.Atan2(inputVector.z, inputVector.x);
         }
         else
         {
@@ -60,8 +58,6 @@ public class PlayerInput : MonoBehaviour
 
             inputVector.x = inputVector2.x;
             inputVector.z = inputVector2.y;
-
-            inputAngleRad = Mathf.Atan2(inputVector.z, inputVector.x);
         }
     }
 
@@ -77,11 +73,6 @@ public class PlayerInput : MonoBehaviour
             moveVector.x = Input.GetAxis("Horizontal");
             moveVector.z = Input.GetAxis("Vertical");
             thisRigitBody.AddForce(moveVector * moveSpeed);
-
-            float rad = 0.0f;
-
-            rad = Mathf.Atan2(moveVector.z, moveVector.x);
-
 
         }
         else
