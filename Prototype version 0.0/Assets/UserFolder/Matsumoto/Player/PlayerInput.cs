@@ -22,30 +22,29 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private bool isControler = false;
 
-
-
-    private Vector3 inputVector = Vector3.zero;
+    private Vector3 m_inputVector = Vector3.zero;
     
 
 	// Update is called once per frame
-	void Update() {
+	void Update()
+    {
 	}
 
 	private void FixedUpdate()
     {
-		MoveInput();
+
 	}
 
 
 
     private void InputPlayer()
     {
-        inputVector = Vector3.zero;
+        m_inputVector = Vector3.zero;
 
         if (isControler)
         {
-            inputVector.x = Input.GetAxis("Horizontal");
-            inputVector.z = Input.GetAxis("Vertical");
+            m_inputVector.x = Input.GetAxis("Horizontal");
+            m_inputVector.z = Input.GetAxis("Vertical");
         }
         else
         {
@@ -56,33 +55,8 @@ public class PlayerInput : MonoBehaviour
 
             inputVector2.Normalize();
 
-            inputVector.x = inputVector2.x;
-            inputVector.z = inputVector2.y;
-        }
-    }
-
-    /// <summary>
-    /// 移動
-    /// </summary>
-    private void MoveInput()
-    {
-        if (isControler)
-        {
-            Vector3 moveVector = Vector3.zero;
-
-            moveVector.x = Input.GetAxis("Horizontal");
-            moveVector.z = Input.GetAxis("Vertical");
-            thisRigitBody.AddForce(moveVector * moveSpeed);
-
-        }
-        else
-        {
-            Vector2Int moveVector = Vector2Int.zero;
-
-            moveVector.x = (int)Input.GetAxisRaw("Horizontal");
-            moveVector.y = (int)Input.GetAxisRaw("Vertical");
-
-            
+            m_inputVector.x = inputVector2.x;
+            m_inputVector.z = inputVector2.y;
         }
     }
 }
