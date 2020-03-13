@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Enemy AI Components 
+/// AI Components 
 /// </summary>
 namespace AIComponent
 {

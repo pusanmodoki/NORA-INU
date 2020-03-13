@@ -9,17 +9,21 @@ using UnityEngine;
 namespace AIComponent
 {
 	/// <summary>
-	///常にTrueを返す AlwaysTrueAITableCondition 
+	/// 見つけたらtrueを返すFoundPointCondition
 	/// </summary>
-	public class AlwaysTrueAITableCondition : BaseAICondition
+	public class FoundPointCondition : BaseAICondition
 	{
+		///<summary>This visibility</summary>
+		[SerializeField, Tooltip("This visibility")]
+		AIVisibility m_visibility = null;
+
 		/// <summary>
-		/// [IsAITableCondition]
+		/// [IsCondition]
 		/// return: テーブル条件を満たしているか否か
 		/// </summary>
 		public override bool IsCondition()
-        {
-            return true;
-        }
-    }
+		{
+			return m_visibility.IsHitVisibility() && m_visibility.lookTarget != null;
+		}
+	}
 }

@@ -643,36 +643,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 390817064}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &398651266
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 398651267}
-  m_Layer: 11
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &398651267
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 398651266}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1946413942}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &449834388
 GameObject:
   m_ObjectHideFlags: 0
@@ -1846,7 +1816,7 @@ Transform:
   m_Children:
   - {fileID: 970652332}
   m_Father: {fileID: 1946413942}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1911289058
 MonoBehaviour:
@@ -1872,7 +1842,7 @@ MonoBehaviour:
   m_accurateCheckLayers: []
   m_dIsDrawGizmos: 1
   m_dIsStayNow: 1
-  m_dIsEnterNow: 0
+  m_dIsEnterNow: 1
   m_dIsExitNow: 0
 --- !u!1 &1946413939
 GameObject:
@@ -1888,6 +1858,11 @@ GameObject:
   - component: {fileID: 1946413943}
   - component: {fileID: 1946413945}
   - component: {fileID: 1946413944}
+  - component: {fileID: 1946413949}
+  - component: {fileID: 1946413948}
+  - component: {fileID: 1946413947}
+  - component: {fileID: 1946413946}
+  - component: {fileID: 1946413950}
   m_Layer: 11
   m_Name: TestWorkingDog0
   m_TagString: Untagged
@@ -1940,16 +1915,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1946413939}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 45.7}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 20.89, y: 0.5, z: 36.86}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 979648687}
-  - {fileID: 398651267}
   - {fileID: 1911289057}
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &1946413943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1957,7 +1931,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1946413939}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f1f05b31748fea44bc1985c2b85abcc, type: 3}
   m_Name: 
@@ -2012,5 +1986,119 @@ MonoBehaviour:
   m_accurateCheckLayers: []
   m_dIsDrawGizmos: 1
   m_dIsStayNow: 1
-  m_dIsEnterNow: 0
+  m_dIsEnterNow: 1
   m_dIsExitNow: 0
+--- !u!114 &1946413946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946413939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e03123d89423a5a4bb65bcdc073ebe15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_functionName: AI function
+  m_visibility: {fileID: 1946413949}
+  m_function: {fileID: 1946413950}
+  m_overlapLayerMask:
+    m_layerMask:
+      serializedVersion: 2
+      m_Bits: 512
+  m_overlapRadius: 2
+  m_dIsDrawGizmos: 1
+--- !u!114 &1946413947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946413939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7d14cf5249a83a4cadc271a5b0ba826, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_dConditionName: 
+  m_visibility: {fileID: 1946413949}
+--- !u!114 &1946413948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946413939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e23e823b0a7e1c42a28d6ef1ab2224f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_navMeshAgent: {fileID: 1946413940}
+  m_rigidbody: {fileID: 1946413941}
+  m_beginTableIndex: 0
+  m_userDataTransform: {fileID: 0}
+  m_aiTables:
+  - m_tableName: 
+    m_condition: {fileID: 1946413947}
+    m_dConditionName: 
+    m_isEnabled: 1
+    m_dIsReload: 0
+    m_elements:
+    - function: {fileID: 1946413946}
+      dFunctionName: AI function
+      probability: 1
+  m_notTableMembers:
+  - {fileID: 1946413950}
+  m_dOriginalInstanceID: -1
+  m_dNowTable: 
+  m_dNowTableCondition: 
+  m_dNowFunction: 
+--- !u!114 &1946413949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946413939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1caf6df8480824b4cb4909d3f83d7023, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_agent: {fileID: 1946413948}
+  m_loseSightCallback: {fileID: 0}
+  m_isWhenFoundAllocate: 0
+  m_sePlayer: {fileID: 0}
+  m_indexOfSE: 0
+  m_isStopWhenPlayingSE: 0
+  m_isLoopSE: 0
+  m_distance: 10
+  m_angle: 90
+  m_heightLimit: 5
+  m_loseSightDistance: 5
+  m_timeoutInLoseSight: 5
+  m_layerMask:
+    m_layerMask:
+      serializedVersion: 2
+      m_Bits: 512
+  m_raycastCenter: {x: 0, y: 0, z: 0}
+  m_overlapCenter: {x: 0, y: 0, z: 9.15}
+  m_overlapRadius: 10
+  m_dIsDrawGizmos: 1
+  m_dIsHit: 1
+  m_dLoseSightTimer: 0.33333397
+--- !u!114 &1946413950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946413939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b06a90be3777ec545a6585ac701feb9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_functionName: AI function

@@ -4,20 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Enemy AI Components 
+/// AI Components 
 /// </summary>
 namespace AIComponent
 {
 	/// <summary>
 	///常にFalseを返す AlwaysFalseAITableCondition 
 	/// </summary>
-	public class AlwaysFalseAITableCondition : BaseAITableCondition
+	public class AlwaysFalseAITableCondition : BaseAICondition
 	{
 		/// <summary>
 		/// [IsAITableCondition]
 		/// return: テーブル条件を満たしているか否か
 		/// </summary>
-		public override bool IsAITableCondition()
+		public override bool IsCondition()
         {
             return false;
         }

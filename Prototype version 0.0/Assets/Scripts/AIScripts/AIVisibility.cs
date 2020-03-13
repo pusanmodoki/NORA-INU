@@ -43,24 +43,24 @@ namespace AIComponent
         /// <summary>SE player</summary>
         [SerializeField, Header("Audio"), Tooltip("SE player"), Space]
         SEPlayer m_sePlayer = null;
-        /// <summary>Hit->Play SE Index</summary>
-        [SerializeField, Tooltip("Hit!!->play se index")]
+		/// <summary>Hit!!->play se index</summary>
+		[SerializeField, Tooltip("Hit!!->play se index")]
         int m_indexOfSE = 0;
-        /// <summary>if (Hit->Play) Stop SE</summary>
-        [SerializeField, Tooltip("If (hit->play) -> stop all se")]
+		/// <summary>If (hit->play) -> stop all se</summary>
+		[SerializeField, Tooltip("If (hit->play) -> stop all se")]
         bool m_isStopWhenPlayingSE = false;
-        /// <summary>SE Looping</summary>
-        [SerializeField, Tooltip("SE looping")]
+        /// <summary>SE looping?</summary>
+        [SerializeField, Tooltip("SE looping?")]
         bool m_isLoopSE = false;
 
         /// <summary>Visibility Distance (forward)</summary>
         [SerializeField, Header("Visibility"), Tooltip("Visibility distance (forward)")]
         float m_distance = 10;
-        /// <summary>Visibility Angle</summary>
+        /// <summary>Visibility angle</summary>
         [SerializeField, Range(0.0f, 180.0f), Tooltip("Visibility angle")]
         float m_angle = 90;
-        /// <summary>Visibility Height Limit (Y Axis [this + -Max] ~ [this + Max])</summary>
-        [SerializeField, Tooltip("Visibility height limit (Y axis [this + -max] ~ [this + max])")]
+		/// <summary>Visibility height limit (Y axis [this + -max] ~ [this + max])</summary>
+		[SerializeField, Tooltip("Visibility height limit (Y axis [this + -max] ~ [this + max])")]
         float m_heightLimit = 5;
         /// <summary>lose sight distance</summary>
         [SerializeField, Tooltip("Lose sight distance")]
@@ -96,38 +96,38 @@ namespace AIComponent
         bool m_isNowFrameCompleted = false;
         /// <summary>result</summary>
         bool m_isResult = false;
-        /// <summary>Old Found Info</summary>
+        /// <summary>Old found info</summary>
         bool m_isOldFound = false;
 
         //debug only
 #if UNITY_EDITOR
-        /// <summary>Draw Gizmo Mesh (debug only)</summary>
+        /// <summary>Draw gizmo mesh (debug only)</summary>
         public Mesh dGizmoMesh { get; set; } = null;
-        /// <summary>Draw Gizmo Mesh ID (debug only)</summary>
+        /// <summary>Draw gizmo mesh iD (debug only)</summary>
         public int dMeshID { get; set; } = -1;
-        /// <summary>Visibility Is Hit? (debug only)</summary>
+        /// <summary>Visibility is hit? (debug only)</summary>
         public bool dIsHit { get { return m_dIsHit; } }
-        /// <summary>Visibility Is Draw Gizmos? (debug only)</summary>
+        /// <summary>Visibility is draw gizmos? (debug only)</summary>
         public bool dIsDrawGizmos { get { return m_dIsDrawGizmos; } set { m_dIsDrawGizmos = value; } }
 
-        /// <summary>Visibility Is Hit? (debug only)</summary>
-        [SerializeField, Header("Debug Only"), Tooltip("Visibility is hit? (debug only)")]
-        bool m_dIsHit = false;
-        /// <summary>Visibility Is Draw Gizmos? (debug only)</summary>
-        [SerializeField, Tooltip("Visibility is draw gizmos? (debug only)")]
+        /// <summary>Visibility is draw gizmos? (debug only)</summary>
+        [SerializeField, Header("Debug Only"), Tooltip("Visibility is draw gizmos? (debug only)")]
         bool m_dIsDrawGizmos = true;
-        /// <summary>Visibility Is Draw Gizmos? (debug only)</summary>
+        /// <summary>Visibility is hit? (debug only)</summary>
+        [SerializeField, Tooltip("Visibility is hit? (debug only)")]
+        bool m_dIsHit = false;
+        /// <summary>Visibility is draw gizmos? (debug only)</summary>
         [SerializeField, Tooltip("Visibility drawing lose sight timer (debug only)")]
         float m_dLoseSightTimer = 0.0f;
 #endif
 
 		/// <summary>
-		/// [IsTargetHitVisibility]
+		/// [IsHitVisibility]
 		/// ターゲットが視界にいるか判定する
 		/// return: 視界にいると判定した場合true
 		/// 引数1: 現在フレーム判定済みでも強制的に行うか
 		/// </summary>
-		public bool IsTargetHitVisibility(bool isForced = false)
+		public bool IsHitVisibility(bool isForced = false)
 		{
 			//既に現在フレーム判定済みならそのまま返す
 			if (m_isNowFrameCompleted & !isForced)
@@ -183,7 +183,7 @@ namespace AIComponent
 			}
 
 			//自分へのターゲットから方向ベクトル
-			Vector3 raycastDirection = (targetPosition - (position + raycastCenter)).normalized;
+			Vector3 raycastDirection = (targetPosition - raycastCenter).normalized;
 
 			//高さが設定以上離れている or 距離が設定以上離れている->result = false
 			if (Mathf.Abs(position.y - targetPosition.y) > m_heightLimit
@@ -294,7 +294,7 @@ namespace AIComponent
 			//見つけたら再Allocate?
 			if (m_isWhenFoundAllocate)
 			{
-				bool found = IsTargetHitVisibility();
+				bool found = IsHitVisibility();
 
 				if (((found ^ m_isOldFound) & found) != false)
 					m_agent.AllocateFunction();
@@ -302,7 +302,7 @@ namespace AIComponent
 			//見失ったらCallback?
 			if (m_loseSightCallback != null)
 			{
-				bool found = IsTargetHitVisibility();
+				bool found = IsHitVisibility();
 
 				if (((found ^ m_isOldFound) & m_isOldFound) != false)
 					m_agent.ForceSpecifyFunction(m_loseSightCallback);
@@ -311,7 +311,7 @@ namespace AIComponent
 		/// <summary>[LateUpdate]</summary>
 		void LateUpdate()
 		{
-			bool found = IsTargetHitVisibility();
+			bool found = IsHitVisibility();
 
 			//見つけとったら音を流す
 			if (((found ^ m_isOldFound) & found) != false && m_sePlayer != null)

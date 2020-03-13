@@ -313,7 +313,7 @@ namespace AIComponent
 			//instanceIDを名前に追加
 			else
 			{
-				gameObject.name += "AgentInstanceID : " + aiAgentInstanceID;
+				gameObject.name += " AgentInstanceID : " + aiAgentInstanceID;
 			}
 		}
 
@@ -324,7 +324,7 @@ namespace AIComponent
 #if UNITY_EDITOR
 			m_dNowTable = nowFunction.tableName;
 			m_dNowFunction = nowFunction.functionName;
-			m_dNowTableCondition = nowFunction.aiTable.condition.dConsitionName;
+			m_dNowTableCondition = nowFunction.aiTable.condition.dConditionName;
 #endif
 
 			//Callback未呼び出しならTimer初期化, Callback呼び出し, フラグ初期化

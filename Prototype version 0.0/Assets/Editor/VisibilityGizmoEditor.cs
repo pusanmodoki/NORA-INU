@@ -97,7 +97,7 @@ namespace Editor
 
             //描画に反映されないため実行中以外はこちらで更新を行う
             if (!EditorApplication.isPlaying || EditorApplication.isPaused)
-                visibility.IsTargetHitVisibility(true);
+                visibility.IsHitVisibility(true);
 
             //呼び出しコスト削減
             Transform transform = visibility.transform;

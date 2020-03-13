@@ -51,13 +51,13 @@ namespace AIComponent
         }
 
         /// <summary>Condition名</summary>
-        public BaseAITableCondition condition { get { return m_condition; } }
+        public BaseAICondition condition { get { return m_condition; } }
         /// <summary>テーブル名</summary>
         public string tableName { get { return m_tableName; } }
         /// <summary>有効か否か</summary>
         public bool isEnabledSelf { get { return m_isEnabled; } }
 		/// <summary>Table実行条件を満たしているか否か</summary>
-		public bool isPossibleUpdate { get { return m_condition.IsAITableCondition() & isEnabledSelf; } }
+		public bool isPossibleUpdate { get { return m_condition.IsCondition() & isEnabledSelf; } }
 #if UNITY_EDITOR
 		/// <summary>functions</summary>
 		public TableElement[] dFunctions { get { return m_elements; } }
@@ -68,7 +68,7 @@ namespace AIComponent
         string m_tableName = "AI table";
         /// <summary>Condition to Selection Table</summary>
         [SerializeField, Tooltip("Condition to selection table")]
-        BaseAITableCondition m_condition = null;
+        BaseAICondition m_condition = null;
 #if UNITY_EDITOR
 		/// <summary>Reload Flag (debug only)</summary>
 		[SerializeField, Tooltip("Condition name (debug only)")]
@@ -98,7 +98,7 @@ namespace AIComponent
 		/// </summary>
 		public void DNameSet()
 		{
-			if (m_condition != null) m_dConditionName = m_condition.dConsitionName;
+			if (m_condition != null) m_dConditionName = m_condition.dConditionName;
 			for(int i = 0; i < m_elements.Length; i++)
 			{
 				if (m_elements[i].function != null)

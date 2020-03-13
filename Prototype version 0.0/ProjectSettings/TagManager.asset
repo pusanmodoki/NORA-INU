@@ -14,7 +14,7 @@ TagManager:
   - 
   - 
   - StageObject
-  - 'MarkingTarget '
+  - MarkPoint
   - MarkerCollision
   - WorkingDog
   - PlayerDog
