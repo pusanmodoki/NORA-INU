@@ -42,6 +42,8 @@ namespace AIComponent
 		GameObject m_rotationApplyObject = null;
 		[SerializeField]
 		GoingMarkPoint m_thisGoingFunction = null;
+		[SerializeField]
+		KamikazeCommand m_kamikazeCommand = null;
 		
 		[SerializeField]
 		Vector3 m_markingRotation = Vector3.zero;
@@ -101,8 +103,8 @@ namespace AIComponent
 			if (timer.elapasedTime >= m_rotationTime)
 			{
 				m_markingObjectInfo.message.SendMessage(new MarkerInfo(m_attack));
+				m_kamikazeCommand.EndKamikaze();
 				EndAIFunction(updateIdentifier);
-				Debug.Log("GO!!");
 				return;
 			}
 

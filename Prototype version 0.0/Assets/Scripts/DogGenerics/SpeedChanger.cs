@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class SpeedChanger : MonoBehaviour
 {
+	public float targetSpeed { get { return m_targetSpeed; } }
 	public bool isGradientMode { get; private set; } = false;
 
 	public bool isEnabledChangeSpeed

@@ -31,7 +31,7 @@ public class MarkingObject : MonoBehaviour
 			}
 
 			if (m_hp <= 0.0f)
-				Debug.Log("Death....");
+				Debug.Log("Death...." + gameObject.name);
 		}
     }
 }

@@ -45,9 +45,11 @@ namespace AIComponent
         /// <summary> instanceID </summary>
         public int instanceFunctionID { get; private set; } = -1;
 
-		//AIFunction instance id counter
-        static int m_instanceIDCounter = 0;
-
+		/// <summary>Adjust SetUpdatePosition</summary>
+		static readonly Vector3 m_cAdjustSetUpdatePosition = new Vector3(0.0f, 0.1f, 0.0f);
+		/// <summary>AI function instance id counter</summary>
+		static int m_instanceIDCounter = 0;
+		
         /// <summary> Function Name </summary>
         [SerializeField, Tooltip("Function name")]
         string m_functionName = "AI function";
@@ -135,7 +137,7 @@ namespace AIComponent
 		{
 			if (navMeshAgent.updatePosition == isSet) return;
 
-			if (isWarp) navMeshAgent.Warp(transform.position);
+			if (isWarp) navMeshAgent.Warp(transform.position + m_cAdjustSetUpdatePosition);
 			navMeshAgent.updatePosition = isSet;
 		}
 		/// <summary>

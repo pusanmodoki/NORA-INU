@@ -16,6 +16,8 @@ namespace AIComponent
 		///<summary>This visibility</summary>
 		[SerializeField, Tooltip("This visibility")]
 		AIVisibility m_visibility = null;
+		[SerializeField, Tooltip("This kamikaze command")]
+		KamikazeCommand m_kamikazeCommand = null;
 
 		/// <summary>
 		/// [IsCondition]
@@ -23,7 +25,7 @@ namespace AIComponent
 		/// </summary>
 		public override bool IsCondition()
 		{
-			return m_visibility.IsHitVisibility() && m_visibility.lookTarget != null;
+			return m_kamikazeCommand.isKamikazeNow && m_visibility.IsHitVisibility() && m_visibility.lookTarget != null;
 		}
 	}
 }
