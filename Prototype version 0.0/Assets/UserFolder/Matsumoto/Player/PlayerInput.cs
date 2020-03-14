@@ -5,12 +5,6 @@ using UnityEngine;
 public class PlayerInput : MonoBehaviour
 {
     /// <summary>
-    /// player rigidbody
-    /// </summary>
-    [SerializeField]
-    private Rigidbody thisRigitBody;
-
-    /// <summary>
     /// speed
     /// </summary>
     [SerializeField]
@@ -22,30 +16,65 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private bool isControler = false;
 
+    private Vector3 m_inputVector = Vector3.zero;
+
+    /// <summary>
+    /// player rigidbody
+    /// </summary>
+    private Rigidbody m_thisRigitBody;
+
+    private Female m_female;
 
 
-    private Vector3 inputVector = Vector3.zero;
-    
+    private void Start()
+    {
+        m_thisRigitBody = GetComponent<Rigidbody>();
+        m_female = GetComponent<Female>();
 
-	// Update is called once per frame
-	void Update() {
+        Debug.Assert(!m_female || !m_thisRigitBody);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        MoveInput();
 	}
 
 	private void FixedUpdate()
     {
-		MoveInput();
+        Move();
 	}
 
+    private void Move()
+    {
+        m_thisRigitBody.AddForce(m_inputVector * moveSpeed);
+    }
 
+    private void Shot()
+    {
 
+    }
+
+    /// <summary>
+    /// 入力処理
+    /// </summary>
     private void InputPlayer()
     {
-        inputVector = Vector3.zero;
+        // 移動入力
+        MoveInput();
+    }
+
+    /// <summary>
+    ///  移動入力
+    /// </summary>
+    private void MoveInput()
+    {
+        m_inputVector = Vector3.zero;
 
         if (isControler)
         {
-            inputVector.x = Input.GetAxis("Horizontal");
-            inputVector.z = Input.GetAxis("Vertical");
+            m_inputVector.x = Input.GetAxis("Horizontal");
+            m_inputVector.z = Input.GetAxis("Vertical");
         }
         else
         {
@@ -56,33 +85,15 @@ public class PlayerInput : MonoBehaviour
 
             inputVector2.Normalize();
 
-            inputVector.x = inputVector2.x;
-            inputVector.z = inputVector2.y;
+            m_inputVector.x = inputVector2.x;
+            m_inputVector.z = inputVector2.y;
         }
     }
 
-    /// <summary>
-    /// 移動
-    /// </summary>
-    private void MoveInput()
+    private void ShotInput()
     {
-        if (isControler)
+        if (Input.GetButtonDown("Fire1"))
         {
-            Vector3 moveVector = Vector3.zero;
-
-            moveVector.x = Input.GetAxis("Horizontal");
-            moveVector.z = Input.GetAxis("Vertical");
-            thisRigitBody.AddForce(moveVector * moveSpeed);
-
-        }
-        else
-        {
-            Vector2Int moveVector = Vector2Int.zero;
-
-            moveVector.x = (int)Input.GetAxisRaw("Horizontal");
-            moveVector.y = (int)Input.GetAxisRaw("Vertical");
-
-            
         }
     }
 }
