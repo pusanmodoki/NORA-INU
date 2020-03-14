@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class ServantsList : MonoBehaviour
 {
-    private List<KamikazeCommand> m_servants;
+    private List<GameObject> m_servants;
 
     /// <summary>
     /// 下僕を追加
     /// </summary>
     /// <param name="male"></param>
-    public void AddServant(KamikazeCommand male)
+    public void AddServant(GameObject male)
     {
         m_servants.Add(male);
     }
@@ -19,7 +19,7 @@ public class ServantsList : MonoBehaviour
     /// 
     /// </summary>
     /// <param name="male"></param>
-    public void SubServant(KamikazeCommand male)
+    public void RemoveServant(GameObject male)
     {
     }
 }

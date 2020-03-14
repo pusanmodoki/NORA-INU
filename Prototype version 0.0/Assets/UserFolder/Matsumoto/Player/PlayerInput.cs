@@ -5,12 +5,6 @@ using UnityEngine;
 public class PlayerInput : MonoBehaviour
 {
     /// <summary>
-    /// player rigidbody
-    /// </summary>
-    [SerializeField]
-    private Rigidbody thisRigitBody;
-
-    /// <summary>
     /// speed
     /// </summary>
     [SerializeField]
@@ -23,21 +17,57 @@ public class PlayerInput : MonoBehaviour
     private bool isControler = false;
 
     private Vector3 m_inputVector = Vector3.zero;
-    
 
-	// Update is called once per frame
-	void Update()
+    /// <summary>
+    /// player rigidbody
+    /// </summary>
+    private Rigidbody m_thisRigitBody;
+
+    private Female m_female;
+
+
+    private void Start()
     {
+        m_thisRigitBody = GetComponent<Rigidbody>();
+        m_female = GetComponent<Female>();
+
+        Debug.Assert(!m_female || !m_thisRigitBody);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        MoveInput();
 	}
 
 	private void FixedUpdate()
     {
-
+        Move();
 	}
 
+    private void Move()
+    {
+        m_thisRigitBody.AddForce(m_inputVector * moveSpeed);
+    }
 
+    private void Shot()
+    {
 
+    }
+
+    /// <summary>
+    /// 入力処理
+    /// </summary>
     private void InputPlayer()
+    {
+        // 移動入力
+        MoveInput();
+    }
+
+    /// <summary>
+    ///  移動入力
+    /// </summary>
+    private void MoveInput()
     {
         m_inputVector = Vector3.zero;
 
@@ -57,6 +87,13 @@ public class PlayerInput : MonoBehaviour
 
             m_inputVector.x = inputVector2.x;
             m_inputVector.z = inputVector2.y;
+        }
+    }
+
+    private void ShotInput()
+    {
+        if (Input.GetButtonDown("Fire1"))
+        {
         }
     }
 }
