@@ -10,6 +10,9 @@ public class Female : MonoBehaviour
     private ServantsList m_servants;
     private MarkingList m_markings;
 
+    private int m_nextShotServant = 0;
+
+    private float timeOutSecond = 1.0f;
 
 
     // Start is called before the first frame update
@@ -23,6 +26,11 @@ public class Female : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void ShotServant(Vector3 direction)
+    {
+        m_servants.GetKamikaze(m_nextShotServant).InvokeCommand(direction, timeOutSecond);
     }
 
 }
