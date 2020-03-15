@@ -16,6 +16,7 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private bool isControler = false;
 
+
     private Vector3 m_inputVector = Vector3.zero;
 
     /// <summary>
@@ -30,31 +31,21 @@ public class PlayerInput : MonoBehaviour
     {
         m_thisRigitBody = GetComponent<Rigidbody>();
         m_female = GetComponent<Female>();
-
-        Debug.Assert(!m_female || !m_thisRigitBody);
     }
 
     // Update is called once per frame
     void Update()
     {
-        MoveInput();
 	}
 
 	private void FixedUpdate()
     {
-        Move();
-	}
+        MoveInput();
 
-    private void Move()
-    {
-        m_thisRigitBody.AddForce(m_inputVector * moveSpeed);
+        ShotInput();
     }
 
-    private void Shot()
-    {
-
-    }
-
+    
     /// <summary>
     /// 入力処理
     /// </summary>
@@ -83,10 +74,22 @@ public class PlayerInput : MonoBehaviour
             inputVector2.x = Input.GetAxis("Horizontal");
             inputVector2.y = Input.GetAxis("Vertical");
 
-            inputVector2.Normalize();
+            float magnitude = Mathf.Sqrt(inputVector2.x * inputVector2.x + inputVector2.y * inputVector2.y);
+
+            if (inputVector2.x * inputVector2.x + inputVector2.y * inputVector2.y > 1.0f)
+            {
+                inputVector2.Normalize();
+            }
 
             m_inputVector.x = inputVector2.x;
             m_inputVector.z = inputVector2.y;
+
+            if(Input.GetAxisRaw("Horizontal") != 0.0f || Input.GetAxisRaw("Vertical") != 0.0f)
+            {
+                transform.LookAt(transform.position + m_inputVector);
+            }
+            m_thisRigitBody.AddForce(transform.forward * moveSpeed * magnitude);
+
         }
     }
 
@@ -94,6 +97,7 @@ public class PlayerInput : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
+            m_female.ShotServant(transform.forward);
         }
     }
 }

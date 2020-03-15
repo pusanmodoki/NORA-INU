@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ServantsList : MonoBehaviour
 {
+    [SerializeField]
     private List<GameObject> m_servants;
 
     /// <summary>
@@ -22,4 +23,14 @@ public class ServantsList : MonoBehaviour
     public void RemoveServant(GameObject male)
     {
     }
+
+    public KamikazeCommand GetKamikaze(int id)
+    {
+        if(m_servants.Count <= id)
+        {
+            return null;
+        }
+        return m_servants[id].GetComponent<KamikazeCommand>();
+    }
+
 }
