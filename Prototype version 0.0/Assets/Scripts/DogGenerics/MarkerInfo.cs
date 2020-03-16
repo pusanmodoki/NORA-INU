@@ -9,14 +9,16 @@ using UnityEngine;
 public class MarkerInfo
 {
 	/// <summary>[コンストラクタ]</summary>
-	public MarkerInfo(float attack)
+	public MarkerInfo(LinkMarking linkMarking, float attack)
 	{
 		this.m_drawingAttackValue = attack;
+		this.linkMarking = linkMarking;
 	}
 
+	public LinkMarking linkMarking { get; private set; } = null;
 	/// <summary>marking atttack value</summary>
 	public float attack { get { return m_drawingAttackValue; } }
 
-	[SerializeField]
+	[SerializeField, Tooltip("drawing marking atttack value")]
 	float m_drawingAttackValue = 0.0f;
 }

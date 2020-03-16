@@ -15,8 +15,12 @@ public class KamikazeCommand : MonoBehaviour
 	/// <summary>Kamikaze now?</summary>
 	public bool isKamikazeNow { get; private set; } = false;
 
-	[SerializeField, Tooltip("AI agent")]
+	/// <summary>This ai agent</summary>
+	[SerializeField, Tooltip("This ai agent")]
 	AIComponent.AIAgent m_aiAgent = null;
+	/// <summary>This kamikaze function</summary>
+	[SerializeField, Tooltip("This kamikaze function")]
+	AIComponent.KamikazeMove m_kamikazeFunction = null;
 
 	/// <summary>
 	/// [InvokeCommand]
@@ -30,7 +34,7 @@ public class KamikazeCommand : MonoBehaviour
 		this.direction = direction;
 		this.timeoutSeconds = timeoutSeconds;
 
-		m_aiAgent.AllocateFunction();
+		m_aiAgent.ForceSpecifyFunction(m_kamikazeFunction);
 	}
 
 	/// <summary>
