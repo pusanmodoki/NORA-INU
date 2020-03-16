@@ -7,6 +7,8 @@ public class MarkingObject : MonoBehaviour
 	[SerializeField]
 	MarkingMessage m_message = null;
 	[SerializeField]
+	LinkMarking m_linkMarking = null;
+	[SerializeField]
 	float m_hp = 1.0f;
 
     // Start is called before the first frame update
@@ -28,10 +30,14 @@ public class MarkingObject : MonoBehaviour
 			{
 				var message = m_message.GetMessage(i);
 				m_hp -= message.attack;
-			}
 
-			if (m_hp <= 0.0f)
-				Debug.Log("Death...." + gameObject.name);
+				if (m_hp <= 0.0f)
+				{
+					LinkMarking.SettingLink(m_linkMarking, message.markerInfo.linkMarking);
+					Debug.Log("Death...." + gameObject.name);
+					break;
+				}
+			}
 		}
     }
 }

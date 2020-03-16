@@ -135,9 +135,10 @@ namespace AIComponent
 		/// </summary>
 		protected void SetUpdatePosition(bool isSet, bool isWarp = true)
 		{
-			if (navMeshAgent.updatePosition == isSet) return;
+			Vector3 position = transform.position;
+			position.y += navMeshAgent.baseOffset;
 
-			if (isWarp) navMeshAgent.Warp(transform.position + m_cAdjustSetUpdatePosition);
+			if (isWarp) navMeshAgent.Warp(position);
 			navMeshAgent.updatePosition = isSet;
 		}
 		/// <summary>
@@ -149,8 +150,6 @@ namespace AIComponent
 		/// </summary>
 		protected void SetUpdatePosition(Vector3 newPositoin, bool isSet, bool isWarp = true)
 		{
-			if (navMeshAgent.updatePosition == isSet) return;
-
 			if (isWarp) navMeshAgent.Warp(newPositoin);
 			navMeshAgent.updatePosition = isSet;
 		}

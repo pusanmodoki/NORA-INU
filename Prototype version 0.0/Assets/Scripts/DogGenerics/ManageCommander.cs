@@ -18,8 +18,17 @@ public class ManageCommander : MonoBehaviour
 
 	/// <summary>Now commander</summary>
 	public GameObject commander { get; private set; } = null;
+	/// <summary>Now commander</summary>
+	public ManageServants manageServants { get; private set; } = null;
 	/// <summary>commander != null?</summary>
 	public bool isLinked { get { return commander != null; } }
+
+	/// <summary>Provision this object</summary>
+	[SerializeField, Tooltip("Provision this object")]
+	GameObject m_provisionThisObject = null;
+	/// <summary>This link marking</summary>
+	[SerializeField, Tooltip("This link marking")]
+	LinkMarking m_linkMarking = null;
 
 	/// <summary>Callback</summary>
 	LinkAction m_linkNotifyCallback = null;
@@ -29,7 +38,7 @@ public class ManageCommander : MonoBehaviour
 	/// コマンダーを登録する
 	/// 引数1: コマンダーのメインオブジェクト
 	/// </summary>
-	public void RegisterCommander(GameObject commanderObject)
+	public void RegisterCommander(GameObject commanderObject, ManageServants manageServants)
 	{
 		//すでにコマンダーが居た場合解除する
 		ReleaseCommander();
@@ -38,7 +47,12 @@ public class ManageCommander : MonoBehaviour
 		if (commanderObject != null)
 		{
 			commander = commanderObject;
+			this.manageServants = manageServants;
+
+			m_linkMarking.RegisterLinkNotifyCallback(manageServants.LinkMarkingCallback);
 			m_linkNotifyCallback?.Invoke(commander, true);
+
+			manageServants.RegisterServantCallback(m_provisionThisObject);
 		}
 	}
 	/// <summary>
@@ -50,19 +64,34 @@ public class ManageCommander : MonoBehaviour
 		//登録オブジェクトが存在する場合登録解除 & コールバック呼び出し
 		if (commander != null)
 		{
+			manageServants.UnregisterServantCallback(m_provisionThisObject);
+
+			m_linkMarking.UnregisterLinkNotifyCallback(manageServants.LinkMarkingCallback);
 			m_linkNotifyCallback?.Invoke(commander, false);
+
 			commander = null;
+			manageServants = null;
 		}
 	}
 
 	/// <summary>
-	/// [RegisterLinkNotifyCallbback]
+	/// [RegisterLinkNotifyCallback]
 	/// コマンダーが変更された場合に呼び出されるコールバックを登録する
 	/// 引数1: 登録するコールバック
 	/// </summary>
-	public void RegisterLinkNotifyCallbback(LinkAction callback)
+	public void RegisterLinkNotifyCallback(LinkAction callback)
 	{
 		if (callback != null)
 			m_linkNotifyCallback += callback;
+	}
+	/// <summary>
+	/// [UnregisterLinkNotifyCallback]
+	/// コマンダーが変更された場合に呼び出されるコールバックを登録解除する
+	/// 引数1: 登録解除するコールバック
+	/// </summary>
+	public void UnregisterLinkNotifyCallback(LinkAction callback)
+	{
+		if (callback != null)
+			m_linkNotifyCallback -= callback;
 	}
 }

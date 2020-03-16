@@ -39,9 +39,9 @@ public class LinkMarking : MonoBehaviour
 	/// リンク先が変更された場合に呼び出されるコールバック形式
 	/// 引数1: Callbackを登録したComponent
 	/// 引数2: Link先のComponent
-	/// 引数1: リンクさせる->true, リンク解除->false
+	/// 引数1: リンクさせる->1, リンク解除->-1, 更新->0
 	/// </summary>
-	public delegate void LinkAction(LinkMarking thisComponent, LinkMarking linkedComponent, bool isLinked);
+	public delegate void LinkAction(LinkMarking thisComponent, LinkMarking linkedComponent, int linked);
 
 	/// <summary>Provision of infomations</summary>
 	public Infomations infomations { get { return m_takeInfomations; } }
@@ -49,6 +49,13 @@ public class LinkMarking : MonoBehaviour
 	public LinkMarking linked { get; private set; } = null;
 	/// <summary>linked != null?</summary>
 	public bool isLink { get { return linked != null;  } }
+
+	/// <summary>Invoke Function-> SettingLink</summary>
+	public static readonly int cSettingLink = 1;
+	/// <summary>Invoke Function-> ReleaseLink</summary>
+	public static readonly int cReleaseLink = -1;
+	/// <summary>Invoke Function-> InvokeLinkCallback</summary>
+	public static readonly int cUpdateLink = 0;
 
 	/// <summary>Commanderを登録する(オス犬の)場合は参照させてください</summary>
 	[SerializeField, Tooltip("Commanderを登録する(オス犬の)場合は参照させてください")]
@@ -65,10 +72,20 @@ public class LinkMarking : MonoBehaviour
 	/// リンク先が変更された際に呼び出されるCallbackを登録する
 	/// 引数1: 登録するCallback
 	/// </summary>
-	public void RegisterLinkNotifyCallbback(LinkAction callback)
+	public void RegisterLinkNotifyCallback(LinkAction callback)
 	{
 		if (callback != null)
 			m_linkNotifyCallback += callback;
+	}
+	/// <summary>
+	/// [UnregisterLinkNotifyCallbback]
+	/// リンク先が変更された際に呼び出されるCallbackを登録解除する
+	/// 引数1: 登録解除するCallback
+	/// </summary>
+	public void UnregisterLinkNotifyCallback(LinkAction callback)
+	{
+		if (callback != null)
+			m_linkNotifyCallback -= callback;
 	}
 
 	/// <summary>
@@ -87,8 +104,8 @@ public class LinkMarking : MonoBehaviour
 		left.linked = right;
 		right.linked = left;
 		//コールバック呼び出し
-		left.m_linkNotifyCallback?.Invoke(left, right, true);
-		right.m_linkNotifyCallback?.Invoke(right, left, true);
+		left.m_linkNotifyCallback?.Invoke(left, right, cSettingLink);
+		right.m_linkNotifyCallback?.Invoke(right, left, cSettingLink);
 	}
 
 	/// <summary>
@@ -101,20 +118,32 @@ public class LinkMarking : MonoBehaviour
 		if (either == null | !either.isLink) return;
 
 		//コールバック呼び出し
-		either.m_linkNotifyCallback?.Invoke(either, either.linked, false);
-		either.linked.m_linkNotifyCallback?.Invoke(either.linked, either, false);
+		either.m_linkNotifyCallback?.Invoke(either, either.linked, cReleaseLink);
+		either.linked.m_linkNotifyCallback?.Invoke(either.linked, either, cReleaseLink);
 
 		//リンク先をnullに設定
 		either.linked.linked = null;
 		either.linked = null;
 	}
 
+	/// <summary>
+	/// [InvokeLinkCallback]<static>
+	/// Callbackを呼び出す
+	/// </summary>
+	public void InvokeLinkCallback()
+	{
+		if (!isLink) return;
+
+		//コールバック呼び出し
+		this.m_linkNotifyCallback?.Invoke(this, linked, cUpdateLink);
+		linked.m_linkNotifyCallback?.Invoke(linked, this, cUpdateLink);
+	}
 	/// <summary>[Awake]</summary>
 	void Awake()
 	{
 		//Callback登録
 		if (m_manageCommander != null)
-			m_manageCommander.RegisterLinkNotifyCallbback(this.ActionLinkCommander);
+			m_manageCommander.RegisterLinkNotifyCallback(this.ActionLinkCommander);
 	}
 
 	/// <summary>
