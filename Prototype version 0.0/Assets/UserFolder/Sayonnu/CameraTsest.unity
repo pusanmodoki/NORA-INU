@@ -218,6 +218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followingObject: {fileID: 1542451615}
+  lookObject: {fileID: 2081029178}
   leaveSpeed: 0.09
 --- !u!1 &1158045801
 GameObject:
@@ -322,7 +323,7 @@ GameObject:
   - component: {fileID: 1542451616}
   - component: {fileID: 1542451617}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: ZoomPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -354,7 +355,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f8ff44ad54e356488d005230578ffe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minZoom: 0
+  cameraNormalPosition: 15
+  minZoom: 8
   maxZoom: 30
 --- !u!1 &1940928039
 GameObject:
