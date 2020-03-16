@@ -42,7 +42,7 @@ public class PlayerInput : MonoBehaviour
     {
         MoveInput();
 
-        ShotInput();
+       // ShotInput();
     }
 
     

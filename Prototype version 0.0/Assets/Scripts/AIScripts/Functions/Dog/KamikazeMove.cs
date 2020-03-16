@@ -40,7 +40,7 @@ namespace AIComponent
 
 			m_isEnabledNavMesh = navMeshAgent.SetDestination(targetPosition);
 			if (m_isEnabledNavMesh)
-				SetUpdatePosition(true);
+				SetUpdatePosition(true, false);
 		}
 
 		public override void AIEnd(BaseAIFunction nextFunction, bool isParallel)

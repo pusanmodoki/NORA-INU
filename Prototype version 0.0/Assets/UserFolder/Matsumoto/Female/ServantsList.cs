@@ -30,7 +30,8 @@ public class ServantsList : MonoBehaviour
         {
             return null;
         }
-        return m_servants[id].GetComponent<KamikazeCommand>();
-    }
+		//return m_servants[id].GetComponent<KamikazeCommand>();
+		return null;
+	}
 
 }

@@ -7,6 +7,8 @@ public class ManageTerritory : MonoBehaviour
 	[SerializeField]
 	ManageServants m_manageServants = null;
 	[SerializeField]
+	LineRenderer m_lineRenderer = null;
+	[SerializeField]
 	string m_firstPointName = "";
 
 	public Dictionary<int, GrahamScan.CustomFormat> markPoints { get; private set; } = new Dictionary<int, GrahamScan.CustomFormat>();
@@ -37,11 +39,13 @@ public class ManageTerritory : MonoBehaviour
 	{
 		territoryPoints.Clear();
 
-		int i = 0;
-		foreach (var e in markPoints)
 		{
-			territoryPoints.Add(e.Value.gameObject.transform.position);
-			++i;
+			int i = 0;
+			foreach (var e in markPoints)
+			{
+				territoryPoints.Add(e.Value.gameObject.transform.position);
+				++i;
+			}
 		}
 
 		int result = GrahamScan.Run(territoryPoints);
@@ -49,5 +53,12 @@ public class ManageTerritory : MonoBehaviour
 			territoryPoints.RemoveRange(result, territoryPoints.Count - result);
 
 		Debug.Log(markPoints.Count + "+"+ territoryPoints.Count);
+
+		if (m_lineRenderer != null)
+		{
+			m_lineRenderer.positionCount = territoryPoints.Count;
+			for (int i = 0; i < territoryPoints.Count; ++i)
+				m_lineRenderer.SetPosition(i, territoryPoints[i]);
+		}
 	}
 }
