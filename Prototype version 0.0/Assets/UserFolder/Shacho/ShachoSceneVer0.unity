@@ -272,6 +272,7 @@ GameObject:
   - component: {fileID: 181070649}
   - component: {fileID: 181070648}
   - component: {fileID: 181070650}
+  - component: {fileID: 181070651}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -316,7 +317,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 181070647}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.66208, y: 4.4590235, z: -36.93366}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -334,6 +335,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b041d7422bef0468b9003f9cba1632, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &181070651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 181070647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd720293e984c04458ed27b623e3c14b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_divisionSphere: 15
+  m_sphereScaler: 5
 --- !u!1 &293011223
 GameObject:
   m_ObjectHideFlags: 0
@@ -731,7 +746,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: db9f4051cae1ebb43844cb9c107b82f5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -763,7 +778,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.296875
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -855,6 +870,19 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &412210139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 412210125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 240fb929bab6fdd4e9c399d8b2ecbea9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_rigidBody: {fileID: 0}
 --- !u!1 &432894463
 GameObject:
   m_ObjectHideFlags: 0
@@ -2834,7 +2862,7 @@ MonoBehaviour:
   m_overlapRadius: 10
   m_dIsDrawGizmos: 1
   m_dIsHit: 0
-  m_dLoseSightTimer: 4.02
+  m_dLoseSightTimer: 0.02
 --- !u!114 &1946413950
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -52,6 +52,11 @@ public class ManageTerritory : MonoBehaviour
 		if (result < territoryPoints.Count - 1)
 			territoryPoints.RemoveRange(result, territoryPoints.Count - result);
 
+		TerritoryManager.instance.AddVolumePoints(territoryPoints);
+		result = GrahamScan.Run(territoryPoints);
+		if (result < territoryPoints.Count - 1)
+			territoryPoints.RemoveRange(result, territoryPoints.Count - result);
+
 		Debug.Log(markPoints.Count + "+"+ territoryPoints.Count);
 
 		if (m_lineRenderer != null)
