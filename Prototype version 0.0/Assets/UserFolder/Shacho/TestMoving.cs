@@ -19,7 +19,7 @@ public class TestMoving : MonoBehaviour
     {
 		if (Input.GetKeyDown(KeyCode.A))
 		{
-			GetComponent<KamikazeCommand>().InvokeCommand(transform.forward, 10.0f);
+			GetComponent<KamikazeCommand>().InvokeCommand(transform.forward, 10.0f, 10.0f);
 		}
 
 	}

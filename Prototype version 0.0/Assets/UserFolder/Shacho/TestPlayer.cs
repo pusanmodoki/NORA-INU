@@ -12,13 +12,15 @@ public class TestPlayer : MonoBehaviour
     void Start()
     {
 		m_territory = GetComponent<ManageTerritory>();
+
 	}
 
     // Update is called once per frame
     void Update()
     {
-		Debug.Log(CollisionTerritory.HitCircleTerritory(m_territory.territoryPoints, transform.position, 1));
-    }
+		//Debug.Log(CollisionTerritory.HitSegments(Vector3.forward, -Vector3.forward, -Vector3.right, 100));
+		Debug.Log(CollisionTerritory.HitLineTerritory(m_territory.territoryPoints, transform.position, 100));
+	}
 
 	void FixedUpdate()
 	{

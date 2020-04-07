@@ -35,11 +35,16 @@ public class SpeedChanger : MonoBehaviour
 	[SerializeField, Range(0.0f, 1.0f)]
 	float m_gradientDecelerationRatio = 0.5f;
 
-	[Header("Acceleration per seconds"), SerializeField]
+	[Header("Gradient acceleration per seconds"), SerializeField]
 	float m_gradientAcceleration = 1.0f;
 	[SerializeField]
+	float m_gradientMaxAcceleration = 10.0f;
+	[SerializeField, Range(0.0f, 10.0f)]
+	float m_gradientDecelerationSeconds = 0.1f;
+
+	[Header("Acceleration per seconds"), SerializeField]
 	float m_maxAcceleration = 10.0f;
-	[SerializeField, Range(0.0f, 3.0f)]
+	[SerializeField, Range(0.0f, 10.0f)]
 	float m_decelerationSeconds = 0.1f;
 
 	[Header("Other"), SerializeField, Range(0.0f, 0.1f)]
@@ -48,7 +53,13 @@ public class SpeedChanger : MonoBehaviour
 	bool m_isEnabledChangeSpeed = true;
 
 	Timer m_gradientModeTimer = new Timer();
+	float m_gradientNowAcceleration = 0.0f;
 	float m_nowAcceleration = 0.0f;
+
+	public void ForceSetAcceleration(float acceleration)
+	{
+		m_nowAcceleration = acceleration;
+	}
 
 	void Start()
 	{
@@ -82,7 +93,6 @@ public class SpeedChanger : MonoBehaviour
 		CheckGradient(dotGradient);
 
 		float targetSpeed = CalculateSpeed(dotGradient);
-
 		m_navMeshAgent.speed = targetSpeed;
 	}
 
@@ -106,35 +116,38 @@ public class SpeedChanger : MonoBehaviour
 
 	float CalculateSpeed(float dotGradient)
 	{
+		m_nowAcceleration -= (m_nowAcceleration / m_decelerationSeconds) * Time.deltaTime;
+		if (m_nowAcceleration < 0.001f)
+			m_nowAcceleration = 0.0f;
+
 		if (!isGradientMode)
 		{
-			m_nowAcceleration -= (m_nowAcceleration / m_decelerationSeconds) * Time.deltaTime;
+			m_gradientNowAcceleration -= (m_gradientNowAcceleration / m_gradientDecelerationSeconds) * Time.deltaTime;
 
-			if (m_nowAcceleration < 0.001f)
-				m_nowAcceleration = 0.0f;
+			if (m_gradientNowAcceleration < 0.001f)
+				m_gradientNowAcceleration = 0.0f;
 
-			return Mathf.Clamp(m_targetSpeed + m_nowAcceleration, m_minSpeed, m_maxSpeed);
+			return Mathf.Clamp(m_targetSpeed + m_nowAcceleration + m_gradientNowAcceleration, m_minSpeed, m_maxSpeed);
 		}
-
 
 		if (!m_gradientFlags.isStay)
 		{
-			m_nowAcceleration += m_gradientAcceleration * Time.deltaTime;
+			m_gradientNowAcceleration += m_gradientAcceleration * Time.deltaTime;
 
-			if (m_nowAcceleration > m_maxAcceleration)
-				m_nowAcceleration = m_maxAcceleration;
+			if (m_gradientNowAcceleration > m_gradientMaxAcceleration)
+				m_gradientNowAcceleration = m_gradientMaxAcceleration;
 
-			return Mathf.Clamp(m_targetSpeed + m_nowAcceleration, m_minSpeed, m_maxSpeed);
+			return Mathf.Clamp(m_targetSpeed + m_nowAcceleration + m_gradientNowAcceleration, m_minSpeed, m_maxSpeed);
 		}
 		else
 		{
-			m_nowAcceleration -= (m_nowAcceleration / m_decelerationSeconds) * Time.deltaTime;
+			m_gradientNowAcceleration -= (m_gradientNowAcceleration / m_gradientDecelerationSeconds) * Time.deltaTime;
 
-			if (m_nowAcceleration < 0.001f)
-				m_nowAcceleration = 0.0f;
+			if (m_gradientNowAcceleration < 0.001f)
+				m_gradientNowAcceleration = 0.0f;
 
-			return Mathf.Clamp(dotGradient * m_gradientDecelerationRatio 
-				* m_targetSpeed + m_nowAcceleration, m_minSpeed, m_maxSpeed);
+			return Mathf.Clamp(dotGradient * m_gradientDecelerationRatio * m_targetSpeed 
+				+ m_nowAcceleration + m_gradientNowAcceleration, m_minSpeed, m_maxSpeed);
 		}
 	}
 }

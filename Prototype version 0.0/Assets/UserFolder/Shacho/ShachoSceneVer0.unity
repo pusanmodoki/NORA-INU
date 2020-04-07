@@ -1432,6 +1432,7 @@ GameObject:
   - component: {fileID: 979648690}
   - component: {fileID: 979648689}
   - component: {fileID: 979648688}
+  - component: {fileID: 979648691}
   m_Layer: 11
   m_Name: Sphere
   m_TagString: Untagged
@@ -1513,6 +1514,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 979648686}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &979648691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 979648686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53c23211beb86484e93833e9b28f4bc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_radius: 0.69
+  m_detectionInterval: 0.1
+  m_isDrawingLockDetection: 0
+  m_manageCommander: {fileID: 0}
 --- !u!1 &991674628
 GameObject:
   m_ObjectHideFlags: 0
@@ -2711,6 +2728,8 @@ MonoBehaviour:
   m_maxSpeed: 20
   m_gradientDecelerationRatio: 0.5
   m_gradientAcceleration: 5
+  m_gradientMaxAcceleration: 10
+  m_gradientDecelerationSeconds: 0.1
   m_maxAcceleration: 10
   m_decelerationSeconds: 0.1
   m_gradientModeSeconds: 0.05
@@ -2862,7 +2881,7 @@ MonoBehaviour:
   m_overlapRadius: 10
   m_dIsDrawGizmos: 1
   m_dIsHit: 0
-  m_dLoseSightTimer: 0.02
+  m_dLoseSightTimer: 19.42778
 --- !u!114 &1946413950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2943,6 +2962,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_aiAgent: {fileID: 1946413948}
   m_kamikazeFunction: {fileID: 1946413953}
+  m_speedChanger: {fileID: 0}
 --- !u!114 &1946413955
 MonoBehaviour:
   m_ObjectHideFlags: 0

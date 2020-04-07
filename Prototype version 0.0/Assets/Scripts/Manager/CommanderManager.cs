@@ -22,6 +22,7 @@ public class CommanderManager : MonoBehaviour
 	}
 
 	public static CommanderManager instance { get; private set; } = null;
+	public int commanderCount { get { return m_commanders.Count; } }
 
 	Dictionary<int, Commander> m_commanders = new Dictionary<int, Commander>();
 

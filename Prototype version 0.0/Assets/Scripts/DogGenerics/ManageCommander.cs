@@ -20,6 +20,8 @@ public class ManageCommander : MonoBehaviour
 	public GameObject commander { get; private set; } = null;
 	/// <summary>Now commander</summary>
 	public ManageServants manageServants { get; private set; } = null;
+	/// <summary>Now commander</summary>
+	public ManageTerritory manageTerritory { get; private set; } = null;
 	/// <summary>commander != null?</summary>
 	public bool isLinked { get { return commander != null; } }
 
@@ -38,7 +40,7 @@ public class ManageCommander : MonoBehaviour
 	/// コマンダーを登録する
 	/// 引数1: コマンダーのメインオブジェクト
 	/// </summary>
-	public void RegisterCommander(GameObject commanderObject, ManageServants manageServants)
+	public void RegisterCommander(GameObject commanderObject, ManageServants manageServants, ManageTerritory manageTerritory)
 	{
 		//すでにコマンダーが居た場合解除する
 		ReleaseCommander();
@@ -48,6 +50,7 @@ public class ManageCommander : MonoBehaviour
 		{
 			commander = commanderObject;
 			this.manageServants = manageServants;
+			this.manageTerritory = manageTerritory;
 
 			m_linkMarking.RegisterLinkNotifyCallback(manageServants.LinkMarkingCallback);
 			m_linkNotifyCallback?.Invoke(commander, true);
@@ -71,6 +74,7 @@ public class ManageCommander : MonoBehaviour
 
 			commander = null;
 			manageServants = null;
+			manageTerritory = null;
 		}
 	}
 

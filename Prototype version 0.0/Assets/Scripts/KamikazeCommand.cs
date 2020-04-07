@@ -21,6 +21,8 @@ public class KamikazeCommand : MonoBehaviour
 	/// <summary>This kamikaze function</summary>
 	[SerializeField, Tooltip("This kamikaze function")]
 	AIComponent.KamikazeMove m_kamikazeFunction = null;
+	[SerializeField, Tooltip("This speed changer")]
+	SpeedChanger m_speedChanger = null;
 
 	/// <summary>
 	/// [InvokeCommand]
@@ -28,12 +30,14 @@ public class KamikazeCommand : MonoBehaviour
 	/// 引数1: 方向 (world)
 	/// 引数2: 神風特攻をする最長時間
 	/// </summary>
-	public void InvokeCommand(Vector3 direction, float timeoutSeconds)
+	public void InvokeCommand(Vector3 direction, float timeoutSeconds, float setAcceleration)
 	{
 		isKamikazeNow = true;
 		this.direction = direction;
 		this.timeoutSeconds = timeoutSeconds;
 
+
+		m_speedChanger.ForceSetAcceleration(setAcceleration);
 		m_aiAgent.ForceSpecifyFunction(m_kamikazeFunction);
 	}
 

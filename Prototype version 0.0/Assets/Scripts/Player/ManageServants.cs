@@ -16,7 +16,7 @@ public class ManageServants : MonoBehaviour
 
 	void Start()
 	{
-		GameObject.Find(m_firstServantName).GetComponent<ManageCommander>().RegisterCommander(gameObject, this);
+		GameObject.Find(m_firstServantName).GetComponent<ManageCommander>().RegisterCommander(gameObject, this, m_manageTerritory);
 
 		CommanderManager.instance.RegisterCommander(gameObject);
 	}
