@@ -30,7 +30,7 @@ public class Female : MonoBehaviour
 
     public void ShotServant(Vector3 direction)
     {
-        m_servants.GetKamikaze(m_nextShotServant).InvokeCommand(direction, timeOutSecond);
+        //m_servants.GetKamikaze(m_nextShotServant).InvokeCommand(direction, timeOutSecond);
     }
 
 }

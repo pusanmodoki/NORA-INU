@@ -2881,7 +2881,7 @@ MonoBehaviour:
   m_overlapRadius: 10
   m_dIsDrawGizmos: 1
   m_dIsHit: 0
-  m_dLoseSightTimer: 19.42778
+  m_dLoseSightTimer: 0
 --- !u!114 &1946413950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2962,7 +2962,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_aiAgent: {fileID: 1946413948}
   m_kamikazeFunction: {fileID: 1946413953}
-  m_speedChanger: {fileID: 0}
+  m_speedChanger: {fileID: 1946413944}
 --- !u!114 &1946413955
 MonoBehaviour:
   m_ObjectHideFlags: 0
