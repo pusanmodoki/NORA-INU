@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
+[DefaultExecutionOrder(-100)]
 public class CheckPointManager : MonoBehaviour
 {
 	/// <summary>Static instance</summary>
