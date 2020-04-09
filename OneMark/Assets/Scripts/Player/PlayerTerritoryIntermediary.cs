@@ -2,46 +2,94 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// PlayerとManagerを仲介するPlayerTerritoryIntermediary 
+/// </summary>
 public class PlayerTerritoryIntermediary : MonoBehaviour
 {
-	[SerializeField]
+	/// <summary>初期オブジェクト名</summary>
+	[SerializeField, Tooltip("初期オブジェクト名")]
 	string m_firstPointName = "";
-	[SerializeField]
+	[SerializeField, Tooltip("This PlayerMaualCollisionAdministrator")]
+	PlayerMaualCollisionAdministrator m_playerMaualCollisionAdministrator = null;
+
+	[SerializeField, Space, Tooltip("LineRenderer(とりあえず)")]
 	LineRenderer m_lineRenderer = null;
-	[SerializeField]
+	[SerializeField, Tooltip("オブジェクト名(とりあえず)")]
 	string m_testName = "";
 
+	/// <summary>This game object instance id</summary>
+	int m_instanceID = 0;
+	/// <summary>初期ポイント</summary>
 	BaseMarkPoint m_firstPoint = null;
-	bool m_isPauseFirarPoint = false;
+	/// <summary>初期ポイントがポーズ中か否か</summary>
+	bool m_isPauseFirstPoint = false;
 
-    // Start is called before the first frame update
-    void Start()
+	/// <summary>
+	/// [ChangeTerritory]
+	/// テリトリー変更のコールバック
+	/// </summary>
+	public void ChangeTerritory()
+	{
+		if (m_isPauseFirstPoint)
+		{
+			m_firstPoint.isPauseTimer = false;
+			m_isPauseFirstPoint = false;
+
+			PlayerAndTerritoryManager.instance.allPlayers[m_firstPoint.linkPlayerID].
+				playerInfo.changeTerritoryCallback -= ChangeTerritory;
+		}
+	}
+	
+	/// <summary>[Start]</summary>
+	void Start()
     {
+		//Managerにインスタンス追加
 		PlayerAndTerritoryManager.instance.AddPlayer(gameObject);
-
+		//初期ポイントを探す
 		GameObject firstPoint = GameObject.Find(m_firstPointName);
 
+		m_instanceID = gameObject.GetInstanceID();
+
+		//マークポイントを取得
 		if (firstPoint != null)
 			m_firstPoint = firstPoint.GetComponent<BaseMarkPoint>();
 
+		//初期ポイントが見つかった
 		if (m_firstPoint != null)
 		{
-			var playerInfo = PlayerAndTerritoryManager.instance.GetPlayer(gameObject.GetInstanceID());
+			//PlayerInfo取得
+			var playerInfo = PlayerAndTerritoryManager.instance.allPlayers[m_instanceID].playerInfo;
+			//コールバック追加
 			playerInfo.changeTerritoryCallback += ChangeTerritory;
+			//ポイントをリンクさせる
 			m_firstPoint.LinkPlayer(gameObject, null);
+			//即時計算要請
+			PlayerAndTerritoryManager.instance.CalucrateTerritory(playerInfo);
+			//Info設定
+			m_playerMaualCollisionAdministrator.SetPlayerInfo(playerInfo);
 
+			//ポイントタイマーをポーズさせる
 			m_firstPoint.isPauseTimer = true;
-			m_isPauseFirarPoint = true;
+			m_isPauseFirstPoint = true;
 		}
 		else
 		{
+			//Debug only, エラーログを表示
+#if UNITY_EDITOR
 			Debug.LogError("Error!! PlayerTerritoryIntermediary->Start\n FirstPoint not found");
+#endif
 		}
 	}
 
+
+	/// <summary>
+	/// [Update]
+	/// とりあえずの処理たち
+	/// </summary>
 	void Update()
 	{
-		var playerInfo = PlayerAndTerritoryManager.instance.GetPlayer(gameObject.GetInstanceID());
+		var playerInfo = PlayerAndTerritoryManager.instance.allPlayers[m_instanceID].playerInfo;
 
 		if (m_lineRenderer != null)
 		{
@@ -65,27 +113,15 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
 
 
 			var obj = ServantManager.instance.servantByMainPlayer[0];
-			var com = obj.GetComponent<DogRushingAndMarking>();
-			com.SetAdvanceInformation(point1, point.transform.position);
-			//point1.LinkPlayer(gameObject, null);
-			obj.ForceSpecifyFunction(com);
-		}
-	}
 
-	public void ChangeTerritory()
-	{
-		if (m_isPauseFirarPoint)
+			obj.GoSoStartOfMarking(point1);
+		}
+		else if (Input.GetKeyDown(KeyCode.X))
 		{
-			m_firstPoint.isPauseTimer = false;
-			m_isPauseFirarPoint = false;
+			var obj = ServantManager.instance.servantByMainPlayer[0];
+
+			obj.ComeBecauseEndOfMarking();
 		}
 	}
 
-    // Update is called once per frame
-    void OnDestroy()
-    {
-		if (m_firstPoint != null)
-			PlayerAndTerritoryManager.instance.GetPlayer(
-				m_firstPoint.linkPlayerID).changeTerritoryCallback -= ChangeTerritory;
-    }
 }

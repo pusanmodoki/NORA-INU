@@ -108,7 +108,7 @@ public class DogSpeedChanger
 	void CheckGradient(float dotGradient)
 	{
 		//傾斜かつ指定秒数経過ならStart
-		if (dotGradient < 1.0f - Mathf.Epsilon)
+		if (dotGradient < 0.95f)
 		{
 			if (!m_gradientModeTimer.isStart)
 				m_gradientModeTimer.Start();

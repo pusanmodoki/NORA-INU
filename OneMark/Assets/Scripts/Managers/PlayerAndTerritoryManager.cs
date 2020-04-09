@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.ObjectModel;
 
 /// <summary>
 /// Player情報とテリトリーを管理するPlayerAndTerritoryManager 
@@ -84,7 +85,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	/// <summary>
 	/// 自クラス内でPlayerInfoを保存するStoragePlayer
 	/// </summary>
-	class StoragePlayer
+	public class StoragePlayer
 	{
 		/// <summary>[コンストラクタ]</summary>
 		public StoragePlayer(GameObject player)
@@ -106,11 +107,13 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	/// <summary>Static instance</summary>
 	public static PlayerAndTerritoryManager instance { get; private set; } = null;
 
+	/// <summary>All players</summary>
+	public ReadOnlyDictionary<int, StoragePlayer> allPlayers { get; private set; } = null;
 	/// <summary>Main player</summary>
 	public PlayerInfo mainPlayer { get; private set; } = null;
 
-	/// <summary>ボリューム円の分割数"</summary>
-	[SerializeField, Range(0, 30), Tooltip("ボリューム円の分割数")]
+	/// <summary>ボリューム円の分割数</summary>
+	[SerializeField, Range(0, 100), Tooltip("ボリューム円の分割数")]
 	int m_divisionVolume = 10;
 	/// <summary>ボリューム円の半径</summary>
 	[SerializeField, Range(0, 10), Tooltip("ボリューム円の半径")]
@@ -120,7 +123,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	float m_calucrateTerritoryInterval = 0.2f;
 
 	/// <summary>Manage players</summary>
-	Dictionary<int, StoragePlayer> m_players = new Dictionary<int, StoragePlayer>();
+	Dictionary<int, StoragePlayer> m_players = null;
 	/// <summary>Grahamソート用リスト(効率化のためメンバに)</summary>
 	List<GrahamScan.CustomFormat> m_grahamResult = new List<GrahamScan.CustomFormat>();
 	/// <summary>ボリューム座標</summary>
@@ -134,6 +137,9 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	{
 		//インスタンス登録
 		instance = this;
+		m_players = new Dictionary<int, StoragePlayer>();
+		allPlayers = new ReadOnlyDictionary<int, StoragePlayer>(m_players);
+
 		//タイマー作動
 		m_intervalTimer.Start();
 
@@ -198,10 +204,10 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	}
 	/// <summary>
 	/// [CalucrateTerritory]
-	/// Playerのテリトリーを計算する
+	/// Playerのテリトリーを計算する, 基本使わないこと
 	/// 引数1: Player infomation
 	/// </summary>
-	void CalucrateTerritory(PlayerInfo playerInfo)
+	public void CalucrateTerritory(PlayerInfo playerInfo)
 	{
 		//リストクリア
 		playerInfo.allTerritoryPoints.Clear();
@@ -312,7 +318,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		if (isMainPlayer)
 			mainPlayer = info.playerInfo;
 
-		ServantManager.instance.AddPlayer(info.playerInfo.instanceID);
+		ServantManager.instance.RegisterPlayer(info.playerInfo.instanceID);
 	}
 	/// <summary>
 	/// [RemovePlayer]
@@ -334,64 +340,6 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		if (mainPlayer.gameObject.GetInstanceID() == player.GetInstanceID())
 			mainPlayer = null;
 
-		ServantManager.instance.RemovePlayer(player.GetInstanceID());
-	}
-
-	/// <summary>
-	/// [GetPlayer]
-	/// Playerを取得する
-	/// 引数1: Player gameobject.GetInstanceID()
-	/// </summary>
-	public PlayerInfo GetPlayer(int instanceID)
-	{
-		//debug only, invalid key対策
-#if UNITY_EDITOR
-		if (!m_players.ContainsKey(instanceID))
-		{
-			Debug.LogError("Error!! PlayerAndTerritoryManager->GetPlayer\n ContainsKey(instanceID) == false");
-
-			if (m_players.Count > 0)
-			{
-				var iterator = m_players.GetEnumerator();
-				iterator.MoveNext();
-				return iterator.Current.Value.playerInfo;
-			}
-			else return null;
-		}
-#endif
-
-		return m_players[instanceID].playerInfo;
-	}
-	/// <summary>
-	/// [GetPlayerIndex]
-	/// Playerを取得する
-	/// 引数1: list index
-	/// </summary>
-	public PlayerInfo GetPlayerIndex(int index)
-	{
-		//debug only, invalid key対策
-#if UNITY_EDITOR
-		if (m_players.Count <= index)
-		{
-			Debug.LogError("Error!! PlayerAndTerritoryManager->GetPlayerIndex\n Invalid Index : " + index);
-
-			if (m_players.Count > 0)
-			{
-				var iterator = m_players.GetEnumerator();
-				iterator.MoveNext();
-				return iterator.Current.Value.playerInfo;
-			}
-			else return null;
-		}
-#endif
-
-		int i = 0;
-		foreach (var e in m_players)
-		{
-			if (i == index)
-				return e.Value.playerInfo;
-		}
-
-		return null;
+		ServantManager.instance.UnregisterPlayer(player.GetInstanceID());
 	}
 }

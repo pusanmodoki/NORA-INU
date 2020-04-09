@@ -14,10 +14,11 @@ public class ServantManager : MonoBehaviour
 
 	/// <summary>MainPlayerに従うservants</summary>
 	public ReadOnlyCollection<DogAIAgent> servantByMainPlayer { get { return m_servantByMainPlayer != null? m_servantByMainPlayer.AsReadOnly() : null; } }
+	/// <summary>Manage servants</summary>
+	public ReadOnlyDictionary<int, DogAIAgent> allServants { get; private set; } = null;
 
 	/// <summary>Manage servants</summary>
-	Dictionary<int, DogAIAgent> m_servants = new Dictionary<int, DogAIAgent>();
-
+	Dictionary<int, DogAIAgent> m_servants = null;
 	/// <summary>Player別servants</summary>
 	Dictionary<int, List<DogAIAgent>> m_servantByPlayers = new Dictionary<int, List<DogAIAgent>>();
 	/// <summary>MainPlayerに従うservants</summary>
@@ -27,15 +28,17 @@ public class ServantManager : MonoBehaviour
 	void Awake()
 	{
 		instance = this;
+		m_servants = new Dictionary<int, DogAIAgent>();
+		allServants = new ReadOnlyDictionary<int, DogAIAgent>(m_servants);
 	}
 
 	/// <summary>
-	/// [AddPlayer]
+	/// [RegisterPlayer]
 	/// Playerを登録する
 	/// 引数1: GameObject.GetInstanceID()
 	/// 引数2: This main player?, default = true
 	/// </summary>
-	public void AddPlayer(int instanceID, bool isMainPlayer = true)
+	public void RegisterPlayer(int instanceID, bool isMainPlayer = true)
 	{
 		//debug only, invalid key対策
 #if UNITY_EDITOR
@@ -51,11 +54,11 @@ public class ServantManager : MonoBehaviour
 			m_servantByMainPlayer = m_servantByPlayers[instanceID];
 	}
 	/// <summary>
-	/// [RemovePlayer]
+	/// [UnregisterPlayer]
 	/// DogAIAgentを登録解除する
 	/// 引数1: GameObject.GetInstanceID()
 	/// </summary>
-	public void RemovePlayer(int instanceID)
+	public void UnregisterPlayer(int instanceID)
 	{
 		//debug only, invalid key対策
 #if UNITY_EDITOR

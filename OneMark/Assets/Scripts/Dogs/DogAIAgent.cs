@@ -24,9 +24,66 @@ public class DogAIAgent : AIAgent
 	/// <summary>初期登録を行う場合のPlayer name</summary>
 	[Header("Dog AI Agent Members"), Space, SerializeField, Tooltip("初期登録を行う場合のPlayer name")]
 	string m_findPlayerObjectName = "";
+	/// <summary>This DogRushingAndMarking</summary>
+	[SerializeField, Tooltip("This DogRushingAndMarking")]
+	DogRushingAndMarking m_rushingAndMarkingFunction = null;
 	/// <summary>Speed changer</summary>
 	[SerializeField, Space, Tooltip("Speed changer")]
 	DogSpeedChanger m_speedChanger = new DogSpeedChanger();
+
+	/// <summary>
+	/// [GoSoStartOfMarking]
+	/// マーキング開始命令を支持する
+	/// 引数1: 目標マークポイント
+	/// </summary>
+	public void GoSoStartOfMarking(BaseMarkPoint markPoint)
+	{
+		//念の為nullチェック
+		if (m_rushingAndMarkingFunction == null)
+		{
+#if UNITY_EDITOR
+			Debug.LogError("Error!! DogAIAgent->GoSoStartOfMarking\n This Rushing And Marking Function == null");
+#endif
+			return;
+		}
+		else if (markPoint == null)
+		{
+#if UNITY_EDITOR
+			Debug.LogError("Error!! DogAIAgent->GoSoStartOfMarking\n markPoint == null");
+#endif
+			return;
+		}
+
+		//事前情報入力
+		m_rushingAndMarkingFunction.SetAdvanceInformation(markPoint, markPoint.transform.position);
+		//関数割り込み実行
+		ForceSpecifyFunction(m_rushingAndMarkingFunction);
+	}
+	/// <summary>
+	/// [ComeBecauseEndOfMarking]
+	/// マーキング->Stay命令を終了する
+	/// </summary>
+	public void ComeBecauseEndOfMarking()
+	{
+		//念の為nullチェック
+		if (m_rushingAndMarkingFunction == null)
+		{
+#if UNITY_EDITOR
+			Debug.LogError("Error!! DogAIAgent->ComeBecauseEndOfMarking\n Rushing And Marking Function == null");
+#endif
+			return;
+		}
+		else if (!isSitAndStaySelf)
+		{
+#if UNITY_EDITOR
+			Debug.LogError("Error!! DogAIAgent->ComeBecauseEndOfMarking\n GoSoStartOfMarking is not running.");
+#endif
+			return;
+		}
+
+		//ステイ終了
+		SetSitAndStay(false, linkMarkPoint);
+	}
 
 	/// <summary>
 	/// [SetObeyPlayer]
@@ -36,7 +93,7 @@ public class DogAIAgent : AIAgent
 	public void SetObeyPlayer(GameObject playerObject)
 	{
 		if (playerObject != null
-			&& PlayerAndTerritoryManager.instance.GetPlayer(playerObject.GetInstanceID()) != null)
+			&& PlayerAndTerritoryManager.instance.allPlayers.ContainsKey(playerObject.GetInstanceID()))
 		{
 			linkPlayer = playerObject;
 			ServantManager.instance.RegisterPlayerOfServant(this, playerObject);

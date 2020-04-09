@@ -203,12 +203,114 @@ namespace Editor
             Gizmos.DrawWireCube(Vector3.zero, new Vector3(0.3f, visibility.heightLimitVisibility, visibility.distanceVisibility));
         }
 
-        /// <summary>
-        /// [CreateMesh]
-        /// Meshを生成する
-        /// 引数1: 角度
-        /// </summary>
-        static Mesh CreateMesh(float angle)
+		/// <summary>
+		/// [DrawGizmos]
+		/// GIzmo描画
+		/// 引数1: AIAgentVisibility
+		/// 引数2: GizmoType
+		/// </summary>
+		[DrawGizmo(GizmoType.NonSelected | GizmoType.Selected)]
+		static void DrawGizmos(PlayerMaualCollisionAdministrator visibility, GizmoType gizmoType)
+		{
+			//draw?
+			if (!visibility.dIsDrawGizmos) return;
+
+			//削除確認するか経過時間で確認
+			if (m_startTime + m_cCheckDestroyTime < EditorApplication.timeSinceStartup)
+			{
+				m_startTime = EditorApplication.timeSinceStartup;
+				//削除ループ
+				for (int i = 0; i < m_meshs.Count;)
+				{
+					//削除可能なら削除
+					if (m_meshs[i].isDestroyReady)
+						m_meshs.RemoveAt(i);
+					else
+						i++;
+				}
+			}
+
+			//Distanceがおかしければ描画しない
+			if (visibility.visibilityDistance <= 0.0f)
+				return;
+
+			//呼び出しコスト削減
+			Transform transform = visibility.transform;
+			Vector3 position = transform.position;
+			Quaternion rotation = transform.rotation;
+
+			//視界ヒット
+			if (visibility.isVisibilityStay)
+				Gizmos.color = m_cMeshColorHit;
+			//視界ヒットしていない
+			else
+				Gizmos.color = m_cMeshColorNotHit;
+
+			//visibilityのmeshがnull -> 未設定 or 角度が変更された
+			if (visibility.dGizmoMesh == null)
+			{
+				//初期IDでなければカウンター減算の必要があるため確認ループ
+				if (visibility.dMeshID != -1)
+					for (int i = 0; i < m_meshs.Count; i++)
+					{
+						//ID合致でカウンター減算, break
+						if (visibility.dMeshID == m_meshs[i].id)
+						{
+							var edit = m_meshs[i];
+							edit.counter--;
+							m_meshs[i] = edit;
+							break;
+						}
+					}
+
+				//同じ角度のMeshがないか確認するループ
+				for (int i = 0; i < m_meshs.Count; i++)
+				{
+					//同じ角度のMeshがある
+					if (visibility.visibilityAngle == m_meshs[i].angle)
+					{
+						//visibilityの値変更
+						visibility.dGizmoMesh = m_meshs[i].mesh;
+						visibility.dMeshID = m_meshs[i].id;
+						//カウンター加算, break
+						var edit = m_meshs[i];
+						edit.counter++;
+						m_meshs[i] = edit;
+						break;
+					}
+				}
+
+				//Meshがまだnull -> Meshを作る必要がある
+				if (visibility.dGizmoMesh == null)
+				{
+					//Mesh作成
+					visibility.dGizmoMesh = CreateMesh(visibility.visibilityAngle);
+					//メッシュリストに追加
+					m_meshs.Add(new SectorMesh(visibility.dGizmoMesh, visibility.visibilityAngle, m_meshID));
+					//ID代入
+					visibility.dMeshID = m_meshID;
+					//IDを次に進める
+					m_meshID++;
+				}
+			}
+
+			//Mesh描画
+			Gizmos.DrawMesh(visibility.dGizmoMesh, position + m_cAdjustUp,
+				rotation * Quaternion.AngleAxis(90.0f, Vector3.forward), Vector3.one * visibility.visibilityDistance);
+			Gizmos.DrawMesh(visibility.dGizmoMesh, position + m_cAdjustUp,
+				rotation * Quaternion.AngleAxis(270.0f, Vector3.forward), Vector3.one * visibility.visibilityDistance);
+			Gizmos.DrawMesh(visibility.dGizmoMesh, position + m_cAdjustUp,
+				rotation, Vector3.one * visibility.visibilityDistance);
+		}
+
+
+
+		/// <summary>
+		/// [CreateMesh]
+		/// Meshを生成する
+		/// 引数1: 角度
+		/// </summary>
+		static Mesh CreateMesh(float angle)
         {
             //result
             Mesh result = new Mesh();
