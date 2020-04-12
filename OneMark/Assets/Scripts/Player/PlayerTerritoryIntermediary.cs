@@ -33,7 +33,7 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
 	{
 		if (m_isPauseFirstPoint)
 		{
-			m_firstPoint.isPauseTimer = false;
+			m_firstPoint.SetLockFirstPoint(false);
 			m_isPauseFirstPoint = false;
 
 			PlayerAndTerritoryManager.instance.allPlayers[m_firstPoint.linkPlayerID].
@@ -41,11 +41,12 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
 		}
 	}
 	
-	/// <summary>[Start]</summary>
-	void Start()
+	/// <summary>[Awake]</summary>
+	void Awake()
     {
 		//Managerにインスタンス追加
-		PlayerAndTerritoryManager.instance.AddPlayer(gameObject);
+		PlayerAndTerritoryManager.instance.AddPlayer(gameObject,
+			this, m_playerMaualCollisionAdministrator);
 		//初期ポイントを探す
 		GameObject firstPoint = GameObject.Find(m_firstPointName);
 
@@ -69,8 +70,7 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
 			//Info設定
 			m_playerMaualCollisionAdministrator.SetPlayerInfo(playerInfo);
 
-			//ポイントタイマーをポーズさせる
-			m_firstPoint.isPauseTimer = true;
+			m_firstPoint.SetLockFirstPoint(true);
 			m_isPauseFirstPoint = true;
 		}
 		else
@@ -114,7 +114,7 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
 
 			var obj = ServantManager.instance.servantByMainPlayer[0];
 
-			obj.GoSoStartOfMarking(point1);
+			Debug.Log(obj.GoSoStartOfMarking(point1));
 		}
 		else if (Input.GetKeyDown(KeyCode.X))
 		{

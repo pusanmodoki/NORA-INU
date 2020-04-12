@@ -11,8 +11,10 @@ public class DogRushingAndMarking : BaseDogAIFunction
 	/// <summary>
 	/// States
 	/// </summary>
-	enum State
+	public enum State
 	{
+		/// <summary>Null</summary>
+		Null,
 		/// <summary>突進</summary>
 		Rushing,
 		/// <summary>回転</summary>
@@ -20,6 +22,9 @@ public class DogRushingAndMarking : BaseDogAIFunction
 		/// <summary>マーキング</summary>
 		Marking, 
 	}
+
+	/// <summary>State</summary>
+	public State functionState { get; private set; } = State.Null;
 
 	/// <summary>突進時追加加速度</summary>
 	[Header("Rushing"), SerializeField, Tooltip("突進時追加加速度")]
@@ -47,7 +52,6 @@ public class DogRushingAndMarking : BaseDogAIFunction
 	LayerMaskEx m_markPointLayerMask = 0;
 
 	Quaternion m_targetRotation = Quaternion.identity;
-	State m_state;
 
 	/// <summary>
 	/// [SetAdvanceInformation]
@@ -77,7 +81,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 		//初期化
 		SetUpdatePosition(true);
 		navMeshAgent.destination = m_markPointPosition;
-		m_state = State.Rushing;
+		functionState = State.Rushing;
 	}
 	/// <summary>
 	/// [AIEnd]
@@ -88,6 +92,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 	{
 		m_markPoint = null;
 		navMeshAgent.updateRotation = true;
+		functionState = State.Null;
 	}
 
 	/// <summary>
@@ -103,14 +108,14 @@ public class DogRushingAndMarking : BaseDogAIFunction
 			EndAIFunction(updateIdentifier);
 			return;
 		}
-		else if (m_markPoint.isLinked)
+		else if (m_markPoint.isLinked & m_markPoint.isPauseTimer)
 		{
 			EndAIFunction(updateIdentifier);
 			return;
 		}
 
 		//state switch
-		switch (m_state)
+		switch (functionState)
 		{
 			//突進
 			case State.Rushing:
@@ -133,7 +138,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 							//m_targetRotation = Quaternion.LookRotation(
 							//	(m_markPoint.transform.position - transform.position).normalized, transform.up) * Quaternion.Euler(m_markingRotation);
 							//Stateを進める
-							m_state = State.Rotation;
+							functionState = State.Rotation;
 							//Timer再スタート
 							timer.Start();
 							break;
@@ -149,7 +154,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 					//指定時間経過でステートを進める
 					if (timer.elapasedTime >= m_rotationSeconds)
 					{
-						m_state = State.Marking;
+						functionState = State.Marking;
 						timer.Start();
 					}
 

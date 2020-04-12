@@ -137,7 +137,7 @@ public class TimerAdvance
 	/// </summary>
 	public void Pause()
 	{
-		if (isStop) return;
+		if (isStop | isPause) return;
 		m_savedLastPauseElapased += (Time.time - startTime);
 		isPause = true;
 	}

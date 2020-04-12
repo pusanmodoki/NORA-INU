@@ -12,6 +12,12 @@ public static class CollisionTerritory
 	public static bool HitCircleAndRayTerritory(List<Vector3> territoryArea, Vector3 position,
 		out Vector3 normal, float circleRadius, float rayDistance = 1000.0f)
 	{
+		if (territoryArea.Count <= 1)
+		{
+			normal = Vector3.zero;
+			return false;
+		}
+
 		Vector3 shortestHitPoint = position * (rayDistance * 2.0f), hitPoint;
 		int hitCount = 0;
 		bool isHit = false;
@@ -53,6 +59,8 @@ public static class CollisionTerritory
 
 	public static bool HitCircleTerritory(List<Vector3> territoryArea, Vector3 position, float radius, float rayDistance = 1000.0f)
 	{
+		if (territoryArea.Count <= 1) return false;
+
 		int hitCount = 0;
 
 		m_lineStart1 = position;

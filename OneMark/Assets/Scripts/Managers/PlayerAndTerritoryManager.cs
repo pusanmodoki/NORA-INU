@@ -17,14 +17,21 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	public class PlayerInfo
 	{
 		/// <summary>[コンストラクタ]</summary>
-		public PlayerInfo(GameObject gameObject)
+		public PlayerInfo(GameObject gameObject, PlayerTerritoryIntermediary territoryIntermediary,
+		PlayerMaualCollisionAdministrator maualCollisionAdministrator)
 		{
 			this.gameObject = gameObject;
+			this.territoryIntermediary = territoryIntermediary;
+			this.maualCollisionAdministrator = maualCollisionAdministrator;
 			instanceID = gameObject.GetInstanceID();
 		}
 
 		/// <summary>Player game object</summary>
 		public GameObject gameObject { get; private set; }
+		/// <summary>Player Player territory intermediary</summary>
+		public PlayerTerritoryIntermediary territoryIntermediary { get; private set; }
+		/// <summary>Player Player maual collision administrator</summary>
+		public PlayerMaualCollisionAdministrator maualCollisionAdministrator { get; private set; }
 		/// <summary>Player instance id</summary>
 		public int instanceID { get; private set; }
 		/// <summary>All territory mark points (クラス)</summary>
@@ -88,9 +95,10 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	public class StoragePlayer
 	{
 		/// <summary>[コンストラクタ]</summary>
-		public StoragePlayer(GameObject player)
+		public StoragePlayer(GameObject player, PlayerTerritoryIntermediary territoryIntermediary,
+		PlayerMaualCollisionAdministrator maualCollisionAdministrator)
 		{
-			playerInfo = new PlayerInfo(player);
+			playerInfo = new PlayerInfo(player, territoryIntermediary, maualCollisionAdministrator);
 			nextCalucrateFrameCount = 0;
 			isCalucrateNextUpdate = false;
 		}
@@ -299,9 +307,12 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	/// [AddPlayer]
 	/// Playerを登録する
 	/// 引数1: Player object
-	/// 引数2: This main player?, default = true
+	/// 引数2: Player PlayerTerritoryIntermediary
+	/// 引数3: Player PlayerMaualCollisionAdministrator
+	/// 引数4: This main player?, default = true
 	/// </summary>
-	public void AddPlayer(GameObject player, bool isMainPlayer = true)
+	public void AddPlayer(GameObject player, PlayerTerritoryIntermediary territoryIntermediary,
+		PlayerMaualCollisionAdministrator maualCollisionAdministrator, bool isMainPlayer = true)
 	{
 		//debug only, invalid key対策
 #if UNITY_EDITOR
@@ -312,7 +323,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		}
 #endif
 
-		StoragePlayer info = new StoragePlayer(player);
+		StoragePlayer info = new StoragePlayer(player, territoryIntermediary, maualCollisionAdministrator);
 
 		m_players.Add(player.GetInstanceID(), info);
 		if (isMainPlayer)

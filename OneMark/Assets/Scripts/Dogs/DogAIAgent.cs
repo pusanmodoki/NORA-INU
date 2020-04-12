@@ -27,16 +27,26 @@ public class DogAIAgent : AIAgent
 	/// <summary>This DogRushingAndMarking</summary>
 	[SerializeField, Tooltip("This DogRushingAndMarking")]
 	DogRushingAndMarking m_rushingAndMarkingFunction = null;
+	/// <summary>プレイヤーの命令に従うかどうか確認するRaycastのLayerMask</summary>
+	[SerializeField, Tooltip("プレイヤーの命令に従うかどうか確認するRaycastのLayerMask")]
+	LayerMaskEx m_playerObeyLayerMask = 0;
+	/// <summary>OffMeshLink controller</summary>
+	[SerializeField, Space, Tooltip("OffMeshLink controller")]
+	DogOffMeshLinkController m_offMeshLinkController = new DogOffMeshLinkController();
 	/// <summary>Speed changer</summary>
 	[SerializeField, Space, Tooltip("Speed changer")]
 	DogSpeedChanger m_speedChanger = new DogSpeedChanger();
 
+	/// <summary>RaycastHit</summary>
+	RaycastHit m_raycastHit = new RaycastHit();
+
 	/// <summary>
 	/// [GoSoStartOfMarking]
-	/// マーキング開始命令を支持する
+	/// マーキング開始命令を指示する
+	/// return: 行動実行する場合はtrue, できない場合はfalse
 	/// 引数1: 目標マークポイント
 	/// </summary>
-	public void GoSoStartOfMarking(BaseMarkPoint markPoint)
+	public bool GoSoStartOfMarking(BaseMarkPoint markPoint)
 	{
 		//念の為nullチェック
 		if (m_rushingAndMarkingFunction == null)
@@ -44,26 +54,46 @@ public class DogAIAgent : AIAgent
 #if UNITY_EDITOR
 			Debug.LogError("Error!! DogAIAgent->GoSoStartOfMarking\n This Rushing And Marking Function == null");
 #endif
-			return;
+			return false;
 		}
 		else if (markPoint == null)
 		{
 #if UNITY_EDITOR
 			Debug.LogError("Error!! DogAIAgent->GoSoStartOfMarking\n markPoint == null");
 #endif
-			return;
+			return false;
 		}
+		else if (isLinkMarkPoint || 
+			m_rushingAndMarkingFunction.functionState != DogRushingAndMarking.State.Null)
+			return false;
 
-		//事前情報入力
-		m_rushingAndMarkingFunction.SetAdvanceInformation(markPoint, markPoint.transform.position);
-		//関数割り込み実行
-		ForceSpecifyFunction(m_rushingAndMarkingFunction);
+		Vector3 position = transform.position, targetPosition = linkPlayer.transform.position;
+		Vector3 direction = (new Vector3(targetPosition.x, 0.0f, targetPosition.z) -
+			new Vector3(position.x, 0.0f, position.z)).normalized;
+
+		//Raycast判定
+		if (linkPlayer != null &&
+			Physics.Raycast(position, direction, out m_raycastHit, 10000.0f, m_playerObeyLayerMask) &&
+			m_raycastHit.transform.gameObject.GetInstanceID() == linkPlayer.GetInstanceID())
+		{
+			//事前情報入力
+			m_rushingAndMarkingFunction.SetAdvanceInformation(markPoint, markPoint.transform.position);
+			//関数割り込み実行
+			ForceSpecifyFunction(m_rushingAndMarkingFunction);
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	/// <summary>
 	/// [ComeBecauseEndOfMarking]
 	/// マーキング->Stay命令を終了する
+	/// return: 行動実行する場合はtrue, できない場合はfalse
 	/// </summary>
-	public void ComeBecauseEndOfMarking()
+	public bool ComeBecauseEndOfMarking()
 	{
 		//念の為nullチェック
 		if (m_rushingAndMarkingFunction == null)
@@ -71,18 +101,37 @@ public class DogAIAgent : AIAgent
 #if UNITY_EDITOR
 			Debug.LogError("Error!! DogAIAgent->ComeBecauseEndOfMarking\n Rushing And Marking Function == null");
 #endif
-			return;
+			return false;
 		}
 		else if (!isSitAndStaySelf)
 		{
 #if UNITY_EDITOR
 			Debug.LogError("Error!! DogAIAgent->ComeBecauseEndOfMarking\n GoSoStartOfMarking is not running.");
 #endif
-			return;
+			return false;
 		}
+		else if (!isLinkMarkPoint ||
+			m_rushingAndMarkingFunction.functionState != DogRushingAndMarking.State.Null)
+			return false;
 
-		//ステイ終了
-		SetSitAndStay(false, linkMarkPoint);
+		Vector3 position = transform.position, targetPosition = linkPlayer.transform.position;
+		Vector3 direction = (new Vector3(targetPosition.x, 0.0f, targetPosition.z) - 
+			new Vector3(position.x, 0.0f, position.z)).normalized;
+
+		//Raycast判定
+		if (linkPlayer != null &&
+			Physics.Raycast(position, direction, out m_raycastHit, 10000.0f, m_playerObeyLayerMask) &&
+			m_raycastHit.transform.gameObject.GetInstanceID() == linkPlayer.GetInstanceID())
+		{
+			//ステイ終了
+			SetSitAndStay(false, linkMarkPoint);
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/// <summary>
@@ -118,11 +167,7 @@ public class DogAIAgent : AIAgent
 
 		isSitAndStaySelf = isSet;
 		if (isSet)
-		{
 			linkMarkPoint = markPoint;
-			markPoint.ResetTimer();
-			markPoint.isPauseTimer = true;
-		}
 		else
 		{
 			linkMarkPoint = null;
@@ -148,12 +193,21 @@ public class DogAIAgent : AIAgent
 			Debug.Log("DogAIAgent: Player is null when instantiate. instance id->" + aiAgentInstanceID);
 #endif
 		}
+
+		m_offMeshLinkController.InitContoroller(this);
 	}
 	/// <summary>[Update]</summary>
 	new void Update()
 	{
+		m_offMeshLinkController.Update();
 		base.Update();
 		speedChanger.Update();
+	}
+	/// <summary>[FixedUpdate]</summary>
+	new void FixedUpdate()
+	{
+		m_offMeshLinkController.FixedUpdate();
+		base.FixedUpdate();
 	}
 	/// <summary>[OnDestroy]</summary>
 	void OnDestroy()
