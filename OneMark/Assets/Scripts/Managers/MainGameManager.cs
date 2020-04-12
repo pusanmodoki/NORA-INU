@@ -15,6 +15,7 @@ public class MainGameManager : MonoBehaviour
 	//GameObject m_overBoard = null;
 
 	ReadOnlyDictionary<int, BaseCheckPoint> m_allCheckPoints = null;
+	bool m_isEnd = false;
 
 	/// <summary>[Awake]</summary>
 	void Awake()
@@ -35,6 +36,8 @@ public class MainGameManager : MonoBehaviour
 	/// <summary>[LateUpdate]</summary>
 	void LateUpdate()
 	{
+		if (m_isEnd) return;
+
 		int checkCounter = 0;
 
 		foreach (var e in m_allCheckPoints)
@@ -50,10 +53,12 @@ public class MainGameManager : MonoBehaviour
 	void GameClear()
 	{
         ResultCall.GameClear();
+		m_isEnd = true;
 	}
 
 	void GameOver()
 	{
         ResultCall.GameOver();
-    }
+		m_isEnd = true;
+	}
 }
