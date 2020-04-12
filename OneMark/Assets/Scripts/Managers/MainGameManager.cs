@@ -9,10 +9,10 @@ public class MainGameManager : MonoBehaviour
 	/// <summary>Static instance</summary>
 	public static MainGameManager instance { get; private set; } = null;
 
-	[SerializeField, Tooltip("とりあえず")]
-	GameObject m_clearBoard = null;
-	[SerializeField, Tooltip("とりあえず")]
-	GameObject m_overBoard = null;
+	//[SerializeField, Tooltip("とりあえず")]
+	//GameObject m_clearBoard = null;
+	//[SerializeField, Tooltip("とりあえず")]
+	//GameObject m_overBoard = null;
 
 	ReadOnlyDictionary<int, BaseCheckPoint> m_allCheckPoints = null;
 
@@ -22,8 +22,8 @@ public class MainGameManager : MonoBehaviour
 		//インスタンス登録
 		instance = this;
 
-		m_clearBoard.SetActive(false);
-		m_overBoard.SetActive(false);
+		//m_clearBoard.SetActive(false);
+		//m_overBoard.SetActive(false);
 	}
 
 	/// <summary>[Start]</summary>
@@ -49,11 +49,11 @@ public class MainGameManager : MonoBehaviour
 
 	void GameClear()
 	{
-		m_clearBoard.SetActive(true);
+        ResultCall.GameClear();
 	}
 
 	void GameOver()
 	{
-		m_overBoard.SetActive(true);
-	}
+        ResultCall.GameOver();
+    }
 }

@@ -60,6 +60,8 @@ public class PlayerInput : MonoBehaviour
     /// </summary>
     private void MoveInput()
     {
+        Vector2 inputVector2 = Vector2.zero;
+
         m_inputVector = Vector3.zero;
 
         if (isControler)
@@ -69,28 +71,31 @@ public class PlayerInput : MonoBehaviour
         }
         else
         {
-            Vector2 inputVector2 = Vector2.zero;
 
-            inputVector2.x = Input.GetAxis("Horizontal");
-            inputVector2.y = Input.GetAxis("Vertical");
+            inputVector2.x = Input.GetAxisRaw("Horizontal");
+            inputVector2.y = Input.GetAxisRaw("Vertical");
 
-            float magnitude = Mathf.Sqrt(inputVector2.x * inputVector2.x + inputVector2.y * inputVector2.y);
-
-            if (inputVector2.x * inputVector2.x + inputVector2.y * inputVector2.y > 1.0f)
-            {
-                inputVector2.Normalize();
-            }
+            inputVector2.Normalize();
 
             m_inputVector.x = inputVector2.x;
             m_inputVector.z = inputVector2.y;
-
-            if(Input.GetAxisRaw("Horizontal") != 0.0f || Input.GetAxisRaw("Vertical") != 0.0f)
-            {
-                transform.LookAt(transform.position + m_inputVector);
-            }
-            m_thisRigitBody.AddForce(transform.forward * moveSpeed * magnitude);
-
         }
+
+        //m_thisRigitBody.AddForce(m_inputVector * moveSpeed);
+
+
+        //inputVector2 = new Vector2(m_thisRigitBody.velocity.x, m_thisRigitBody.velocity.z);
+        //if (inputVector2.magnitude > maxSpeed)
+        //{
+        //    inputVector2 = inputVector2.normalized * maxSpeed;
+        //    m_thisRigitBody.velocity = new Vector3(inputVector2.x, m_thisRigitBody.velocity.y, inputVector2.y);
+        //}
+
+        transform.LookAt(transform.position + m_inputVector);
+
+        m_inputVector = m_inputVector * moveSpeed;
+        m_inputVector.y = m_thisRigitBody.velocity.y;
+        m_thisRigitBody.velocity = m_inputVector;
     }
 
     private void ShotInput()
