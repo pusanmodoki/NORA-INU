@@ -99,14 +99,14 @@ public class DogAIAgent : AIAgent
 		if (m_rushingAndMarkingFunction == null)
 		{
 #if UNITY_EDITOR
-			Debug.LogError("Error!! DogAIAgent->ComeBecauseEndOfMarking\n Rushing And Marking Function == null");
+			Debug.Log("Warning!! DogAIAgent->ComeBecauseEndOfMarking\n Rushing And Marking Function == null");
 #endif
 			return false;
 		}
 		else if (!isSitAndStaySelf)
 		{
 #if UNITY_EDITOR
-			Debug.LogError("Error!! DogAIAgent->ComeBecauseEndOfMarking\n GoSoStartOfMarking is not running.");
+			Debug.Log("Warning!! DogAIAgent->ComeBecauseEndOfMarking\n GoSoStartOfMarking is not running.");
 #endif
 			return false;
 		}
