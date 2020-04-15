@@ -360,6 +360,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1018284385}
     m_Modifications:
+    - target: {fileID: 7480241901153954629, guid: 67519fb712f05f6408a76843ffaf9940,
+        type: 3}
+      propertyPath: sceneName
+      value: Title
+      objectReference: {fileID: 0}
     - target: {fileID: 7480241901153954633, guid: 67519fb712f05f6408a76843ffaf9940,
         type: 3}
       propertyPath: m_LocalPosition.x

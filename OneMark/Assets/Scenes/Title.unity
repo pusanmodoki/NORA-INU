@@ -302,7 +302,7 @@ PrefabInstance:
     - target: {fileID: 7480241901153954629, guid: dc5241dce5f035b48ac129d658b5e729,
         type: 3}
       propertyPath: sceneName
-      value: GameClear
+      value: StageSelect
       objectReference: {fileID: 0}
     - target: {fileID: 7480241901153954633, guid: dc5241dce5f035b48ac129d658b5e729,
         type: 3}
@@ -418,7 +418,7 @@ PrefabInstance:
     - target: {fileID: 7480241901153954635, guid: dc5241dce5f035b48ac129d658b5e729,
         type: 3}
       propertyPath: m_Type
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7480241901153954638, guid: dc5241dce5f035b48ac129d658b5e729,
         type: 3}

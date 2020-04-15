@@ -16,6 +16,14 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private bool isControler = false;
 
+    private enum AnimationState
+    {
+        Stand = 0,
+        Run
+    }
+
+    [SerializeField]
+    private AnimationState state = AnimationState.Stand;
 
     private Vector3 m_inputVector = Vector3.zero;
 
@@ -72,10 +80,13 @@ public class PlayerInput : MonoBehaviour
         else
         {
 
-            inputVector2.x = Input.GetAxisRaw("Horizontal");
-            inputVector2.y = Input.GetAxisRaw("Vertical");
+            inputVector2.x = Input.GetAxis("Horizontal");
+            inputVector2.y = Input.GetAxis("Vertical");
 
-            inputVector2.Normalize();
+            if (inputVector2.magnitude > 1.0f)
+            {
+                inputVector2.Normalize();
+            }
 
             m_inputVector.x = inputVector2.x;
             m_inputVector.z = inputVector2.y;
