@@ -66,6 +66,7 @@ public class FadeScreen : MonoBehaviour
     {
         canvas = gameObject.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 100;
 
         GameObject screenObject = new GameObject("Screen");
         screen = screenObject.AddComponent<Image>();
