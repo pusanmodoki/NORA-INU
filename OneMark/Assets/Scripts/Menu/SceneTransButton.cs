@@ -8,8 +8,14 @@ public class SceneTransButton : MonoBehaviour
 {
     [SerializeField]
     string sceneName = "";
+
+    [SerializeField]
+    Color fadeColor = Color.white;
+
+    [SerializeField]
+    float fadeSpeed = 1.0f;
     public void OnButtonSceneTrans()
     {
-        SceneManager.LoadScene(sceneName);
+        SceneFadeTrans.SimpleFadeTrans(sceneName, fadeColor, fadeSpeed);
     }
 }
