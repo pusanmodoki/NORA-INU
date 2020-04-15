@@ -16,6 +16,9 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private bool isControler = false;
 
+    [SerializeField]
+    private Animator animator;
+
     private enum AnimationState
     {
         Stand = 0,
@@ -92,6 +95,15 @@ public class PlayerInput : MonoBehaviour
             m_inputVector.z = inputVector2.y;
         }
 
+
+        if(inputVector2.magnitude > 0.0f)
+        {
+            state = AnimationState.Run;
+        }
+        else
+        {
+            state = AnimationState.Stand;
+        }
         //m_thisRigitBody.AddForce(m_inputVector * moveSpeed);
 
 
@@ -107,6 +119,9 @@ public class PlayerInput : MonoBehaviour
         m_inputVector = m_inputVector * moveSpeed;
         m_inputVector.y = m_thisRigitBody.velocity.y;
         m_thisRigitBody.velocity = m_inputVector;
+
+        animator.SetInteger("State", (int)state);
+
     }
 
     private void ShotInput()
