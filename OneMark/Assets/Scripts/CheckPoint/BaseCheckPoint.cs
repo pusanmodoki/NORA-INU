@@ -63,13 +63,13 @@ public abstract class BaseCheckPoint : MonoBehaviour
 	public void UpdateBasePoint()
 	{
 		//処理インターバル判断
-		if (m_intervalTimer.elapasedTime > m_collisionJudgementInterval)
+		if (m_intervalTimer.elapasedTime < m_collisionJudgementInterval)
 			return;
 
 		//処理負荷軽減
 		Vector3 position = transform.position;
 		//ヒットしたPlayerのID
-		int hitPlayer = 0;
+		int hitPlayer = -1;
 		//Playerにヒットした回数
 		int hitCount = 0;
 
@@ -85,10 +85,10 @@ public abstract class BaseCheckPoint : MonoBehaviour
 		}
 
 		//ヒットしていなかったら解除
-		if (hitCount != 1 && isLinked)
+		if (hitCount == 0 && isLinked)
 			UnlinkPlayer();
 		//ヒットしていたら登録
-		else if(!isLinked)
+		else if(hitCount == 1 && !isLinked)
 			LinkPlayer(hitPlayer);
 		//ないだろうけど上書きされたら解除->登録
 		else if (linkPlayerID != hitPlayer)

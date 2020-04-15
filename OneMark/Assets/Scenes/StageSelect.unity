@@ -238,6 +238,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7480241902045012802, guid: 67519fb712f05f6408a76843ffaf9940,
+        type: 3}
+      propertyPath: m_Text
+      value: 1-2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67519fb712f05f6408a76843ffaf9940, type: 3}
 --- !u!1 &430574312 stripped
@@ -368,6 +373,13 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Button (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7480241902045012802, guid: 67519fb712f05f6408a76843ffaf9940,
+        type: 3}
+      propertyPath: m_Text
+      value: 'T-2
+
+'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67519fb712f05f6408a76843ffaf9940, type: 3}
@@ -586,7 +598,7 @@ Camera:
   m_GameObject: {fileID: 1514695366}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 2
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -849,6 +861,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7480241902045012802, guid: 67519fb712f05f6408a76843ffaf9940,
+        type: 3}
+      propertyPath: m_Text
+      value: '1-1
+
+'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67519fb712f05f6408a76843ffaf9940, type: 3}
 --- !u!1001 &1980904438
@@ -858,6 +877,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1026644619}
     m_Modifications:
+    - target: {fileID: 7480241901153954629, guid: 67519fb712f05f6408a76843ffaf9940,
+        type: 3}
+      propertyPath: sceneName
+      value: T-1
+      objectReference: {fileID: 0}
     - target: {fileID: 7480241901153954633, guid: 67519fb712f05f6408a76843ffaf9940,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -967,6 +991,13 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 7480241902045012802, guid: 67519fb712f05f6408a76843ffaf9940,
+        type: 3}
+      propertyPath: m_Text
+      value: 'T-1
+
+'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67519fb712f05f6408a76843ffaf9940, type: 3}

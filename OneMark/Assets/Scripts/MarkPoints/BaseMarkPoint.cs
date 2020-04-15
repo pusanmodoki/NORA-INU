@@ -22,6 +22,10 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	public int linkServantID { get { return m_drawingLinkServantID; } private set { m_drawingLinkServantID = value; } }
 	/// <summary>リンクしている？</summary>
 	public bool isLinked { get { return linkPlayerID != -1; } }
+	/// <summary>Playerが近くにいる？</summary>
+	public bool isPlayerNearby { get; private set; } = false;
+	/// <summary>初期ポイントとしてタイマーロック中？</summary>
+	public bool isLockFirstPoint { get; private set; } = false;
 	/// <summary>残り時間計測タイマーのポーズ</summary>
 	public bool isPauseTimer { get { return m_timer.isPause; } set { if (isLinked) { if (value) m_timer.Pause(); else m_timer.Unpause(); } } }
 
@@ -40,11 +44,57 @@ public abstract class BaseMarkPoint : MonoBehaviour
 
 
 	/// <summary>
+	/// [LinkPoint] (Virtual)
+	/// ポイントがリンクされた際にコールバックされる関数
+	/// </summary>
+	public virtual void LinkPoint() { }
+	/// <summary>
+	/// [UnlinkPoint] (Virtual)
+	/// ポイントがリンク解除された際にコールバックされる関数
+	/// </summary>
+	public virtual void UnlinkPoint() { }
+	/// <summary>
 	/// [UpdatePoint] (Virtual)
 	/// ポイントの更新を行う
 	/// </summary>
 	public abstract void UpdatePoint();
 
+	/// <summary>
+	/// [SetLockFirstPoint]
+	/// Set LockFirstPoint
+	/// </summary>
+	public void SetLockFirstPoint(bool isSet)
+	{
+		if ((isLockFirstPoint ^ isSet) & isLockFirstPoint
+			&& !isPlayerNearby)
+		{
+			m_timer.Unpause();
+		}
+
+		isLockFirstPoint = isSet;
+	}
+
+	/// <summary>
+	/// [SetPlayerNearby]
+	/// Set PlayerNearby
+	/// </summary>
+	public void SetPlayerNearby(bool isSet)
+	{
+		if ((isPlayerNearby ^ isSet) & isPlayerNearby)
+		{
+			if (!isLinked | (isLinked  & !isLockFirstPoint))
+				m_timer.Unpause();
+		}
+		else if ((isPlayerNearby ^ isSet) & isSet)
+		{
+			if (isLinked && !isLockFirstPoint)
+			{
+				m_timer.Start();
+				m_timer.Pause();
+			}
+		}
+		isPlayerNearby = isSet;
+	}
 
 	/// <summary>
 	/// [LinkPlayer]
@@ -54,14 +104,20 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	/// </summary>
 	public void LinkPlayer(GameObject player, DogAIAgent dogAIAgent)
 	{
+		bool isOldLinked = isLinked;
 		//ID登録
 		linkPlayerID = player.GetInstanceID();
 		linkServantID = dogAIAgent != null ? dogAIAgent.aiAgentInstanceID : -1;
 		//Managerに紐付け登録
-		PlayerAndTerritoryManager.instance.allPlayers[linkPlayerID].playerInfo.AddMarkPoint(this);
+		if (!isOldLinked)
+			PlayerAndTerritoryManager.instance.allPlayers[linkPlayerID].playerInfo.AddMarkPoint(this);
 
 		//Timer計測開始
 		m_timer.Start();
+		//ポイントタイマーをポーズさせる
+		m_timer.Pause();
+		//Callback
+		LinkPoint();
 	}
 	/// <summary>
 	/// [UnlinkPlayer]
@@ -77,8 +133,8 @@ public abstract class BaseMarkPoint : MonoBehaviour
 		//ID登録解除
 		linkPlayerID = -1;
 		linkServantID = -1;
-		//Timer計測停止
-		m_timer.Stop();
+		//Callback
+		UnlinkPoint();
 	}
 
 	/// <summary>
