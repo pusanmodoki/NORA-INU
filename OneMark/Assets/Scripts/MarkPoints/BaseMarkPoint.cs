@@ -82,7 +82,8 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	{
 		if ((isPlayerNearby ^ isSet) & isPlayerNearby)
 		{
-			if (!isLinked | (isLinked  & !isLockFirstPoint))
+			if (!isLinked || (!(isLinked & isLockFirstPoint) && 
+				!(linkServantID != -1 && ServantManager.instance.allServants[linkServantID].isSitAndStaySelf)))
 				m_timer.Unpause();
 		}
 		else if ((isPlayerNearby ^ isSet) & isSet)

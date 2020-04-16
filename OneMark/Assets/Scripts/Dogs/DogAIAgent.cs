@@ -27,9 +27,12 @@ public class DogAIAgent : AIAgent
 	/// <summary>This DogRushingAndMarking</summary>
 	[SerializeField, Tooltip("This DogRushingAndMarking")]
 	DogRushingAndMarking m_rushingAndMarkingFunction = null;
-	/// <summary>プレイヤーの命令に従うかどうか確認するRaycastのLayerMask</summary>
-	[SerializeField, Tooltip("プレイヤーの命令に従うかどうか確認するRaycastのLayerMask")]
+	/// <summary>プレイヤーの命令に従うかどうかプレイヤーとエネミーでRaycastする時のLayerMask</summary>
+	[SerializeField, Tooltip("プレイヤーの命令に従うかどうかプレイヤーとエネミーでRaycastする時のLayerMask")]
 	LayerMaskEx m_playerObeyLayerMask = 0;
+	/// <summary>プレイヤーとマークポイントでRaycastする時のLayerMask</summary>
+	[SerializeField, Tooltip("プレイヤーとマークポイントでRaycastする時のLayerMask")]
+	LayerMaskEx m_playerObeyMarkPointLayerMask = 0;
 	/// <summary>OffMeshLink controller</summary>
 	[SerializeField, Space, Tooltip("OffMeshLink controller")]
 	DogOffMeshLinkController m_offMeshLinkController = new DogOffMeshLinkController();
@@ -76,12 +79,23 @@ public class DogAIAgent : AIAgent
 			Physics.Raycast(position, direction, out m_raycastHit, 10000.0f, m_playerObeyLayerMask) &&
 			m_raycastHit.transform.gameObject.GetInstanceID() == linkPlayer.GetInstanceID())
 		{
-			//事前情報入力
-			m_rushingAndMarkingFunction.SetAdvanceInformation(markPoint, markPoint.transform.position);
-			//関数割り込み実行
-			ForceSpecifyFunction(m_rushingAndMarkingFunction);
+			position = targetPosition;
+			targetPosition = markPoint.transform.position;
 
-			return true;
+			direction = (new Vector3(targetPosition.x, 0.0f, targetPosition.z) -
+				new Vector3(position.x, 0.0f, position.z)).normalized;
+
+			if (Physics.Raycast(position, direction, out m_raycastHit, 10000.0f, m_playerObeyMarkPointLayerMask) &&
+				m_raycastHit.transform.gameObject.GetInstanceID() == markPoint.gameObject.GetInstanceID())
+			{
+				//事前情報入力
+				m_rushingAndMarkingFunction.SetAdvanceInformation(markPoint, markPoint.transform.position);
+				//関数割り込み実行
+				ForceSpecifyFunction(m_rushingAndMarkingFunction);
+
+				return true;
+			}
+			else return false;
 		}
 		else
 		{

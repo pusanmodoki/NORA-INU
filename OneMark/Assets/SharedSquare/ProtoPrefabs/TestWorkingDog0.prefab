@@ -231,6 +231,10 @@ MonoBehaviour:
     m_layerMask:
       serializedVersion: 2
       m_Bits: 1280
+  m_playerObeyMarkPointLayerMask:
+    m_layerMask:
+      serializedVersion: 2
+      m_Bits: 1536
   m_offMeshLinkController:
     m_jumpSeconds: 1
   m_speedChanger:

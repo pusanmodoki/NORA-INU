@@ -36,6 +36,7 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
 		if (m_isPauseFirstPoint)
 		{
 			m_firstPoint.SetLockFirstPoint(false);
+			m_firstPoint.isPauseTimer = false;
 			m_isPauseFirstPoint = false;
 
 			PlayerAndTerritoryManager.instance.allPlayers[m_firstPoint.linkPlayerID].
