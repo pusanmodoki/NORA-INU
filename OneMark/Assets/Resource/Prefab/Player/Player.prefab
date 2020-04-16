@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc2f83a4302a5de488ec4888d6746613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_firstPointName: Cylinder
+  m_firstPointName: MarkPoint
   m_playerMaualCollisionAdministrator: {fileID: 412210127}
   m_lineRenderer: {fileID: 412210136}
   m_testName: Cylinder (6)
@@ -342,6 +342,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: a9dae46d57ef09c439d0502b7fae060c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: a9dae46d57ef09c439d0502b7fae060c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: a9dae46d57ef09c439d0502b7fae060c,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: a9dae46d57ef09c439d0502b7fae060c,
         type: 3}

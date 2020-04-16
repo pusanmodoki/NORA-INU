@@ -16,15 +16,25 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private bool isControler = false;
 
+    /// <summary>
+    /// アニメーションコントローラ
+    /// </summary>
     [SerializeField]
     private Animator animator;
+
+    private bool isControlInput = true;
 
     private enum AnimationState
     {
         Stand = 0,
-        Run
+        Run,
+        GameClear,
+        GameOver
     }
 
+    /// <summary>
+    /// プレイヤーの状態
+    /// </summary>
     [SerializeField]
     private AnimationState state = AnimationState.Stand;
 
@@ -51,9 +61,12 @@ public class PlayerInput : MonoBehaviour
 
 	private void FixedUpdate()
     {
-        MoveInput();
+        if (isControlInput)
+        {
+            MoveInput();
 
-        ShotInput();
+            ShotInput();
+        }
     }
 
     
@@ -130,5 +143,20 @@ public class PlayerInput : MonoBehaviour
         {
             m_female.ShotServant(transform.forward);
         }
+    }
+
+    public void GameClearAnimation()
+    {
+        animator.SetTrigger("Result");
+        state = AnimationState.GameClear;
+        animator.SetInteger("State", (int)state);
+        isControlInput = false;
+    }
+    public void GameOverAnimation()
+    {
+        animator.SetTrigger("Result");
+        state = AnimationState.GameOver;
+        animator.SetInteger("State", (int)state);
+        isControlInput = false;
     }
 }
