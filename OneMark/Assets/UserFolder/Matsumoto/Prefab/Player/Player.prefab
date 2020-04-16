@@ -166,3 +166,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 15
   isControler: 0
+  state: 0

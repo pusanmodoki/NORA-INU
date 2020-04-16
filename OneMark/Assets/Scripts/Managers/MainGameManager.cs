@@ -52,12 +52,14 @@ public class MainGameManager : MonoBehaviour
 
 	void GameClear()
 	{
+        PlayerAndTerritoryManager.instance.mainPlayer.gameObject.GetComponent<PlayerInput>().GameClearAnimation();
         ResultCall.GameClear();
 		m_isEnd = true;
 	}
 
 	void GameOver()
 	{
+        PlayerAndTerritoryManager.instance.mainPlayer.gameObject.GetComponent<PlayerInput>().GameOverAnimation();
         ResultCall.GameOver();
 		m_isEnd = true;
 	}
