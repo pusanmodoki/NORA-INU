@@ -36,7 +36,7 @@ public class DogFollowMove : BaseDogAIFunction
 	{
 		if (dogAIAgent.isLinkPlayer && dogAIAgent.linkPlayerServantsOwnIndex >= 0)
 		{
-			SetUpdatePosition(true, false);
+			navMeshAgent.updatePosition = true;
 
 			m_followTransform = dogAIAgent.linkPlayer.transform;
 			int playerID = dogAIAgent.linkPlayer.GetInstanceID();
@@ -52,10 +52,13 @@ public class DogFollowMove : BaseDogAIFunction
 
 			m_followTransform = PlayerAndTerritoryManager.instance.allPlayers
 				[dogAIAgent.linkPlayer.GetInstanceID()].playerInfo.followPoints[followIndex].transform;
-
-			navMeshAgent.destination = m_followTransform.position +
-				-m_followTransform.forward * m_destinationBackAdjust;
 		}
+
+
+		Vector3 setDestination = m_followTransform.position;
+		setDestination.y = transform.position.y;
+
+		navMeshAgent.destination = setDestination;
 	}
 	/// <summary>
 	/// [AIEnd]
@@ -75,20 +78,23 @@ public class DogFollowMove : BaseDogAIFunction
 	/// </summary>
 	public override void AIUpdate(UpdateIdentifier updateIdentifier)
 	{
-		Vector3 absolute = (m_followTransform.position - transform.position), absoluteNotYNormalized = absolute;
-		absoluteNotYNormalized.y = 0.0f;
-		absoluteNotYNormalized = absoluteNotYNormalized.normalized;
-
-		if (absolute.sqrMagnitude < m_arrivalDistance * m_arrivalDistance)
+		if ((m_followTransform.position - transform.position).sqrMagnitude < m_arrivalDistance * m_arrivalDistance)
 			navMeshAgent.isStopped = true;
 		else
 			navMeshAgent.isStopped = false;
 
-		if (navMeshAgent.pathStatus != UnityEngine.AI.NavMeshPathStatus.PathPartial
-			&& Vector3.Angle(absoluteNotYNormalized, transform.forward) > m_arrivalRotation)
+		Vector3 absoluteNotYNormalized = (dogAIAgent.linkPlayer.transform.position - transform.position);
+		absoluteNotYNormalized.y = 0.0f;
+		if (absoluteNotYNormalized.sqrMagnitude >= 1.0f)
 		{
-			Quaternion lookRotation = Quaternion.LookRotation(absoluteNotYNormalized, transform.up);
-			transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, m_rotationSpeed * Time.deltaTime);
+			absoluteNotYNormalized = absoluteNotYNormalized.normalized;
+
+			if (navMeshAgent.pathStatus != UnityEngine.AI.NavMeshPathStatus.PathPartial
+				&& Vector3.Angle(absoluteNotYNormalized, transform.forward) > m_arrivalRotation)
+			{
+				Quaternion lookRotation = Quaternion.LookRotation(absoluteNotYNormalized, transform.up);
+				transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, m_rotationSpeed * Time.deltaTime);
+			}
 		}
 
 		if (timer.elapasedTime >= m_moveSeconds)
