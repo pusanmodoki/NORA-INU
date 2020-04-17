@@ -18,11 +18,12 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	{
 		/// <summary>[コンストラクタ]</summary>
 		public PlayerInfo(GameObject gameObject, PlayerTerritoryIntermediary territoryIntermediary,
-		PlayerMaualCollisionAdministrator maualCollisionAdministrator)
+		PlayerMaualCollisionAdministrator maualCollisionAdministrator, GameObject[] followPoints)
 		{
 			this.gameObject = gameObject;
 			this.territoryIntermediary = territoryIntermediary;
 			this.maualCollisionAdministrator = maualCollisionAdministrator;
+			this.followPoints = followPoints;
 			instanceID = gameObject.GetInstanceID();
 		}
 
@@ -44,6 +45,8 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		public List<Vector3> borderTerritoryPoints { get; private set; } = new List<Vector3>();
 		/// <summary>ボリュームを加えたテリトリー圏 (ポジション)</summary>
 		public List<Vector3> territorialArea { get; private set; } = new List<Vector3>();
+		/// <summary>Follow point game objects</summary>
+		public GameObject[] followPoints { get; private set; } = null;
 		/// <summary>テリトリー変更時にCallされるコールバック (計算時ではなく, AddMarkPoint, RemoveMarkPoint実行でCall)</summary>
 		public ChangeTerritoryCallback changeTerritoryCallback { get; set; } = null;
 
@@ -96,9 +99,9 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	{
 		/// <summary>[コンストラクタ]</summary>
 		public StoragePlayer(GameObject player, PlayerTerritoryIntermediary territoryIntermediary,
-		PlayerMaualCollisionAdministrator maualCollisionAdministrator)
+		PlayerMaualCollisionAdministrator maualCollisionAdministrator, GameObject[] followPoints)
 		{
-			playerInfo = new PlayerInfo(player, territoryIntermediary, maualCollisionAdministrator);
+			playerInfo = new PlayerInfo(player, territoryIntermediary, maualCollisionAdministrator, followPoints);
 			nextCalucrateFrameCount = 0;
 			isCalucrateNextUpdate = false;
 		}
@@ -309,10 +312,11 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	/// 引数1: Player object
 	/// 引数2: Player PlayerTerritoryIntermediary
 	/// 引数3: Player PlayerMaualCollisionAdministrator
-	/// 引数4: This main player?, default = true
+	/// 引数4: Player follow points
+	/// 引数5: This main player?, default = true
 	/// </summary>
 	public void AddPlayer(GameObject player, PlayerTerritoryIntermediary territoryIntermediary,
-		PlayerMaualCollisionAdministrator maualCollisionAdministrator, bool isMainPlayer = true)
+		PlayerMaualCollisionAdministrator maualCollisionAdministrator, GameObject[] followPoints, bool isMainPlayer = true)
 	{
 		//debug only, invalid key対策
 #if UNITY_EDITOR
@@ -323,7 +327,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		}
 #endif
 
-		StoragePlayer info = new StoragePlayer(player, territoryIntermediary, maualCollisionAdministrator);
+		StoragePlayer info = new StoragePlayer(player, territoryIntermediary, maualCollisionAdministrator, followPoints);
 
 		m_players.Add(player.GetInstanceID(), info);
 		if (isMainPlayer)

@@ -8,8 +8,23 @@ using UnityEngine;
 /// </summary>
 public class DogFollowMove : BaseDogAIFunction
 {
+	/// <summary>移動時間</summary>
 	[SerializeField, Tooltip("移動時間")]
 	float m_moveSeconds = 0.5f;
+	/// <summary>目標地点を後方にずらすための値 (-forward * this)</summary>
+	[SerializeField, Tooltip("目標地点を後方にずらすための値 (-forward * this)")]
+	float m_destinationBackAdjust = 1.5f;
+	/// <summary>到着したとみなす距離</summary>
+	[SerializeField, Tooltip("到着したとみなす距離")]
+	float m_arrivalDistance = 1.0f;
+	/// <summary>待機時の回転速度</summary>
+	[SerializeField, Tooltip("待機時の回転速度 (Sleap)")]
+	float m_rotationSpeed = 2.0f;
+	/// <summary>回転済みしたとみなす角度</summary>
+	[SerializeField, Tooltip("回転済みしたとみなす角度")]
+	float m_arrivalRotation = 5.0f;
+
+	Transform m_followTransform = null;
 
 	/// <summary>
 	/// [AIBegin]
@@ -19,10 +34,27 @@ public class DogFollowMove : BaseDogAIFunction
 	/// </summary>
 	public override void AIBegin(BaseAIFunction beforeFunction)
 	{
-		if (dogAIAgent.isLinkPlayer)
+		if (dogAIAgent.isLinkPlayer && dogAIAgent.linkPlayerServantsOwnIndex >= 0)
 		{
-			SetUpdatePosition(true);
-			navMeshAgent.destination = dogAIAgent.linkPlayer.transform.position;
+			SetUpdatePosition(true, false);
+
+			m_followTransform = dogAIAgent.linkPlayer.transform;
+			int playerID = dogAIAgent.linkPlayer.GetInstanceID();
+			int followIndex = 0;
+
+			for (int i = 0, count = dogAIAgent.linkPlayerServantsOwnIndex; i < count; ++i)
+			{
+				var servant = ServantManager.instance.servantByPlayers[playerID][i];
+
+				if (servant.isAccompanyingPlayer)
+					++followIndex;
+			}
+
+			m_followTransform = PlayerAndTerritoryManager.instance.allPlayers
+				[dogAIAgent.linkPlayer.GetInstanceID()].playerInfo.followPoints[followIndex].transform;
+
+			navMeshAgent.destination = m_followTransform.position +
+				-m_followTransform.forward * m_destinationBackAdjust;
 		}
 	}
 	/// <summary>
@@ -33,6 +65,7 @@ public class DogFollowMove : BaseDogAIFunction
 	/// </summary>
 	public override void AIEnd(BaseAIFunction nextFunction)
 	{
+		navMeshAgent.isStopped = false;
 	}
 
 	/// <summary>
@@ -42,6 +75,22 @@ public class DogFollowMove : BaseDogAIFunction
 	/// </summary>
 	public override void AIUpdate(UpdateIdentifier updateIdentifier)
 	{
+		Vector3 absolute = (m_followTransform.position - transform.position), absoluteNotYNormalized = absolute;
+		absoluteNotYNormalized.y = 0.0f;
+		absoluteNotYNormalized = absoluteNotYNormalized.normalized;
+
+		if (absolute.sqrMagnitude < m_arrivalDistance * m_arrivalDistance)
+			navMeshAgent.isStopped = true;
+		else
+			navMeshAgent.isStopped = false;
+
+		if (navMeshAgent.pathStatus != UnityEngine.AI.NavMeshPathStatus.PathPartial
+			&& Vector3.Angle(absoluteNotYNormalized, transform.forward) > m_arrivalRotation)
+		{
+			Quaternion lookRotation = Quaternion.LookRotation(absoluteNotYNormalized, transform.up);
+			transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, m_rotationSpeed * Time.deltaTime);
+		}
+
 		if (timer.elapasedTime >= m_moveSeconds)
 			EndAIFunction(updateIdentifier);
 	}
