@@ -409,7 +409,7 @@ MonoBehaviour:
   m_target: {fileID: 0}
   m_scale: {x: 0.5, y: 0.1, z: 0.5}
   m_center: {x: 0, y: 0, z: 0}
-  m_distance: 1
+  m_distance: 1.5
   m_raycastLayerMask:
     m_layerMask:
       serializedVersion: 2
