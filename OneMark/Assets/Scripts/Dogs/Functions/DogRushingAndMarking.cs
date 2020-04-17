@@ -26,6 +26,16 @@ public class DogRushingAndMarking : BaseDogAIFunction
 	/// <summary>State</summary>
 	public State functionState { get; private set; } = State.Null;
 
+	/// <summary>Marking effect object</summary>
+	[Header("Effect & SE"), SerializeField, Tooltip("Marking effect object")]
+	GameObject m_markingEffect = null;
+	/// <summary>This SEPlayer</summary>
+	[SerializeField, Tooltip("This SEPlayer")]
+	SEPlayer m_sePlayer = null;
+	/// <summary>Marking se index</summary>
+	[SerializeField, Tooltip("Marking se index")]
+	int m_markingSEIndex = 0;
+	
 	/// <summary>突進時追加加速度</summary>
 	[Header("Rushing"), SerializeField, Tooltip("突進時追加加速度")]
 	float m_rushingAddAcceleration = 10.0f;
@@ -33,11 +43,8 @@ public class DogRushingAndMarking : BaseDogAIFunction
 	[SerializeField, Tooltip("到着と見做す距離(半径で当たり判定を行う)")]
 	float m_rushingArrivalDistance = 0.8f;
 
-	/// <summary>マーキング時回転</summary>
-	[Header("Rotation"), SerializeField, Tooltip("マーキング時回転")]
-	Vector3 m_markingRotation = Vector3.zero;
 	/// <summary>回転速度 (this * deltaTime)</summary>
-	[SerializeField, Tooltip("回転速度 (this * deltaTime)")]
+	[Header("Rotation"), SerializeField, Tooltip("回転速度 (this * deltaTime)")]
 	float m_rotationSpeed = 0.9f;
 	/// <summary>回転時間</summary>
 	[SerializeField, Tooltip("回転時間")]
@@ -91,7 +98,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 	public override void AIEnd(BaseAIFunction nextFunction)
 	{
 		m_markPoint = null;
-		navMeshAgent.updateRotation = true;
+		navMeshAgent.isStopped = false;
 		functionState = State.Null;
 	}
 
@@ -130,13 +137,13 @@ public class DogRushingAndMarking : BaseDogAIFunction
 						if (hitCollisions[i].gameObject.GetInstanceID() == m_markPoint.gameObject.GetInstanceID())
 						{
 							//移動, 回転停止
-							navMeshAgent.updatePosition = false;
-							navMeshAgent.updateRotation = false;
+							navMeshAgent.isStopped = true;
 							dogAIAgent.speedChanger.SetManualAcceleration(0.0f);
 
-							////回転を行う
-							//m_targetRotation = Quaternion.LookRotation(
-							//	(m_markPoint.transform.position - transform.position).normalized, transform.up) * Quaternion.Euler(m_markingRotation);
+							//回転を決める
+							Vector3 absolute = m_markPointPosition - transform.position;
+							absolute.y = 0.0f;
+							m_targetRotation = Quaternion.LookRotation(absolute.normalized) * Quaternion.AngleAxis(-90, Vector3.up);
 							//Stateを進める
 							functionState = State.Rotation;
 							//Timer再スタート
@@ -154,6 +161,8 @@ public class DogRushingAndMarking : BaseDogAIFunction
 					//指定時間経過でステートを進める
 					if (timer.elapasedTime >= m_rotationSeconds)
 					{
+						m_sePlayer.PlaySE(m_markingSEIndex, true);
+						m_markingEffect.SetActive(true);
 						functionState = State.Marking;
 						timer.Start();
 					}
@@ -169,6 +178,8 @@ public class DogRushingAndMarking : BaseDogAIFunction
 					//指定時間経過
 					if (timer.elapasedTime >= m_markingSeconds)
 					{
+						m_sePlayer.Stop(m_markingSEIndex);
+						m_markingEffect.SetActive(false);
 						//ポイントをリンクさせる
 						m_markPoint.LinkPlayer(dogAIAgent.linkPlayer, dogAIAgent);
 						//待て！
