@@ -113,7 +113,7 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
 			}
 		}
 
-		if (Input.GetKeyDown(KeyCode.Z))
+		if (Input.GetButtonDown("Fire1"))
 		{
 			if (m_isServantFlags[0])
 			{
@@ -122,7 +122,7 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
 				m_isServantFlags[0] = false;
 			}
 		}
-		if (Input.GetKeyDown(KeyCode.X))
+		if (Input.GetButtonDown("Fire2"))
 		{
 			if (m_isServantFlags[1])
 			{
@@ -131,7 +131,7 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
 				m_isServantFlags[1] = false;
 			}
 		}
-		if (Input.GetKeyDown(KeyCode.C))
+		if (Input.GetButtonDown("Fire3"))
 		{
 			if (m_isServantFlags[2])
 			{

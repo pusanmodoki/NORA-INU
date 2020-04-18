@@ -9,6 +9,8 @@ public class SceneTransButton : MonoBehaviour
     [SerializeField]
     string sceneName = "";
 
+    public string m_sceneName{ get { return sceneName; } set { sceneName = value; } }
+
     [SerializeField]
     Color fadeColor = Color.white;
 
