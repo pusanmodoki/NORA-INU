@@ -231,7 +231,7 @@ namespace Editor
 			}
 
 			//Distanceがおかしければ描画しない
-			if (visibility.personalDistance <= 0.0f)
+			if (visibility.visibilityDistance <= 0.0f)
 				return;
 
 			//呼び出しコスト削減
@@ -296,11 +296,13 @@ namespace Editor
 
 			//Mesh描画
 			Gizmos.DrawMesh(visibility.dGizmoMesh, position + m_cAdjustUp,
-				rotation * Quaternion.AngleAxis(90.0f, Vector3.forward), Vector3.one * visibility.personalDistance);
+				rotation * Quaternion.AngleAxis(90.0f, Vector3.forward), Vector3.one * visibility.visibilityDistance);
 			Gizmos.DrawMesh(visibility.dGizmoMesh, position + m_cAdjustUp,
-				rotation * Quaternion.AngleAxis(270.0f, Vector3.forward), Vector3.one * visibility.personalDistance);
+				rotation * Quaternion.AngleAxis(270.0f, Vector3.forward), Vector3.one * visibility.visibilityDistance);
 			Gizmos.DrawMesh(visibility.dGizmoMesh, position + m_cAdjustUp,
-				rotation, Vector3.one * visibility.personalDistance);
+				rotation, Vector3.one * visibility.visibilityDistance);
+			//Sphere描画
+			Gizmos.DrawWireSphere(position + m_cAdjustUp, visibility.personalDistance);
 		}
 
 

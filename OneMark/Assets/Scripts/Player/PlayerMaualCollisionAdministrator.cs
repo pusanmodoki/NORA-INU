@@ -43,8 +43,10 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		public int instanceID;
 	}
 
-	/// <summary>Personal distance (get only)</summary>
+	/// <summary>ポイントタイマーロック判定に使用する距離</summary>
 	public float personalDistance { get { return m_personalDistance; } }
+	/// <summary>視界判定に使用する距離</summary>
+	public float visibilityDistance { get { return m_visibilityDistance; } }
 
 	/// <summary>Forward方向のテリトリー法線(β)</summary>
 	public Vector3 territoryForwardSideNormal { get { return m_territoryForwardSideNormall; } }
@@ -83,9 +85,6 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	/// <summary>当たり判定のレイヤーマスク</summary>
 	[Header("Always"), SerializeField, Tooltip("当たり判定の実施間隔")]
 	float m_judgmentInterval = 0.1f;
-	/// <summary>視界判定, ポイントタイマーロック判定に使用する距離</summary>
-	[SerializeField, Tooltip("視界判定, ポイントタイマーロック判定に使用する距離")]
-	float m_personalDistance = 10;
 
 	/// <summary>当たり判定の半径</summary>
 	[Header("Sphere Collision"), SerializeField, Tooltip("当たり判定の半径")]
@@ -97,10 +96,16 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	/// <summary>Visibility angle</summary>
 	[SerializeField, Range(0.0f, 180.0f), Tooltip("Visibility angle")]
 	float m_visibilityAngle = 90;
+	/// <summary>視界判定に使用する距離</summary>
+	[SerializeField, Tooltip("視界判定に使用する距離")]
+	float m_visibilityDistance = 10;
 
 	/// <summary>MarkPointのレイヤーマスク</summary>
 	[Header("Markpoint Monitoring"), SerializeField, Tooltip("MarkPointのレイヤーマスク")]
 	LayerMaskEx m_markPointLayerMask = 0;
+	/// <summary>ポイントタイマーロック判定に使用する距離</summary>
+	[SerializeField, Tooltip("ポイントタイマーロック判定に使用する距離")]
+	float m_personalDistance = 10;
 	
 	/// <summary>CheckMarkPointで使用するヒットリスト</summary>
 	List<BaseMarkPoint> m_checkPoints = new List<BaseMarkPoint>();
@@ -178,7 +183,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		//候補を保存するリスト
 		List<VisibilityContainer> markPoints = new List<VisibilityContainer>();
 		//Overlap collisions
-		var collisions = Physics.OverlapSphere(position, m_personalDistance, m_visibilityLayerMask);
+		var collisions = Physics.OverlapSphere(position, m_visibilityDistance, m_visibilityLayerMask);
 
 		//Collision判定ループ
 		for (int i = 0, length = collisions.Length; i < length; ++i)

@@ -97,6 +97,12 @@ public class DogRushingAndMarking : BaseDogAIFunction
 	/// </summary>
 	public override void AIEnd(BaseAIFunction nextFunction)
 	{
+		if (functionState == State.Marking)
+		{
+			m_sePlayer.Stop(m_markingSEIndex);
+			m_markingEffect.SetActive(false);
+		}
+
 		m_markPoint = null;
 		navMeshAgent.isStopped = false;
 		functionState = State.Null;
@@ -178,8 +184,6 @@ public class DogRushingAndMarking : BaseDogAIFunction
 					//指定時間経過
 					if (timer.elapasedTime >= m_markingSeconds)
 					{
-						m_sePlayer.Stop(m_markingSEIndex);
-						m_markingEffect.SetActive(false);
 						//ポイントをリンクさせる
 						m_markPoint.LinkPlayer(dogAIAgent.linkPlayer, dogAIAgent);
 						//待て！
