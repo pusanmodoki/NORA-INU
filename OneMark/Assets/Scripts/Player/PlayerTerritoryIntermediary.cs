@@ -19,8 +19,6 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
 
 	[SerializeField, Space, Tooltip("LineRenderer(とりあえず)")]
 	LineRenderer m_lineRenderer = null;
-	[SerializeField, Tooltip("オブジェクト名(とりあえず)")]
-	string m_testName = "";
 
 	/// <summary>This game object instance id</summary>
 	int m_instanceID = 0;
