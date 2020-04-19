@@ -72,13 +72,13 @@ public class DogOffMeshLinkController
 		}
 
 		//一定時間経過で終了
-		if (m_timer.elapasedTime >= m_jumpSeconds)
+		if (m_timer.isStart && m_timer.elapasedTime >= m_jumpSeconds)
 			EndOffMeshLink();
 	}
 	/// <summary>[FixedUpdate]</summary>
 	public void FixedUpdate()
 	{
-		if (m_timer.elapasedTime >= m_jumpSeconds)
+		if (m_timer.isStart && m_timer.elapasedTime >= m_jumpSeconds)
 			EndOffMeshLink();
 	}
 

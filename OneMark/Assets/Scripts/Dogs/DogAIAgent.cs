@@ -14,8 +14,14 @@ public class DogAIAgent : AIAgent
 	public GameObject linkPlayer { get; private set; } = null;
 	/// <summary>Link mark point</summary>
 	public BaseMarkPoint linkMarkPoint { get; private set; } = null;
+	/// <summary>Player別の自身のIndex</summary>
+	public int linkPlayerServantsOwnIndex { get { return m_linkPlayerServantsOwnIndex; } }
 	/// <summary>Is sit & stay now?</summary>
 	public bool isSitAndStaySelf { get; private set; } = false;
+	/// <summary>Playerに同行中？</summary>
+	public bool isAccompanyingPlayer { get {
+			return isLinkPlayer & !isSitAndStaySelf &
+				m_rushingAndMarkingFunction.functionState == DogRushingAndMarking.State.Null; } }
 	/// <summary>Is linked player?</summary>
 	public bool isLinkPlayer { get { return linkPlayer != null; } }
 	/// <summary>Is linked mark point?</summary>
@@ -40,8 +46,12 @@ public class DogAIAgent : AIAgent
 	[SerializeField, Space, Tooltip("Speed changer")]
 	DogSpeedChanger m_speedChanger = new DogSpeedChanger();
 
-	/// <summary>RaycastHit</summary>
-	RaycastHit m_raycastHit = new RaycastHit();
+	/// <summary>RaycastHits</summary>
+	RaycastHit[] m_raycastHits = null;
+	/// <summary>Colliders</summary>
+	Collider[] m_colliders = null;
+	/// <summary>Player別の自身のIndex</summary>
+	int m_linkPlayerServantsOwnIndex = -1;
 
 	/// <summary>
 	/// [GoSoStartOfMarking]
@@ -68,25 +78,38 @@ public class DogAIAgent : AIAgent
 		}
 		else if (isLinkMarkPoint || 
 			m_rushingAndMarkingFunction.functionState != DogRushingAndMarking.State.Null)
+		{
+#if UNITY_EDITOR
+			Debug.LogError("Error!! DogAIAgent->GoSoStartOfMarking\n Already running");
+#endif
 			return false;
+		}
 
 		Vector3 position = transform.position, targetPosition = linkPlayer.transform.position;
 		Vector3 direction = (new Vector3(targetPosition.x, 0.0f, targetPosition.z) -
 			new Vector3(position.x, 0.0f, position.z)).normalized;
+		float distance = (targetPosition - position).sqrMagnitude;
+		int instanceID = linkPlayer.GetInstanceID();
 
-		//Raycast判定
-		if (linkPlayer != null &&
-			Physics.Raycast(position, direction, out m_raycastHit, 10000.0f, m_playerObeyLayerMask) &&
-			m_raycastHit.transform.gameObject.GetInstanceID() == linkPlayer.GetInstanceID())
+		//Raycast, Overlap判定(Player)
+		m_raycastHits = Physics.RaycastAll(position, direction, distance, m_playerObeyLayerMask);
+		m_colliders = Physics.OverlapSphere(position, distance, m_playerObeyLayerMask);
+
+		if (linkPlayer != null
+			&& (m_raycastHits.ContainsInstanceID(instanceID) | m_colliders.ContainsInstanceID(instanceID)))
 		{
 			position = targetPosition;
 			targetPosition = markPoint.transform.position;
 
 			direction = (new Vector3(targetPosition.x, 0.0f, targetPosition.z) -
 				new Vector3(position.x, 0.0f, position.z)).normalized;
+			distance = (targetPosition - position).sqrMagnitude;
+			instanceID = markPoint.gameObject.GetInstanceID();
 
-			if (Physics.Raycast(position, direction, out m_raycastHit, 10000.0f, m_playerObeyMarkPointLayerMask) &&
-				m_raycastHit.transform.gameObject.GetInstanceID() == markPoint.gameObject.GetInstanceID())
+			//Raycast, Overlap判定(MarkPoint)
+			m_raycastHits = Physics.RaycastAll(position, direction, distance, m_playerObeyMarkPointLayerMask);
+			m_colliders = Physics.OverlapSphere(position, distance, m_playerObeyMarkPointLayerMask);
+			if (m_raycastHits.ContainsInstanceID(instanceID) | m_colliders.ContainsInstanceID(instanceID))
 			{
 				//事前情報入力
 				m_rushingAndMarkingFunction.SetAdvanceInformation(markPoint, markPoint.transform.position);
@@ -126,16 +149,20 @@ public class DogAIAgent : AIAgent
 		}
 		else if (!isLinkMarkPoint ||
 			m_rushingAndMarkingFunction.functionState != DogRushingAndMarking.State.Null)
+		{
+#if UNITY_EDITOR
+			Debug.LogError("Error!! DogAIAgent->GoSoStartOfMarking\n GoSoStartOfMarking already running");
+#endif
 			return false;
+		}
 
 		Vector3 position = transform.position, targetPosition = linkPlayer.transform.position;
 		Vector3 direction = (new Vector3(targetPosition.x, 0.0f, targetPosition.z) - 
 			new Vector3(position.x, 0.0f, position.z)).normalized;
 
-		//Raycast判定
-		if (linkPlayer != null &&
-			Physics.Raycast(position, direction, out m_raycastHit, 10000.0f, m_playerObeyLayerMask) &&
-			m_raycastHit.transform.gameObject.GetInstanceID() == linkPlayer.GetInstanceID())
+		//Raycast判定(Player)
+		m_raycastHits = Physics.RaycastAll(position, direction, (targetPosition - position).sqrMagnitude, m_playerObeyLayerMask);
+		if (linkPlayer != null && m_raycastHits.ContainsInstanceID(linkPlayer))
 		{
 			//ステイ終了
 			SetSitAndStay(false, linkMarkPoint);
@@ -159,7 +186,7 @@ public class DogAIAgent : AIAgent
 			&& PlayerAndTerritoryManager.instance.allPlayers.ContainsKey(playerObject.GetInstanceID()))
 		{
 			linkPlayer = playerObject;
-			ServantManager.instance.RegisterPlayerOfServant(this, playerObject);
+			ServantManager.instance.RegisterPlayerOfServant(this, playerObject, out m_linkPlayerServantsOwnIndex);
 		}
 		else
 		{

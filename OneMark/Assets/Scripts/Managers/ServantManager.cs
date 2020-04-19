@@ -16,6 +16,8 @@ public class ServantManager : MonoBehaviour
 	public ReadOnlyCollection<DogAIAgent> servantByMainPlayer { get { return m_servantByMainPlayer != null? m_servantByMainPlayer.AsReadOnly() : null; } }
 	/// <summary>Manage servants</summary>
 	public ReadOnlyDictionary<int, DogAIAgent> allServants { get; private set; } = null;
+	/// <summary>Manage servants</summary>
+	public ReadOnlyDictionary<int, List<DogAIAgent>> servantByPlayers { get; private set; } = null;
 
 	/// <summary>Manage servants</summary>
 	Dictionary<int, DogAIAgent> m_servants = null;
@@ -29,7 +31,9 @@ public class ServantManager : MonoBehaviour
 	{
 		instance = this;
 		m_servants = new Dictionary<int, DogAIAgent>();
+		m_servantByPlayers = new Dictionary<int, List<DogAIAgent>>();
 		allServants = new ReadOnlyDictionary<int, DogAIAgent>(m_servants);
+		servantByPlayers = new ReadOnlyDictionary<int, List<DogAIAgent>>(m_servantByPlayers);
 	}
 
 	/// <summary>
@@ -114,26 +118,31 @@ public class ServantManager : MonoBehaviour
 	/// <summary>
 	/// [RegisterPlayerOfServant]
 	/// DogAIAgentとPlayerを紐付けする
+	/// return: dogAgentのPlayer別Index
 	/// 引数1: DogAIAgent
 	/// 引数2: PlayerObject
+	/// 引数3: dogAgent.linkPlayerServantsOwnIndex(out)
 	/// </summary>
-	public void RegisterPlayerOfServant(DogAIAgent dogAgent, GameObject player)
+	public void RegisterPlayerOfServant(DogAIAgent dogAgent, GameObject player, out int linkPlayerServantsOwnIndex)
 	{
 		//debug only, invalid key対策
 #if UNITY_EDITOR
 		if (!m_servants.ContainsKey(dogAgent.aiAgentInstanceID))
 		{
 			Debug.LogError("Error!! ServantManager->RegisterPlayerOfServant\n ContainsKey(instanceID) == false");
+			linkPlayerServantsOwnIndex = -1;
 			return;
 		}
 		if (!m_servantByPlayers.ContainsKey(player.GetInstanceID()))
 		{
 			Debug.LogError("Error!! ServantManager->RegisterPlayerOfServant\n ContainsKey(instanceID) == false");
+			linkPlayerServantsOwnIndex = -1;
 			return;
 		}
 #endif
 
 		m_servantByPlayers[player.GetInstanceID()].Add(dogAgent);
+		linkPlayerServantsOwnIndex = m_servantByPlayers[player.GetInstanceID()].Count - 1;
 	}
 	/// <summary>
 	/// [UnregisterPlayerOfServant]

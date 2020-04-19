@@ -141,7 +141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_dIsDrawGizmos: 1
   m_judgmentInterval: 0.1
-  m_personalDistance: 10
+  m_personalDistance: 14
   m_collisionRadius: 0.5
   m_visibilityLayerMask:
     m_layerMask:
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_markPointLayerMask:
     m_layerMask:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 1536
 --- !u!1001 &3614814180494256455
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -162,7 +162,7 @@ PrefabInstance:
     - target: {fileID: 3852402287238664759, guid: a0bcbee5d8bbac14193c2215608ed8dd,
         type: 3}
       propertyPath: m_Name
-      value: Player
+      value: Player Variant
       objectReference: {fileID: 0}
     - target: {fileID: 3852402287238664759, guid: a0bcbee5d8bbac14193c2215608ed8dd,
         type: 3}

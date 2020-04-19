@@ -10,8 +10,12 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
 	/// <summary>初期オブジェクト名</summary>
 	[SerializeField, Tooltip("初期オブジェクト名")]
 	string m_firstPointName = "";
+	/// <summary>This PlayerMaualCollisionAdministrator</summary>
 	[SerializeField, Tooltip("This PlayerMaualCollisionAdministrator")]
 	PlayerMaualCollisionAdministrator m_playerMaualCollisionAdministrator = null;
+	/// <summary>Servant follow points</summary>
+	[SerializeField, Tooltip("Servant follow points")]
+	GameObject[] m_followPoints = new GameObject[3];
 
 	[SerializeField, Space, Tooltip("LineRenderer(とりあえず)")]
 	LineRenderer m_lineRenderer = null;
@@ -49,7 +53,7 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
     {
 		//Managerにインスタンス追加
 		PlayerAndTerritoryManager.instance.AddPlayer(gameObject,
-			this, m_playerMaualCollisionAdministrator);
+			this, m_playerMaualCollisionAdministrator, m_followPoints);
 		//初期ポイントを探す
 		GameObject firstPoint = GameObject.Find(m_firstPointName);
 
@@ -109,56 +113,66 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
 			}
 		}
 
+		if (Input.GetButtonDown("Fire1"))
+		{
+			if (m_isServantFlags[0])
+			{
+				var obj = ServantManager.instance.servantByMainPlayer[0];
+				obj.ComeBecauseEndOfMarking();
+				m_isServantFlags[0] = false;
+			}
+		}
+		if (Input.GetButtonDown("Fire2"))
+		{
+			if (m_isServantFlags[1])
+			{
+				var obj = ServantManager.instance.servantByMainPlayer[1];
+				obj.ComeBecauseEndOfMarking();
+				m_isServantFlags[1] = false;
+			}
+		}
+		if (Input.GetButtonDown("Fire3"))
+		{
+			if (m_isServantFlags[2])
+			{
+				var obj = ServantManager.instance.servantByMainPlayer[2];
+				obj.ComeBecauseEndOfMarking();
+				m_isServantFlags[2] = false;
+			}
+		}
+
 		if (m_playerMaualCollisionAdministrator.isVisibilityStay
 			&& m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint != null)
 		{
 			if (Input.GetKeyDown(KeyCode.Z))
 			{
-				var obj = ServantManager.instance.servantByMainPlayer[0];
 
 				if (!m_isServantFlags[0])
 				{
+					var obj = ServantManager.instance.servantByMainPlayer[0];
 					obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
 					m_isServantFlags[0] = true;
-				}
-				else if(m_isServantFlags[0])
-				{
-					obj.ComeBecauseEndOfMarking();
-					m_isServantFlags[0] = false;
 				}
 			}
 			if (Input.GetKeyDown(KeyCode.X))
 			{
-				var obj = ServantManager.instance.servantByMainPlayer[1];
-
 				if (!m_isServantFlags[1])
 				{
+					var obj = ServantManager.instance.servantByMainPlayer[1];
 					obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
 					m_isServantFlags[1] = true;
-				}
-				else if (m_isServantFlags[1])
-				{
-					obj.ComeBecauseEndOfMarking();
-					m_isServantFlags[1] = false;
 				}
 			}
 			if (Input.GetKeyDown(KeyCode.C))
 			{
-				var obj = ServantManager.instance.servantByMainPlayer[2];
-
 				if (!m_isServantFlags[2])
 				{
+					var obj = ServantManager.instance.servantByMainPlayer[2];
 					obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
 					m_isServantFlags[2] = true;
 				}
-				else if (m_isServantFlags[2])
-				{
-					obj.ComeBecauseEndOfMarking();
-					m_isServantFlags[2] = false;
-				}
 			}
 		}
-
 	}
 
 }
