@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FenceCreate : MonoBehaviour
 {
@@ -8,7 +6,7 @@ public class FenceCreate : MonoBehaviour
     int stageWidth = 50;
 
     [SerializeField]
-    int stageHeight = 50;
+    int stageDepth = 50;
 
     [SerializeField]
     GameObject fenceEnd = null;
@@ -34,16 +32,16 @@ public class FenceCreate : MonoBehaviour
 
             vec = Vector3.zero;
             vec.x = (float)((stageWidth - i * 2) - 1);
-            vec.z = (float)stageHeight;
+            vec.z = (float)stageDepth;
 
             qt = Quaternion.identity;
             qt.eulerAngles = new Vector3(0.0f, 180.0f, 0.0f);
             Instantiate(fence, vec, qt, transform);
         }
-        for (int i = 0; i < stageHeight / 2; ++i)
+        for (int i = 0; i < stageDepth / 2; ++i)
         {
             vec = Vector3.zero;
-            vec.z = (float)((stageHeight - i * 2) - 1);
+            vec.z = (float)((stageDepth - i * 2) - 1);
 
             qt = Quaternion.identity;
             qt.eulerAngles = new Vector3(0.0f, 90.0f, 0.0f);
@@ -60,4 +58,24 @@ public class FenceCreate : MonoBehaviour
         }
 
     }
+
+
+	void OnDrawGizmos()
+	{
+		UnityEngine.AI.NavMeshObstacle obstacle = fence.GetComponent<UnityEngine.AI.NavMeshObstacle>();
+
+		Gizmos.color = Color.black;
+		//left
+		Gizmos.DrawWireCube(new Vector3(0.0f, 0.0f, stageDepth / 2), 
+			new Vector3(obstacle.size.z, obstacle.size.y, obstacle.size.x * (stageDepth / 2)));
+		//up
+		Gizmos.DrawWireCube(new Vector3(stageWidth / 2, 0.0f, stageDepth),
+			new Vector3(obstacle.size.x * (stageDepth / 2) + obstacle.size.x * 0.5f, obstacle.size.y, obstacle.size.z));
+		//right
+		Gizmos.DrawWireCube(new Vector3(stageWidth, 0.0f, stageDepth / 2),
+			new Vector3(obstacle.size.z, obstacle.size.y, obstacle.size.x * (stageDepth / 2)));
+		//down
+		Gizmos.DrawWireCube(new Vector3(stageWidth / 2, 0.0f, 0.0f),
+			new Vector3(obstacle.size.x * (stageDepth / 2) + obstacle.size.x * 0.5f, obstacle.size.y, obstacle.size.z));
+	}
 }
