@@ -102,7 +102,11 @@ public class DogRushingAndMarking : BaseDogAIFunction
 	/// </summary>
 	public override void AIEnd(BaseAIFunction nextFunction)
 	{
-		if (functionState == State.Marking)
+		if (functionState == State.Rushing || functionState == State.Rotation)
+		{
+			m_animationController.editAnimation.SetTriggerReturnRun();
+		}
+		else if (functionState == State.Marking)
 		{
 			m_sePlayer.Stop(m_markingSEIndex);
 			m_markingEffect.SetActive(false);
