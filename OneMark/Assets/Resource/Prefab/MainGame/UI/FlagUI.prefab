@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 200}
+  m_SizeDelta: {x: 150, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6735876863206295523
 CanvasRenderer:
@@ -86,5 +86,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5380dea4c3a216c4895bb43756adb748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  notLinkedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  notLinkedColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5019608}
   linkedColor: {r: 1, g: 1, b: 1, a: 1}

@@ -3,7 +3,12 @@ guid: 007025fe5be37c24ba227143765016a5
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Dentyuu
+    second: {fileID: 2100000, guid: 5bff5938cacd046438113b393c8f6c42, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

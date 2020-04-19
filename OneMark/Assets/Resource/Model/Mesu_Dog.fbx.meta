@@ -3,7 +3,37 @@ guid: a9dae46d57ef09c439d0502b7fae060c
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mesu_EyesHair
+    second: {fileID: 2100000, guid: 0d8b5202f07ede64fb641a371de99512, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mesu_black
+    second: {fileID: 2100000, guid: b24609622b7cf22468d479cc39efde73, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mesu_body
+    second: {fileID: 2100000, guid: 17dca52fdb4db3143bd3539622f9aed0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mesu_mouse
+    second: {fileID: 2100000, guid: 19c7513dc4ddaac4598082115eae2850, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mesu_togh1
+    second: {fileID: 2100000, guid: e877b2528b3630c4fbe53f16b5315ebd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mesu_white
+    second: {fileID: 2100000, guid: 287d32c6f44780e4082508996cb3ed4d, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -80,7 +110,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.01
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
