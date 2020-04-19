@@ -149,4 +149,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   checkPointUIPrefab: {fileID: 3155375411447621429, guid: 17b7c435d15370245b99a8f3466a7f88,
     type: 3}
-  interval: 10
+  interval: 100

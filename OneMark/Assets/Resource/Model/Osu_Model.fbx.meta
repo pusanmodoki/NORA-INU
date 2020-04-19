@@ -3,7 +3,32 @@ guid: 6a1a5639a023ca94daba7e9b39e2605c
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Osu_black
+    second: {fileID: 2100000, guid: 373c00a00d2ed9c44a81a4eac7cf5405, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Osu_body_M
+    second: {fileID: 2100000, guid: ba2a05750e426164ebc8a50408a8882e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Osu_mouse
+    second: {fileID: 2100000, guid: c1ad0495d66e05346999460e0ea7242d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Osu_togh1
+    second: {fileID: 2100000, guid: 449c7f2b278a286419e6fcdc9a143c4d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Osu_white
+    second: {fileID: 2100000, guid: 55fb3326109cf764bad8ef87d53c4083, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
