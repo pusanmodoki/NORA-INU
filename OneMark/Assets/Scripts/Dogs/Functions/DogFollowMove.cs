@@ -8,12 +8,12 @@ using UnityEngine;
 /// </summary>
 public class DogFollowMove : BaseDogAIFunction
 {
+	/// <summary>This AnimationController</summary>
+	[SerializeField, Tooltip("This AnimationController")]
+	DogAnimationController m_animationController = null;
 	/// <summary>移動時間</summary>
 	[SerializeField, Tooltip("移動時間")]
 	float m_moveSeconds = 0.5f;
-	/// <summary>目標地点を後方にずらすための値 (-forward * this)</summary>
-	[SerializeField, Tooltip("目標地点を後方にずらすための値 (-forward * this)")]
-	float m_destinationBackAdjust = 1.5f;
 	/// <summary>到着したとみなす距離</summary>
 	[SerializeField, Tooltip("到着したとみなす距離")]
 	float m_arrivalDistance = 1.0f;
@@ -23,6 +23,9 @@ public class DogFollowMove : BaseDogAIFunction
 	/// <summary>回転済みしたとみなす角度</summary>
 	[SerializeField, Tooltip("回転済みしたとみなす角度")]
 	float m_arrivalRotation = 5.0f;
+	/// <summary>走るモーションに変更するスピード</summary>
+	[SerializeField, Tooltip("走るモーションに変更するスピード")]
+	float m_animationChangeSpeed = 1.0f;
 
 	Transform m_followTransform = null;
 
@@ -59,6 +62,10 @@ public class DogFollowMove : BaseDogAIFunction
 		setDestination.y = transform.position.y;
 
 		navMeshAgent.destination = setDestination;
+
+		if (navMeshAgent.velocity.sqrMagnitude >= 
+			m_animationChangeSpeed * m_animationChangeSpeed)
+		m_animationController.editAnimation.SetStateRun();
 	}
 	/// <summary>
 	/// [AIEnd]
@@ -69,6 +76,9 @@ public class DogFollowMove : BaseDogAIFunction
 	public override void AIEnd(BaseAIFunction nextFunction)
 	{
 		navMeshAgent.isStopped = false;
+		
+		if (nextFunction != this)
+			m_animationController.editAnimation.SetStateStand();
 	}
 
 	/// <summary>
@@ -82,6 +92,12 @@ public class DogFollowMove : BaseDogAIFunction
 			navMeshAgent.isStopped = true;
 		else
 			navMeshAgent.isStopped = false;
+
+		if (navMeshAgent.velocity.sqrMagnitude >=
+			m_animationChangeSpeed * m_animationChangeSpeed)
+			m_animationController.editAnimation.SetStateRun();
+		else
+			m_animationController.editAnimation.SetStateStand();
 
 		Vector3 absoluteNotYNormalized = (dogAIAgent.linkPlayer.transform.position - transform.position);
 		absoluteNotYNormalized.y = 0.0f;

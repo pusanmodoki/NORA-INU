@@ -26,8 +26,11 @@ public class DogRushingAndMarking : BaseDogAIFunction
 	/// <summary>State</summary>
 	public State functionState { get; private set; } = State.Null;
 
+	/// <summary>This AnimationController</summary>
+	[Header("Animation & Effect & SE"), SerializeField, Tooltip("This AnimationController")]
+	DogAnimationController m_animationController = null;
 	/// <summary>Marking effect object</summary>
-	[Header("Effect & SE"), SerializeField, Tooltip("Marking effect object")]
+	[SerializeField, Tooltip("Marking effect object")]
 	GameObject m_markingEffect = null;
 	/// <summary>This SEPlayer</summary>
 	[SerializeField, Tooltip("This SEPlayer")]
@@ -89,6 +92,8 @@ public class DogRushingAndMarking : BaseDogAIFunction
 		SetUpdatePosition(true);
 		navMeshAgent.destination = m_markPointPosition;
 		functionState = State.Rushing;
+		//Animation Set
+		m_animationController.editAnimation.SetTriggerRolling();
 	}
 	/// <summary>
 	/// [AIEnd]
@@ -152,6 +157,8 @@ public class DogRushingAndMarking : BaseDogAIFunction
 							m_targetRotation = Quaternion.LookRotation(absolute.normalized) * Quaternion.AngleAxis(-90, Vector3.up);
 							//Stateを進める
 							functionState = State.Rotation;
+							//Animation Set
+							m_animationController.editAnimation.SetTriggerMarking();
 							//Timer再スタート
 							timer.Start();
 							break;
@@ -188,6 +195,8 @@ public class DogRushingAndMarking : BaseDogAIFunction
 						m_markPoint.LinkPlayer(dogAIAgent.linkPlayer, dogAIAgent);
 						//待て！
 						dogAIAgent.SetSitAndStay(true, m_markPoint);
+						//Animation Set
+						m_animationController.editAnimation.SetTriggerSleepStart();
 						//終了
 						EndAIFunction(updateIdentifier);
 					}

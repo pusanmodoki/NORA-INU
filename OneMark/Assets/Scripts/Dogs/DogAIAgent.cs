@@ -10,6 +10,8 @@ public class DogAIAgent : AIAgent
 {
 	/// <summary>Speed changer</summary>
 	public DogSpeedChanger speedChanger { get { return m_speedChanger; } }
+	/// <summary>Link mark point</summary>
+	public DogAnimationController animationController { get { return m_animationController; } } 
 	/// <summary>Link player</summary>
 	public GameObject linkPlayer { get; private set; } = null;
 	/// <summary>Link mark point</summary>
@@ -33,6 +35,9 @@ public class DogAIAgent : AIAgent
 	/// <summary>This DogRushingAndMarking</summary>
 	[SerializeField, Tooltip("This DogRushingAndMarking")]
 	DogRushingAndMarking m_rushingAndMarkingFunction = null;
+	/// <summary>This animation controller</summary>
+	[SerializeField, Tooltip("This animation controller")]
+	DogAnimationController m_animationController = null;
 	/// <summary>プレイヤーの命令に従うかどうかプレイヤーとエネミーでRaycastする時のLayerMask</summary>
 	[SerializeField, Tooltip("プレイヤーの命令に従うかどうかプレイヤーとエネミーでRaycastする時のLayerMask")]
 	LayerMaskEx m_playerObeyLayerMask = 0;
@@ -164,13 +169,16 @@ public class DogAIAgent : AIAgent
 		m_raycastHits = Physics.RaycastAll(position, direction, (targetPosition - position).sqrMagnitude, m_playerObeyLayerMask);
 		if (linkPlayer != null && m_raycastHits.ContainsInstanceID(linkPlayer))
 		{
-			//ステイ終了
-			SetSitAndStay(false, linkMarkPoint);
-
+			//Animation Set
+			m_animationController.editAnimation.SetTriggerWakeUp();
+			m_animationController.editAnimation.SetBoolIsNextSearch(false);
 			return true;
 		}
 		else
 		{
+			//Animation Set
+			m_animationController.editAnimation.SetTriggerWakeUp();
+			m_animationController.editAnimation.SetBoolIsNextSearch(true);
 			return false;
 		}
 	}
@@ -208,11 +216,18 @@ public class DogAIAgent : AIAgent
 
 		isSitAndStaySelf = isSet;
 		if (isSet)
+		{
 			linkMarkPoint = markPoint;
+			navMeshAgent.updatePosition = false;
+			navMeshAgent.updateRotation = false;
+		}
 		else
 		{
 			linkMarkPoint = null;
 			markPoint.isPauseTimer = false;
+			navMeshAgent.updatePosition = true;
+			navMeshAgent.updateRotation = true;
+			navMeshAgent.Warp(transform.position);
 		}
 	}
 
