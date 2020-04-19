@@ -3,7 +3,17 @@ guid: 31967790c46b2b04e9c9061e301ec5f0
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: flag_cloth1
+    second: {fileID: 2100000, guid: 3faab875f74409247be7793af2797f71, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: poal1
+    second: {fileID: 2100000, guid: e9c905855d7586848952750385f627b2, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
