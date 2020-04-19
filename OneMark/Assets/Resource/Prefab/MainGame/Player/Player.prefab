@@ -256,17 +256,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_dIsDrawGizmos: 1
   m_judgmentInterval: 0.1
-  m_personalDistance: 16
   m_collisionRadius: 0.5
   m_visibilityLayerMask:
     m_layerMask:
       serializedVersion: 2
       m_Bits: 512
   m_visibilityAngle: 180
+  m_visibilityDistance: 16
   m_markPointLayerMask:
     m_layerMask:
       serializedVersion: 2
       m_Bits: 512
+  m_personalDistance: 4
 --- !u!1 &1441870852321385993
 GameObject:
   m_ObjectHideFlags: 0
