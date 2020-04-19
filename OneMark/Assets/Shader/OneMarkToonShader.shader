@@ -4,6 +4,7 @@
 			_Color("Color", Color) = (1,1,1,1)
 			_MainTex("Albedo (RGB)", 2D) = "white" {}
 			_RampTex("Ramp", 2D) = "white"{}
+			_BumpMap("Bumpmap", 2D) = "bump" {}
 	}
 		SubShader{
 				Tags { "RenderType" = "Opaque" }
@@ -15,9 +16,11 @@
 
 				sampler2D _MainTex;
 				sampler2D _RampTex;
+				sampler2D _BumpMap;
 
 				struct Input {
 						float2 uv_MainTex;
+						float2 uv_BumpMap;
 				};
 
 				fixed4 _Color;
@@ -27,8 +30,8 @@
 						half d = dot(s.Normal, lightDir)*0.5 + 0.5;
 						fixed3 ramp = tex2D(_RampTex, fixed2(d, 0.5)).rgb;
 						fixed4 c;
-						c.rgb = s.Albedo * _LightColor0.rgb * ramp;
-						c.a = 0;
+						c.rgb = s.Albedo * _LightColor0.rgb * ramp * (atten * 1.5);
+						c.a = s.Alpha;
 						return c;
 				}
 
@@ -36,6 +39,7 @@
 						fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
 						o.Albedo = c.rgb;
 						o.Alpha = c.a;
+						o.Normal = UnpackNormal(tex2D(_BumpMap, IN.uv_BumpMap));
 				}
 				ENDCG
 	}
