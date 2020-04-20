@@ -187,12 +187,8 @@ public class BoxCastFlags : MonoBehaviour
         bool isOldStay = isStay;
 
 		//center
-#if UNITY_EDITOR
 		centerPosition = position + myTransform.right * m_center.x + myTransform.up * m_center.y + myTransform.forward * m_center.z;
-#else
-		if (m_target != null)
-			centerPosition = position + myTransform.right * m_center.x + myTransform.up * m_center.y + myTransform.forward * m_center.z;		
-#endif
+		
 		//Raycast
 		isStay = Physics.BoxCast(centerPosition, boxCastScale, GetBoxCastDirection(centerPosition), 
 			out raycastHit, rotation, m_distance, m_raycastLayerMask);

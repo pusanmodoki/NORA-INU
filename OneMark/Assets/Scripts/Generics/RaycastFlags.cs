@@ -236,12 +236,8 @@ public class RaycastFlags : MonoBehaviour
         RaycastHit raycastHit = new RaycastHit();
 
 		//center
-#if UNITY_EDITOR
 		centerPosition = position + myTransform.right * m_center.x + myTransform.up * m_center.y + myTransform.forward * m_center.z;
-#else
-		if (m_target != null)
-			centerPosition = position + myTransform.right * m_center.x + myTransform.up * m_center.y + myTransform.forward * m_center.z;		
-#endif
+		
 		//direction
 		Vector3 direction = GetRaycastDirection(centerPosition);
         if (m_isDirectionLock && rayCastResult != null)
