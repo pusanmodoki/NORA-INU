@@ -128,12 +128,19 @@ public class PlayerInput : MonoBehaviour
         //}
 
         transform.LookAt(transform.position + m_inputVector);
+		var t = m_inputVector;
 
-        m_inputVector = m_inputVector * moveSpeed;
+		m_inputVector = m_inputVector * moveSpeed;
         m_inputVector.y = m_thisRigitBody.velocity.y;
         m_thisRigitBody.velocity = m_inputVector;
 
-        animator.SetInteger("State", (int)state);
+		var com = GetComponent<PlayerMaualCollisionAdministrator>();
+		if (com.isBodyHitTerritory)
+		{
+			m_thisRigitBody.velocity += (com.territoryForwardSideNormal * ((t.magnitude * moveSpeed) + 0.01f) );
+		}
+
+		animator.SetInteger("State", (int)state);
 
     }
 

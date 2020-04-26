@@ -13,9 +13,9 @@ public class DefaultCheckPoint : BaseCheckPoint
 	/// </summary>
 	public override void UpdatePoint()
 	{
-		if (this.isLinked)
-			Debug.Log("Hit!");
-		else
-			Debug.Log("Not Hit!");
+		//if (this.isLinked)
+		//	Debug.Log("Hit!");
+		//else
+		//	Debug.Log("Not Hit!");
 	}
 }

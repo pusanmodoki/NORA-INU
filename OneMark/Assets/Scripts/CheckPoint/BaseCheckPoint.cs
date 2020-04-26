@@ -77,7 +77,7 @@ public abstract class BaseCheckPoint : MonoBehaviour
 		foreach (var e in PlayerAndTerritoryManager.instance.allPlayers)
 		{
 			//当たったらID保存、カウンタインクリメント
-			if (CollisionTerritory.HitCircleTerritory(e.Value.playerInfo.territorialArea, position, m_collisionRadius))
+			if (CollisionTerritory.HitCircleTerritory(e.Value.playerInfo.territorialArea, position, Vector3.forward, m_collisionRadius))
 			{
 				hitPlayer = e.Value.playerInfo.instanceID;
 				++hitCount;

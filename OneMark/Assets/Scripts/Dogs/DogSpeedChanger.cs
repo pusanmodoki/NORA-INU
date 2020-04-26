@@ -87,7 +87,6 @@ public class DogSpeedChanger
 	/// <summary>[Update]</summary>
 	public void Update()
 	{
-		Debug.Log(m_groundFlags.isStay + "+"+ m_navMeshAgent.speed);
 		//接地してなければ終了
 		if (!m_groundFlags.isStay) return;
 

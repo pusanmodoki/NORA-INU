@@ -49,7 +49,9 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	public float visibilityDistance { get { return m_visibilityDistance; } }
 
 	/// <summary>Forward方向のテリトリー法線(β)</summary>
-	public Vector3 territoryForwardSideNormal { get { return m_territoryForwardSideNormall; } }
+	public Vector3 territoryForwardSideNormal { get { return m_territoryForwardSideNormal; } }
+	/// <summary>Territory hit stay</summary>
+	public bool isBodyHitTerritory { get; private set; } = false;
 	/// <summary>Territory hit stay</summary>
 	public bool isTerritoryStay { get; private set; } = false;
 	/// <summary>Territory hit enter</summary>
@@ -112,11 +114,9 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	/// <summary>PlayerInfo</summary>
 	PlayerAndTerritoryManager.PlayerInfo m_playerInfo = null;
 	/// <summary>Forward方向のテリトリー法線</summary>
-	Vector3 m_territoryForwardSideNormall = Vector3.zero;
+	Vector3 m_territoryForwardSideNormal = Vector3.zero;
 	/// <summary>Judgment timer</summary>
 	Timer m_judgmentTimer = new Timer();
-	/// <summary>NavMesh build interval timer</summary>
-	Timer m_navMeshBuildIntervalTimer = new Timer();
 	/// <summary>Angle->radian->cos</summary>
 	float m_angleToCosine = 0.0f;
 
@@ -139,7 +139,6 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 
 		//Timer start
 		m_judgmentTimer.Start();
-		m_navMeshBuildIntervalTimer.Start();
 	}
 	/// <summary>[Update]</summary>
 	void Update()
@@ -150,8 +149,6 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			//負荷軽減
 			Vector3 position = transform.position;
 
-			//Territoryチェック
-			CheckTerritory(ref position);
 			//Visibilityチェック
 			CheckVisibility(ref position);
 			//MarkPointチェック
@@ -161,6 +158,15 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			m_judgmentTimer.Start();
 		}
 	}
+	/// <summary>[FixedUpdate]</summary>
+	private void FixedUpdate()
+	{
+		//負荷軽減
+		Vector3 position = transform.position;
+		//Territoryチェック
+		CheckTerritory(ref position);
+	}
+
 	//Debug only
 #if UNITY_EDITOR
 	/// <summary>[OnValidate](debug only)</summary>
@@ -264,13 +270,15 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	void CheckTerritory(ref Vector3 position)
 	{
 		//ヒット計算
-		bool isResult = CollisionTerritory.HitCircleAndRayTerritory(
-			m_playerInfo.territorialArea, position, out m_territoryForwardSideNormall, m_collisionRadius);
+		bool isHitBody = false;
+		bool isResult = CollisionTerritory.HitCircleAndRayTerritory(m_playerInfo.territorialArea, 
+			position, transform.forward, out m_territoryForwardSideNormal, m_collisionRadius, 1000.0f, out isHitBody);
 
 		//フラグ判定
 		isTerritoryEnter = (isTerritoryStay ^ isResult) & isResult;
 		isTerritoryExit = (isTerritoryStay ^ isResult) & isTerritoryStay;
 		isTerritoryStay = isResult;
+		isBodyHitTerritory = isHitBody;
 	}
 
 	/// <summary>

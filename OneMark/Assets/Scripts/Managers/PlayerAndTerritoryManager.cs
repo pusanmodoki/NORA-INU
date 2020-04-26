@@ -264,9 +264,10 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	/// PlayerのテリトリーエリアとXZ円で当たり判定を行う
 	/// 引数1: Player object->GetInstanceID()
 	/// 引数2: Circle position
+	/// 引数2: Circle forward direction
 	/// 引数3: Circle radius
 	/// </summary>
-	public bool HitCircleTerritory(int playerID, Vector3 position, float radius)
+	public bool HitCircleTerritory(int playerID, Vector3 position, Vector3 direction, float radius)
 	{
 		//debug only, invalid key対策
 #if UNITY_EDITOR
@@ -278,7 +279,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 #endif
 
 		return CollisionTerritory.HitCircleTerritory(
-			m_players[playerID].playerInfo.territorialArea, position, 100.0f, -radius);
+			m_players[playerID].playerInfo.territorialArea, position, direction, radius, 1000.0f);
 	}
 	/// <summary>
 	/// [RaycastTerritory]
