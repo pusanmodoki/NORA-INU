@@ -11,7 +11,7 @@ public class GameClear : MonoBehaviour
     void Start()
     {
         clear.GameClearAnimation();
-        ResultCall.GameClear();
+        //ResultCall.GameClear();
     }
 
     // Update is called once per frame
