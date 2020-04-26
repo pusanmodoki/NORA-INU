@@ -135,7 +135,7 @@ public class PlayerInput : MonoBehaviour
         m_thisRigitBody.velocity = m_inputVector;
 
 		var com = GetComponent<PlayerMaualCollisionAdministrator>();
-		if (com.isBodyHitTerritory)
+		if (com.isFixedTerritorySegmentStay)
 		{
 			m_thisRigitBody.velocity += (com.territoryForwardSideNormal * ((t.magnitude * moveSpeed) + 0.01f) );
 		}

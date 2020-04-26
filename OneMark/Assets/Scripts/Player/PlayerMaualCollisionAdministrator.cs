@@ -50,14 +50,32 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 
 	/// <summary>Forward方向のテリトリー法線(β)</summary>
 	public Vector3 territoryForwardSideNormal { get { return m_territoryForwardSideNormal; } }
-	/// <summary>Territory hit stay</summary>
-	public bool isBodyHitTerritory { get; private set; } = false;
-	/// <summary>Territory hit stay</summary>
+	/// <summary>territory hit stay (Updateで値を更新)</summary>
 	public bool isTerritoryStay { get; private set; } = false;
-	/// <summary>Territory hit enter</summary>
+	/// <summary>Territory hit enter (Updateで値を更新)</summary>
 	public bool isTerritoryEnter { get; private set; } = false;
-	/// <summary>Territory hit exit</summary>
+	/// <summary>Territory hit exit (Updateで値を更新)</summary>
 	public bool isTerritoryExit { get; private set; } = false;
+	/// <summary>Territory segment x body only hit stay (Updateで値を更新)</summary>
+	public bool isTerritorySegmentStay { get; private set; } = false;
+	/// <summary>Territory segment x body only hit enter (Updateで値を更新)</summary>
+	public bool isTerritorySegmentEnter { get; private set; } = false;
+	/// <summary>Territory segment x body only hit exit (Updateで値を更新)</summary>
+	public bool isTerritorySegmentExit { get; private set; } = false;
+
+	/// <summary>territory hit stay (FixedUpdateで値を更新, raw value)</summary>
+	public bool isFixedTerritoryStay { get; private set; } = false;
+	/// <summary>Territory hit enter (FixedUpdateで値を更新, raw value)</summary>
+	public bool isFixedTerritoryEnter { get; private set; } = false;
+	/// <summary>Territory hit exit (FixedUpdateで値を更新, raw value)</summary>
+	public bool isFixedTerritoryExit { get; private set; } = false;
+	/// <summary>Territory segment x body only hit stay (FixedUpdateで値を更新, raw value)</summary>
+	public bool isFixedTerritorySegmentStay { get; private set; } = false;
+	/// <summary>Territory segment x body only hit enter (FixedUpdateで値を更新, raw value)</summary>
+	public bool isFixedTerritorySegmentEnter { get; private set; } = false;
+	/// <summary>Territory segment x body only hit exit (FixedUpdateで値を更新, raw value)</summary>
+	public bool isFixedTerritorySegmentExit { get; private set; } = false;
+
 
 	/// <summary>Hit visibility point(not hit = null)</summary>
 	public BaseMarkPoint hitVisibilityMarkPoint { get; private set; } = null;
@@ -119,6 +137,8 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	Timer m_judgmentTimer = new Timer();
 	/// <summary>Angle->radian->cos</summary>
 	float m_angleToCosine = 0.0f;
+	/// <summary>Fixed update completed -> true</summary>
+	bool m_isFixedUpdateCompleted = false;
 
 	/// <summary>
 	/// [SetPlayerInfo]
@@ -156,6 +176,18 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 
 			//タイマーリスタート
 			m_judgmentTimer.Start();
+		}
+
+		//フラグ判定
+		if (m_isFixedUpdateCompleted)
+		{
+			m_isFixedUpdateCompleted = false;
+			isTerritoryEnter = (isTerritoryStay ^ isFixedTerritoryStay) & isFixedTerritoryStay;
+			isTerritoryExit = (isTerritoryStay ^ isFixedTerritoryStay) & isTerritoryStay;
+			isTerritoryStay = isFixedTerritoryStay;
+			isTerritoryEnter = (isTerritorySegmentStay ^ isFixedTerritorySegmentStay) & isFixedTerritorySegmentStay;
+			isTerritoryExit = (isTerritorySegmentStay ^ isFixedTerritorySegmentStay) & isTerritorySegmentStay;
+			isTerritorySegmentStay = isFixedTerritorySegmentStay;
 		}
 	}
 	/// <summary>[FixedUpdate]</summary>
@@ -275,10 +307,15 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			position, transform.forward, out m_territoryForwardSideNormal, m_collisionRadius, 1000.0f, out isHitBody);
 
 		//フラグ判定
-		isTerritoryEnter = (isTerritoryStay ^ isResult) & isResult;
-		isTerritoryExit = (isTerritoryStay ^ isResult) & isTerritoryStay;
-		isTerritoryStay = isResult;
-		isBodyHitTerritory = isHitBody;
+		m_isFixedUpdateCompleted = true;
+
+		isFixedTerritoryEnter = (isFixedTerritoryStay ^ isResult) & isResult;
+		isFixedTerritoryExit = (isFixedTerritoryStay ^ isResult) & isFixedTerritoryStay;
+		isFixedTerritoryStay = isResult;
+
+		isFixedTerritorySegmentEnter = (isFixedTerritorySegmentStay ^ isHitBody) & isHitBody;
+		isFixedTerritorySegmentExit = (isFixedTerritorySegmentStay ^ isHitBody) & isFixedTerritorySegmentStay;
+		isFixedTerritorySegmentStay = isHitBody;
 	}
 
 	/// <summary>
