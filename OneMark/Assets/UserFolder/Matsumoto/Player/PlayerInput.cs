@@ -84,7 +84,8 @@ public class PlayerInput : MonoBehaviour
     /// </summary>
     private void MoveInput()
     {
-        Vector2 inputVector2 = Vector2.zero;
+		var step = GetComponent<PlayerStepFlags>();
+		Vector2 inputVector2 = Vector2.zero;
 
         m_inputVector = Vector3.zero;
 
@@ -97,9 +98,18 @@ public class PlayerInput : MonoBehaviour
         {
 
             inputVector2.x = Input.GetAxis("Horizontal");
-            inputVector2.y = Input.GetAxis("Vertical");
+			if (inputVector2.x < 0.0f && !step.isLeftStay)
+				inputVector2.x = 0.0f;
+			else if(inputVector2.x > 0.0f && !step.isRightStay)
+				inputVector2.x = 0.0f;
 
-            if (inputVector2.magnitude > 1.0f)
+			inputVector2.y = Input.GetAxis("Vertical");
+			if (inputVector2.y < 0.0f && !step.isBackStay)
+				inputVector2.y = 0.0f;
+			else if (inputVector2.y > 0.0f && !step.isForwardStay)
+				inputVector2.y = 0.0f;
+
+			if (inputVector2.magnitude > 1.0f)
             {
                 inputVector2.Normalize();
             }
@@ -132,7 +142,7 @@ public class PlayerInput : MonoBehaviour
 
 		m_inputVector = m_inputVector * moveSpeed;
         m_inputVector.y = m_thisRigitBody.velocity.y;
-        m_thisRigitBody.velocity = m_inputVector;
+		m_thisRigitBody.velocity = m_inputVector;
 
 		var com = GetComponent<PlayerMaualCollisionAdministrator>();
 		if (com.isFixedTerritorySegmentStay)

@@ -51,30 +51,30 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	/// <summary>Forward方向のテリトリー法線(β)</summary>
 	public Vector3 territoryForwardSideNormal { get { return m_territoryForwardSideNormal; } }
 	/// <summary>territory hit stay (Updateで値を更新)</summary>
-	public bool isTerritoryStay { get; private set; } = false;
+	public bool isTerritoryStay { get { return m_isPublicFlags[0]; } private set { m_isPublicFlags[0] = value; } }
 	/// <summary>Territory hit enter (Updateで値を更新)</summary>
-	public bool isTerritoryEnter { get; private set; } = false;
+	public bool isTerritoryEnter { get { return m_isPublicFlags[1]; } private set { m_isPublicFlags[1] = value; } }
 	/// <summary>Territory hit exit (Updateで値を更新)</summary>
-	public bool isTerritoryExit { get; private set; } = false;
+	public bool isTerritoryExit { get { return m_isPublicFlags[2]; } private set { m_isPublicFlags[2] = value; } }
 	/// <summary>Territory segment x body only hit stay (Updateで値を更新)</summary>
-	public bool isTerritorySegmentStay { get; private set; } = false;
+	public bool isTerritorySegmentStay { get { return m_isPublicFlags[3]; } private set { m_isPublicFlags[3] = value; } }
 	/// <summary>Territory segment x body only hit enter (Updateで値を更新)</summary>
-	public bool isTerritorySegmentEnter { get; private set; } = false;
+	public bool isTerritorySegmentEnter { get { return m_isPublicFlags[4]; } private set { m_isPublicFlags[4] = value; } }
 	/// <summary>Territory segment x body only hit exit (Updateで値を更新)</summary>
-	public bool isTerritorySegmentExit { get; private set; } = false;
+	public bool isTerritorySegmentExit { get { return m_isPublicFlags[5]; } private set { m_isPublicFlags[5] = value; } }
 
 	/// <summary>territory hit stay (FixedUpdateで値を更新, raw value)</summary>
-	public bool isFixedTerritoryStay { get; private set; } = false;
+	public bool isFixedTerritoryStay { get { return m_isPublicFlags[6]; } private set { m_isPublicFlags[6] = value; } }
 	/// <summary>Territory hit enter (FixedUpdateで値を更新, raw value)</summary>
-	public bool isFixedTerritoryEnter { get; private set; } = false;
+	public bool isFixedTerritoryEnter { get { return m_isPublicFlags[7]; } private set { m_isPublicFlags[7] = value; } }
 	/// <summary>Territory hit exit (FixedUpdateで値を更新, raw value)</summary>
-	public bool isFixedTerritoryExit { get; private set; } = false;
+	public bool isFixedTerritoryExit { get { return m_isPublicFlags[8]; } private set { m_isPublicFlags[8] = value; } }
 	/// <summary>Territory segment x body only hit stay (FixedUpdateで値を更新, raw value)</summary>
-	public bool isFixedTerritorySegmentStay { get; private set; } = false;
+	public bool isFixedTerritorySegmentStay { get { return m_isPublicFlags[9]; } private set { m_isPublicFlags[9] = value; } }
 	/// <summary>Territory segment x body only hit enter (FixedUpdateで値を更新, raw value)</summary>
-	public bool isFixedTerritorySegmentEnter { get; private set; } = false;
+	public bool isFixedTerritorySegmentEnter { get { return m_isPublicFlags[10]; } private set { m_isPublicFlags[10] = value; } }
 	/// <summary>Territory segment x body only hit exit (FixedUpdateで値を更新, raw value)</summary>
-	public bool isFixedTerritorySegmentExit { get; private set; } = false;
+	public bool isFixedTerritorySegmentExit { get { return m_isPublicFlags[11]; } private set { m_isPublicFlags[11] = value; } }
 
 
 	/// <summary>Hit visibility point(not hit = null)</summary>
@@ -82,11 +82,11 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	/// <summary>Visibility angle (get only)</summary>
 	public float visibilityAngle { get { return m_visibilityAngle; } }
 	/// <summary>Visibility hit stay</summary>
-	public bool isVisibilityStay { get; private set; } = false;
+	public bool isVisibilityStay { get { return m_isPublicFlags[12]; } private set { m_isPublicFlags[12] = value; } }
 	/// <summary>Visibility hit enter</summary>
-	public bool isVisibilityEnter { get; private set; } = false;
+	public bool isVisibilityEnter { get { return m_isPublicFlags[13]; } private set { m_isPublicFlags[14] = value; } }
 	/// <summary>Visibility hit exit</summary>
-	public bool isVisibilityExit { get; private set; } = false;
+	public bool isVisibilityExit { get { return m_isPublicFlags[14]; } private set { m_isPublicFlags[14] = value; } }
 
 	//debug only
 #if UNITY_EDITOR
@@ -139,6 +139,8 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	float m_angleToCosine = 0.0f;
 	/// <summary>Fixed update completed -> true</summary>
 	bool m_isFixedUpdateCompleted = false;
+	/// <summary>public bool flags array</summary>
+	bool[] m_isPublicFlags = new bool[15];
 
 	/// <summary>
 	/// [SetPlayerInfo]
@@ -151,12 +153,20 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			m_playerInfo = info;
 	}
 
-	/// <summary>[Start]</summary>
-	void Start()
+	/// <summary>[Awake]</summary>
+	void Awake()
 	{
 		//視界角度を変換
 		m_angleToCosine = Mathf.Cos(m_visibilityAngle * 0.5f * Mathf.Deg2Rad);
-
+		//念の為ね
+		for (int i = 0, length = m_isPublicFlags.Length; i < length; ++i)
+			m_isPublicFlags[i] = false;
+		//Timer start
+		m_judgmentTimer.Start();
+	}
+	/// <summary>[Start]</summary>
+	void Start()
+	{
 		//Timer start
 		m_judgmentTimer.Start();
 	}
@@ -185,8 +195,8 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			isTerritoryEnter = (isTerritoryStay ^ isFixedTerritoryStay) & isFixedTerritoryStay;
 			isTerritoryExit = (isTerritoryStay ^ isFixedTerritoryStay) & isTerritoryStay;
 			isTerritoryStay = isFixedTerritoryStay;
-			isTerritoryEnter = (isTerritorySegmentStay ^ isFixedTerritorySegmentStay) & isFixedTerritorySegmentStay;
-			isTerritoryExit = (isTerritorySegmentStay ^ isFixedTerritorySegmentStay) & isTerritorySegmentStay;
+			isTerritorySegmentEnter = (isTerritorySegmentStay ^ isFixedTerritorySegmentStay) & isFixedTerritorySegmentStay;
+			isTerritorySegmentExit = (isTerritorySegmentStay ^ isFixedTerritorySegmentStay) & isTerritorySegmentStay;
 			isTerritorySegmentStay = isFixedTerritorySegmentStay;
 		}
 	}
