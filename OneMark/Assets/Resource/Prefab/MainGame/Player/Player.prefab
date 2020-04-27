@@ -74,7 +74,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.33333334
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: 92470b5b6cb98de4497286ca9aeb50ae, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: bb6532a55d18f2b40ae56c2e5068601e, type: 2}
 --- !u!195 &4227028175626528562
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -112,7 +112,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 80
-  m_CollisionDetection: 1
+  m_CollisionDetection: 3
 --- !u!136 &412210128
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -341,7 +341,7 @@ MonoBehaviour:
     m_layerMask:
       serializedVersion: 2
       m_Bits: 1024
-  m_boxCastSize: {x: 2, y: 0.1, z: 0.1}
+  m_boxCastSize: {x: 1, y: 0.1, z: 0.1}
   m_boxCastDistance: 3
   m_dIsDrawGizmos: 1
 --- !u!114 &21004177958354081
@@ -359,7 +359,7 @@ MonoBehaviour:
   m_navMeshAgent: {fileID: 4227028175626528562}
   m_navMeshSurface: {fileID: 2376410872647742070}
   m_targetObject: {fileID: 1841217118985689616}
-  m_bakeInterval: 0.1
+  m_bakeInterval: 5
   m_setTargetPointInterval: 0.05
 --- !u!1 &1441870852321385993
 GameObject:
