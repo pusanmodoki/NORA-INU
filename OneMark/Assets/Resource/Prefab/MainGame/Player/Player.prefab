@@ -33,7 +33,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 530330881339226992}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 33.79251, y: 0.5, z: -27.79}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5886578620742158901}
@@ -124,7 +124,7 @@ CapsuleCollider:
   m_Radius: 0.75
   m_Height: 2.25
   m_Direction: 2
-  m_Center: {x: 0, y: 0.2, z: -0.2}
+  m_Center: {x: 0, y: 0.8, z: -0.1}
 --- !u!120 &412210136
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -241,7 +241,6 @@ MonoBehaviour:
   - {fileID: 7197596750005545723}
   - {fileID: 3315556004336438871}
   m_lineRenderer: {fileID: 412210136}
-  m_testName: Cylinder (6)
 --- !u!114 &412210127
 MonoBehaviour:
   m_ObjectHideFlags: 0

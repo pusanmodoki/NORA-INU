@@ -5,13 +5,17 @@ using UnityEngine;
 public class GameClear : MonoBehaviour
 {
     [SerializeField]
-    private PlayerInput clear;
+    private PlayerInput clearAnime;
+
+    [SerializeField]
+    private FollowObject result;
 
     // Start is called before the first frame update
     void Start()
     {
-        clear.GameClearAnimation();
+        clearAnime.GameClearAnimation();
         //ResultCall.GameClear();
+        result.ResultFlg();
     }
 
     // Update is called once per frame
