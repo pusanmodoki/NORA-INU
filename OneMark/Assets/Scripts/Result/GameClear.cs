@@ -14,7 +14,7 @@ public class GameClear : MonoBehaviour
     void Start()
     {
         clearAnime.GameClearAnimation();
-        //ResultCall.GameClear();
+        ResultCall.GameClear();
         result.ResultFlg();
     }
 

@@ -537,6 +537,7 @@ MonoBehaviour:
   playerObject: {fileID: 6802134057546795468}
   leaveSpeed: 0.05
   resultFlg: 0
+  lookPointMoveTime: 4
 --- !u!4 &1193205864971642638
 Transform:
   m_ObjectHideFlags: 0

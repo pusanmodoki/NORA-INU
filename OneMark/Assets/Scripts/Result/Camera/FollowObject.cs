@@ -28,6 +28,10 @@ public class FollowObject : MonoBehaviour
     [Tooltip("リザルト判定")]
     public bool resultFlg = false;
 
+    [SerializeField]
+    [Tooltip("リザルト判定")]
+    private float lookPointMoveTime = 5.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +51,8 @@ public class FollowObject : MonoBehaviour
 
             // プレイヤーを見る
             this.transform.LookAt(lookObject.transform);
+
+            Invoke("MovePoint", lookPointMoveTime);
         }
     }
 
@@ -54,4 +60,11 @@ public class FollowObject : MonoBehaviour
     {
         resultFlg = true;
     }
-} 
+
+    private void MovePoint()
+    {
+        lookObject.transform.position =
+            Vector3.Lerp(lookObject.transform.position, new Vector3(2.0f, 1.5f, 0.0f), leaveSpeed);
+    }
+
+}

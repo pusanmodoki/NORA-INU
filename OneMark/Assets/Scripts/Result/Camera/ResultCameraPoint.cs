@@ -14,4 +14,5 @@ public class ResultCameraPoint: MonoBehaviour
     {
         this.transform.LookAt(this.transform.parent);   // 親の方に向いている
     }
+
 }
