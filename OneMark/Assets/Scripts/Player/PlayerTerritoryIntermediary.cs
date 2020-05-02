@@ -111,66 +111,89 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
 			}
 		}
 
-		if (Input.GetButtonDown("Fire1"))
-		{
-			if (m_isServantFlags[0])
-			{
-				var obj = ServantManager.instance.servantByMainPlayer[0];
-				obj.ComeBecauseEndOfMarking();
-				m_isServantFlags[0] = false;
-			}
-		}
-		if (Input.GetButtonDown("Fire2"))
-		{
-			if (m_isServantFlags[1])
-			{
-				var obj = ServantManager.instance.servantByMainPlayer[1];
-				obj.ComeBecauseEndOfMarking();
-				m_isServantFlags[1] = false;
-			}
-		}
-		if (Input.GetButtonDown("Fire3"))
-		{
-			if (m_isServantFlags[2])
-			{
-				var obj = ServantManager.instance.servantByMainPlayer[2];
-				obj.ComeBecauseEndOfMarking();
-				m_isServantFlags[2] = false;
-			}
-		}
+		//if (Input.GetButtonDown("Fire1"))
+		//{
+		//	if (m_isServantFlags[0])
+		//	{
+		//		var obj = ServantManager.instance.servantByMainPlayer[0];
+		//		obj.ComeBecauseEndOfMarking();
+		//		m_isServantFlags[0] = false;
+		//	}
+		//}
+		//if (Input.GetButtonDown("Fire2"))
+		//{
+		//	if (m_isServantFlags[1])
+		//	{
+		//		var obj = ServantManager.instance.servantByMainPlayer[1];
+		//		obj.ComeBecauseEndOfMarking();
+		//		m_isServantFlags[1] = false;
+		//	}
+		//}
+		//if (Input.GetButtonDown("Fire3"))
+		//{
+		//	if (m_isServantFlags[2])
+		//	{
+		//		var obj = ServantManager.instance.servantByMainPlayer[2];
+		//		obj.ComeBecauseEndOfMarking();
+		//		m_isServantFlags[2] = false;
+		//	}
+		//}
 
-		if (m_playerMaualCollisionAdministrator.isVisibilityStay
-			&& m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint != null)
-		{
-			if (Input.GetKeyDown(KeyCode.Z))
-			{
+		//if (m_playerMaualCollisionAdministrator.isVisibilityStay
+		//	&& m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint != null)
+		//{
+		//	if (Input.GetKeyDown(KeyCode.Z))
+		//	{
 
-				if (!m_isServantFlags[0])
-				{
-					var obj = ServantManager.instance.servantByMainPlayer[0];
-					obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
-					m_isServantFlags[0] = true;
-				}
-			}
-			if (Input.GetKeyDown(KeyCode.X))
-			{
-				if (!m_isServantFlags[1])
-				{
-					var obj = ServantManager.instance.servantByMainPlayer[1];
-					obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
-					m_isServantFlags[1] = true;
-				}
-			}
-			if (Input.GetKeyDown(KeyCode.C))
-			{
-				if (!m_isServantFlags[2])
-				{
-					var obj = ServantManager.instance.servantByMainPlayer[2];
-					obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
-					m_isServantFlags[2] = true;
-				}
-			}
-		}
+		//		if (!m_isServantFlags[0])
+		//		{
+		//			var obj = ServantManager.instance.servantByMainPlayer[0];
+		//			obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
+		//			m_isServantFlags[0] = true;
+		//		}
+		//	}
+		//	if (Input.GetKeyDown(KeyCode.X))
+		//	{
+		//		if (!m_isServantFlags[1])
+		//		{
+		//			var obj = ServantManager.instance.servantByMainPlayer[1];
+		//			obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
+		//			m_isServantFlags[1] = true;
+		//		}
+		//	}
+		//	if (Input.GetKeyDown(KeyCode.C))
+		//	{
+		//		if (!m_isServantFlags[2])
+		//		{
+		//			var obj = ServantManager.instance.servantByMainPlayer[2];
+		//			obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
+		//			m_isServantFlags[2] = true;
+		//		}
+		//	}
+		//}
 	}
+
+    public void DirectingServant(int _id)
+    {
+        if(_id >= 3) { return; }
+
+        if (m_isServantFlags[_id])
+        {
+            var obj = ServantManager.instance.servantByMainPlayer[_id];
+            obj.ComeBecauseEndOfMarking();
+            m_isServantFlags[_id] = false;
+        }
+
+        if (m_playerMaualCollisionAdministrator.isVisibilityStay
+            && m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint != null)
+        {
+            if (!m_isServantFlags[_id])
+            {
+                var obj = ServantManager.instance.servantByMainPlayer[_id];
+                obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
+                m_isServantFlags[_id] = true;
+            }
+        }
+    }
 
 }
