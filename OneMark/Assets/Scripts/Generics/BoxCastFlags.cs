@@ -120,9 +120,6 @@ public class BoxCastFlags : MonoBehaviour
     /// <summary>LayerMask of BoxCast</summary>
     [Header("Layer Mask Info"), Tooltip("LayerMask of BoxCast"), SerializeField]
     LayerMaskEx m_raycastLayerMask = int.MaxValue;
-    /// <summary>通常判定でヒットしなかった場合、のめり込み判定でレイヤーごとに判定をとるリスト (重くなります)</summary>
-    [Tooltip("通常判定でヒットしなかった場合、\nのめり込み判定でレイヤーごとに判定をとるリスト (重くなります)"), SerializeField]
-    List<LayerMaskEx> m_accurateCheckLayers = new List<LayerMaskEx>();
 
     //debug only
 #if UNITY_EDITOR
@@ -201,30 +198,13 @@ public class BoxCastFlags : MonoBehaviour
                 1 << raycastHit.transform.gameObject.layer, raycastHit.distance, true);
         }
         //失敗した場合めりこみかどうか確認
-        if (!isStay)
+        else
         {
-            //確認リストの中身を確認
-            foreach (var e in m_accurateCheckLayers)
-            {
-                //CheckBox
-                isStay = Physics.CheckBox(position, boxCastScale, rotation, e);
-                //HitしてboxCastResultがnullなら代入
-                if (isStay && boxCastResult == null)
-                    boxCastResult = new BoxCastResult(raycastHit.transform, position, Vector3.zero, e, 0.0f, false);
-                //HitしてboxCastResultがnullでなければレイヤーマスクOR追加
-                else if (isStay)
-                    boxCastResult.layerMask |= e;
-            }
-
-            //まだヒットしていない
-            if (!isStay)
-            {
-                //全レイヤーマスクでCheckBox
-                isStay = Physics.CheckBox(position, boxCastScale, rotation, m_raycastLayerMask);
-                //Hitでresult代入
-                if (isStay)
-                    boxCastResult = new BoxCastResult(raycastHit.transform, position, Vector3.zero, 0, 0.0f, false);
-            }
+			//全レイヤーマスクでCheckBox
+			isStay = Physics.CheckBox(position, boxCastScale, rotation, m_raycastLayerMask);
+			//Hitでresult代入
+			if (isStay)
+				boxCastResult = new BoxCastResult(raycastHit.transform, position, Vector3.zero, 0, 0.0f, false);
         }
 
 

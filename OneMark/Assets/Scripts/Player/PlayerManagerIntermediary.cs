@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// PlayerとManagerを仲介するPlayerTerritoryIntermediary 
+/// PlayerとManagerを仲介するPlayerManagerIntermediary
 /// </summary>
-public class PlayerTerritoryIntermediary : MonoBehaviour
+public class PlayerManagerIntermediary : MonoBehaviour
 {
 	/// <summary>初期オブジェクト名</summary>
 	[SerializeField, Tooltip("初期オブジェクト名")]
@@ -13,6 +13,12 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
 	/// <summary>This PlayerMaualCollisionAdministrator</summary>
 	[SerializeField, Tooltip("This PlayerMaualCollisionAdministrator")]
 	PlayerMaualCollisionAdministrator m_playerMaualCollisionAdministrator = null;
+	/// <summary>This GroundFlag</summary>
+	[SerializeField, Tooltip("This GroundFlag")]
+	BoxCastFlags m_groundFlag = null;
+	/// <summary>This NavMeshAgent</summary>
+	[SerializeField, Tooltip("This NavMeshAgent")]
+	UnityEngine.AI.NavMeshAgent m_navMeshAgent = null;
 	/// <summary>Servant follow points</summary>
 	[SerializeField, Tooltip("Servant follow points")]
 	GameObject[] m_followPoints = new GameObject[3];
@@ -50,8 +56,8 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
 	void Awake()
     {
 		//Managerにインスタンス追加
-		PlayerAndTerritoryManager.instance.AddPlayer(gameObject,
-			this, m_playerMaualCollisionAdministrator, m_followPoints);
+		PlayerAndTerritoryManager.instance.AddPlayer(gameObject, this, 
+			m_playerMaualCollisionAdministrator, m_groundFlag, m_navMeshAgent, m_followPoints);
 		//初期ポイントを探す
 		GameObject firstPoint = GameObject.Find(m_firstPointName);
 
@@ -82,7 +88,7 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
 		{
 			//Debug only, エラーログを表示
 #if UNITY_EDITOR
-			Debug.LogError("Error!! PlayerTerritoryIntermediary->Start\n FirstPoint not found");
+			Debug.LogError("Error!! PlayerManagerIntermediary->Start\n FirstPoint not found");
 #endif
 		}
 	}
@@ -111,89 +117,66 @@ public class PlayerTerritoryIntermediary : MonoBehaviour
 			}
 		}
 
-		//if (Input.GetButtonDown("Fire1"))
-		//{
-		//	if (m_isServantFlags[0])
-		//	{
-		//		var obj = ServantManager.instance.servantByMainPlayer[0];
-		//		obj.ComeBecauseEndOfMarking();
-		//		m_isServantFlags[0] = false;
-		//	}
-		//}
-		//if (Input.GetButtonDown("Fire2"))
-		//{
-		//	if (m_isServantFlags[1])
-		//	{
-		//		var obj = ServantManager.instance.servantByMainPlayer[1];
-		//		obj.ComeBecauseEndOfMarking();
-		//		m_isServantFlags[1] = false;
-		//	}
-		//}
-		//if (Input.GetButtonDown("Fire3"))
-		//{
-		//	if (m_isServantFlags[2])
-		//	{
-		//		var obj = ServantManager.instance.servantByMainPlayer[2];
-		//		obj.ComeBecauseEndOfMarking();
-		//		m_isServantFlags[2] = false;
-		//	}
-		//}
+		if (Input.GetButtonDown("Fire1"))
+		{
+			if (m_isServantFlags[0])
+			{
+				var obj = ServantManager.instance.servantByMainPlayer[0];
+				obj.ComeBecauseEndOfMarking();
+				m_isServantFlags[0] = false;
+			}
+		}
+		if (Input.GetButtonDown("Fire2"))
+		{
+			if (m_isServantFlags[1])
+			{
+				var obj = ServantManager.instance.servantByMainPlayer[1];
+				obj.ComeBecauseEndOfMarking();
+				m_isServantFlags[1] = false;
+			}
+		}
+		if (Input.GetButtonDown("Fire3"))
+		{
+			if (m_isServantFlags[2])
+			{
+				var obj = ServantManager.instance.servantByMainPlayer[2];
+				obj.ComeBecauseEndOfMarking();
+				m_isServantFlags[2] = false;
+			}
+		}
 
-		//if (m_playerMaualCollisionAdministrator.isVisibilityStay
-		//	&& m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint != null)
-		//{
-		//	if (Input.GetKeyDown(KeyCode.Z))
-		//	{
+		if (m_playerMaualCollisionAdministrator.isVisibilityStay
+			&& m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint != null)
+		{
+			if (Input.GetKeyDown(KeyCode.Z))
+			{
 
-		//		if (!m_isServantFlags[0])
-		//		{
-		//			var obj = ServantManager.instance.servantByMainPlayer[0];
-		//			obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
-		//			m_isServantFlags[0] = true;
-		//		}
-		//	}
-		//	if (Input.GetKeyDown(KeyCode.X))
-		//	{
-		//		if (!m_isServantFlags[1])
-		//		{
-		//			var obj = ServantManager.instance.servantByMainPlayer[1];
-		//			obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
-		//			m_isServantFlags[1] = true;
-		//		}
-		//	}
-		//	if (Input.GetKeyDown(KeyCode.C))
-		//	{
-		//		if (!m_isServantFlags[2])
-		//		{
-		//			var obj = ServantManager.instance.servantByMainPlayer[2];
-		//			obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
-		//			m_isServantFlags[2] = true;
-		//		}
-		//	}
-		//}
+				if (!m_isServantFlags[0])
+				{
+					var obj = ServantManager.instance.servantByMainPlayer[0];
+					obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
+					m_isServantFlags[0] = true;
+				}
+			}
+			if (Input.GetKeyDown(KeyCode.X))
+			{
+				if (!m_isServantFlags[1])
+				{
+					var obj = ServantManager.instance.servantByMainPlayer[1];
+					obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
+					m_isServantFlags[1] = true;
+				}
+			}
+			if (Input.GetKeyDown(KeyCode.C))
+			{
+				if (!m_isServantFlags[2])
+				{
+					var obj = ServantManager.instance.servantByMainPlayer[2];
+					obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
+					m_isServantFlags[2] = true;
+				}
+			}
+		}
 	}
-
-    public void DirectingServant(int _id)
-    {
-        if(_id >= 3) { return; }
-
-        if (m_isServantFlags[_id])
-        {
-            var obj = ServantManager.instance.servantByMainPlayer[_id];
-            obj.ComeBecauseEndOfMarking();
-            m_isServantFlags[_id] = false;
-        }
-
-        if (m_playerMaualCollisionAdministrator.isVisibilityStay
-            && m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint != null)
-        {
-            if (!m_isServantFlags[_id])
-            {
-                var obj = ServantManager.instance.servantByMainPlayer[_id];
-                obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
-                m_isServantFlags[_id] = true;
-            }
-        }
-    }
 
 }
