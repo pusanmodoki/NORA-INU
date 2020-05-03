@@ -20,7 +20,9 @@ public class PlayerInput : MonoBehaviour
     /// アニメーションコントローラ
     /// </summary>
     [SerializeField]
-    private Animator animator;
+    private Animator animator = null;
+
+    private PlayerTerritoryIntermediary territoryIntermediary = null;
 
     private bool isControlInput = true;
 
@@ -50,6 +52,7 @@ public class PlayerInput : MonoBehaviour
 
     private void Start()
     {
+        territoryIntermediary = GetComponent<PlayerTerritoryIntermediary>();
         m_thisRigitBody = GetComponent<Rigidbody>();
         m_female = GetComponent<Female>();
     }
@@ -158,7 +161,15 @@ public class PlayerInput : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            m_female.ShotServant(transform.forward);
+            territoryIntermediary.DirectingServant(0);
+        }
+        if (Input.GetButtonDown("Fire2"))
+        {
+            territoryIntermediary.DirectingServant(1);
+        }
+        if (Input.GetButtonDown("Fire3"))
+        {
+            territoryIntermediary.DirectingServant(2);
         }
     }
 

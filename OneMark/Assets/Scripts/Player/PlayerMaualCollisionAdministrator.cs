@@ -126,9 +126,14 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	/// <summary>ポイントタイマーロック判定に使用する距離</summary>
 	[SerializeField, Tooltip("ポイントタイマーロック判定に使用する距離")]
 	float m_personalDistance = 10;
-	
-	/// <summary>CheckMarkPointで使用するヒットリスト</summary>
-	List<BaseMarkPoint> m_checkPoints = new List<BaseMarkPoint>();
+    [SerializeField, Tooltip("マーキングするターゲット")]
+    GameObject m_nowTargetObject = null;
+    [SerializeField, Tooltip("ターゲットマーカー")]
+    TargetMarker m_targetMarker = null;
+
+
+    /// <summary>CheckMarkPointで使用するヒットリスト</summary>
+    List<BaseMarkPoint> m_checkPoints = new List<BaseMarkPoint>();
 	/// <summary>PlayerInfo</summary>
 	PlayerAndTerritoryManager.PlayerInfo m_playerInfo = null;
 	/// <summary>Forward方向のテリトリー法線</summary>
@@ -267,12 +272,14 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		if (markPoints.Count == 0)
 		{
 			EditVisibilityHitFlag(false);
+            m_targetMarker.SetTarget(null);
 			return;
 		}
 		//この時点でCount1ならヒット確定として終了
 		else if (markPoints.Count == 1)
 		{ 
 			hitVisibilityMarkPoint = markPoints[0].markPoint;
+            m_targetMarker.SetTarget(markPoints[0].markPoint.gameObject);
 			EditVisibilityHitFlag(true);
 			return;
 		}
@@ -291,6 +298,8 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 
 		//もっとも角度差が小さいものを選択する
 		hitVisibilityMarkPoint = markPoints[markPoints.Count - 1].markPoint;
+        m_nowTargetObject = hitVisibilityMarkPoint.gameObject;
+        m_targetMarker.SetTarget(m_nowTargetObject);
 		EditVisibilityHitFlag(true);
 	}
 
