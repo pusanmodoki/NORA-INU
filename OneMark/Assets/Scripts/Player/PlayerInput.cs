@@ -24,6 +24,7 @@ public class PlayerInput : MonoBehaviour
 
     private PlayerTerritoryIntermediary territoryIntermediary = null;
 
+    [SerializeField, Tooltip("入力受付状態")]
     private bool isControlInput = true;
 
     private enum AnimationState

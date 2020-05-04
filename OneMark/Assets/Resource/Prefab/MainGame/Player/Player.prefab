@@ -180,6 +180,7 @@ MonoBehaviour:
   moveSpeed: 15
   isControler: 0
   animator: {fileID: 631198141605316527}
+  isControlInput: 1
   state: 0
 --- !u!120 &412210136
 LineRenderer:
@@ -323,6 +324,8 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 512
   m_personalDistance: 4
+  m_nowTargetObject: {fileID: 0}
+  m_targetMarker: {fileID: 0}
 --- !u!114 &6670837589950015559
 MonoBehaviour:
   m_ObjectHideFlags: 0
