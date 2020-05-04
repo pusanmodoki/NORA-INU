@@ -469,7 +469,7 @@ MonoBehaviour:
   m_rushingArrivalDistance: 3
   m_rotationSpeed: 0.9
   m_rotationSeconds: 1
-  m_markingSeconds: 3
+  m_markingSeconds: 1.5
 --- !u!1 &8143399947462934002
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,7 +523,6 @@ MonoBehaviour:
     m_layerMask:
       serializedVersion: 2
       m_Bits: 1024
-  m_accurateCheckLayers: []
   m_dIsDrawGizmos: 1
   m_dIsStayNow: 1
   m_dIsEnterNow: 0
@@ -580,7 +579,6 @@ MonoBehaviour:
     m_layerMask:
       serializedVersion: 2
       m_Bits: 1024
-  m_accurateCheckLayers: []
   m_dIsDrawGizmos: 1
   m_dIsStayNow: 1
   m_dIsEnterNow: 0

@@ -108,13 +108,16 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 
 	/// <summary>当たり判定の半径</summary>
 	[Header("Sphere Collision"), SerializeField, Tooltip("当たり判定の半径")]
-	float m_collisionRadius = 0.5f;	
+	float m_collisionRadius = 0.5f;
 
+	/// <summary>ターゲットマーカー</summary>
+	[Header("Visibility"), SerializeField, Tooltip("ターゲットマーカー")]
+    TargetMarker m_targetMarker = null;
 	/// <summary>当たり判定のレイヤーマスク</summary>
-	[Header("Visibility"), SerializeField, Tooltip("当たり判定のレイヤーマスク")]
+	[SerializeField, Tooltip("当たり判定のレイヤーマスク")]
 	LayerMaskEx m_visibilityLayerMask = 0;
 	/// <summary>Visibility angle</summary>
-	[SerializeField, Range(0.0f, 180.0f), Tooltip("Visibility angle")]
+	[SerializeField, Space, Range(0.0f, 180.0f), Tooltip("Visibility angle")]
 	float m_visibilityAngle = 90;
 	/// <summary>視界判定に使用する距離</summary>
 	[SerializeField, Tooltip("視界判定に使用する距離")]
@@ -128,8 +131,6 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	float m_personalDistance = 10;
     [SerializeField, Tooltip("マーキングするターゲット")]
     GameObject m_nowTargetObject = null;
-    [SerializeField, Tooltip("ターゲットマーカー")]
-    TargetMarker m_targetMarker = null;
 
 
     /// <summary>CheckMarkPointで使用するヒットリスト</summary>

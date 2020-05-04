@@ -152,3 +152,37 @@ public class TimerAdvance
 		isPause = false;
 	}
 }
+
+
+/// <summary>
+/// 経過フレーム数を測るTimerFrame class
+/// </summary>
+public class TimerFrame
+{
+	/// <summary>Measure Start Frame</summary>
+	public int startFrame { get; protected set; } = 0;
+	/// <summary>Measure Elapased Frame</summary>
+	public int elapasedFrame { get { return Time.frameCount - startFrame; } set { startFrame = Time.frameCount - value; } }
+	/// <summary>Is Start?</summary>
+	public bool isStart { get { return startFrame > 0; } }
+	/// <summary>Is Stop?</summary>
+	public bool isStop { get { return startFrame == 0; } }
+
+	/// <summary>
+	/// [Start]
+	/// 計測を開始する
+	/// </summary>
+	public void Start()
+	{
+		startFrame = Time.frameCount;
+	}
+
+	/// <summary>
+	/// [Stop]
+	/// 計測を停止する
+	/// </summary>
+	public void Stop()
+	{
+		startFrame = 0;
+	}
+}

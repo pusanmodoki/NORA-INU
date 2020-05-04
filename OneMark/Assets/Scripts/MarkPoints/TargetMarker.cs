@@ -11,6 +11,7 @@ public class TargetMarker : MonoBehaviour
     private float rotateSpeed = 1.0f;
 
     private List<MeshRenderer> m_renderers = new List<MeshRenderer>();
+	Quaternion rotation = Quaternion.identity;
 
     // Start is called before the first frame update
     void Start()
@@ -19,18 +20,27 @@ public class TargetMarker : MonoBehaviour
         {
             m_renderers.Add(transform.GetChild(i).GetComponent<MeshRenderer>());
         }
-    }
 
-    // Update is called once per frame
-    void Update()
+		rotation = transform.rotation;
+	}
+
+	// Update is called once per frame
+	void Update()
     {
         TurningEffect();
     }
 
     private void TurningEffect()
     {
-        transform.Rotate(0.0f, rotateSpeed * Time.deltaTime, 0.0f);
-    }
+		if (target != null)
+			transform.position = target.transform.position;
+
+		rotation = Quaternion.Slerp(rotation, 
+			rotation * Quaternion.AngleAxis(rotateSpeed, Vector3.up), Time.deltaTime);
+		transform.rotation = rotation;
+
+		//transform.Rotate(0.0f, rotateSpeed * Time.deltaTime, 0.0f);
+	}
 
     public void SetTarget(GameObject _target)
     {

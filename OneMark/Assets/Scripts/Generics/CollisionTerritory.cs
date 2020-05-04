@@ -166,14 +166,14 @@ public static class CollisionTerritory
 		return hitCount % 2 == 1;
 	}
 
-	public static bool HitRayTerritory(List<Vector3> territoryArea, Vector3 position, Vector3 direction, float distance, out Vector3 normal)
+	public static bool HitRayTerritory(List<Vector3> territoryArea, Vector3 position, Vector3 direction, float distance, out Vector3 normal, out Vector3 hitPoint)
 	{
 		m_lineStart1 = position;
 		m_lineEnd1 = position + direction * distance;
 
 		for (int i = 0, count = territoryArea.Count - 1; i < count; ++i)
 		{
-			if (HitSegments(territoryArea[i], territoryArea[i + 1]))
+			if (HitSegments(territoryArea[i], territoryArea[i + 1], out hitPoint))
 			{
 				normal = Vector3.Cross(
 					(territoryArea[i + 1] - territoryArea[i]).normalized, Vector3.up).normalized;
@@ -181,14 +181,14 @@ public static class CollisionTerritory
 			}
 		}
 
-		if (HitSegments(territoryArea[territoryArea.Count - 1], territoryArea[0]))
+		if (HitSegments(territoryArea[territoryArea.Count - 1], territoryArea[0], out hitPoint))
 		{
 			normal = Vector3.Cross(
 				(territoryArea[0] - territoryArea[territoryArea.Count - 1]).normalized, Vector3.up).normalized;
 			return true;
 		}
 
-		normal = Vector3.zero;
+		hitPoint = normal = Vector3.zero;
 		return false;
 	}
 

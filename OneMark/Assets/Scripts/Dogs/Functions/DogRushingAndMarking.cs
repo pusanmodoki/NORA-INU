@@ -94,6 +94,10 @@ public class DogRushingAndMarking : BaseDogAIFunction
 		functionState = State.Rushing;
 		//Animation Set
 		m_animationController.editAnimation.SetTriggerRolling();
+
+		//Pause
+		m_markPoint.ResetTimer();
+		m_markPoint.isPauseTimer = true;
 	}
 	/// <summary>
 	/// [AIEnd]
@@ -130,7 +134,8 @@ public class DogRushingAndMarking : BaseDogAIFunction
 			EndAIFunction(updateIdentifier);
 			return;
 		}
-		else if (m_markPoint.isLinked & m_markPoint.isPauseTimer)
+		else if (m_markPoint.isLinked && 
+			(m_markPoint.linkServantID != dogAIAgent.aiAgentInstanceID && m_markPoint.linkServantID != -1))
 		{
 			EndAIFunction(updateIdentifier);
 			return;

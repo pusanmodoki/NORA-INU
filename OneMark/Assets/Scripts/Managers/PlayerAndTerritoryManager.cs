@@ -17,22 +17,29 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	public class PlayerInfo
 	{
 		/// <summary>[コンストラクタ]</summary>
-		public PlayerInfo(GameObject gameObject, PlayerTerritoryIntermediary territoryIntermediary,
-		PlayerMaualCollisionAdministrator maualCollisionAdministrator, GameObject[] followPoints)
+		public PlayerInfo(GameObject gameObject, PlayerManagerIntermediary territoryIntermediary,
+		PlayerMaualCollisionAdministrator maualCollisionAdministrator, BoxCastFlags groundFlag,
+		UnityEngine.AI.NavMeshAgent navMeshAgent, GameObject[] followPoints)
 		{
 			this.gameObject = gameObject;
-			this.territoryIntermediary = territoryIntermediary;
+			this.managerIntermediary = territoryIntermediary;
 			this.maualCollisionAdministrator = maualCollisionAdministrator;
+			this.groundFlag = groundFlag;
+			this.navMeshAgent = navMeshAgent;
 			this.followPoints = followPoints;
 			instanceID = gameObject.GetInstanceID();
 		}
 
 		/// <summary>Player game object</summary>
 		public GameObject gameObject { get; private set; }
-		/// <summary>Player Player territory intermediary</summary>
-		public PlayerTerritoryIntermediary territoryIntermediary { get; private set; }
-		/// <summary>Player Player maual collision administrator</summary>
+		/// <summary>Player manager intermediary</summary>
+		public PlayerManagerIntermediary managerIntermediary { get; private set; }
+		/// <summary>Player maual collision administrator</summary>
 		public PlayerMaualCollisionAdministrator maualCollisionAdministrator { get; private set; }
+		/// <summary>Player ground flag</summary>
+		public BoxCastFlags groundFlag { get; private set; }
+		/// <summary>Player nav mesh agent</summary>
+		public UnityEngine.AI.NavMeshAgent navMeshAgent { get; private set; }
 		/// <summary>Player instance id</summary>
 		public int instanceID { get; private set; }
 		/// <summary>All territory mark points (クラス)</summary>
@@ -98,10 +105,12 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	public class StoragePlayer
 	{
 		/// <summary>[コンストラクタ]</summary>
-		public StoragePlayer(GameObject player, PlayerTerritoryIntermediary territoryIntermediary,
-		PlayerMaualCollisionAdministrator maualCollisionAdministrator, GameObject[] followPoints)
+		public StoragePlayer(GameObject player, PlayerManagerIntermediary managerIntermediary,
+			PlayerMaualCollisionAdministrator maualCollisionAdministrator, BoxCastFlags groundFlag, 
+			UnityEngine.AI.NavMeshAgent navMeshAgent, GameObject[] followPoints)
 		{
-			playerInfo = new PlayerInfo(player, territoryIntermediary, maualCollisionAdministrator, followPoints);
+			playerInfo = new PlayerInfo(player, managerIntermediary, 
+				maualCollisionAdministrator, groundFlag, navMeshAgent, followPoints);
 			nextCalucrateFrameCount = 0;
 			isCalucrateNextUpdate = false;
 		}
@@ -289,21 +298,23 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	/// 引数3: Ray direction
 	/// 引数4: Ray distance
 	/// 引数5: Ray normal (out)
+	/// 引数5: Ray hit point (out)
 	/// </summary>
-	public bool RaycastTerritory(int playerID, Vector3 position, Vector3 direction, float distance, out Vector3 normal)
+	public bool RaycastTerritory(int playerID, Vector3 position, Vector3 direction, 
+		float distance, out Vector3 normal, out Vector3 hitPoint)
 	{
 		//debug only, invalid key対策
 #if UNITY_EDITOR
 		if (!m_players.ContainsKey(playerID))
 		{
 			Debug.LogError("Error!! PlayerAndTerritoryManager->GetServant\n ContainsKey(instanceID) == false");
-			normal = Vector3.zero;
+			normal = hitPoint = Vector3.zero;
 			return false;
 		}
 #endif
 
 		return CollisionTerritory.HitRayTerritory(m_players[playerID].playerInfo.territorialArea,
-			position, direction, distance, out normal);
+			position, direction, distance, out normal, out hitPoint);
 	}
 
 
@@ -311,13 +322,14 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	/// [AddPlayer]
 	/// Playerを登録する
 	/// 引数1: Player object
-	/// 引数2: Player PlayerTerritoryIntermediary
+	/// 引数2: Player PlayerManagerIntermediary
 	/// 引数3: Player PlayerMaualCollisionAdministrator
 	/// 引数4: Player follow points
 	/// 引数5: This main player?, default = true
 	/// </summary>
-	public void AddPlayer(GameObject player, PlayerTerritoryIntermediary territoryIntermediary,
-		PlayerMaualCollisionAdministrator maualCollisionAdministrator, GameObject[] followPoints, bool isMainPlayer = true)
+	public void AddPlayer(GameObject player, PlayerManagerIntermediary managerIntermediary,
+		PlayerMaualCollisionAdministrator maualCollisionAdministrator, BoxCastFlags groundFlag, 
+		UnityEngine.AI.NavMeshAgent navMeshAgent, GameObject[] followPoints, bool isMainPlayer = true)
 	{
 		//debug only, invalid key対策
 #if UNITY_EDITOR
@@ -328,7 +340,8 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		}
 #endif
 
-		StoragePlayer info = new StoragePlayer(player, territoryIntermediary, maualCollisionAdministrator, followPoints);
+		StoragePlayer info = new StoragePlayer(player, managerIntermediary, 
+			maualCollisionAdministrator, groundFlag, navMeshAgent, followPoints);
 
 		m_players.Add(player.GetInstanceID(), info);
 		if (isMainPlayer)

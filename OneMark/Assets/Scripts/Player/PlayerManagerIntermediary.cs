@@ -33,8 +33,6 @@ public class PlayerManagerIntermediary : MonoBehaviour
 	/// <summary>初期ポイントがポーズ中か否か</summary>
 	bool m_isPauseFirstPoint = false;
 
-	bool[] m_isServantFlags = new bool[3];
-
 	/// <summary>
 	/// [ChangeTerritory]
 	/// テリトリー変更のコールバック
@@ -93,7 +91,6 @@ public class PlayerManagerIntermediary : MonoBehaviour
 		}
 	}
 
-
 	/// <summary>
 	/// [Update]
 	/// とりあえずの処理たち
@@ -116,67 +113,5 @@ public class PlayerManagerIntermediary : MonoBehaviour
 				m_lineRenderer.positionCount = 0;
 			}
 		}
-
-		if (Input.GetButtonDown("Fire1"))
-		{
-			if (m_isServantFlags[0])
-			{
-				var obj = ServantManager.instance.servantByMainPlayer[0];
-				obj.ComeBecauseEndOfMarking();
-				m_isServantFlags[0] = false;
-			}
-		}
-		if (Input.GetButtonDown("Fire2"))
-		{
-			if (m_isServantFlags[1])
-			{
-				var obj = ServantManager.instance.servantByMainPlayer[1];
-				obj.ComeBecauseEndOfMarking();
-				m_isServantFlags[1] = false;
-			}
-		}
-		if (Input.GetButtonDown("Fire3"))
-		{
-			if (m_isServantFlags[2])
-			{
-				var obj = ServantManager.instance.servantByMainPlayer[2];
-				obj.ComeBecauseEndOfMarking();
-				m_isServantFlags[2] = false;
-			}
-		}
-
-		if (m_playerMaualCollisionAdministrator.isVisibilityStay
-			&& m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint != null)
-		{
-			if (Input.GetKeyDown(KeyCode.Z))
-			{
-
-				if (!m_isServantFlags[0])
-				{
-					var obj = ServantManager.instance.servantByMainPlayer[0];
-					obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
-					m_isServantFlags[0] = true;
-				}
-			}
-			if (Input.GetKeyDown(KeyCode.X))
-			{
-				if (!m_isServantFlags[1])
-				{
-					var obj = ServantManager.instance.servantByMainPlayer[1];
-					obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
-					m_isServantFlags[1] = true;
-				}
-			}
-			if (Input.GetKeyDown(KeyCode.C))
-			{
-				if (!m_isServantFlags[2])
-				{
-					var obj = ServantManager.instance.servantByMainPlayer[2];
-					obj.GoSoStartOfMarking(m_playerMaualCollisionAdministrator.hitVisibilityMarkPoint);
-					m_isServantFlags[2] = true;
-				}
-			}
-		}
 	}
-
 }

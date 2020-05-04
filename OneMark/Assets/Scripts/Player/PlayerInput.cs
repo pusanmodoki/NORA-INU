@@ -4,28 +4,6 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    /// <summary>
-    /// speed
-    /// </summary>
-    [SerializeField]
-    private float moveSpeed = 1.0f;
-
-    /// <summary>
-    /// コントローラを使ってるかどうか
-    /// </summary>
-    [SerializeField]
-    private bool isControler = false;
-
-    /// <summary>
-    /// アニメーションコントローラ
-    /// </summary>
-    [SerializeField]
-    private Animator animator = null;
-
-    private PlayerTerritoryIntermediary territoryIntermediary = null;
-
-    private bool isControlInput = true;
-
     private enum AnimationState
     {
         Stand = 0,
@@ -34,157 +12,132 @@ public class PlayerInput : MonoBehaviour
         GameOver
     }
 
+	public Vector3 moveInput { get { return m_moveInput; } }
+	public bool isEnableInput { get; private set; } = true;
+
+	/// <summary>This PlayerMaualCollisionAdministrator</summary>
+	[SerializeField, Tooltip("This PlayerMaualCollisionAdministrator")]
+	PlayerMaualCollisionAdministrator m_maualCollisionAdministrator = null;
+	/// <summary>
+	/// アニメーションコントローラ
+	/// </summary>
+	[SerializeField]
+    private Animator m_animator = null;
     /// <summary>
     /// プレイヤーの状態
     /// </summary>
     [SerializeField]
-    private AnimationState state = AnimationState.Stand;
+    private AnimationState m_state = AnimationState.Stand;
 
-    private Vector3 m_inputVector = Vector3.zero;
+	[SerializeField]
+	float m_shotDeactivateSeconds = 0.5f;
 
-    /// <summary>
-    /// player rigidbody
-    /// </summary>
-    private Rigidbody m_thisRigitBody;
+	[Header("Debug Only"), SerializeField]
+	Vector2 m_dMoveInput = Vector2.zero;
 
-    private Female m_female;
+	Vector3 m_moveInput = Vector3.zero;
 
+	Timer[] m_shotTimers = new Timer[3];
+	bool[] m_isShotFlags = new bool[3];
 
-    private void Start()
+	public void GameClearAnimation()
+	{
+		m_animator.SetTrigger("Result");
+		m_state = AnimationState.GameClear;
+		m_animator.SetInteger("State", (int)m_state);
+		isEnableInput = false;
+	}
+	public void GameOverAnimation()
+	{
+		m_animator.SetTrigger("Result");
+		m_state = AnimationState.GameOver;
+		m_animator.SetInteger("State", (int)m_state);
+		isEnableInput = false;
+	}
+
+	void Start()
     {
-        territoryIntermediary = GetComponent<PlayerTerritoryIntermediary>();
-        m_thisRigitBody = GetComponent<Rigidbody>();
-        m_female = GetComponent<Female>();
-    }
+		for (int i = 0; i < m_shotTimers.Length; ++i)
+			m_shotTimers[i] = new Timer();
+	}
 
     // Update is called once per frame
     void Update()
-    {
+	{
+		MoveInput();
+
+		ShotInput();
 	}
-
-	private void FixedUpdate()
-    {
-        if (isControlInput)
-        {
-            MoveInput();
-
-            ShotInput();
-        }
-    }
-
-    
-    /// <summary>
-    /// 入力処理
-    /// </summary>
-    private void InputPlayer()
-    {
-        // 移動入力
-        MoveInput();
-    }
 
     /// <summary>
     ///  移動入力
     /// </summary>
-    private void MoveInput()
+    void MoveInput()
     {
-		var step = GetComponent<PlayerStepFlags>();
-		Vector2 inputVector2 = Vector2.zero;
+        m_moveInput = Vector3.zero;
 
-        m_inputVector = Vector3.zero;
+		if (!isEnableInput)
+			return;
 
-        if (isControler)
-        {
-            m_inputVector.x = Input.GetAxis("Horizontal");
-            m_inputVector.z = Input.GetAxis("Vertical");
-        }
+		m_moveInput.x = Input.GetAxis("Horizontal");
+		m_moveInput.z = Input.GetAxis("Vertical");
+
+		m_moveInput = m_moveInput.normalized;
+
+#if UNITY_EDITOR
+		m_dMoveInput = m_moveInput;
+#endif
+
+		if (m_moveInput.sqrMagnitude > 0.0f)
+            m_state = AnimationState.Run;
         else
-        {
+            m_state = AnimationState.Stand;
 
-            inputVector2.x = Input.GetAxis("Horizontal");
-			if (inputVector2.x < 0.0f && !step.isLeftStay)
-				inputVector2.x = 0.0f;
-			else if(inputVector2.x > 0.0f && !step.isRightStay)
-				inputVector2.x = 0.0f;
+		m_animator.SetInteger("State", (int)m_state);
+    }
 
-			inputVector2.y = Input.GetAxis("Vertical");
-			if (inputVector2.y < 0.0f && !step.isBackStay)
-				inputVector2.y = 0.0f;
-			else if (inputVector2.y > 0.0f && !step.isForwardStay)
-				inputVector2.y = 0.0f;
+    void ShotInput()
+    {
+		if (!isEnableInput)
+			return;
 
-			if (inputVector2.magnitude > 1.0f)
-            {
-                inputVector2.Normalize();
-            }
-
-            m_inputVector.x = inputVector2.x;
-            m_inputVector.z = inputVector2.y;
-        }
-
-
-        if(inputVector2.magnitude > 0.0f)
-        {
-            state = AnimationState.Run;
-        }
-        else
-        {
-            state = AnimationState.Stand;
-        }
-        //m_thisRigitBody.AddForce(m_inputVector * moveSpeed);
-
-
-        //inputVector2 = new Vector2(m_thisRigitBody.velocity.x, m_thisRigitBody.velocity.z);
-        //if (inputVector2.magnitude > maxSpeed)
-        //{
-        //    inputVector2 = inputVector2.normalized * maxSpeed;
-        //    m_thisRigitBody.velocity = new Vector3(inputVector2.x, m_thisRigitBody.velocity.y, inputVector2.y);
-        //}
-
-        transform.LookAt(transform.position + m_inputVector);
-		var t = m_inputVector;
-
-		m_inputVector = m_inputVector * moveSpeed;
-        m_inputVector.y = m_thisRigitBody.velocity.y;
-		m_thisRigitBody.velocity = m_inputVector;
-
-		var com = GetComponent<PlayerMaualCollisionAdministrator>();
-		if (com.isFixedTerritorySegmentStay)
+		if (Input.GetButtonDown("Fire1")
+			&& m_shotTimers[0].elapasedTime >= m_shotDeactivateSeconds)
 		{
-			m_thisRigitBody.velocity += (com.territoryForwardSideNormal * ((t.magnitude * moveSpeed) + 0.01f) );
+			ShotServant(0);
 		}
 
-		animator.SetInteger("State", (int)state);
+		if (Input.GetButtonDown("Fire2")
+			&& m_shotTimers[1].elapasedTime >= m_shotDeactivateSeconds)
+		{
+			ShotServant(1);
+		}
 
-    }
+		if (Input.GetButtonDown("Fire3")
+			&& m_shotTimers[2].elapasedTime >= m_shotDeactivateSeconds)
+		{
+			ShotServant(2);
+		}
+	}
 
-    private void ShotInput()
-    {
-        if (Input.GetButtonDown("Fire1"))
-        {
-            territoryIntermediary.DirectingServant(0);
-        }
-        if (Input.GetButtonDown("Fire2"))
-        {
-            territoryIntermediary.DirectingServant(1);
-        }
-        if (Input.GetButtonDown("Fire3"))
-        {
-            territoryIntermediary.DirectingServant(2);
-        }
-    }
+	void ShotServant(int id)
+	{
+		var servant = ServantManager.instance.servantByMainPlayer[id];
 
-    public void GameClearAnimation()
-    {
-        animator.SetTrigger("Result");
-        state = AnimationState.GameClear;
-        animator.SetInteger("State", (int)state);
-        isControlInput = false;
-    }
-    public void GameOverAnimation()
-    {
-        animator.SetTrigger("Result");
-        state = AnimationState.GameOver;
-        animator.SetInteger("State", (int)state);
-        isControlInput = false;
-    }
+		if (m_isShotFlags[id])
+		{
+			servant.ComeBecauseEndOfMarking();
+			m_isShotFlags[id] = false;
+			m_shotTimers[id].Start();
+			return;
+		}
+		else if(m_maualCollisionAdministrator.isVisibilityStay
+			&& m_maualCollisionAdministrator.hitVisibilityMarkPoint != null)
+		{
+			servant.GoSoStartOfMarking(m_maualCollisionAdministrator.hitVisibilityMarkPoint);
+			m_isShotFlags[id] = true;
+			m_shotTimers[id].Start();
+			return;
+		}
+	}
 }
