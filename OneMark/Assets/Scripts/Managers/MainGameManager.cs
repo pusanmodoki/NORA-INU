@@ -17,8 +17,8 @@ public class MainGameManager : MonoBehaviour
 	ReadOnlyDictionary<int, BaseCheckPoint> m_allCheckPoints = null;
 	bool m_isEnd = false;
 
-	/// <summary>[Awake]</summary>
-	void Awake()
+    /// <summary>[Awake]</summary>
+    void Awake()
 	{
 		//インスタンス登録
 		instance = this;
