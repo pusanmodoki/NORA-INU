@@ -16,7 +16,7 @@ public class SceneTransManager : MonoBehaviour
     static public string nextSceneName { get; private set; }
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         nowSceneName = g_nowSceneName = SceneManager.GetActiveScene().name;
         nextSceneName = g_nextSceneName;
