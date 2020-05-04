@@ -16,8 +16,12 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	/// </summary>
 	public class PlayerInfo
 	{
+		/// <summary>
+		/// Managerが使用するUsedManager
+		/// </summary>
 		public struct UsedManager
 		{
+			/// <summary>[コンストラクタ]</summary>
 			public UsedManager(float calucrateInterval, float calucrateFeatureInterval)
 			{
 				intervalTimer = new Timer();
@@ -76,10 +80,6 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		public List<BaseMarkPoint> allTerritorys { get; private set; } = new List<BaseMarkPoint>();
 		/// <summary>外周のterritory mark points (クラス)</summary>
 		public List<BaseMarkPoint> borderTerritorys { get; private set; } = new List<BaseMarkPoint>();
-		/// <summary>All territory mark points (ポイント)</summary>
-		public List<Vector3> allTerritoryPoints { get; private set; } = new List<Vector3>();
-		/// <summary>外周のterritory mark points (ポイント)</summary>
-		public List<Vector3> borderTerritoryPoints { get; private set; } = new List<Vector3>();
 		/// <summary>ボリュームを加えたテリトリー圏 (ポジション)</summary>
 		public List<Vector3> territorialArea { get; private set; } = new List<Vector3>();
 		/// <summary>ボリュームを加えた少し未来のテリトリー圏 (ポジション)</summary>
@@ -282,29 +282,21 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	public void CalucrateTerritory(PlayerInfo playerInfo)
 	{
 		//リストクリア
-		playerInfo.allTerritoryPoints.Clear();
-		playerInfo.borderTerritorys.Clear();
-		playerInfo.borderTerritoryPoints.Clear();
 		playerInfo.territorialArea.Clear();
 		m_grahamResult.Clear();
-		//ポジション記録, ソート用リスト構築
+		
+		//ソート用リスト構築
 		for (int i = 0, count = playerInfo.allTerritorys.Count; i < count; ++i)
-		{
-			playerInfo.allTerritoryPoints.Add(playerInfo.allTerritorys[i].transform.position);
-			m_grahamResult.Add(new GrahamScan.CustomFormat(playerInfo.allTerritoryPoints[i], i));
-		}
+			m_grahamResult.Add(new GrahamScan.CustomFormat(playerInfo.allTerritorys[i].transform.position, i));
 
 		//グラハムソート
 		int result = GrahamScan.Run(m_grahamResult);
 		if (result < m_grahamResult.Count - 1)
 			m_grahamResult.RemoveRange(result, m_grahamResult.Count - result);
 
-		//結果を各リストに構築
+		//結果をリストに構築
 		for (int i = 0; i < result; ++i)
-		{
 			playerInfo.borderTerritorys.Add(playerInfo.allTerritorys[m_grahamResult[i].userID]);
-			playerInfo.borderTerritoryPoints.Add(playerInfo.allTerritoryPoints[m_grahamResult[i].userID]);
-		}
 
 		//ボリューム追加した状態でグラハムソート
 		for (int i = 0, count = m_grahamResult.Count; i < count; ++i)
