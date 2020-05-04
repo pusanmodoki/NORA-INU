@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7508082396946835192}
   - component: {fileID: 7508082396946835198}
   - component: {fileID: 7508082396946835199}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: kamihubuki_parple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,7 +222,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 0.64958805, g: 1, b: 0.3443396, a: 1}
-      maxColor: {r: 0.6971063, g: 0.41176474, b: 1, a: 1}
+      maxColor: {r: 0.33056605, g: 0, b: 0.6792453, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 0.77483577, g: 0.48627448, b: 1, a: 1}
@@ -4765,7 +4765,7 @@ GameObject:
   - component: {fileID: 7508082397313249110}
   - component: {fileID: 7508082397313249108}
   - component: {fileID: 7508082397313249109}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: kamihubuki_water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4976,7 +4976,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 0.64958805, g: 1, b: 0.3443396, a: 1}
-      maxColor: {r: 0.41176474, g: 0.99379367, b: 1, a: 1}
+      maxColor: {r: 0, g: 0.06983566, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 0.77483577, g: 0.48627448, b: 1, a: 1}
@@ -9519,7 +9519,7 @@ GameObject:
   - component: {fileID: 7508082398152081685}
   - component: {fileID: 7508082398152081686}
   - component: {fileID: 7508082398152081687}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: kamihubuki
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14277,7 +14277,7 @@ GameObject:
   - component: {fileID: 7508082398372621415}
   - component: {fileID: 7508082398372621413}
   - component: {fileID: 7508082398372621414}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: kamihubuki_red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14488,7 +14488,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 0.64958805, g: 1, b: 0.3443396, a: 1}
-      maxColor: {r: 1, g: 0.45465487, b: 0.41176474, a: 1}
+      maxColor: {r: 1, g: 0, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 0.77483577, g: 0.48627448, b: 1, a: 1}
@@ -19031,7 +19031,7 @@ GameObject:
   - component: {fileID: 7508082398554114892}
   - component: {fileID: 7508082398554114930}
   - component: {fileID: 7508082398554114931}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: kamihubuki_green
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19242,7 +19242,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 0.64958805, g: 1, b: 0.3443396, a: 1}
-      maxColor: {r: 0.6465275, g: 1, b: 0.41176474, a: 1}
+      maxColor: {r: 0.20120151, g: 0.4433962, b: 0.039738327, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 0.77483577, g: 0.48627448, b: 1, a: 1}
