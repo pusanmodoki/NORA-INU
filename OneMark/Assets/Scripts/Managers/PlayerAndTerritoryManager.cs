@@ -16,6 +16,36 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	/// </summary>
 	public class PlayerInfo
 	{
+		public struct UsedManager
+		{
+			public UsedManager(float calucrateInterval, float calucrateFeatureInterval)
+			{
+				intervalTimer = new Timer();
+				featureIntervalTimer = new Timer();
+				nextForceCalucrateFrameCount = 0;
+				isCalucrateNextUpdate = false;
+				this.calucrateInterval = calucrateInterval;
+				this.calucrateFeatureInterval = calucrateFeatureInterval;
+
+				intervalTimer.Start();
+				featureIntervalTimer.Start();
+			}
+
+			/// <summary>テリトリー計算タイマー</summary>
+			public Timer intervalTimer;
+			/// <summary>未来のテリトリー計算タイマー</summary>
+			public Timer featureIntervalTimer;
+			/// <summary>テリトリー計算間隔</summary>
+			public float calucrateInterval;
+			/// <summary>未来のテリトリー計算間隔</summary>
+			public float calucrateFeatureInterval;
+
+			/// <summary>次回テリトリー計算するフレーム数</summary>
+			public int nextForceCalucrateFrameCount;
+			/// <summary>次回の通常更新で計算する？</summary>
+			public bool isCalucrateNextUpdate;
+		}
+
 		/// <summary>[コンストラクタ]</summary>
 		public PlayerInfo(GameObject gameObject, PlayerManagerIntermediary territoryIntermediary,
 		PlayerMaualCollisionAdministrator maualCollisionAdministrator, BoxCastFlags groundFlag,
@@ -52,6 +82,8 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		public List<Vector3> borderTerritoryPoints { get; private set; } = new List<Vector3>();
 		/// <summary>ボリュームを加えたテリトリー圏 (ポジション)</summary>
 		public List<Vector3> territorialArea { get; private set; } = new List<Vector3>();
+		/// <summary>ボリュームを加えた少し未来のテリトリー圏 (ポジション)</summary>
+		public List<Vector3> featureTerritorialArea { get; private set; } = new List<Vector3>();
 		/// <summary>Follow point game objects</summary>
 		public GameObject[] followPoints { get; private set; } = null;
 		/// <summary>テリトリー変更時にCallされるコールバック (計算時ではなく, AddMarkPoint, RemoveMarkPoint実行でCall)</summary>
@@ -117,10 +149,17 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 
 		/// <summary>Player info</summary>
 		public PlayerInfo playerInfo;
+
 		/// <summary>次回テリトリー計算するフレーム</summary>
 		public int nextCalucrateFrameCount;
 		/// <summary>次回の通常更新で計算する？</summary>
 		public bool isCalucrateNextUpdate;
+
+
+		public Timer intervalTimer;
+		public float calucrateInterval;
+		public Timer featureIntervalTimer;
+		public float calucrateFeatureInterval;
 	}
 
 
@@ -135,12 +174,23 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	/// <summary>ボリューム円の分割数</summary>
 	[SerializeField, Range(0, 100), Tooltip("ボリューム円の分割数")]
 	int m_divisionVolume = 10;
+
 	/// <summary>ボリューム円の半径</summary>
-	[SerializeField, Range(0, 10), Tooltip("ボリューム円の半径")]
+	[SerializeField, Space, Range(0, 10), Tooltip("ボリューム円の半径")]
 	float m_radiusVolume = 3.0f;
 	/// <summary>テリトリー計算間隔</summary>
 	[SerializeField, Range(0, 2), Tooltip("テリトリー計算間隔")]
-	float m_calucrateTerritoryInterval = 0.2f;
+	float m_calucrateTerritoryIntervalSeconds = 0.2f;
+
+	/// <summary>ボリューム円の半径</summary>
+	[SerializeField, Space, Range(0, 10), Tooltip("ボリューム円の半径")]
+	float m_featureRadiusVolume = 3.1f;
+	/// <summary>未来のテリトリー計算間隔</summary>
+	[SerializeField, Range(0, 2), Tooltip("未来のテリトリー計算間隔")]
+	float m_calucrateFeatureTerritoryIntervalSeconds = 0.2f;
+	/// <summary>未来のテリトリー判断に使用する、除外とみなす残り時間</summary>
+	[SerializeField, Range(0, 5), Tooltip("未来のテリトリー判断に使用する、除外とみなす残り時間")]
+	float m_featureTerritoryExcludeSeconds = 3.0f;
 
 	/// <summary>Manage players</summary>
 	Dictionary<int, StoragePlayer> m_players = null;
@@ -148,6 +198,8 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	List<GrahamScan.CustomFormat> m_grahamResult = new List<GrahamScan.CustomFormat>();
 	/// <summary>ボリューム座標</summary>
 	Vector3[] m_volumePoints = null;
+	/// <summary>ボリューム座標 (feature)</summary>
+	Vector3[] m_featureVolumePoints = null;
 	/// <summary>計算間隔用タイマー</summary>
 	Timer m_intervalTimer = new Timer();
 
@@ -180,7 +232,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		int frameCount = Time.frameCount;
 		bool isUpdate = false;
 
-		if (m_intervalTimer.elapasedTime >= m_calucrateTerritoryInterval)
+		if (m_intervalTimer.elapasedTime >= m_calucrateTerritoryIntervalSeconds)
 		{
 			isUpdate = true;
 			m_intervalTimer.Start();
