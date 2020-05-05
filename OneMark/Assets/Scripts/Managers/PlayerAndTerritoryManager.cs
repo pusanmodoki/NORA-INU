@@ -19,7 +19,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		/// <summary>
 		/// Managerが使用するUsedManager
 		/// </summary>
-		public struct UsedManager
+		public class UsedManager
 		{
 			/// <summary>[コンストラクタ]</summary>
 			public UsedManager(float calucrateInterval, float calucrateFeatureInterval)
@@ -52,8 +52,9 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 
 		/// <summary>[コンストラクタ]</summary>
 		public PlayerInfo(GameObject gameObject, PlayerManagerIntermediary territoryIntermediary,
-		PlayerMaualCollisionAdministrator maualCollisionAdministrator, BoxCastFlags groundFlag,
-		UnityEngine.AI.NavMeshAgent navMeshAgent, GameObject[] followPoints)
+			PlayerMaualCollisionAdministrator maualCollisionAdministrator, BoxCastFlags groundFlag,
+			UnityEngine.AI.NavMeshAgent navMeshAgent, GameObject[] followPoints,
+			GameObject resultCameraLookPoint, GameObject resultCameraMovePoint)
 		{
 			this.gameObject = gameObject;
 			this.managerIntermediary = territoryIntermediary;
@@ -61,6 +62,8 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 			this.groundFlag = groundFlag;
 			this.navMeshAgent = navMeshAgent;
 			this.followPoints = followPoints;
+			this.resultCameraLookPoint = resultCameraLookPoint;
+			this.resultCameraMovePoint = resultCameraMovePoint;
 			instanceID = gameObject.GetInstanceID();
 		}
 
@@ -86,8 +89,14 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		public List<Vector3> featureTerritorialArea { get; private set; } = new List<Vector3>();
 		/// <summary>Follow point game objects</summary>
 		public GameObject[] followPoints { get; private set; } = null;
+		/// <summary>Result camera look point game objects</summary>
+		public GameObject resultCameraLookPoint { get; private set; } = null;
+		/// <summary>Result camera move point game objects</summary>
+		public GameObject resultCameraMovePoint { get; private set; } = null;
 		/// <summary>テリトリー変更時にCallされるコールバック (計算時ではなく, AddMarkPoint, RemoveMarkPoint実行でCall)</summary>
 		public ChangeTerritoryCallback changeTerritoryCallback { get; set; } = null;
+		/// <summary>Used manager valus</summary>
+		public UsedManager usedManager { get; private set; } = new UsedManager(0, 0);
 
 		/// <summary>
 		/// [AddMarkPoint]
@@ -131,43 +140,12 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		}
 	}
 
-	/// <summary>
-	/// 自クラス内でPlayerInfoを保存するStoragePlayer
-	/// </summary>
-	public class StoragePlayer
-	{
-		/// <summary>[コンストラクタ]</summary>
-		public StoragePlayer(GameObject player, PlayerManagerIntermediary managerIntermediary,
-			PlayerMaualCollisionAdministrator maualCollisionAdministrator, BoxCastFlags groundFlag, 
-			UnityEngine.AI.NavMeshAgent navMeshAgent, GameObject[] followPoints)
-		{
-			playerInfo = new PlayerInfo(player, managerIntermediary, 
-				maualCollisionAdministrator, groundFlag, navMeshAgent, followPoints);
-			nextCalucrateFrameCount = 0;
-			isCalucrateNextUpdate = false;
-		}
-
-		/// <summary>Player info</summary>
-		public PlayerInfo playerInfo;
-
-		/// <summary>次回テリトリー計算するフレーム</summary>
-		public int nextCalucrateFrameCount;
-		/// <summary>次回の通常更新で計算する？</summary>
-		public bool isCalucrateNextUpdate;
-
-
-		public Timer intervalTimer;
-		public float calucrateInterval;
-		public Timer featureIntervalTimer;
-		public float calucrateFeatureInterval;
-	}
-
 
 	/// <summary>Static instance</summary>
 	public static PlayerAndTerritoryManager instance { get; private set; } = null;
 
 	/// <summary>All players</summary>
-	public ReadOnlyDictionary<int, StoragePlayer> allPlayers { get; private set; } = null;
+	public ReadOnlyDictionary<int, PlayerInfo> allPlayers { get; private set; } = null;
 	/// <summary>Main player</summary>
 	public PlayerInfo mainPlayer { get; private set; } = null;
 
@@ -193,7 +171,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	float m_featureTerritoryExcludeSeconds = 3.0f;
 
 	/// <summary>Manage players</summary>
-	Dictionary<int, StoragePlayer> m_players = null;
+	Dictionary<int, PlayerInfo> m_players = null;
 	/// <summary>Grahamソート用リスト(効率化のためメンバに)</summary>
 	List<GrahamScan.CustomFormat> m_grahamResult = new List<GrahamScan.CustomFormat>();
 	/// <summary>ボリューム座標</summary>
@@ -209,8 +187,8 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	{
 		//インスタンス登録
 		instance = this;
-		m_players = new Dictionary<int, StoragePlayer>();
-		allPlayers = new ReadOnlyDictionary<int, StoragePlayer>(m_players);
+		m_players = new Dictionary<int, PlayerInfo>();
+		allPlayers = new ReadOnlyDictionary<int, PlayerInfo>(m_players);
 
 		//タイマー作動
 		m_intervalTimer.Start();
@@ -241,13 +219,13 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		//予約があれば計算
 		foreach (var e in m_players)
 		{
-			if (isUpdate & e.Value.isCalucrateNextUpdate)
+			if (isUpdate & e.Value.usedManager.isCalucrateNextUpdate)
 			{
-				e.Value.isCalucrateNextUpdate = false;
-				CalucrateTerritory(e.Value.playerInfo);
+				e.Value.usedManager.isCalucrateNextUpdate = false;
+				CalucrateTerritory(e.Value);
 			}
-			else if (e.Value.nextCalucrateFrameCount == frameCount)
-				CalucrateTerritory(e.Value.playerInfo);
+			else if (e.Value.usedManager.nextForceCalucrateFrameCount == frameCount)
+				CalucrateTerritory(e.Value);
 		}
 	}
 
@@ -270,9 +248,9 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 #endif
 
 		if (isForceNextFrame)
-			m_players[playerID].nextCalucrateFrameCount = Time.frameCount + 1;
+			m_players[playerID].usedManager.nextForceCalucrateFrameCount = Time.frameCount + 1;
 		else
-			m_players[playerID].isCalucrateNextUpdate = true;
+			m_players[playerID].usedManager.isCalucrateNextUpdate = true;
 	}
 	/// <summary>
 	/// [CalucrateTerritory]
@@ -332,7 +310,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 #endif
 
 		return CollisionTerritory.HitCircleTerritory(
-			m_players[playerID].playerInfo.territorialArea, position, direction, radius, 1000.0f);
+			m_players[playerID].territorialArea, position, direction, radius, 1000.0f);
 	}
 	/// <summary>
 	/// [RaycastTerritory]
@@ -357,7 +335,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		}
 #endif
 
-		return CollisionTerritory.HitRayTerritory(m_players[playerID].playerInfo.territorialArea,
+		return CollisionTerritory.HitRayTerritory(m_players[playerID].territorialArea,
 			position, direction, distance, out normal, out hitPoint);
 	}
 
@@ -373,7 +351,8 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	/// </summary>
 	public void AddPlayer(GameObject player, PlayerManagerIntermediary managerIntermediary,
 		PlayerMaualCollisionAdministrator maualCollisionAdministrator, BoxCastFlags groundFlag, 
-		UnityEngine.AI.NavMeshAgent navMeshAgent, GameObject[] followPoints, bool isMainPlayer = true)
+		UnityEngine.AI.NavMeshAgent navMeshAgent, GameObject[] followPoints, 
+		GameObject resultCameraLookPoint, GameObject resultCameraMovePoint, bool isMainPlayer = true)
 	{
 		//debug only, invalid key対策
 #if UNITY_EDITOR
@@ -384,14 +363,14 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		}
 #endif
 
-		StoragePlayer info = new StoragePlayer(player, managerIntermediary, 
-			maualCollisionAdministrator, groundFlag, navMeshAgent, followPoints);
+		PlayerInfo info = new PlayerInfo(player, managerIntermediary, maualCollisionAdministrator, 
+			groundFlag, navMeshAgent, followPoints, resultCameraLookPoint, resultCameraMovePoint);
 
 		m_players.Add(player.GetInstanceID(), info);
 		if (isMainPlayer)
-			mainPlayer = info.playerInfo;
+			mainPlayer = info;
 
-		ServantManager.instance.RegisterPlayer(info.playerInfo.instanceID);
+		ServantManager.instance.RegisterPlayer(info.instanceID);
 	}
 	/// <summary>
 	/// [RemovePlayer]

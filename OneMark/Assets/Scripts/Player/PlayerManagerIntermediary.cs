@@ -20,6 +20,13 @@ public class PlayerManagerIntermediary : MonoBehaviour
 	[SerializeField, Tooltip("Servant follow points")]
 	GameObject[] m_followPoints = new GameObject[3];
 
+	/// <summary>Result camera look point</summary>
+	[SerializeField, Space, Tooltip("Result camera look point")]
+	GameObject m_resultCameraLookPoint = null;
+	/// <summary>Result camera move point</summary>
+	[SerializeField, Tooltip("Result camera move point")]
+	GameObject m_resultCameraMovePoint = null;
+
 	[SerializeField, Space, Tooltip("LineRenderer(とりあえず)")]
 	LineRenderer m_lineRenderer = null;
 
@@ -43,7 +50,7 @@ public class PlayerManagerIntermediary : MonoBehaviour
 			m_isPauseFirstPoint = false;
 
 			PlayerAndTerritoryManager.instance.allPlayers[m_firstPoint.linkPlayerID].
-				playerInfo.changeTerritoryCallback -= ChangeTerritory;
+				changeTerritoryCallback -= ChangeTerritory;
 		}
 	}
 	
@@ -52,7 +59,8 @@ public class PlayerManagerIntermediary : MonoBehaviour
     {
 		//Managerにインスタンス追加
 		PlayerAndTerritoryManager.instance.AddPlayer(gameObject, this, 
-			m_playerMaualCollisionAdministrator, m_groundFlag, m_navMeshAgent, m_followPoints);
+			m_playerMaualCollisionAdministrator, m_groundFlag, m_navMeshAgent, m_followPoints,
+			m_resultCameraLookPoint, m_resultCameraMovePoint);
 
 		//現在のステージ情報を取得
 		var settings = DataManager.GetNowStageSetting();
@@ -72,7 +80,7 @@ public class PlayerManagerIntermediary : MonoBehaviour
 		if (m_firstPoint != null)
 		{
 			//PlayerInfo取得
-			var playerInfo = PlayerAndTerritoryManager.instance.allPlayers[m_instanceID].playerInfo;
+			var playerInfo = PlayerAndTerritoryManager.instance.allPlayers[m_instanceID];
 			//コールバック追加
 			playerInfo.changeTerritoryCallback += ChangeTerritory;
 			//ポイントをリンクさせる
@@ -100,7 +108,7 @@ public class PlayerManagerIntermediary : MonoBehaviour
 	/// </summary>
 	void Update()
 	{
-		var playerInfo = PlayerAndTerritoryManager.instance.allPlayers[m_instanceID].playerInfo;
+		var playerInfo = PlayerAndTerritoryManager.instance.allPlayers[m_instanceID];
 
 		if (m_lineRenderer != null)
 		{

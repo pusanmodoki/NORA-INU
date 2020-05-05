@@ -5,10 +5,10 @@ using UnityEngine;
 public class GameOver : MonoBehaviour
 {
     [SerializeField]
-    private PlayerInput overAnime;
+    private PlayerInput overAnime = null;
 
     [SerializeField]
-    private FollowObject result;
+    private FollowObject result = null;
 
     // Start is called before the first frame update
     void Start()

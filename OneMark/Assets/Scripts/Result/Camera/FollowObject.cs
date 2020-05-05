@@ -9,21 +9,18 @@ using UnityEngine;
 
 public class FollowObject : MonoBehaviour
 {
-    [SerializeField]
     [Tooltip("追従するオブジェクト")]
-    private GameObject followingObject;
+    private GameObject followingObject = null;
 
-    [SerializeField]
     [Tooltip("注視するオブジェクト")]
-    private GameObject lookObject;
+    private GameObject lookObject = null;
 
-    [SerializeField]
     [Tooltip("プレイヤー")]
-    private GameObject playerObject;
+    private GameObject playerObject = null;
 
     [SerializeField]
     [Tooltip("カメラが動くスピード")]
-    private float leaveSpeed;
+    private float leaveSpeed = 0.0f;
 
     [Tooltip("リザルト判定")]
     public bool resultFlg = false;
@@ -35,6 +32,9 @@ public class FollowObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+		playerObject = PlayerAndTerritoryManager.instance.mainPlayer.gameObject;
+		lookObject = PlayerAndTerritoryManager.instance.mainPlayer.resultCameraLookPoint;
+		followingObject = PlayerAndTerritoryManager.instance.mainPlayer.resultCameraMovePoint;
     }
 
     // Update is called once per frame

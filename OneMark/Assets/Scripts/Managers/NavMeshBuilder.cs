@@ -31,11 +31,11 @@ public class NavMeshBuilder : MonoBehaviour
 			int i = 0;
 			foreach (var e in PlayerAndTerritoryManager.instance.allPlayers)
 			{
-				setPosition = e.Value.playerInfo.gameObject.transform.position;
+				setPosition = e.Value.gameObject.transform.position;
 
 				m_navMeshSurfaceObjects[i].transform.position = setPosition;
 				m_navMeshSurfaces[i].BuildNavMesh();
-				e.Value.playerInfo.navMeshAgent.enabled = true;
+				e.Value.navMeshAgent.enabled = true;
 				++i;
 			}
 		}
@@ -56,12 +56,12 @@ public class NavMeshBuilder : MonoBehaviour
 			int i = 0;
 			foreach(var e in PlayerAndTerritoryManager.instance.allPlayers)
 			{
-				if (!e.Value.playerInfo.groundFlag.isStay) continue;
+				if (!e.Value.groundFlag.isStay) continue;
 
-				playerPosition = e.Value.playerInfo.gameObject.transform.position;
+				playerPosition = e.Value.gameObject.transform.position;
 
 				setPosition.Set(playerPosition.x, 
-					e.Value.playerInfo.groundFlag.boxCastResult.position.y, playerPosition.z);
+					e.Value.groundFlag.boxCastResult.position.y, playerPosition.z);
 
 				m_navMeshSurfaceObjects[i].transform.position = setPosition;
 				m_navMeshSurfaces[i].BuildNavMesh();

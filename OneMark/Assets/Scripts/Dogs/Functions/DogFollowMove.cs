@@ -54,7 +54,7 @@ public class DogFollowMove : BaseDogAIFunction
 			}
 
 			m_followTransform = PlayerAndTerritoryManager.instance.allPlayers
-				[dogAIAgent.linkPlayer.GetInstanceID()].playerInfo.followPoints[followIndex].transform;
+				[dogAIAgent.linkPlayer.GetInstanceID()].followPoints[followIndex].transform;
 		}
 
 

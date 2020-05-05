@@ -40,8 +40,8 @@ Transform:
   - {fileID: 4423125214522517353}
   - {fileID: 1257958479557462429}
   - {fileID: 8705805343613704708}
-  - {fileID: 3179691602222763782}
   - {fileID: 6535126355022367470}
+  - {fileID: 3179691602222763782}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -230,6 +230,8 @@ MonoBehaviour:
   - {fileID: 2948944033525004475}
   - {fileID: 7197596750005545723}
   - {fileID: 3315556004336438871}
+  m_resultCameraLookPoint: {fileID: 3853871569578509133}
+  m_resultCameraMovePoint: {fileID: 5988561091895546265}
   m_lineRenderer: {fileID: 412210136}
 --- !u!114 &412210127
 MonoBehaviour:
@@ -417,7 +419,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6535126355022367470}
   m_Layer: 8
-  m_Name: LookPoint
+  m_Name: ResultCameraLookPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -435,7 +437,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 530330881339227006}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5241766959143428508
 GameObject:
@@ -503,7 +505,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3179691602222763782}
   m_Layer: 0
-  m_Name: ResultCameraPoint
+  m_Name: ResultCameraMovePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -521,7 +523,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 530330881339227006}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7197596750005545723
 GameObject:

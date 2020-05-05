@@ -111,7 +111,7 @@ public abstract class BaseMarkPoint : MonoBehaviour
 		linkServantID = dogAIAgent != null ? dogAIAgent.aiAgentInstanceID : -1;
 		//Managerに紐付け登録
 		if (!isOldLinked)
-			PlayerAndTerritoryManager.instance.allPlayers[linkPlayerID].playerInfo.AddMarkPoint(this);
+			PlayerAndTerritoryManager.instance.allPlayers[linkPlayerID].AddMarkPoint(this);
 
 		//Timer計測開始
 		m_timer.Start();
@@ -127,7 +127,7 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	public void UnlinkPlayer()
 	{
 		//Managerの紐付け登録解除
-		PlayerAndTerritoryManager.instance.allPlayers[linkPlayerID].playerInfo.RemoveMarkPoint(this);
+		PlayerAndTerritoryManager.instance.allPlayers[linkPlayerID].RemoveMarkPoint(this);
 		if (linkServantID != -1)
 			ServantManager.instance.GetServant(linkServantID).SetSitAndStay(false, this);
 
