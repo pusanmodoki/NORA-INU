@@ -791,18 +791,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 412210126, guid: e5a4a5623184c504f83fdd407f4d5b2c, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 412210127, guid: e5a4a5623184c504f83fdd407f4d5b2c, type: 3}
-      propertyPath: m_visibilityDistance
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 412210127, guid: e5a4a5623184c504f83fdd407f4d5b2c, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 530330881339226992, guid: e5a4a5623184c504f83fdd407f4d5b2c,
         type: 3}
       propertyPath: m_Name
@@ -811,7 +799,7 @@ PrefabInstance:
     - target: {fileID: 530330881339227006, guid: e5a4a5623184c504f83fdd407f4d5b2c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.01
+      value: 12.5
       objectReference: {fileID: 0}
     - target: {fileID: 530330881339227006, guid: e5a4a5623184c504f83fdd407f4d5b2c,
         type: 3}

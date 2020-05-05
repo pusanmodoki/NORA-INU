@@ -7,9 +7,6 @@ using UnityEngine;
 /// </summary>
 public class PlayerManagerIntermediary : MonoBehaviour
 {
-	/// <summary>初期オブジェクト名</summary>
-	[SerializeField, Tooltip("初期オブジェクト名")]
-	string m_firstPointName = "";
 	/// <summary>This PlayerMaualCollisionAdministrator</summary>
 	[SerializeField, Tooltip("This PlayerMaualCollisionAdministrator")]
 	PlayerMaualCollisionAdministrator m_playerMaualCollisionAdministrator = null;
@@ -56,14 +53,20 @@ public class PlayerManagerIntermediary : MonoBehaviour
 		//Managerにインスタンス追加
 		PlayerAndTerritoryManager.instance.AddPlayer(gameObject, this, 
 			m_playerMaualCollisionAdministrator, m_groundFlag, m_navMeshAgent, m_followPoints);
-		//初期ポイントを探す
-		GameObject firstPoint = GameObject.Find(m_firstPointName);
 
+		//現在のステージ情報を取得
+		var settings = DataManager.GetNowStageSetting();
+
+		transform.position = settings.playerPosition;
+		transform.rotation = settings.playerRotation;
 		m_instanceID = gameObject.GetInstanceID();
 
+		//初期ポイントを探す
+		GameObject firstPointObject = GameObject.Find(settings.firstPointName);
+
 		//マークポイントを取得
-		if (firstPoint != null)
-			m_firstPoint = firstPoint.GetComponent<BaseMarkPoint>();
+		if (firstPointObject != null)
+			m_firstPoint = firstPointObject.GetComponent<BaseMarkPoint>();
 
 		//初期ポイントが見つかった
 		if (m_firstPoint != null)
