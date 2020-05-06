@@ -12,10 +12,8 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	
 	/// <summary>Instance id (mark point)</summary>
 	public int pointInstanceID { get; private set; } = -1;
-	/// <summary>マーキング有効時間</summary>
-	public float effectiveSeconds { get { return m_effectiveSeconds; } }
-	/// <summary>マーキング有効な残り時間</summary>
-	public float timeRemaining { get { return isLinked ? m_effectiveSeconds - m_timer.elapasedTime : 0.0f; } }
+	/// <summary>有効化カウンター</summary>
+	public float effectiveCounter { get; private set; } = 0.0f;
 	/// <summary>リンクしているPlayerのID</summary>
 	public int linkPlayerID { get { return m_drawingLinkPlayerID; } private set { m_drawingLinkPlayerID = value; } }
 	/// <summary>リンクしているServantのID</summary>
@@ -26,21 +24,25 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	public bool isPlayerNearby { get; private set; } = false;
 	/// <summary>初期ポイントとしてタイマーロック中？</summary>
 	public bool isLockFirstPoint { get; private set; } = false;
-	/// <summary>残り時間計測タイマーのポーズ</summary>
-	public bool isPauseTimer { get { return m_timer.isPause; } set { if (isLinked) { if (value) m_timer.Pause(); else m_timer.Unpause(); } } }
+	/// <summary>強制カウンター増加状態？</summary>
+	public bool isForceAscendingEffective { get; private set; } = false;
 
-	/// <summary>マーキング有効時間</summary>
-	[SerializeField, Tooltip("マーキング有効時間")]
-	float m_effectiveSeconds = 5.0f;
+	//Debug only
+#if UNITY_EDITOR
+	[Header("Debug Only"), SerializeField]
+	float m_dEffectiveCounter = 0.0f;
+	[SerializeField]
+	bool m_dIsPlayerNearby = false;
+	[SerializeField]
+	bool m_dIsLockFirstPoint = false;
+#endif
+
 	/// <summary>リンクしているPlayerのID</summary>
-	[SerializeField, Tooltip("リンクしているPlayerのID")]
+	[Space, Space, SerializeField, Tooltip("リンクしているPlayerのID")]
 	int m_drawingLinkPlayerID = -1;
 	/// <summary>リンクしているServantのID</summary>
 	[SerializeField, Tooltip("リンクしているServantのID")]
 	int m_drawingLinkServantID = -1;
-
-	/// <summary>残り時間タイマー</summary>
-	TimerAdvance m_timer = new TimerAdvance();
 
 
 	/// <summary>
@@ -59,42 +61,33 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	/// </summary>
 	public abstract void UpdatePoint();
 
+
+
+	/// <summary>
+	/// [AddFirstLinkBonus]
+	/// カウンタにAddFirstLinkBonus加算
+	/// </summary>
+	public void AddFirstLinkBonus() { effectiveCounter += MarkPointManager.instance.effectiveFirstLinkBonus; }
+	/// <summary>
+	/// [SetPlayerNearby]
+	/// Set PlayerNearby
+	/// </summary>
+	public void SetPlayerNearby(bool isSet) { isPlayerNearby = isSet; }
+	/// <summary>
+	/// [SetForceAscendingEffective]
+	/// Set ForceAscendingEffective
+	/// </summary>
+	public void SetForceAscendingEffective(bool isSet) { isForceAscendingEffective = isSet; }
 	/// <summary>
 	/// [SetLockFirstPoint]
 	/// Set LockFirstPoint
 	/// </summary>
 	public void SetLockFirstPoint(bool isSet)
 	{
-		if ((isLockFirstPoint ^ isSet) & isLockFirstPoint
-			&& !isPlayerNearby)
-		{
-			m_timer.Unpause();
-		}
+		if ((isLockFirstPoint ^ isSet) & isSet)
+			effectiveCounter = MarkPointManager.instance.effectiveMaxLimiter;
 
 		isLockFirstPoint = isSet;
-	}
-
-	/// <summary>
-	/// [SetPlayerNearby]
-	/// Set PlayerNearby
-	/// </summary>
-	public void SetPlayerNearby(bool isSet)
-	{
-		if ((isPlayerNearby ^ isSet) & isPlayerNearby)
-		{
-			if (!isLinked || (!(isLinked & isLockFirstPoint) && 
-				!(linkServantID != -1 && ServantManager.instance.allServants[linkServantID].isSitAndStaySelf)))
-				m_timer.Unpause();
-		}
-		else if ((isPlayerNearby ^ isSet) & isSet)
-		{
-			if (isLinked && !isLockFirstPoint)
-			{
-				m_timer.Start();
-				m_timer.Pause();
-			}
-		}
-		isPlayerNearby = isSet;
 	}
 
 	/// <summary>
@@ -112,11 +105,7 @@ public abstract class BaseMarkPoint : MonoBehaviour
 		//Managerに紐付け登録
 		if (!isOldLinked)
 			PlayerAndTerritoryManager.instance.allPlayers[linkPlayerID].AddMarkPoint(this);
-
-		//Timer計測開始
-		m_timer.Start();
-		//ポイントタイマーをポーズさせる
-		m_timer.Pause();
+		
 		//Callback
 		LinkPoint();
 	}
@@ -137,22 +126,27 @@ public abstract class BaseMarkPoint : MonoBehaviour
 		//Callback
 		UnlinkPoint();
 	}
-
-	/// <summary>
-	/// [ResetTimer]
-	/// Timerを初期化する
-	/// </summary>
-	public void ResetTimer()
-	{
-		m_timer.Start();
-	}
 	/// <summary>
 	/// [UpdateBasePoint]
 	/// BasePointの更新を行う
 	/// </summary>
 	public void UpdateBasePoint()
 	{
-		if (isLinked && timeRemaining <= 0.0f)
+		//Debug only
+#if UNITY_EDITOR
+		m_dEffectiveCounter = effectiveCounter;
+		m_dIsPlayerNearby = isPlayerNearby;
+		m_dIsLockFirstPoint = isLockFirstPoint;
+#endif
+
+		if (isPlayerNearby | isLockFirstPoint | isForceAscendingEffective)
+			effectiveCounter += MarkPointManager.instance.linkAscendingPerSeconds * Time.deltaTime;
+		else
+			effectiveCounter -= MarkPointManager.instance.unlinkDecreasingPerSeconds * Time.deltaTime;
+
+		effectiveCounter = Mathf.Clamp(effectiveCounter, 0.0f, MarkPointManager.instance.effectiveMaxLimiter);
+
+		if (isLinked && effectiveCounter <= 0.0f)
 			UnlinkPlayer();
 	}
 

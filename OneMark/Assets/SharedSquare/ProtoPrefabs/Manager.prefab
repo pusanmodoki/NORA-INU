@@ -81,6 +81,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360fd41ee14d0074f9a286eb5937ec74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_linkAscendingPerSeconds: 1
+  m_unlinkDecreasingPerSeconds: 1
+  m_effectiveMaxLimiter: 7.5
+  m_effectiveFirstLinkBonusRatio: 0.5
 --- !u!114 &700726607750707246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,6 +231,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bc2639efe8f6764a9076a38c6cb44f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stagePresetFilePath:
+    m_directory: 0
+    m_filePath: Preset
+    m_fileName: StageSettings
 --- !u!1 &928646605516859308
 GameObject:
   m_ObjectHideFlags: 0

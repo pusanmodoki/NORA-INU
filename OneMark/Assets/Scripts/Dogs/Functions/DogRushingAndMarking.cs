@@ -95,9 +95,9 @@ public class DogRushingAndMarking : BaseDogAIFunction
 		//Animation Set
 		m_animationController.editAnimation.SetTriggerRolling();
 
-		//Pause
-		m_markPoint.ResetTimer();
-		m_markPoint.isPauseTimer = true;
+		//強制的に増加させる
+		if (m_markPoint.linkPlayerID == dogAIAgent.linkPlayer.GetInstanceID())
+			m_markPoint.SetForceAscendingEffective(true);
 	}
 	/// <summary>
 	/// [AIEnd]
@@ -200,6 +200,9 @@ public class DogRushingAndMarking : BaseDogAIFunction
 					//指定時間経過
 					if (timer.elapasedTime >= m_markingSeconds)
 					{
+						//強制的に増加させる
+						if (m_markPoint.linkPlayerID != dogAIAgent.linkPlayer.GetInstanceID())
+							m_markPoint.AddFirstLinkBonus();
 						//ポイントをリンクさせる
 						m_markPoint.LinkPlayer(dogAIAgent.linkPlayer, dogAIAgent);
 						//待て！

@@ -217,14 +217,19 @@ public class DogAIAgent : AIAgent
 		isSitAndStaySelf = isSet;
 		if (isSet)
 		{
+			//強制的な増加を設定
+			markPoint.SetForceAscendingEffective(true);
+
 			linkMarkPoint = markPoint;
 			navMeshAgent.updatePosition = false;
 			navMeshAgent.updateRotation = false;
 		}
 		else
 		{
+			//強制的な増加を解除
+			markPoint.SetForceAscendingEffective(false);
+
 			linkMarkPoint = null;
-			markPoint.isPauseTimer = false;
 			navMeshAgent.updatePosition = true;
 			navMeshAgent.updateRotation = true;
 			navMeshAgent.Warp(transform.position);

@@ -246,7 +246,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			var point = collisions[i].GetComponent<BaseMarkPoint>();
 
 			//Nullかリンクありでコンティニュー
-			if (point == null || (point.isLinked & point.isPauseTimer)) continue;
+			if (point == null || (point.isLinked & point.isForceAscendingEffective)) continue;
 			
 			//Point格納
 			container.SetPoint(point);

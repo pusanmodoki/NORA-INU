@@ -1,0 +1,9 @@
+読み込みモード: Double List
+
+・Lineが各ステージになっています
+　　0 = T-1, 1 = T-2...4 = 1-1, 5 = 1-2
+
+・Line内の要素
+　　1: Player position (Vector3をx-y-zと表記)
+　　2: Player rotation (Euler表現, Vector3をx-y-zと表記)
+　　3: First mark point name (初期ポイントとなるオブジェクトの名前を文字列で表記)
