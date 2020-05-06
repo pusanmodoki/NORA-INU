@@ -108,9 +108,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AgentTypeID: 0
-  m_StartPoint: {x: 0, y: 3, z: 1}
-  m_EndPoint: {x: 0, y: -2, z: 5}
-  m_Width: 4
+  m_StartPoint: {x: 0.000001311303, y: 2.553257, z: 2.9999998}
+  m_EndPoint: {x: 0.000000481543, y: -2, z: 9.960532}
+  m_Width: 48
   m_CostModifier: -1
   m_Bidirectional: 1
   m_AutoUpdatePosition: 0
@@ -128,9 +128,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AgentTypeID: 0
-  m_StartPoint: {x: 0, y: 3, z: -1}
-  m_EndPoint: {x: 0, y: -2, z: -5}
-  m_Width: 4
+  m_StartPoint: {x: 0.000003933907, y: 2.861703, z: -2.9999995}
+  m_EndPoint: {x: 0.000004621721, y: -2, z: -8.769803}
+  m_Width: 48
   m_CostModifier: -1
   m_Bidirectional: 1
   m_AutoUpdatePosition: 0

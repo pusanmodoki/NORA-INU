@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 using AIComponent;
 
@@ -8,6 +9,8 @@ using AIComponent;
 /// </summary>
 public class DogAIAgent : AIAgent
 {
+	/// <summary>Change color materials</summary>
+	public ReadOnlyCollection<RendererMaterial> changeColorMaterials { get; set; } = null;
 	/// <summary>Speed changer</summary>
 	public DogSpeedChanger speedChanger { get { return m_speedChanger; } }
 	/// <summary>Link mark point</summary>
@@ -44,6 +47,9 @@ public class DogAIAgent : AIAgent
 	/// <summary>プレイヤーとマークポイントでRaycastする時のLayerMask</summary>
 	[SerializeField, Tooltip("プレイヤーとマークポイントでRaycastする時のLayerMask")]
 	LayerMaskEx m_playerObeyMarkPointLayerMask = 0;
+	/// <summary>Change color materials</summary>
+	[SerializeField, Space, Tooltip("Change color materials")]
+	RendererMaterial[] m_changeColorMaterials = null;
 	/// <summary>OffMeshLink controller</summary>
 	[SerializeField, Space, Tooltip("OffMeshLink controller")]
 	DogOffMeshLinkController m_offMeshLinkController = new DogOffMeshLinkController();
@@ -242,7 +248,8 @@ public class DogAIAgent : AIAgent
 	{
 		base.Start();
 		speedChanger.Start();
-		
+		changeColorMaterials = new ReadOnlyCollection<RendererMaterial>(m_changeColorMaterials);
+
 		ServantManager.instance.AddServant(this);
 
 		GameObject player = GameObject.Find(m_findPlayerObjectName);

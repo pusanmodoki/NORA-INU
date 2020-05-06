@@ -373,8 +373,11 @@ MonoBehaviour:
     m_layerMask:
       serializedVersion: 2
       m_Bits: 1536
+  m_changeColorMaterials:
+  - m_meshRenderer: {fileID: 3165527726064043203}
+    m_materialIndex: 0
   m_offMeshLinkController:
-    m_jumpSeconds: 1
+    m_jumpSeconds: 1.5
   m_speedChanger:
     m_navMeshAgent: {fileID: 8143399947415216742}
     m_groundFlags: {fileID: 8143399947837817096}
@@ -1127,6 +1130,12 @@ GameObject:
 --- !u!4 &2399027885246546638 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 6a1a5639a023ca94daba7e9b39e2605c,
+    type: 3}
+  m_PrefabInstance: {fileID: 7219758283496171988}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &3165527726064043203 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -3467897770947662569, guid: 6a1a5639a023ca94daba7e9b39e2605c,
     type: 3}
   m_PrefabInstance: {fileID: 7219758283496171988}
   m_PrefabAsset: {fileID: 0}

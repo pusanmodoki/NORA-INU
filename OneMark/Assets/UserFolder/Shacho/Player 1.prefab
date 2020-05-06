@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 412210127}
   - component: {fileID: 21004177958354081}
   m_Layer: 8
-  m_Name: Player
+  m_Name: Player 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,10 +152,10 @@ NavMeshAgent:
   m_Enabled: 0
   m_AgentTypeID: -1372625422
   m_Radius: 1
-  m_Speed: 0
-  m_Acceleration: 0
+  m_Speed: 15
+  m_Acceleration: 100
   avoidancePriority: 50
-  m_AngularSpeed: 0
+  m_AngularSpeed: 1000
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -276,9 +276,16 @@ MonoBehaviour:
   m_input: {fileID: 530330881339226994}
   m_maualCollisionAdministrator: {fileID: 412210127}
   m_navMeshAgent: {fileID: 4227028175626528562}
-  m_moveSpeed: 10
-  m_rotationSpeed: 13
-  m_dVelocity: {x: 0, y: 0, z: 0}
+  m_targetObject: {fileID: 1841217118985689616}
+  m_groundFlag: {fileID: 2904883163141074636}
+  m_checkGroundLayerMask:
+    m_layerMask:
+      serializedVersion: 2
+      m_Bits: 1024
+  m_checkGroundSize: {x: 0.5, y: 0.1, z: 0.5}
+  m_updateTargetIntervalFrames: 2
+  m_updateTargetDistanceScaler: 2
+  m_dIsDrawGizmos: 1
 --- !u!1 &1441870852321385993
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,7 +389,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7809344823965121625}
   m_Layer: 8
-  m_Name: FollowPoint2
+  m_Name: FollowPoint3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

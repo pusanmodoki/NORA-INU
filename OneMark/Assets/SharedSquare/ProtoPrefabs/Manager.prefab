@@ -51,6 +51,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64de5e6580ce75f42bcb0ef86f798ed1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_dogColors:
+  - {r: 0.6313726, g: 0.7529412, b: 0.49019608, a: 1}
+  - {r: 0.15294118, g: 0.49411765, b: 0.6117647, a: 1}
+  - {r: 0.69411767, g: 0.2901961, b: 0.27058825, a: 1}
 --- !u!114 &700726607750707240
 MonoBehaviour:
   m_ObjectHideFlags: 0

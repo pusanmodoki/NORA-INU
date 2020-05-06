@@ -19,6 +19,10 @@ public class ServantManager : MonoBehaviour
 	/// <summary>Manage servants</summary>
 	public ReadOnlyDictionary<int, List<DogAIAgent>> servantByPlayers { get; private set; } = null;
 
+	/// <summary>Dog colors</summary>
+	[SerializeField, Tooltip("Dog colors")]
+	Color[] m_dogColors = new Color[3];
+
 	/// <summary>Manage servants</summary>
 	Dictionary<int, DogAIAgent> m_servants = null;
 	/// <summary>Player別servants</summary>
@@ -143,6 +147,12 @@ public class ServantManager : MonoBehaviour
 
 		m_servantByPlayers[player.GetInstanceID()].Add(dogAgent);
 		linkPlayerServantsOwnIndex = m_servantByPlayers[player.GetInstanceID()].Count - 1;
+
+		if (linkPlayerServantsOwnIndex < m_dogColors.Length)
+		{
+			for (int i = 0, length = dogAgent.changeColorMaterials.Count; i < length; ++i)
+				dogAgent.changeColorMaterials[i].material.color = m_dogColors[linkPlayerServantsOwnIndex];
+		}
 	}
 	/// <summary>
 	/// [UnregisterPlayerOfServant]
@@ -165,8 +175,8 @@ public class ServantManager : MonoBehaviour
 			return;
 		}
 #endif
-
-		m_servantByPlayers[player.GetInstanceID()].Remove(dogAgent);
+		if (m_servantByPlayers.ContainsKey(player.GetInstanceID()))
+			m_servantByPlayers[player.GetInstanceID()].Remove(dogAgent);
 	}
 
 	/// <summary>
