@@ -5,7 +5,7 @@
 			_MainTex("Albedo (RGB)", 2D) = "white" {}
 			_RampTex("Ramp", 2D) = "white"{}
 			_BumpMap("Bumpmap", 2D) = "bump" {}
-			_MaskTex("MaskTexture", 2D) = "white"{}
+			_AreaTex("AreaTexture", 2D) = "white"{}
 	}
 		
 	SubShader
@@ -19,7 +19,7 @@
 		#pragma target 3.0
 
 		sampler2D _MainTex;
-		sampler2D _MaskTex;
+		sampler2D _AreaTex;
 		sampler2D _RampTex;
 		sampler2D _BumpMap;
 
@@ -42,7 +42,7 @@
 
 		void surf(Input IN, inout SurfaceOutput o) {
 				fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
-				fixed4 mask = tex2D(_MaskTex, IN.uv_MainTex);
+				fixed4 mask = tex2D(_AreaTex, IN.uv_MainTex);
 				o.Albedo = c.rgb * mask.rgb;
 				o.Alpha = c.a;
 				o.Normal = UnpackNormal(tex2D(_BumpMap, IN.uv_BumpMap));
