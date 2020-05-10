@@ -17,6 +17,11 @@ public class MainGameManager : MonoBehaviour
 	ReadOnlyDictionary<int, BaseCheckPoint> m_allCheckPoints = null;
 	bool m_isEnd = false;
 
+    [SerializeField]
+    private FollowObject production;
+
+    private AudioSource bgm;
+
     /// <summary>[Awake]</summary>
     void Awake()
 	{
@@ -31,10 +36,12 @@ public class MainGameManager : MonoBehaviour
 	void Start()
 	{
 		m_allCheckPoints = CheckPointManager.instance.allPoints;
-	}
+        production.StartFlg();
+        bgm = this.GetComponent<AudioSource>();
+    }
 
-	/// <summary>[LateUpdate]</summary>
-	void LateUpdate()
+    /// <summary>[LateUpdate]</summary>
+    void LateUpdate()
 	{
 		if (m_isEnd) return;
 
@@ -52,15 +59,19 @@ public class MainGameManager : MonoBehaviour
 
 	void GameClear()
 	{
+        bgm.Stop();
         PlayerAndTerritoryManager.instance.mainPlayer.gameObject.GetComponent<PlayerInput>().GameClearAnimation();
         ResultCall.GameClear();
+        production.ResultFlg();
 		m_isEnd = true;
 	}
 
 	void GameOver()
 	{
+        bgm.Stop();
         PlayerAndTerritoryManager.instance.mainPlayer.gameObject.GetComponent<PlayerInput>().GameOverAnimation();
         ResultCall.GameOver();
-		m_isEnd = true;
+        production.ResultFlg();
+        m_isEnd = true;
 	}
 }

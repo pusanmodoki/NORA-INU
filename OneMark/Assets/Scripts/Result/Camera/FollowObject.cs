@@ -18,15 +18,22 @@ public class FollowObject : MonoBehaviour
     [Tooltip("プレイヤー")]
     private GameObject playerObject = null;
 
-    [SerializeField]
-    [Tooltip("カメラが動くスピード")]
-    private float leaveSpeed = 0.0f;
+    [Tooltip("スタート判定")]
+    public bool startFlg = false;
+
+    [SerializeField, Tooltip("スタートの時にカメラが動くスピード")]
+    private float startCameraSpeed = 0.03f;
+
+    [SerializeField, Tooltip("スタートの時にカメラが動き出す時間")]
+    private float followObjectMoveTime = 5.0f;
 
     [Tooltip("リザルト判定")]
     public bool resultFlg = false;
 
-    [SerializeField]
-    [Tooltip("リザルト判定")]
+    [SerializeField, Tooltip("リザルトの時にカメラが動くスピード")]
+    private float resultCameraSpeed = 0.03f;
+
+    [SerializeField, Tooltip("リザルトの時にカメラが動き出す時間")]
     private float lookPointMoveTime = 5.0f;
 
     // Start is called before the first frame update
@@ -40,20 +47,41 @@ public class FollowObject : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        if (startFlg == true) 
+        {
+            followingObject.transform.localPosition = new Vector3(0.0f, 1.5f, 4.0f);
+
+            this.transform.position =
+                Vector3.Slerp(this.transform.position, followingObject.transform.position, startCameraSpeed);
+
+            this.transform.LookAt(lookObject.transform);
+
+            Invoke("MoveCameraPoint", followObjectMoveTime);
+        }
+
+        // リザルト
         if (resultFlg == true) 
         {
             // プレイヤーの向き
             playerObject.transform.eulerAngles = new Vector3(0.0f, 180.0f, 0.0f);
 
-            // ズームポイントについていく
+            followingObject.transform.localPosition = new Vector3(0.0f, 1.5f, 4.0f);
+
+            // カメラポイントオブジェクトについていく
             this.transform.position =
-            Vector3.Slerp(this.transform.position, followingObject.transform.position, leaveSpeed);
+            Vector3.Slerp(this.transform.position, followingObject.transform.position, resultCameraSpeed);
 
             // プレイヤーを見る
             this.transform.LookAt(lookObject.transform);
 
-            Invoke("MovePoint", lookPointMoveTime);
+            Invoke("MoveLookPoint", lookPointMoveTime);
         }
+    }
+
+    public void StartFlg()
+    {
+        startFlg = true;
+        resultFlg = false;
     }
 
     public void ResultFlg()
@@ -61,10 +89,23 @@ public class FollowObject : MonoBehaviour
         resultFlg = true;
     }
 
-    private void MovePoint()
+    private void MoveCameraPoint()
     {
-        lookObject.transform.position =
-            Vector3.Lerp(lookObject.transform.position, new Vector3(2.0f, 1.5f, 0.0f), leaveSpeed);
+        followingObject.transform.localPosition =
+            Vector3.Lerp(followingObject.transform.localPosition, new Vector3(0.0f, 33.0f, -13.0f), startCameraSpeed);
+
+        this.transform.position =
+                Vector3.Slerp(this.transform.position, followingObject.transform.position, startCameraSpeed);
+
+        this.transform.LookAt(lookObject.transform);
+
+        startFlg = false;
+    }
+
+    private void MoveLookPoint()
+    {
+        lookObject.transform.localPosition =
+            Vector3.Lerp(lookObject.transform.localPosition, new Vector3(-2.0f, 1.5f, 0.0f), resultCameraSpeed);
     }
 
 }
