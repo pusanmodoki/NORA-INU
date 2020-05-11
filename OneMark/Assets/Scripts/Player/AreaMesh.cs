@@ -17,16 +17,23 @@ public class AreaMesh : MonoBehaviour
     private MeshRenderer render = null;
 
     [SerializeField]
-    private Material material = null;
+    private Material m_material = null;
+
+    private GameObject m_meshObject = null;
+
 
     // Start is called before the first frame update
     void Start()
     {
         player = PlayerAndTerritoryManager.instance.mainPlayer;
-        gameObject.AddComponent<MeshFilter>();
-        render= gameObject.AddComponent<MeshRenderer>();
-        mesh = GetComponent<MeshFilter>().mesh;
-        render.material = material;
+
+        m_meshObject = new GameObject("AreaMesh");
+
+        m_meshObject.AddComponent<MeshFilter>();
+        render= m_meshObject.AddComponent<MeshRenderer>();
+        mesh = m_meshObject.GetComponent<MeshFilter>().mesh;
+        render.material = m_material;
+        m_meshObject.layer = LayerMask.NameToLayer("Area");
     }
 
     // Update is called once per frame

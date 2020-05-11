@@ -2154,6 +2154,24 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 782971781}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &737517446 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7704356482033076808, guid: b5fe37bc20384a9459589a926e5dd358,
+    type: 3}
+  m_PrefabInstance: {fileID: 873639161}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &737517452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737517446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 071d901408a330f488b8674e77ff938d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &766785722
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4011,6 +4029,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0496802fd863e6142bca17e9d297f839, type: 3}
+--- !u!1 &1415549220 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7408335374721227875, guid: 5f93e130234e8e04d9c2dccc5d7afe9a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1461051183}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1415549224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1415549220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 071d901408a330f488b8674e77ff938d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1461051183
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5742,3 +5778,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1759180026}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3943941438273459702
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4580299090591010659, guid: 051217b7a25d8fd4d8ae3ae72f72bdff,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4580299090591010659, guid: 051217b7a25d8fd4d8ae3ae72f72bdff,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4580299090591010659, guid: 051217b7a25d8fd4d8ae3ae72f72bdff,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4580299090591010659, guid: 051217b7a25d8fd4d8ae3ae72f72bdff,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8740790345037677472, guid: 051217b7a25d8fd4d8ae3ae72f72bdff,
+        type: 3}
+      propertyPath: m_Name
+      value: AreaCamera
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 051217b7a25d8fd4d8ae3ae72f72bdff, type: 3}

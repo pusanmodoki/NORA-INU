@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _AreaTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 8400000, guid: 7c33fe5eba406d7448576e057ca7f50e, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -82,6 +82,8 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _StageHeight: 0
+    - _StageWidth: 0
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:

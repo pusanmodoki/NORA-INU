@@ -6,16 +6,13 @@ public class BlockUVSet : MonoBehaviour
 {
     public static float s_stageSize { get; set; }
 
-    private Mesh m_mesh = null;
+    Mesh m_mesh;
     // Start is called before the first frame update
     void Start()
     {
-        m_mesh = GetComponent<MeshFilter>().mesh;
+        GetComponent<MeshRenderer>().material.SetFloat("_StageWidth", MainGameManager.instance.stageSize.x);
+        GetComponent<MeshRenderer>().material.SetFloat("_StageHeight", MainGameManager.instance.stageSize.y);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
 
-    }
 }
