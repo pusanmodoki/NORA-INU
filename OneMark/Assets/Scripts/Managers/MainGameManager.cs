@@ -18,9 +18,9 @@ public class MainGameManager : MonoBehaviour
 	bool m_isEnd = false;
 
     [SerializeField]
-    private FollowObject production;
+    private Vector2 m_stageSize = new Vector3(30.0f, 30.0f);
 
-    private AudioSource bgm;
+    public Vector2 stageSize { get { return m_stageSize; } private set { m_stageSize = value; } }
 
     /// <summary>[Awake]</summary>
     void Awake()
@@ -36,12 +36,10 @@ public class MainGameManager : MonoBehaviour
 	void Start()
 	{
 		m_allCheckPoints = CheckPointManager.instance.allPoints;
-        production.StartFlg();
-        bgm = this.GetComponent<AudioSource>();
-    }
+	}
 
-    /// <summary>[LateUpdate]</summary>
-    void LateUpdate()
+	/// <summary>[LateUpdate]</summary>
+	void LateUpdate()
 	{
 		if (m_isEnd) return;
 
@@ -59,19 +57,15 @@ public class MainGameManager : MonoBehaviour
 
 	void GameClear()
 	{
-        bgm.Stop();
         PlayerAndTerritoryManager.instance.mainPlayer.gameObject.GetComponent<PlayerInput>().GameClearAnimation();
         ResultCall.GameClear();
-        production.ResultFlg();
 		m_isEnd = true;
 	}
 
 	void GameOver()
 	{
-        bgm.Stop();
         PlayerAndTerritoryManager.instance.mainPlayer.gameObject.GetComponent<PlayerInput>().GameOverAnimation();
         ResultCall.GameOver();
-        production.ResultFlg();
-        m_isEnd = true;
+		m_isEnd = true;
 	}
 }

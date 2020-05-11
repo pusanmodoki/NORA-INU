@@ -69,6 +69,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9034922124165863692}
     m_Modifications:
+    - target: {fileID: -8670566835854188914, guid: 31967790c46b2b04e9c9061e301ec5f0,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -7162485624367787869, guid: 31967790c46b2b04e9c9061e301ec5f0,
         type: 3}
       propertyPath: m_Layer
@@ -148,6 +153,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2924676543457787374, guid: 31967790c46b2b04e9c9061e301ec5f0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31967790c46b2b04e9c9061e301ec5f0, type: 3}

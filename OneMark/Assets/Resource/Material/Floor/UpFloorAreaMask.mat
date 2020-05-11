@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FloorAreaMask
-  m_Shader: {fileID: 4800000, guid: abfc9d6b0a077774c8dde8607d00cb19, type: 3}
+  m_Name: UpFloorAreaMask
+  m_Shader: {fileID: 4800000, guid: 905ebb3105a24e54b9f4dc1a193403ad, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -24,7 +24,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 33c2c376e9e9598409468e95579c6122, type: 3}
+        m_Texture: {fileID: 2800000, guid: bdfdff7611097a94ea3b05df7e07c247, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -44,7 +44,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 080095dc793e92e409ec9f0a3e5d01ee, type: 3}
+        m_Texture: {fileID: 2800000, guid: 52c9d30e543c15e40a9f2870763e9132, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
@@ -82,6 +82,8 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _StageHeight: 0
+    - _StageWidth: 0
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:

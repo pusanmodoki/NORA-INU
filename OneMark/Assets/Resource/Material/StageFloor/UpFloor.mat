@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: UpFloor
-  m_Shader: {fileID: 4800000, guid: 1a6c477b79f1afe459deb7087ff414f1, type: 3}
+  m_Shader: {fileID: 4800000, guid: 905ebb3105a24e54b9f4dc1a193403ad, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _AreaTex:
+        m_Texture: {fileID: 8400000, guid: 7c33fe5eba406d7448576e057ca7f50e, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 2800000, guid: bdfdff7611097a94ea3b05df7e07c247, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -74,6 +78,8 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _StageHeight: 0
+    - _StageWidth: 0
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
