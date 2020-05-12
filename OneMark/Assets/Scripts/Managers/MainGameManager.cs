@@ -22,12 +22,15 @@ public class MainGameManager : MonoBehaviour
 
     public Vector2 stageSize { get { return m_stageSize; } private set { m_stageSize = value; } }
 
+    public static FollowObject mainCamera { get; private set; }
+
     /// <summary>[Awake]</summary>
     void Awake()
 	{
 		//インスタンス登録
 		instance = this;
 
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<FollowObject>();
 		//m_clearBoard.SetActive(false);
 		//m_overBoard.SetActive(false);
 	}
@@ -59,6 +62,7 @@ public class MainGameManager : MonoBehaviour
 	{
         PlayerAndTerritoryManager.instance.mainPlayer.gameObject.GetComponent<PlayerInput>().GameClearAnimation();
         ResultCall.GameClear();
+        mainCamera.ResultFlg();
 		m_isEnd = true;
 	}
 
