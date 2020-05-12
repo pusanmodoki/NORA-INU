@@ -217,6 +217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8143399947415216740}
   - component: {fileID: 8143399947415216743}
+  - component: {fileID: 553073227374351197}
   - component: {fileID: 8143399947415216742}
   - component: {fileID: 4080734799826250185}
   - component: {fileID: 8143399947415216741}
@@ -267,6 +268,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!135 &553073227374351197
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8143399947415216737}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.77
+  m_Center: {x: 0, y: -0.25, z: 0}
 --- !u!195 &8143399947415216742
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -365,19 +379,15 @@ MonoBehaviour:
   m_findPlayerObjectName: Player
   m_rushingAndMarkingFunction: {fileID: 8143399947415216750}
   m_animationController: {fileID: 4080734799826250185}
-  m_playerObeyLayerMask:
-    m_layerMask:
-      serializedVersion: 2
-      m_Bits: 1280
-  m_playerObeyMarkPointLayerMask:
-    m_layerMask:
-      serializedVersion: 2
-      m_Bits: 1536
+  m_groundFlag: {fileID: 8143399947837817096}
+  m_indicatedDogCenter: {x: 0, y: 0, z: 0}
+  m_indicatedDogRadius: 2
   m_changeColorMaterials:
   - m_meshRenderer: {fileID: 3165527726064043203}
     m_materialIndex: 0
   m_offMeshLinkController:
     m_jumpSeconds: 1.5
+    m_rotationSpeed: 3
   m_speedChanger:
     m_navMeshAgent: {fileID: 8143399947415216742}
     m_groundFlags: {fileID: 8143399947837817096}
@@ -391,6 +401,8 @@ MonoBehaviour:
     m_gradientMaxAcceleration: 10
     m_gradientDecelerationSeconds: 0.1
     m_gradientModeSeconds: 0.05
+  m_dIsOnDrawGizmos: 0
+  m_dIsSitAndStay: 0
 --- !u!114 &8143399947415216745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -525,7 +537,7 @@ MonoBehaviour:
   m_raycastLayerMask:
     m_layerMask:
       serializedVersion: 2
-      m_Bits: 1024
+      m_Bits: 33792
   m_dIsDrawGizmos: 1
   m_dIsStayNow: 1
   m_dIsEnterNow: 0
@@ -581,7 +593,7 @@ MonoBehaviour:
   m_raycastLayerMask:
     m_layerMask:
       serializedVersion: 2
-      m_Bits: 1024
+      m_Bits: 33792
   m_dIsDrawGizmos: 1
   m_dIsStayNow: 1
   m_dIsEnterNow: 0
@@ -700,15 +712,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9f09bc03e4d36b418497cbaf01b04f2, type: 3}
---- !u!1 &7184521576693976666 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8758656930330551333, guid: b9f09bc03e4d36b418497cbaf01b04f2,
-    type: 3}
-  m_PrefabInstance: {fileID: 1889695852573026943}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7184521576693976741 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8758656930330551514, guid: b9f09bc03e4d36b418497cbaf01b04f2,
+    type: 3}
+  m_PrefabInstance: {fileID: 1889695852573026943}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7184521576693976666 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8758656930330551333, guid: b9f09bc03e4d36b418497cbaf01b04f2,
     type: 3}
   m_PrefabInstance: {fileID: 1889695852573026943}
   m_PrefabAsset: {fileID: 0}

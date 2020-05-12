@@ -9,6 +9,8 @@ public class MainGameManager : MonoBehaviour
 	/// <summary>Static instance</summary>
 	public static MainGameManager instance { get; private set; } = null;
 
+	[SerializeField]
+	AudioSource m_source = null;
 	//[SerializeField, Tooltip("とりあえず")]
 	//GameObject m_clearBoard = null;
 	//[SerializeField, Tooltip("とりあえず")]
@@ -54,6 +56,8 @@ public class MainGameManager : MonoBehaviour
 	{
         PlayerAndTerritoryManager.instance.mainPlayer.gameObject.GetComponent<PlayerInput>().GameClearAnimation();
         ResultCall.GameClear();
+		m_source.enabled = false;
+
 		m_isEnd = true;
 	}
 
@@ -61,6 +65,7 @@ public class MainGameManager : MonoBehaviour
 	{
         PlayerAndTerritoryManager.instance.mainPlayer.gameObject.GetComponent<PlayerInput>().GameOverAnimation();
         ResultCall.GameOver();
+		m_source.enabled = false;
 		m_isEnd = true;
 	}
 }

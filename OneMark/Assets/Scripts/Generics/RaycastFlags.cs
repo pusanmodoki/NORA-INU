@@ -236,8 +236,8 @@ public class RaycastFlags : MonoBehaviour
         RaycastHit raycastHit = new RaycastHit();
 
 		//center
-		centerPosition = position + myTransform.right * m_center.x + myTransform.up * m_center.y + myTransform.forward * m_center.z;
-		
+		centerPosition = myTransform.LocalToWorldPosition(m_center);
+
 		//direction
 		Vector3 direction = GetRaycastDirection(centerPosition);
         if (m_isDirectionLock && rayCastResult != null)

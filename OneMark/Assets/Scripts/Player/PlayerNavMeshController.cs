@@ -6,6 +6,8 @@ using UnityEngine.AI;
 public class PlayerNavMeshController : MonoBehaviour
 {
 	public NavMeshAgent navMeshAgent { get { return m_navMeshAgent; } }
+	public bool isOnUniqueOffMeshLink { get { return m_copyUniqueOffMeshLink != null || m_navMeshAgent.isOnOffMeshLink; } }
+	public bool isOnManualUniqueOffMeshLink { get { return m_copyUniqueOffMeshLink != null; } }
 
 	[SerializeField]
 	PlayerInput m_input = null;
@@ -26,16 +28,40 @@ public class PlayerNavMeshController : MonoBehaviour
 	Vector3 m_dVelocity = Vector3.zero;
 #endif
 
+	BaseUniqueOffMeshLink m_pointUniqueOffMeshLink = null;
+	BaseUniqueOffMeshLink m_copyUniqueOffMeshLink = null;
 	Vector3 m_velocity = Vector3.zero;
 	Vector3 m_destination = Vector3.zero;
 	Vector3 m_territoryNormal = Vector3.zero;
 	Vector3 m_territoryHitPoint = Vector3.zero;
-	
+
+	public bool LinkManualUniqueOffMeshLink(BaseUniqueOffMeshLink pointUniqueOffMeshLink ,
+		BaseUniqueOffMeshLink copyUniqueOffMeshLink)
+	{
+		if (m_copyUniqueOffMeshLink == null)
+		{
+			m_pointUniqueOffMeshLink = pointUniqueOffMeshLink;
+			m_copyUniqueOffMeshLink = copyUniqueOffMeshLink;
+			m_navMeshAgent.updatePosition = false;
+			return true;
+		}
+		else
+			return false;
+	}
+
 	// Update is called once per frame
 	void Update()
 	{
-		Move();
+		if (!isOnManualUniqueOffMeshLink) Move();
+		else CheckManualUniqueOffMeshLink(true);
 	}
+	// Update is called once per frame
+	void FixedUpdate()
+	{
+		if (isOnManualUniqueOffMeshLink)
+			CheckManualUniqueOffMeshLink(false);
+	}
+
 
 	void Move()
 	{
@@ -69,5 +95,18 @@ public class PlayerNavMeshController : MonoBehaviour
 #if UNITY_EDITOR
 		 m_dVelocity = m_velocity;
 #endif
+	}
+
+	void CheckManualUniqueOffMeshLink(bool isUpdate)
+	{
+		if ((isUpdate && !m_copyUniqueOffMeshLink.CalledUpdateOffMeshLink())
+			|| (!isUpdate && !m_copyUniqueOffMeshLink.CalledFixedUpdateOffMeshLink()))
+		{
+			m_pointUniqueOffMeshLink.UnacquisitionRightToUse();
+			m_copyUniqueOffMeshLink.Unlink();
+			Object.Destroy(m_copyUniqueOffMeshLink);
+			m_copyUniqueOffMeshLink = null;
+			m_navMeshAgent.updatePosition = true;
+		}
 	}
 }

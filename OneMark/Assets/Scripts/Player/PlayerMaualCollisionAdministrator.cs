@@ -44,7 +44,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	}
 
 	/// <summary>ポイントタイマーロック判定に使用する距離</summary>
-	public float personalDistance { get { return m_personalDistance; } }
+	public float personalDistance { get { return m_personalRadius; } }
 	/// <summary>視界判定に使用する距離</summary>
 	public float visibilityDistance { get { return m_visibilityDistance; } }
 
@@ -95,11 +95,14 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	/// <summary>Draw gizmo mesh iD (debug only)</summary>
 	public int dMeshID { get; set; } = -1;
 	/// <summary>Visibility is draw gizmos? (debug only)</summary>
-	public bool dIsDrawGizmos { get { return m_dIsDrawGizmos; } set { m_dIsDrawGizmos = value; } }
+	public bool dIsDrawGizmos { get { return m_dIsDrawVisibilityGizmos; } set { m_dIsDrawVisibilityGizmos = value; } }
 
-	/// <summary>Visibility is draw gizmos? (debug only)</summary>
-	[SerializeField, Header("Debug Only"), Tooltip("Visibility is draw gizmos? (debug only)")]
+	/// <summary>Draw gizmos? (debug only)</summary>
+	[SerializeField, Header("Debug Only"), Tooltip("Draw gizmos? (debug only)")]
 	bool m_dIsDrawGizmos = true;
+	/// <summary>Visibility is draw gizmos? (debug only)</summary>
+	[SerializeField, Tooltip("Visibility is draw gizmos? (debug only)")]
+	bool m_dIsDrawVisibilityGizmos = true;
 #endif
 
 	/// <summary>当たり判定のレイヤーマスク</summary>
@@ -113,8 +116,8 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	/// <summary>ターゲットマーカー</summary>
 	[Header("Visibility"), SerializeField, Tooltip("ターゲットマーカー")]
     TargetMarker m_targetMarker = null;
-	/// <summary>当たり判定のレイヤーマスク</summary>
-	[SerializeField, Tooltip("当たり判定のレイヤーマスク")]
+	/// <summary>視界当たり判定のレイヤーマスク</summary>
+	[SerializeField, Tooltip("視界当たり判定のレイヤーマスク")]
 	LayerMaskEx m_visibilityLayerMask = 0;
 	/// <summary>Visibility angle</summary>
 	[SerializeField, Space, Range(0.0f, 180.0f), Tooltip("Visibility angle")]
@@ -128,13 +131,31 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	LayerMaskEx m_markPointLayerMask = 0;
 	/// <summary>ポイントタイマーロック判定に使用する距離</summary>
 	[SerializeField, Tooltip("ポイントタイマーロック判定に使用する距離")]
-	float m_personalDistance = 10;
+	float m_personalRadius = 4;
     [SerializeField, Tooltip("マーキングするターゲット")]
     GameObject m_nowTargetObject = null;
 
+	/// <summary>GoMarking時にMarkPointへのBoxCast判定で使う情報</summary>
+	[Header("Instructions to dogs"), SerializeField, Tooltip("GoMarking時にMarkPointへのBoxCast判定で使う情報")]
+	BoxCastInfos m_instructionsMarkPointInfos = default;
+	/// <summary>GoMarking時にMarkPointへのBoxCast判定した際に障害物と判断するLayer</summary>
+	[SerializeField, Tooltip("GoMarking時にMarkPointへのBoxCast判定した際に障害物と判断するLayer")]
+	LayerMaskEx m_instructionsMarkPointObstacleLayerMask = 0;
+	/// <summary>EndMarking時にオス犬へのBoxCast判定で使う情報</summary>
+	[SerializeField, Tooltip("EndMarking時にオス犬へのBoxCast判定で使う情報")]
+	BoxCastInfos m_instructionsReturnDogInfos = default;
+	/// <summary>EndMarking時にオス犬へのBoxCast判定した際に障害物と判断するLayer</summary>
+	[SerializeField, Tooltip("EndMarking時にオス犬へのBoxCast判定した際に障害物と判断するLayer")]
+	LayerMaskEx m_instructionsReturnDogObstacleLayerMask = 0;
+	/// <summary>GoMarking時の円形当たり判定で使う自身のCenter</summary>
+	[SerializeField, Tooltip("GoMarking時の円形当たり判定で使う自身のCenter")]
+	Vector3 m_instructionsGoingDogCenter = Vector3.zero;
+	/// <summary>GoMarking時の円形当たり判定で使う自身の半径</summary>
+	[SerializeField, Tooltip("GoMarking時の円形当たり判定で使う自身の半径")]
+	float m_instructionsGoingDogRadius = 10;
 
-    /// <summary>CheckMarkPointで使用するヒットリスト</summary>
-    List<BaseMarkPoint> m_checkPoints = new List<BaseMarkPoint>();
+	/// <summary>CheckMarkPointで使用するヒットリスト</summary>
+	List<BaseMarkPoint> m_checkPoints = new List<BaseMarkPoint>();
 	/// <summary>PlayerInfo</summary>
 	PlayerAndTerritoryManager.PlayerInfo m_playerInfo = null;
 	/// <summary>Forward方向のテリトリー法線</summary>
@@ -157,6 +178,77 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		//Set Info
 		if (m_playerInfo == null && info != null)
 			m_playerInfo = info;
+	}
+	/// <summary>
+	/// [IsHitInstructionsMarkPoint]
+	/// MarkPointとBoxCast判定を行う
+	/// </summary>
+	public bool IsHitInstructionsMarkPoint(BaseMarkPoint markPoint)
+	{
+		if (markPoint == null) return false;
+
+		Vector3 position = m_instructionsMarkPointInfos.WorldCenter(transform);
+		Vector3 target = markPoint.transform.position;
+		var collisions = Physics.BoxCastAll(position, m_instructionsMarkPointInfos.overlapSize, (target - position).normalized,
+			transform.rotation, Vector3.Distance(target, position), m_instructionsMarkPointInfos.layerMask);
+
+		int instanceID = markPoint.transform.GetInstanceID();
+		bool isHit = false;
+
+		for (int i = 0, length = collisions.Length; i < length; ++i)
+		{
+			if (m_instructionsMarkPointObstacleLayerMask.EqualBitsForGameObject(collisions[i].transform.gameObject)
+				&& (collisions[i].point - position).sqrMagnitude < (target - position).sqrMagnitude)
+				return false;
+			else if (collisions[i].transform.GetInstanceID() == instanceID)
+				isHit = true;
+		}
+
+		return isHit;
+	}
+	/// <summary>
+	/// [IsHitInstructionsGoingDog]
+	/// DogとBoxCast判定を行う
+	/// </summary>
+	public bool IsHitInstructionsGoingDog(DogAIAgent dogAIAgent)
+	{
+		if (dogAIAgent == null) return false;
+
+		Vector3 position = transform.LocalToWorldPosition(m_instructionsGoingDogCenter);
+		Vector3 target = dogAIAgent.transform.LocalToWorldPosition(dogAIAgent.indicatedDogCenter);
+		float radius = (m_instructionsGoingDogRadius + dogAIAgent.indicatedDogRadius);
+		radius *= radius;
+		position.y = target.y = 0.0f;
+
+		return (target - position).sqrMagnitude < radius;
+	}
+	/// <summary>
+	/// [IsHitInstructionsGoingDog]
+	/// Dogと円形判定を行う
+	/// </summary>
+	public bool IsHitInstructionsReturnDog(DogAIAgent dogAIAgent)
+	{
+		if (dogAIAgent == null) return false;
+
+		Vector3 position = m_instructionsReturnDogInfos.WorldCenter(transform);
+		Vector3 target = dogAIAgent.transform.position;
+
+		var collisions = Physics.BoxCastAll(position, m_instructionsReturnDogInfos.overlapSize, 
+			(target - position).normalized, transform.rotation, Vector3.Distance(target, position) * 2.0f, m_instructionsReturnDogInfos.layerMask);
+
+		int instanceID = dogAIAgent.transform.GetInstanceID();
+		bool isHit = false;
+
+		for (int i = 0, length = collisions.Length; i < length; ++i)
+		{
+			if (m_instructionsReturnDogObstacleLayerMask.EqualBitsForGameObject(collisions[i].transform.gameObject)
+				&& (collisions[i].point - position).sqrMagnitude < (target - position).sqrMagnitude)
+				return false;
+			else if (collisions[i].transform.GetInstanceID() == instanceID)
+				isHit = true;
+		}
+
+		return isHit;
 	}
 
 	/// <summary>[Awake]</summary>
@@ -350,7 +442,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		m_checkPoints.Clear();
 
 		//Overlap
-		var collisions = Physics.OverlapSphere(position, m_personalDistance, m_markPointLayerMask);
+		var collisions = Physics.OverlapSphere(position, m_personalRadius, m_markPointLayerMask);
 
 		//Not hit -> return
 		if (collisions.Length == 0)
@@ -368,4 +460,46 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		for (int i = 0, count = m_checkPoints.Count; i < count; ++i)
 			m_checkPoints[i].SetPlayerNearby(true);
 	}
+
+
+	//debug only
+#if UNITY_EDITOR
+	static readonly Color m_cdPersonalColor = new Color(0.95f, 0.1f, 0.95f);
+
+	/// <summary>[OnDrawGizmos]</summary>
+	void OnDrawGizmos()
+	{
+		if (!m_dIsDrawGizmos) return;
+
+		Gizmos.color = Color.green;
+		Gizmos.DrawWireSphere(transform.position + Vector3.up, m_collisionRadius);
+
+
+		Gizmos.color = m_cdPersonalColor;
+		Gizmos.DrawWireSphere(transform.position, m_personalRadius);
+
+
+		Gizmos.color = Color.cyan;
+		Gizmos.DrawWireSphere(transform.LocalToWorldPosition(m_instructionsGoingDogCenter), m_instructionsGoingDogRadius);
+
+
+		bool isHit = IsHitInstructionsMarkPoint(hitVisibilityMarkPoint);
+		m_instructionsMarkPointInfos.DOnDrawGizmos(transform, isHit ? Color.red : Color.yellow,
+			hitVisibilityMarkPoint != null ? (hitVisibilityMarkPoint.transform.position - transform.position).normalized : transform.forward,
+			hitVisibilityMarkPoint != null ? Vector3.Distance(transform.position, hitVisibilityMarkPoint.transform.position) : 10.0f);
+
+
+		if (PlayerAndTerritoryManager.instance == null)
+			m_instructionsReturnDogInfos.DOnDrawGizmos(transform, Color.white, transform.forward, 15.0f);
+		else
+		{
+			foreach(var e in ServantManager.instance.servantByPlayers[gameObject.GetInstanceID()])
+			{
+				isHit = IsHitInstructionsReturnDog(e);
+				m_instructionsReturnDogInfos.DOnDrawGizmos(transform, isHit ? Color.black : Color.white,
+					(e.transform.position - transform.position).normalized, Vector3.Distance(transform.position, e.transform.position));
+			}
+		}
+	}
+#endif
 }

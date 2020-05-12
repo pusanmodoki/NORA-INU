@@ -58,7 +58,6 @@ public class DogRushingAndMarking : BaseDogAIFunction
 	float m_markingSeconds = 0.9f;
 
 	BaseMarkPoint m_markPoint = null;
-	Vector3 m_markPointPosition= Vector3.zero;
 	LayerMaskEx m_markPointLayerMask = 0;
 
 	Quaternion m_targetRotation = Quaternion.identity;
@@ -67,12 +66,10 @@ public class DogRushingAndMarking : BaseDogAIFunction
 	/// [SetAdvanceInformation]
 	/// 実行に必要な事前情報を入力する
 	/// 引数1: 目標ポイント
-	/// 引数2: ポイントの座標
 	/// </summary>
-	public void SetAdvanceInformation(BaseMarkPoint markPoint, Vector3 position)
+	public void SetAdvanceInformation(BaseMarkPoint markPoint)
 	{
 		m_markPoint = markPoint;
-		m_markPointPosition = position;
 		m_markPointLayerMask.SetValue(markPoint.gameObject);
 	}
 
@@ -90,7 +87,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 
 		//初期化
 		SetUpdatePosition(true);
-		navMeshAgent.destination = m_markPointPosition;
+		navMeshAgent.destination = m_markPoint.transform.position;
 		functionState = State.Rushing;
 		//Animation Set
 		m_animationController.editAnimation.SetTriggerRolling();
@@ -147,6 +144,9 @@ public class DogRushingAndMarking : BaseDogAIFunction
 			//突進
 			case State.Rushing:
 				{
+					//設定
+					navMeshAgent.destination = m_markPoint.transform.position;
+
 					//半径でOverlapを行う
 					var hitCollisions = Physics.OverlapSphere(transform.position, m_rushingArrivalDistance, m_markPointLayerMask);
 
@@ -161,7 +161,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 							dogAIAgent.speedChanger.SetManualAcceleration(0.0f);
 
 							//回転を決める
-							Vector3 absolute = m_markPointPosition - transform.position;
+							Vector3 absolute = m_markPoint.transform.position - transform.position;
 							absolute.y = 0.0f;
 							m_targetRotation = Quaternion.LookRotation(absolute.normalized) * Quaternion.AngleAxis(-90, Vector3.up);
 							//Stateを進める

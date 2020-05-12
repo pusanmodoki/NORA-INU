@@ -35,6 +35,10 @@ public class DogAnimationController : MonoBehaviour
 		{
 			m_animator.SetBool(m_isSearchBoolID, isSet);
 		}
+		public bool GetBoolIsNextSearch()
+		{
+			return m_animator.GetBool(m_isSearchBoolID);
+		}
 
 		public void SetTriggerRolling()
 		{
@@ -90,7 +94,9 @@ public class DogAnimationController : MonoBehaviour
 	public void AnimationWakeUpCallback()
 	{
 		editAnimation.SetTriggerNextChange();
+
 		//ステイ終了
-		m_aiAgent.SetSitAndStay(false, m_aiAgent.linkMarkPoint);
+		if (!editAnimation.GetBoolIsNextSearch())
+			m_aiAgent.SetSitAndStay(false, m_aiAgent.linkMarkPoint);
 	}
 }

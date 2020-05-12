@@ -88,6 +88,9 @@ public class DogFollowMove : BaseDogAIFunction
 	/// </summary>
 	public override void AIUpdate(UpdateIdentifier updateIdentifier)
 	{
+		if (navMeshAgent.isOnOffMeshLink)
+			return;
+
 		if ((m_followTransform.position - transform.position).sqrMagnitude < m_arrivalDistance * m_arrivalDistance)
 			navMeshAgent.isStopped = true;
 		else

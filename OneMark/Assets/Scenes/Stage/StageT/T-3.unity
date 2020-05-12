@@ -1938,7 +1938,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: e03be6b54d4a3ec4b9b91c5524056d8f, type: 3}
+      objectReference: {fileID: 8300000, guid: 42a45b907edca9946a5b0d43e5c34a04, type: 3}
     - target: {fileID: 6836522414734074658, guid: e5a4bb9f89d1eb145a3fb921b570b6f2,
         type: 3}
       propertyPath: g_nextSceneName

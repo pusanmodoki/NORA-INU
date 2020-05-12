@@ -184,7 +184,7 @@ public class BoxCastFlags : MonoBehaviour
         bool isOldStay = isStay;
 
 		//center
-		centerPosition = position + myTransform.right * m_center.x + myTransform.up * m_center.y + myTransform.forward * m_center.z;
+		centerPosition = myTransform.LocalToWorldPosition(m_center);
 		
 		//Raycast
 		isStay = Physics.BoxCast(centerPosition, boxCastScale, GetBoxCastDirection(centerPosition), 
