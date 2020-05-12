@@ -32,8 +32,12 @@ public class PlayerInput : MonoBehaviour
 	[SerializeField]
 	float m_shotDeactivateSeconds = 0.5f;
 
+#if UNITY_EDITOR
 	[Header("Debug Only"), SerializeField]
 	Vector2 m_dMoveInput = Vector2.zero;
+	[SerializeField]
+	bool[] m_dIsShotFlags = null;
+#endif
 
 	Vector3 m_moveInput = Vector3.zero;
 
@@ -53,6 +57,11 @@ public class PlayerInput : MonoBehaviour
 		m_state = AnimationState.GameOver;
 		m_animator.SetInteger("State", (int)m_state);
 		isEnableInput = false;
+	}
+
+	public void ChangeShotFlags(DogAIAgent agent, bool isShot)
+	{
+		m_isShotFlags[agent.linkPlayerServantsOwnIndex] = isShot;
 	}
 
 	void Start()
@@ -86,6 +95,7 @@ public class PlayerInput : MonoBehaviour
 
 #if UNITY_EDITOR
 		m_dMoveInput = m_moveInput;
+		m_dIsShotFlags = m_isShotFlags.Clone() as bool[];
 #endif
 
 		if (m_moveInput.sqrMagnitude > 0.0f)
@@ -124,20 +134,26 @@ public class PlayerInput : MonoBehaviour
 	{
 		var servant = ServantManager.instance.servantByMainPlayer[id];
 
-		if (m_isShotFlags[id])
+		if (m_isShotFlags[id] && servant.ComeBecauseEndOfMarking(
+				m_maualCollisionAdministrator.IsHitInstructionsReturnDog(servant)))
 		{
-			servant.ComeBecauseEndOfMarking();
 			m_isShotFlags[id] = false;
 			m_shotTimers[id].Start();
-			return;
 		}
-		else if(m_maualCollisionAdministrator.isVisibilityStay
+		else if(!m_isShotFlags[id] && m_maualCollisionAdministrator.isVisibilityStay
 			&& m_maualCollisionAdministrator.hitVisibilityMarkPoint != null)
 		{
-			servant.GoSoStartOfMarking(m_maualCollisionAdministrator.hitVisibilityMarkPoint);
-			m_isShotFlags[id] = true;
-			m_shotTimers[id].Start();
-			return;
+			bool isResult = m_maualCollisionAdministrator.IsHitInstructionsGoingDog(servant);
+
+			if (isResult)
+				isResult &= m_maualCollisionAdministrator.IsHitInstructionsMarkPoint(
+					m_maualCollisionAdministrator.hitVisibilityMarkPoint);
+
+			if (isResult && servant.GoSoStartOfMarking(m_maualCollisionAdministrator.hitVisibilityMarkPoint))
+			{
+				m_isShotFlags[id] = true;
+				m_shotTimers[id].Start();
+			}
 		}
 	}
 }

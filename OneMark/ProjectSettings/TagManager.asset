@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - User0
   layers:
   - Default
   - TransparentFX
@@ -20,10 +21,10 @@ TagManager:
   - Area
   - CheckPoint
   - Kamihubukli
-  - 
-  - 
-  - 
-  - 
+  - Event
+  - StageWall
+  - UsedEventDetection
+  - MoveMarkPoint
   - 
   - 
   - 

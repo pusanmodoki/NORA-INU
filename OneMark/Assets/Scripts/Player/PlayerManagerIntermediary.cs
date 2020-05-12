@@ -7,15 +7,27 @@ using UnityEngine;
 /// </summary>
 public class PlayerManagerIntermediary : MonoBehaviour
 {
+	/// <summary>This PlayerInfo</summary>
+	public PlayerAndTerritoryManager.PlayerInfo thisInfo { get; private set; } = null;
+
 	/// <summary>This PlayerMaualCollisionAdministrator</summary>
 	[SerializeField, Tooltip("This PlayerMaualCollisionAdministrator")]
 	PlayerMaualCollisionAdministrator m_playerMaualCollisionAdministrator = null;
+	/// <summary>This PlayerNavMeshController</summary>
+	[SerializeField, Tooltip("This PlayerNavMeshController")]
+	PlayerNavMeshController m_navMeshController = null;
+	/// <summary>This PlayerInput</summary>
+	[SerializeField, Tooltip("This PlayerInput")]
+	PlayerInput m_input = null;
 	/// <summary>This GroundFlag</summary>
 	[SerializeField, Tooltip("This GroundFlag")]
 	BoxCastFlags m_groundFlag = null;
 	/// <summary>This NavMeshAgent</summary>
 	[SerializeField, Tooltip("This NavMeshAgent")]
 	UnityEngine.AI.NavMeshAgent m_navMeshAgent = null;
+	/// <summary>This NavMeshAgent</summary>
+	[SerializeField, Tooltip("This Rigidbody")]
+	Rigidbody m_rigidBody = null;
 	/// <summary>Servant follow points</summary>
 	[SerializeField, Tooltip("Servant follow points")]
 	GameObject[] m_followPoints = new GameObject[3];
@@ -58,8 +70,8 @@ public class PlayerManagerIntermediary : MonoBehaviour
     {
 		//Managerにインスタンス追加
 		PlayerAndTerritoryManager.instance.AddPlayer(gameObject, this, 
-			m_playerMaualCollisionAdministrator, m_groundFlag, m_navMeshAgent, m_followPoints,
-			m_resultCameraLookPoint, m_resultCameraMovePoint);
+			m_playerMaualCollisionAdministrator, m_navMeshController, m_input, m_groundFlag, m_navMeshAgent,
+			m_rigidBody, m_followPoints, m_resultCameraLookPoint, m_resultCameraMovePoint);
 
 		//現在のステージ情報を取得
 		var settings = DataManager.GetNowStageSetting();
@@ -88,6 +100,7 @@ public class PlayerManagerIntermediary : MonoBehaviour
 			PlayerAndTerritoryManager.instance.CalucrateTerritory(playerInfo);
 			//Info設定
 			m_playerMaualCollisionAdministrator.SetPlayerInfo(playerInfo);
+			thisInfo = playerInfo;
 
 			m_firstPoint.SetLockFirstPoint(true);
 			m_isPauseFirstPoint = true;

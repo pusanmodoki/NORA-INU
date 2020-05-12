@@ -19,6 +19,7 @@ public class DogAnimationController : MonoBehaviour
 				m_wakeUpTriggerID = Animator.StringToHash("WakeUp");
 				m_returnRunTriggerID = Animator.StringToHash("ReturnRun");
 				m_nextChangeTriggerID = Animator.StringToHash("NextChange");
+				m_forceChangeStandID= Animator.StringToHash("ForceChangeStand");
 				m_isSearchBoolID = Animator.StringToHash("IsSearch");
 			}
 		}
@@ -34,6 +35,10 @@ public class DogAnimationController : MonoBehaviour
 		public void SetBoolIsNextSearch(bool isSet)
 		{
 			m_animator.SetBool(m_isSearchBoolID, isSet);
+		}
+		public bool GetBoolIsNextSearch()
+		{
+			return m_animator.GetBool(m_isSearchBoolID);
 		}
 
 		public void SetTriggerRolling()
@@ -53,6 +58,10 @@ public class DogAnimationController : MonoBehaviour
 		{
 			m_animator.SetTrigger(m_sleepStartTriggerID);
 		}
+		public void SetTriggerForceChangeStand()
+		{
+			m_animator.SetTrigger(m_forceChangeStandID);
+		}
 		public void SetTriggerWakeUp()
 		{
 			m_animator.SetTrigger(m_wakeUpTriggerID);
@@ -71,6 +80,7 @@ public class DogAnimationController : MonoBehaviour
 		static int m_wakeUpTriggerID = -1;
 		static int m_returnRunTriggerID = -1;
 		static int m_nextChangeTriggerID = -1;
+		static int m_forceChangeStandID = -1;
 		static int m_isSearchBoolID = -1;
 	}
 
@@ -90,7 +100,9 @@ public class DogAnimationController : MonoBehaviour
 	public void AnimationWakeUpCallback()
 	{
 		editAnimation.SetTriggerNextChange();
+
 		//ステイ終了
-		m_aiAgent.SetSitAndStay(false, m_aiAgent.linkMarkPoint);
+		if (!editAnimation.GetBoolIsNextSearch())
+			m_aiAgent.SetSitAndStay(false, m_aiAgent.linkMarkPoint);
 	}
 }

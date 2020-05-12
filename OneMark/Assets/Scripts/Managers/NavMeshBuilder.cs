@@ -9,6 +9,8 @@ public class NavMeshBuilder : MonoBehaviour
 	public static NavMeshBuilder instance { get; private set; } = null;
 
 	[SerializeField]
+	NavMeshSurface[] m_notVolumeNavMeshSurfaces = null;
+	[SerializeField]
 	GameObject[] m_navMeshSurfaceObjects = null;
 
 	[SerializeField, Space]
@@ -52,6 +54,9 @@ public class NavMeshBuilder : MonoBehaviour
 	{
 		if (m_bakeIntervalTimer.elapasedTime > m_bakeInterval)
 		{
+			for (int index = 0, length = m_notVolumeNavMeshSurfaces.Length; index < length; ++index)
+				m_notVolumeNavMeshSurfaces[index].BuildNavMesh();
+
 			Vector3 setPosition = Vector3.zero, playerPosition = Vector3.zero;
 			int i = 0;
 			foreach(var e in PlayerAndTerritoryManager.instance.allPlayers)

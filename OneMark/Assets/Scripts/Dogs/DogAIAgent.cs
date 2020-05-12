@@ -14,11 +14,17 @@ public class DogAIAgent : AIAgent
 	/// <summary>Speed changer</summary>
 	public DogSpeedChanger speedChanger { get { return m_speedChanger; } }
 	/// <summary>Link mark point</summary>
-	public DogAnimationController animationController { get { return m_animationController; } } 
+	public DogAnimationController animationController { get { return m_animationController; } }
+	/// <summary>Ground flag</summary>
+	public BoxCastFlags groundFlag { get { return m_groundFlag; } } 
 	/// <summary>Link player</summary>
 	public GameObject linkPlayer { get; private set; } = null;
 	/// <summary>Link mark point</summary>
 	public BaseMarkPoint linkMarkPoint { get; private set; } = null;
+	/// <summary>GoMarking時の円形当たり判定で使うCenter</summary>
+	public Vector3 indicatedDogCenter { get { return m_indicatedDogCenter; } }
+	/// <summary>GoMarking時の円形当たり判定で使う半径</summary>
+	public float indicatedDogRadius { get { return m_indicatedDogRadius; } }
 	/// <summary>Player別の自身のIndex</summary>
 	public int linkPlayerServantsOwnIndex { get { return m_linkPlayerServantsOwnIndex; } }
 	/// <summary>Is sit & stay now?</summary>
@@ -41,12 +47,15 @@ public class DogAIAgent : AIAgent
 	/// <summary>This animation controller</summary>
 	[SerializeField, Tooltip("This animation controller")]
 	DogAnimationController m_animationController = null;
-	/// <summary>プレイヤーの命令に従うかどうかプレイヤーとエネミーでRaycastする時のLayerMask</summary>
-	[SerializeField, Tooltip("プレイヤーの命令に従うかどうかプレイヤーとエネミーでRaycastする時のLayerMask")]
-	LayerMaskEx m_playerObeyLayerMask = 0;
-	/// <summary>プレイヤーとマークポイントでRaycastする時のLayerMask</summary>
-	[SerializeField, Tooltip("プレイヤーとマークポイントでRaycastする時のLayerMask")]
-	LayerMaskEx m_playerObeyMarkPointLayerMask = 0;
+	/// <summary>This ground flag</summary>
+	[SerializeField, Tooltip("This ground flag")]
+	BoxCastFlags m_groundFlag = null;
+	/// <summary>GoMarking時の円形当たり判定で使うCenter</summary>
+	[SerializeField, Tooltip("GoMarking時の円形当たり判定で使うCenter")]
+	Vector3 m_indicatedDogCenter = Vector3.zero;
+	/// <summary>GoMarking時の円形当たり判定で使う半径</summary>
+	[SerializeField, Tooltip("GoMarking時の円形当たり判定で使う半径")]
+	float m_indicatedDogRadius = 2;
 	/// <summary>Change color materials</summary>
 	[SerializeField, Space, Tooltip("Change color materials")]
 	RendererMaterial[] m_changeColorMaterials = null;
@@ -57,12 +66,29 @@ public class DogAIAgent : AIAgent
 	[SerializeField, Space, Tooltip("Speed changer")]
 	DogSpeedChanger m_speedChanger = new DogSpeedChanger();
 
-	/// <summary>RaycastHits</summary>
-	RaycastHit[] m_raycastHits = null;
-	/// <summary>Colliders</summary>
-	Collider[] m_colliders = null;
+
+	//Debug only
+#if UNITY_EDITOR
+	/// <summary>isSitAndStay</summary>
+	[Header("Dog AI Agent Debug Only"), Tooltip("isOnDrawGizmos"), Space, SerializeField]
+	bool m_dIsOnDrawGizmos = false;
+	/// <summary>isSitAndStay</summary>
+	[Tooltip("isSitAndStay"), Space, SerializeField]
+	bool m_dIsSitAndStay = false;
+#endif
+
+	/// <summary>BoxCastHits</summary>
+	RaycastHit[] m_boxCastHits = null;
+	/// <summary>Link mark point</summary>
+	BaseMarkPoint m_linkMarkPoint = null;
 	/// <summary>Player別の自身のIndex</summary>
 	int m_linkPlayerServantsOwnIndex = -1;
+	/// <summary>GoSoStartOfMarkingが実行されたがOffMeshLink上にいる場合は予約される</summary>
+	bool m_isReservationStartOfMarking = false;
+	/// <summary>ComeBecauseEndOfMarkingが実行されたがOffMeshLink上にいる場合は予約される</summary>
+	bool m_isReservationEndOfMarking = false;
+	/// <summary>m_isReservationEndOfMarking時に保存されるSetBoolIsNextSearch</summary>
+	bool m_isSetBoolIsNextSearch = false;
 
 	/// <summary>
 	/// [GoSoStartOfMarking]
@@ -80,10 +106,17 @@ public class DogAIAgent : AIAgent
 #endif
 			return false;
 		}
+		if (linkPlayer == null)
+		{
+#if UNITY_EDITOR
+			Debug.LogError("Warning!! DogAIAgent->ComeBecauseEndOfMarking\n Link player == null");
+#endif
+			return false;
+		}
 		else if (markPoint == null)
 		{
 #if UNITY_EDITOR
-			Debug.LogError("Error!! DogAIAgent->GoSoStartOfMarking\n markPoint == null");
+			Debug.LogError("Error!! DogAIAgent->GoSoStartOfMarking: markPoint == null");
 #endif
 			return false;
 		}
@@ -91,70 +124,53 @@ public class DogAIAgent : AIAgent
 			m_rushingAndMarkingFunction.functionState != DogRushingAndMarking.State.Null)
 		{
 #if UNITY_EDITOR
-			Debug.LogError("Error!! DogAIAgent->GoSoStartOfMarking\n Already running");
+			Debug.LogWarning("Error!! DogAIAgent->GoSoStartOfMarking: Already running");
 #endif
 			return false;
 		}
 
-		Vector3 position = transform.position, targetPosition = linkPlayer.transform.position;
-		Vector3 direction = (new Vector3(targetPosition.x, 0.0f, targetPosition.z) -
-			new Vector3(position.x, 0.0f, position.z)).normalized;
-		float distance = (targetPosition - position).sqrMagnitude;
-		int instanceID = linkPlayer.GetInstanceID();
+		//事前情報入力
+		m_rushingAndMarkingFunction.SetAdvanceInformation(markPoint);
+		m_isReservationStartOfMarking = false;
+		m_linkMarkPoint = markPoint;
 
-		//Raycast, Overlap判定(Player)
-		m_raycastHits = Physics.RaycastAll(position, direction, distance, m_playerObeyLayerMask);
-		m_colliders = Physics.OverlapSphere(position, distance, m_playerObeyLayerMask);
-
-		if (linkPlayer != null
-			&& (m_raycastHits.ContainsInstanceID(instanceID) | m_colliders.ContainsInstanceID(instanceID)))
-		{
-			position = targetPosition;
-			targetPosition = markPoint.transform.position;
-
-			direction = (new Vector3(targetPosition.x, 0.0f, targetPosition.z) -
-				new Vector3(position.x, 0.0f, position.z)).normalized;
-			distance = (targetPosition - position).sqrMagnitude;
-			instanceID = markPoint.gameObject.GetInstanceID();
-
-			//Raycast, Overlap判定(MarkPoint)
-			m_raycastHits = Physics.RaycastAll(position, direction, distance, m_playerObeyMarkPointLayerMask);
-			m_colliders = Physics.OverlapSphere(position, distance, m_playerObeyMarkPointLayerMask);
-			if (m_raycastHits.ContainsInstanceID(instanceID) | m_colliders.ContainsInstanceID(instanceID))
-			{
-				//事前情報入力
-				m_rushingAndMarkingFunction.SetAdvanceInformation(markPoint, markPoint.transform.position);
-				//関数割り込み実行
-				ForceSpecifyFunction(m_rushingAndMarkingFunction);
-
-				return true;
-			}
-			else return false;
-		}
+		//OffMeshLink上なら予約
+		if (navMeshAgent.isOnOffMeshLink)
+			m_isReservationStartOfMarking = true;
+		//関数割り込み実行
 		else
 		{
-			return false;
+			m_linkMarkPoint.ChangeAgent(this);
+			ForceSpecifyFunction(m_rushingAndMarkingFunction);
 		}
+		return true;
 	}
 	/// <summary>
 	/// [ComeBecauseEndOfMarking]
 	/// マーキング->Stay命令を終了する
 	/// return: 行動実行する場合はtrue, できない場合はfalse
 	/// </summary>
-	public bool ComeBecauseEndOfMarking()
+	public bool ComeBecauseEndOfMarking(bool isBoxCastHit)
 	{
 		//念の為nullチェック
 		if (m_rushingAndMarkingFunction == null)
 		{
 #if UNITY_EDITOR
-			Debug.Log("Warning!! DogAIAgent->ComeBecauseEndOfMarking\n Rushing And Marking Function == null");
+			Debug.LogWarning("Warning!! DogAIAgent->ComeBecauseEndOfMarking\n Rushing And Marking Function == null");
+#endif
+			return false;
+		}
+		if (linkPlayer == null)
+		{
+#if UNITY_EDITOR
+			Debug.LogWarning("Warning!! DogAIAgent->ComeBecauseEndOfMarking\n Link player == null");
 #endif
 			return false;
 		}
 		else if (!isSitAndStaySelf)
 		{
 #if UNITY_EDITOR
-			Debug.Log("Warning!! DogAIAgent->ComeBecauseEndOfMarking\n GoSoStartOfMarking is not running.");
+			Debug.LogWarning("Warning!! DogAIAgent->ComeBecauseEndOfMarking\n GoSoStartOfMarking is not running.");
 #endif
 			return false;
 		}
@@ -162,29 +178,48 @@ public class DogAIAgent : AIAgent
 			m_rushingAndMarkingFunction.functionState != DogRushingAndMarking.State.Null)
 		{
 #if UNITY_EDITOR
-			Debug.LogError("Error!! DogAIAgent->GoSoStartOfMarking\n GoSoStartOfMarking already running");
+			Debug.LogWarning("Error!! DogAIAgent->GoSoStartOfMarking\n GoSoStartOfMarking already running");
 #endif
 			return false;
 		}
 
-		Vector3 position = transform.position, targetPosition = linkPlayer.transform.position;
-		Vector3 direction = (new Vector3(targetPosition.x, 0.0f, targetPosition.z) - 
-			new Vector3(position.x, 0.0f, position.z)).normalized;
+		m_isReservationEndOfMarking = false;
 
-		//Raycast判定(Player)
-		m_raycastHits = Physics.RaycastAll(position, direction, (targetPosition - position).sqrMagnitude, m_playerObeyLayerMask);
-		if (linkPlayer != null && m_raycastHits.ContainsInstanceID(linkPlayer))
+		//Hit
+		if (isBoxCastHit)
 		{
-			//Animation Set
-			m_animationController.editAnimation.SetTriggerWakeUp();
-			m_animationController.editAnimation.SetBoolIsNextSearch(false);
+			//OffMeshLink上なら予約
+			if (navMeshAgent.isOnOffMeshLink)
+			{
+				m_isReservationEndOfMarking = true;
+				m_isSetBoolIsNextSearch = false;
+			}
+			else
+			{
+				//Animation Set
+				m_animationController.editAnimation.SetTriggerWakeUp();
+				m_animationController.editAnimation.SetBoolIsNextSearch(false);
+				m_linkMarkPoint.ChangeAgent(null);
+				m_linkMarkPoint = null;
+			}
 			return true;
 		}
 		else
 		{
-			//Animation Set
-			m_animationController.editAnimation.SetTriggerWakeUp();
-			m_animationController.editAnimation.SetBoolIsNextSearch(true);
+			//OffMeshLink上なら予約
+			if (navMeshAgent.isOnOffMeshLink)
+			{
+				m_isReservationEndOfMarking = true;
+				m_isSetBoolIsNextSearch = true;
+			}
+			else
+			{
+				//Animation Set
+				m_animationController.editAnimation.SetTriggerWakeUp();
+				m_animationController.editAnimation.SetBoolIsNextSearch(true);
+				m_linkMarkPoint.ChangeAgent(null);
+				m_linkMarkPoint = null;
+			}
 			return false;
 		}
 	}
@@ -240,7 +275,13 @@ public class DogAIAgent : AIAgent
 			navMeshAgent.updateRotation = true;
 			navMeshAgent.Warp(transform.position);
 		}
-	}
+
+
+	//Debug only
+#if UNITY_EDITOR
+	m_dIsSitAndStay = isSet;
+#endif
+}
 
 
 	/// <summary>[Start]</summary>
@@ -267,6 +308,22 @@ public class DogAIAgent : AIAgent
 	/// <summary>[Update]</summary>
 	new void Update()
 	{
+		//予約確認
+		if (m_isReservationStartOfMarking && !navMeshAgent.isOnOffMeshLink)
+		{
+			m_isReservationStartOfMarking = false;
+			m_linkMarkPoint.ChangeAgent(this);
+			ForceSpecifyFunction(m_rushingAndMarkingFunction);
+		}
+		if (m_isReservationEndOfMarking && !navMeshAgent.isOnOffMeshLink)
+		{
+			m_isReservationEndOfMarking = false;
+			m_animationController.editAnimation.SetTriggerWakeUp();
+			m_animationController.editAnimation.SetBoolIsNextSearch(m_isSetBoolIsNextSearch);
+			m_linkMarkPoint.ChangeAgent(null);
+			m_linkMarkPoint = null;
+		}
+
 		m_offMeshLinkController.Update();
 		base.Update();
 		speedChanger.Update();
@@ -286,4 +343,15 @@ public class DogAIAgent : AIAgent
 			ServantManager.instance.RemoveServant(this);
 		}
 	}
+
+
+	//Debug Only
+#if UNITY_EDITOR
+	/// <summary>[OnDrawGizmos]</summary>
+	void OnDrawGizmos()
+	{
+		Gizmos.color = Color.cyan;
+		Gizmos.DrawWireSphere(transform.LocalToWorldPosition(m_indicatedDogCenter), m_indicatedDogRadius);
+	}
+#endif
 }

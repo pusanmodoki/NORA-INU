@@ -52,15 +52,20 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 
 		/// <summary>[コンストラクタ]</summary>
 		public PlayerInfo(GameObject gameObject, PlayerManagerIntermediary territoryIntermediary,
-			PlayerMaualCollisionAdministrator maualCollisionAdministrator, BoxCastFlags groundFlag,
-			UnityEngine.AI.NavMeshAgent navMeshAgent, GameObject[] followPoints,
-			GameObject resultCameraLookPoint, GameObject resultCameraMovePoint)
+			PlayerMaualCollisionAdministrator maualCollisionAdministrator, PlayerNavMeshController navMeshController,
+			PlayerInput input,
+			BoxCastFlags groundFlag, UnityEngine.AI.NavMeshAgent navMeshAgent, Rigidbody rigidBody, 
+			GameObject[] followPoints, GameObject resultCameraLookPoint, GameObject resultCameraMovePoint)
 		{
 			this.gameObject = gameObject;
+			this.transform = gameObject.transform;
 			this.managerIntermediary = territoryIntermediary;
 			this.maualCollisionAdministrator = maualCollisionAdministrator;
+			this.input = input;
+			this.navMeshController = navMeshController;
 			this.groundFlag = groundFlag;
 			this.navMeshAgent = navMeshAgent;
+			this.rigidBody = rigidBody;
 			this.followPoints = followPoints;
 			this.resultCameraLookPoint = resultCameraLookPoint;
 			this.resultCameraMovePoint = resultCameraMovePoint;
@@ -69,14 +74,22 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 
 		/// <summary>Player game object</summary>
 		public GameObject gameObject { get; private set; }
+		/// <summary>Player transform</summary>
+		public Transform transform { get; private set; }
 		/// <summary>Player manager intermediary</summary>
 		public PlayerManagerIntermediary managerIntermediary { get; private set; }
 		/// <summary>Player maual collision administrator</summary>
 		public PlayerMaualCollisionAdministrator maualCollisionAdministrator { get; private set; }
+		/// <summary>Player input</summary>
+		public PlayerInput input { get; private set; }
+		/// <summary>Player nav mesh controller</summary>
+		public PlayerNavMeshController navMeshController { get; private set; }
 		/// <summary>Player ground flag</summary>
 		public BoxCastFlags groundFlag { get; private set; }
 		/// <summary>Player nav mesh agent</summary>
 		public UnityEngine.AI.NavMeshAgent navMeshAgent { get; private set; }
+		/// <summary>Player rigid body</summary>
+		public Rigidbody rigidBody { get; private set; }
 		/// <summary>Player instance id</summary>
 		public int instanceID { get; private set; }
 		/// <summary>All territory mark points (クラス)</summary>
@@ -95,9 +108,16 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		public GameObject resultCameraMovePoint { get; private set; } = null;
 		/// <summary>テリトリー変更時にCallされるコールバック (計算時ではなく, AddMarkPoint, RemoveMarkPoint実行でCall)</summary>
 		public ChangeTerritoryCallback changeTerritoryCallback { get; set; } = null;
+		/// <summary>Link event now?</summary>
+		public bool isLinkEvent { get; private set; }
 		/// <summary>Used manager valus</summary>
 		public UsedManager usedManager { get; private set; } = new UsedManager(0, 0);
 
+		/// <summary>
+		/// [SetLinkEvent]
+		/// Set isLinkEvent
+		/// </summary>
+		public void SetLinkEvent(bool isSet) { isLinkEvent = isSet; }
 		/// <summary>
 		/// [AddMarkPoint]
 		/// MarkPointを追加する
@@ -350,9 +370,10 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	/// 引数5: This main player?, default = true
 	/// </summary>
 	public void AddPlayer(GameObject player, PlayerManagerIntermediary managerIntermediary,
-		PlayerMaualCollisionAdministrator maualCollisionAdministrator, BoxCastFlags groundFlag, 
-		UnityEngine.AI.NavMeshAgent navMeshAgent, GameObject[] followPoints, 
-		GameObject resultCameraLookPoint, GameObject resultCameraMovePoint, bool isMainPlayer = true)
+		PlayerMaualCollisionAdministrator maualCollisionAdministrator, PlayerNavMeshController navMeshController,
+		PlayerInput input,
+		BoxCastFlags groundFlag, UnityEngine.AI.NavMeshAgent navMeshAgent, Rigidbody rigidBody, 
+		GameObject[] followPoints, GameObject resultCameraLookPoint, GameObject resultCameraMovePoint, bool isMainPlayer = true)
 	{
 		//debug only, invalid key対策
 #if UNITY_EDITOR
@@ -363,8 +384,8 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		}
 #endif
 
-		PlayerInfo info = new PlayerInfo(player, managerIntermediary, maualCollisionAdministrator, 
-			groundFlag, navMeshAgent, followPoints, resultCameraLookPoint, resultCameraMovePoint);
+		PlayerInfo info = new PlayerInfo(player, managerIntermediary, maualCollisionAdministrator, navMeshController,
+			input, groundFlag, navMeshAgent, rigidBody,  followPoints, resultCameraLookPoint, resultCameraMovePoint);
 
 		m_players.Add(player.GetInstanceID(), info);
 		if (isMainPlayer)
