@@ -370,7 +370,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3d8bf570637bc24e9ccffc7f3cc4339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_effectiveSeconds: 7.5
+  m_dEffectiveCounter: 0
+  m_dIsPlayerNearby: 0
+  m_dIsLockFirstPoint: 0
   m_drawingLinkPlayerID: -1
   m_drawingLinkServantID: -1
   m_uiObject: {fileID: 719799095006145729}
@@ -513,7 +515,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 007025fe5be37c24ba227143765016a5,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.8
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 007025fe5be37c24ba227143765016a5,
         type: 3}

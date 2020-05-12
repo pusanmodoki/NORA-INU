@@ -19,6 +19,11 @@ public class MainGameManager : MonoBehaviour
 	ReadOnlyDictionary<int, BaseCheckPoint> m_allCheckPoints = null;
 	bool m_isEnd = false;
 
+    [SerializeField]
+    private Vector2 m_stageSize = new Vector3(30.0f, 30.0f);
+
+    public Vector2 stageSize { get { return m_stageSize; } private set { m_stageSize = value; } }
+
     /// <summary>[Awake]</summary>
     void Awake()
 	{
