@@ -114,6 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_source: {fileID: 5730568039137999084}
+  m_stageSize: {x: 30, y: 30}
 --- !u!82 &5730568039137999084
 AudioSource:
   m_ObjectHideFlags: 0
@@ -317,7 +318,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: 2e15547cf30ec4f428a956b0df229281, type: 2}
+  m_NavMeshData: {fileID: 0}
 --- !u!1 &1029515309853967507
 GameObject:
   m_ObjectHideFlags: 0
