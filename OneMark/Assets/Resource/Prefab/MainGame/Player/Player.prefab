@@ -226,6 +226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_playerMaualCollisionAdministrator: {fileID: 412210127}
   m_navMeshController: {fileID: 21004177958354081}
+  m_input: {fileID: 530330881339226994}
   m_groundFlag: {fileID: 2904883163141074636}
   m_navMeshAgent: {fileID: 4227028175626528562}
   m_rigidBody: {fileID: 530330881339226995}

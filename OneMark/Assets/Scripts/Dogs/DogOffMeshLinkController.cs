@@ -106,7 +106,6 @@ public class DogOffMeshLinkController
 		//OffMeshLink上にいなければ終了
 		if (!m_navMeshAgent.isOnOffMeshLink)
 			return;
-		Debug.Log("FF");
 
 		//初期化
 		if (!m_isStartOffMeshLink && !m_isCoroutine)

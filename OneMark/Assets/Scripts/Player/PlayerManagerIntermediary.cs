@@ -16,6 +16,9 @@ public class PlayerManagerIntermediary : MonoBehaviour
 	/// <summary>This PlayerNavMeshController</summary>
 	[SerializeField, Tooltip("This PlayerNavMeshController")]
 	PlayerNavMeshController m_navMeshController = null;
+	/// <summary>This PlayerInput</summary>
+	[SerializeField, Tooltip("This PlayerInput")]
+	PlayerInput m_input = null;
 	/// <summary>This GroundFlag</summary>
 	[SerializeField, Tooltip("This GroundFlag")]
 	BoxCastFlags m_groundFlag = null;
@@ -67,7 +70,7 @@ public class PlayerManagerIntermediary : MonoBehaviour
     {
 		//Managerにインスタンス追加
 		PlayerAndTerritoryManager.instance.AddPlayer(gameObject, this, 
-			m_playerMaualCollisionAdministrator, m_navMeshController, m_groundFlag, m_navMeshAgent,
+			m_playerMaualCollisionAdministrator, m_navMeshController, m_input, m_groundFlag, m_navMeshAgent,
 			m_rigidBody, m_followPoints, m_resultCameraLookPoint, m_resultCameraMovePoint);
 
 		//現在のステージ情報を取得

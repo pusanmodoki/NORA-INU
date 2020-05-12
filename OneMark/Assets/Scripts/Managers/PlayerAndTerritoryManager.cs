@@ -53,6 +53,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		/// <summary>[コンストラクタ]</summary>
 		public PlayerInfo(GameObject gameObject, PlayerManagerIntermediary territoryIntermediary,
 			PlayerMaualCollisionAdministrator maualCollisionAdministrator, PlayerNavMeshController navMeshController,
+			PlayerInput input,
 			BoxCastFlags groundFlag, UnityEngine.AI.NavMeshAgent navMeshAgent, Rigidbody rigidBody, 
 			GameObject[] followPoints, GameObject resultCameraLookPoint, GameObject resultCameraMovePoint)
 		{
@@ -60,6 +61,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 			this.transform = gameObject.transform;
 			this.managerIntermediary = territoryIntermediary;
 			this.maualCollisionAdministrator = maualCollisionAdministrator;
+			this.input = input;
 			this.navMeshController = navMeshController;
 			this.groundFlag = groundFlag;
 			this.navMeshAgent = navMeshAgent;
@@ -78,6 +80,8 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		public PlayerManagerIntermediary managerIntermediary { get; private set; }
 		/// <summary>Player maual collision administrator</summary>
 		public PlayerMaualCollisionAdministrator maualCollisionAdministrator { get; private set; }
+		/// <summary>Player input</summary>
+		public PlayerInput input { get; private set; }
 		/// <summary>Player nav mesh controller</summary>
 		public PlayerNavMeshController navMeshController { get; private set; }
 		/// <summary>Player ground flag</summary>
@@ -367,6 +371,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	/// </summary>
 	public void AddPlayer(GameObject player, PlayerManagerIntermediary managerIntermediary,
 		PlayerMaualCollisionAdministrator maualCollisionAdministrator, PlayerNavMeshController navMeshController,
+		PlayerInput input,
 		BoxCastFlags groundFlag, UnityEngine.AI.NavMeshAgent navMeshAgent, Rigidbody rigidBody, 
 		GameObject[] followPoints, GameObject resultCameraLookPoint, GameObject resultCameraMovePoint, bool isMainPlayer = true)
 	{
@@ -380,7 +385,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 #endif
 
 		PlayerInfo info = new PlayerInfo(player, managerIntermediary, maualCollisionAdministrator, navMeshController,
-			groundFlag, navMeshAgent, rigidBody,  followPoints, resultCameraLookPoint, resultCameraMovePoint);
+			input, groundFlag, navMeshAgent, rigidBody,  followPoints, resultCameraLookPoint, resultCameraMovePoint);
 
 		m_players.Add(player.GetInstanceID(), info);
 		if (isMainPlayer)

@@ -59,6 +59,11 @@ public class PlayerInput : MonoBehaviour
 		isEnableInput = false;
 	}
 
+	public void ChangeShotFlags(DogAIAgent agent, bool isShot)
+	{
+		m_isShotFlags[agent.linkPlayerServantsOwnIndex] = isShot;
+	}
+
 	void Start()
     {
 		for (int i = 0; i < m_shotTimers.Length; ++i)

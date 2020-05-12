@@ -90,6 +90,18 @@ public abstract class BaseMarkPoint : MonoBehaviour
 		isLockFirstPoint = isSet;
 	}
 
+
+
+	/// <summary>
+	/// [ChangeAgent]
+	/// DogAgentとの紐付けを更新する
+	/// 引数1: 紐付けるDogAgent
+	/// </summary>
+	public void ChangeAgent(DogAIAgent dogAIAgent)
+	{
+		if (isLinked)
+			linkServantID = dogAIAgent != null ? dogAIAgent.aiAgentInstanceID : -1;
+	}
 	/// <summary>
 	/// [LinkPlayer]
 	/// プレイヤーとの紐付けを行う

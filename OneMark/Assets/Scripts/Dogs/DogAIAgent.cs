@@ -79,6 +79,8 @@ public class DogAIAgent : AIAgent
 
 	/// <summary>BoxCastHits</summary>
 	RaycastHit[] m_boxCastHits = null;
+	/// <summary>Link mark point</summary>
+	BaseMarkPoint m_linkMarkPoint = null;
 	/// <summary>Player別の自身のIndex</summary>
 	int m_linkPlayerServantsOwnIndex = -1;
 	/// <summary>GoSoStartOfMarkingが実行されたがOffMeshLink上にいる場合は予約される</summary>
@@ -130,14 +132,17 @@ public class DogAIAgent : AIAgent
 		//事前情報入力
 		m_rushingAndMarkingFunction.SetAdvanceInformation(markPoint);
 		m_isReservationStartOfMarking = false;
+		m_linkMarkPoint = markPoint;
 
 		//OffMeshLink上なら予約
 		if (navMeshAgent.isOnOffMeshLink)
 			m_isReservationStartOfMarking = true;
 		//関数割り込み実行
 		else
+		{
+			m_linkMarkPoint.ChangeAgent(this);
 			ForceSpecifyFunction(m_rushingAndMarkingFunction);
-
+		}
 		return true;
 	}
 	/// <summary>
@@ -194,6 +199,8 @@ public class DogAIAgent : AIAgent
 				//Animation Set
 				m_animationController.editAnimation.SetTriggerWakeUp();
 				m_animationController.editAnimation.SetBoolIsNextSearch(false);
+				m_linkMarkPoint.ChangeAgent(null);
+				m_linkMarkPoint = null;
 			}
 			return true;
 		}
@@ -210,6 +217,8 @@ public class DogAIAgent : AIAgent
 				//Animation Set
 				m_animationController.editAnimation.SetTriggerWakeUp();
 				m_animationController.editAnimation.SetBoolIsNextSearch(true);
+				m_linkMarkPoint.ChangeAgent(null);
+				m_linkMarkPoint = null;
 			}
 			return false;
 		}
@@ -303,6 +312,7 @@ public class DogAIAgent : AIAgent
 		if (m_isReservationStartOfMarking && !navMeshAgent.isOnOffMeshLink)
 		{
 			m_isReservationStartOfMarking = false;
+			m_linkMarkPoint.ChangeAgent(this);
 			ForceSpecifyFunction(m_rushingAndMarkingFunction);
 		}
 		if (m_isReservationEndOfMarking && !navMeshAgent.isOnOffMeshLink)
@@ -310,6 +320,8 @@ public class DogAIAgent : AIAgent
 			m_isReservationEndOfMarking = false;
 			m_animationController.editAnimation.SetTriggerWakeUp();
 			m_animationController.editAnimation.SetBoolIsNextSearch(m_isSetBoolIsNextSearch);
+			m_linkMarkPoint.ChangeAgent(null);
+			m_linkMarkPoint = null;
 		}
 
 		m_offMeshLinkController.Update();

@@ -20,7 +20,9 @@ public class DogRushingAndMarking : BaseDogAIFunction
 		/// <summary>回転</summary>
 		Rotation,
 		/// <summary>マーキング</summary>
-		Marking, 
+		Marking,
+		/// <summary>終了</summary>
+		End,
 	}
 
 	/// <summary>State</summary>
@@ -107,12 +109,18 @@ public class DogRushingAndMarking : BaseDogAIFunction
 		{
 			m_animationController.editAnimation.SetTriggerReturnRun();
 		}
-		else if (functionState == State.Marking)
+		else if (functionState != State.End)
+		{
+			m_animationController.editAnimation.SetTriggerForceChangeStand();
+			PlayerAndTerritoryManager.instance.allPlayers[dogAIAgent.linkPlayer.GetInstanceID()].input.ChangeShotFlags(dogAIAgent, false);
+		}
+
+		if (functionState == State.Marking)
 		{
 			m_sePlayer.Stop(m_markingSEIndex);
 			m_markingEffect.SetActive(false);
 		}
-
+		Debug.Log(functionState);
 		m_markPoint = null;
 		navMeshAgent.isStopped = false;
 		functionState = State.Null;
@@ -128,12 +136,14 @@ public class DogRushingAndMarking : BaseDogAIFunction
 		//万が一の無効条件
 		if (m_markPoint == null)
 		{
+			Debug.Log("1");
 			EndAIFunction(updateIdentifier);
 			return;
 		}
 		else if (m_markPoint.isLinked && 
 			(m_markPoint.linkServantID != dogAIAgent.aiAgentInstanceID && m_markPoint.linkServantID != -1))
 		{
+			Debug.Log("2");
 			EndAIFunction(updateIdentifier);
 			return;
 		}
@@ -200,6 +210,8 @@ public class DogRushingAndMarking : BaseDogAIFunction
 					//指定時間経過
 					if (timer.elapasedTime >= m_markingSeconds)
 					{
+						functionState = State.End;
+						m_markingEffect.SetActive(false);
 						//強制的に増加させる
 						if (m_markPoint.linkPlayerID != dogAIAgent.linkPlayer.GetInstanceID())
 							m_markPoint.AddFirstLinkBonus();
