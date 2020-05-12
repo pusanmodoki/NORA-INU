@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 412210127}
   - component: {fileID: 21004177958354081}
   - component: {fileID: 5580322870505018953}
+  - component: {fileID: 3891217480911795302}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -340,6 +341,22 @@ MonoBehaviour:
     m_size: {x: 3, y: 1, z: 3}
   m_isEnabledManualTriggerDetection: 1
   m_dIsDrawGizmos: 1
+--- !u!114 &3891217480911795302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530330881339226992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8a7604b1021f9e4c9a17526172580a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshPoints: []
+  uvs: []
+  triangles: 
+  m_material: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!1 &1441870852321385993
 GameObject:
   m_ObjectHideFlags: 0
