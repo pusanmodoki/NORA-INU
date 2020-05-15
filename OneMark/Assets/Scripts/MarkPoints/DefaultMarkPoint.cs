@@ -11,6 +11,8 @@ public class DefaultMarkPoint : BaseMarkPoint
 	GameObject m_uiObject = null;
 	[SerializeField]
 	UnityEngine.UI.Slider m_uiSlider = null;
+    [SerializeField]
+    EffectControler effects = null;
 
 	/// <summary>
 	/// [UpdatePoint] (Virtual)
@@ -29,6 +31,8 @@ public class DefaultMarkPoint : BaseMarkPoint
 	public override void LinkPoint()
 	{
 		m_uiObject.SetActive(true);
+        effects.OnEffect(0);
+
 	}
 	/// <summary>
 	/// [UnlinkPoint] (Virtual)
