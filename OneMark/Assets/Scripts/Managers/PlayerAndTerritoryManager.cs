@@ -22,27 +22,11 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		public class UsedManager
 		{
 			/// <summary>[コンストラクタ]</summary>
-			public UsedManager(float calucrateInterval, float calucrateFeatureInterval)
+			public UsedManager()
 			{
-				intervalTimer = new Timer();
-				featureIntervalTimer = new Timer();
 				nextForceCalucrateFrameCount = 0;
 				isCalucrateNextUpdate = false;
-				this.calucrateInterval = calucrateInterval;
-				this.calucrateFeatureInterval = calucrateFeatureInterval;
-
-				intervalTimer.Start();
-				featureIntervalTimer.Start();
 			}
-
-			/// <summary>テリトリー計算タイマー</summary>
-			public Timer intervalTimer;
-			/// <summary>未来のテリトリー計算タイマー</summary>
-			public Timer featureIntervalTimer;
-			/// <summary>テリトリー計算間隔</summary>
-			public float calucrateInterval;
-			/// <summary>未来のテリトリー計算間隔</summary>
-			public float calucrateFeatureInterval;
 
 			/// <summary>次回テリトリー計算するフレーム数</summary>
 			public int nextForceCalucrateFrameCount;
@@ -98,8 +82,8 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		public List<BaseMarkPoint> borderTerritorys { get; private set; } = new List<BaseMarkPoint>();
 		/// <summary>ボリュームを加えたテリトリー圏 (ポジション)</summary>
 		public List<Vector3> territorialArea { get; private set; } = new List<Vector3>();
-		/// <summary>ボリュームを加えた少し未来のテリトリー圏 (ポジション)</summary>
-		public List<Vector3> featureTerritorialArea { get; private set; } = new List<Vector3>();
+		/// <summary>ボリュームを加えた安全なテリトリー圏 (ポジション)</summary>
+		public List<Vector3> safetyTerritorialArea { get; private set; } = new List<Vector3>();
 		/// <summary>Follow point game objects</summary>
 		public GameObject[] followPoints { get; private set; } = null;
 		/// <summary>Result camera look point game objects</summary>
@@ -111,7 +95,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		/// <summary>Link event now?</summary>
 		public bool isLinkEvent { get; private set; }
 		/// <summary>Used manager valus</summary>
-		public UsedManager usedManager { get; private set; } = new UsedManager(0, 0);
+		public UsedManager usedManager { get; private set; } = new UsedManager();
 
 		/// <summary>
 		/// [SetLinkEvent]
@@ -174,21 +158,21 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	int m_divisionVolume = 10;
 
 	/// <summary>ボリューム円の半径</summary>
-	[SerializeField, Space, Range(0, 10), Tooltip("ボリューム円の半径")]
+	[SerializeField, Header("Territory Infomations"), Space, Range(0, 10), Tooltip("ボリューム円の半径")]
 	float m_radiusVolume = 3.0f;
 	/// <summary>テリトリー計算間隔</summary>
 	[SerializeField, Range(0, 2), Tooltip("テリトリー計算間隔")]
 	float m_calucrateTerritoryIntervalSeconds = 0.2f;
 
-	/// <summary>ボリューム円の半径</summary>
-	[SerializeField, Space, Range(0, 10), Tooltip("ボリューム円の半径")]
-	float m_featureRadiusVolume = 3.1f;
-	/// <summary>未来のテリトリー計算間隔</summary>
-	[SerializeField, Range(0, 2), Tooltip("未来のテリトリー計算間隔")]
-	float m_calucrateFeatureTerritoryIntervalSeconds = 0.2f;
-	/// <summary>未来のテリトリー判断に使用する、除外とみなす残り時間</summary>
-	[SerializeField, Range(0, 5), Tooltip("未来のテリトリー判断に使用する、除外とみなす残り時間")]
-	float m_featureTerritoryExcludeSeconds = 3.0f;
+	/// <summary>ボリューム円の半径 (safety territory)</summary>
+	[SerializeField, Header("Safety Territory Infomations"), Space, Range(0, 10), Tooltip("ボリューム円の半径 (safety territory)")]
+	float m_safetyRadiusVolume = 3.1f;
+	/// <summary>安全なテリトリー計算間隔</summary>
+	[SerializeField, Range(0, 2), Tooltip("安全なテリトリー計算間隔")]
+	float m_calucrateSafetyTerritoryIntervalSeconds = 0.2f;
+	/// <summary>安全なテリトリー判断に使用する、除外とみなす残り時間</summary>
+	[SerializeField, Range(0, 1), Tooltip("安全なテリトリー判断に使用する、除外とみなす残り時間")]
+	float m_safetyTerritoryExcludeSeconds = 0.5f;
 
 	/// <summary>Manage players</summary>
 	Dictionary<int, PlayerInfo> m_players = null;
@@ -196,10 +180,12 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	List<GrahamScan.CustomFormat> m_grahamResult = new List<GrahamScan.CustomFormat>();
 	/// <summary>ボリューム座標</summary>
 	Vector3[] m_volumePoints = null;
-	/// <summary>ボリューム座標 (feature)</summary>
-	Vector3[] m_featureVolumePoints = null;
+	/// <summary>ボリューム座標 (safety territory)</summary>
+	Vector3[] m_safetyVolumePoints = null;
 	/// <summary>計算間隔用タイマー</summary>
 	Timer m_intervalTimer = new Timer();
+	/// <summary>計算間隔用タイマー (safety territory)</summary>
+	Timer m_safetyIntervalTimer = new Timer();
 
 
 	/// <summary>[Awake]</summary>
@@ -210,11 +196,9 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		m_players = new Dictionary<int, PlayerInfo>();
 		allPlayers = new ReadOnlyDictionary<int, PlayerInfo>(m_players);
 
-		//タイマー作動
-		m_intervalTimer.Start();
-
 		//テリトリーボリュームの計算
 		m_volumePoints = new Vector3[m_divisionVolume];
+		m_safetyVolumePoints = new Vector3[m_divisionVolume];
 
 		float angle = 0.0f, divisionAngle = Mathf.PI * 2.0f / m_divisionVolume;
 
@@ -222,18 +206,31 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		{
 			angle += divisionAngle;
 			m_volumePoints[i] = new Vector3(Mathf.Cos(angle), 0.0f, Mathf.Sin(angle));
+			m_safetyVolumePoints[i] = m_volumePoints[i];
+
+			m_volumePoints[i] *= m_radiusVolume;
+			m_safetyVolumePoints[i] *= m_safetyRadiusVolume;
 		}
+
+		//タイマー作動
+		m_intervalTimer.Start();
+		m_safetyIntervalTimer.Start();
 	}
 	/// <summary>[Update]</summary>
 	void Update()
 	{
 		int frameCount = Time.frameCount;
-		bool isUpdate = false;
+		bool isUpdate = false, isSafetyUpdate = false;
 
 		if (m_intervalTimer.elapasedTime >= m_calucrateTerritoryIntervalSeconds)
 		{
 			isUpdate = true;
 			m_intervalTimer.Start();
+		}
+		if (m_safetyIntervalTimer.elapasedTime >= m_calucrateSafetyTerritoryIntervalSeconds)
+		{
+			isSafetyUpdate = true;
+			m_safetyIntervalTimer.Start();
 		}
 
 		//予約があれば計算
@@ -246,6 +243,11 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 			}
 			else if (e.Value.usedManager.nextForceCalucrateFrameCount == frameCount)
 				CalucrateTerritory(e.Value);
+
+			if (isUpdate | isSafetyUpdate)
+			{
+				CalucrateSafetyTerritory(e.Value);
+			}
 		}
 	}
 
@@ -282,7 +284,8 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		//リストクリア
 		playerInfo.territorialArea.Clear();
 		m_grahamResult.Clear();
-		
+		playerInfo.borderTerritorys.Clear();
+
 		//ソート用リスト構築
 		for (int i = 0, count = playerInfo.allTerritorys.Count; i < count; ++i)
 			m_grahamResult.Add(new GrahamScan.CustomFormat(playerInfo.allTerritorys[i].transform.position, i));
@@ -300,13 +303,51 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		for (int i = 0, count = m_grahamResult.Count; i < count; ++i)
 		{
 			for (int k = 0, length = m_volumePoints.Length; k < length; ++k)
-				m_grahamResult.Add(new GrahamScan.CustomFormat(m_grahamResult[i].position + (m_volumePoints[k] * m_radiusVolume), -1));
+				m_grahamResult.Add(new GrahamScan.CustomFormat(m_grahamResult[i].position + m_volumePoints[k], -1));
 		}
 		result = GrahamScan.Run(m_grahamResult);
 
 		//結果をリストに構築
 		for (int i = 0; i < result; ++i)
 			playerInfo.territorialArea.Add(m_grahamResult[i].position);
+	}
+	/// <summary>
+	/// [CalucrateSafetyTerritory]
+	/// Playerの安全なテリトリーを計算する, 基本使わないこと
+	/// 引数1: Player infomation
+	/// </summary>
+	public void CalucrateSafetyTerritory(PlayerInfo playerInfo)
+	{
+		//リストクリア
+		playerInfo.safetyTerritorialArea.Clear();
+		m_grahamResult.Clear();
+
+		//外周のポイントでソート用リスト構築
+		for (int i = 0, count = playerInfo.borderTerritorys.Count; i < count; ++i)
+		{
+			if ((playerInfo.borderTerritorys[i].effectiveCounter /
+				MarkPointManager.instance.effectiveMaxLimiter) > m_safetyTerritoryExcludeSeconds)
+			{
+				m_grahamResult.Add(new GrahamScan.CustomFormat(playerInfo.borderTerritorys[i].transform.position, i));
+			}
+		}
+
+		//グラハムソート
+		int result = GrahamScan.Run(m_grahamResult);
+		if (result < m_grahamResult.Count - 1)
+			m_grahamResult.RemoveRange(result, m_grahamResult.Count - result);
+
+		//ボリューム追加した状態でグラハムソート
+		for (int i = 0, count = m_grahamResult.Count; i < count; ++i)
+		{
+			for (int k = 0, length = m_safetyVolumePoints.Length; k < length; ++k)
+				m_grahamResult.Add(new GrahamScan.CustomFormat(m_grahamResult[i].position + m_safetyVolumePoints[k], -1));
+		}
+		result = GrahamScan.Run(m_grahamResult);
+
+		//結果をリストに構築
+		for (int i = 0; i < result; ++i)
+			playerInfo.safetyTerritorialArea.Add(m_grahamResult[i].position);
 	}
 
 

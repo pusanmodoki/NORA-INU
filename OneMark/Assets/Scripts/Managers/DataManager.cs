@@ -35,39 +35,53 @@ public class DataManager : MonoBehaviour
 		string m_fileName;
 	}
 
-	public struct StageSetting
+	public struct StageSettings
 	{
-		public StageSetting(Vector3 playerPosition, Quaternion playerRotation,
+		public StageSettings(Vector3 playerPosition, Quaternion playerRotation,
 			string firstPointName)
 		{
 			this.playerPosition = playerPosition;
 			this.playerRotation = playerRotation;
 			this.firstPointName = firstPointName;
+			this.playBgmName = "";
+			this.isEnabled = true;
 		}
 
 		public Vector3 playerPosition { get; private set; }
 		public Quaternion playerRotation { get; private set; }
 		public string firstPointName { get; private set; }
+		public string playBgmName { get; private set; }
+		public bool isEnabled { get; private set; }
 	}
 
 	/// <summary>Static instance</summary>
 	public static DataManager instance { get; private set; } = null;
 	/// <summary>Static stage settings</summary>
-	public static ReadOnlyCollection<StageSetting> stageSettings { get; private set; } = null;
+	public static ReadOnlyCollection<StageSettings> allStageSettings { get; private set; } = null;
+	/// <summary>Static now stage settings</summary>
+	public static StageSettings nowStageSettings
+	{
+		get
+		{
+			string sceneName = SceneManager.GetActiveScene().name;
+			int result0 = 0, result1 = 0;
+
+			if (sceneName.Length >= 3 && sceneName[1] == '-'
+				&& int.TryParse(sceneName.Substring(2, 1), out result0))
+			{
+				if (int.TryParse(sceneName.Substring(0, 1), out result1))
+					result0 += result1 * 4;
+
+				return allStageSettings[result0 - 1];
+			}
+
+			return default;
+		}
+	}
+
 
 	[SerializeField]
 	FullFilePath stagePresetFilePath = new FullFilePath(Directory.StreamingAssets, "Preset", "StageSettings");
-
-	public static StageSetting GetNowStageSetting()
-	{
-		string sceneName = SceneManager.GetActiveScene().name;
-		int result = 0;
-
-		if (sceneName[0] != 'T') result = int.Parse(sceneName.Substring(0, 1)) * 4;
-		result += int.Parse(sceneName.Substring(2, 1));
-
-		return stageSettings[result - 1];
-	}
 
 	public static void ReadHyphenateVector3(string str, ref Vector3 result)
 	{
@@ -97,13 +111,13 @@ public class DataManager : MonoBehaviour
 	{
 		instance = this;
 
-		if (stageSettings == null)
+		if (allStageSettings == null)
 			ReadStageSettings();
 	}
 
 	void ReadStageSettings()
 	{
-		List<StageSetting> convertData = new List<StageSetting>();
+		List<StageSettings> convertData = new List<StageSettings>();
 		List<List<string>> readData;
 		Vector3 playerPosition = Vector3.zero, playerRotation = Vector3.zero;
 
@@ -114,9 +128,9 @@ public class DataManager : MonoBehaviour
 		{
 			ReadHyphenateVector3(readData[i][0], ref playerPosition);
 			ReadHyphenateVector3(readData[i][1], ref playerRotation);
-			convertData.Add(new StageSetting(playerPosition, Quaternion.Euler(playerRotation), readData[i][2]));
+			convertData.Add(new StageSettings(playerPosition, Quaternion.Euler(playerRotation), readData[i][2]));
 		}
 
-		stageSettings = new ReadOnlyCollection<StageSetting>(convertData.AsReadOnly());
+		allStageSettings = new ReadOnlyCollection<StageSettings>(convertData.AsReadOnly());
 	}
 }

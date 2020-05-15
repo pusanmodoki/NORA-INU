@@ -63,7 +63,8 @@ public class MainGameManager : MonoBehaviour
 
 	void GameClear()
 	{
-        PlayerAndTerritoryManager.instance.mainPlayer.gameObject.GetComponent<PlayerInput>().GameClearAnimation();
+        PlayerAndTerritoryManager.instance.mainPlayer.input.GameClearAnimation();
+		MarkPointManager.instance.SetCountScale(0.0f);
         ResultCall.GameClear();
 		m_source.enabled = false;
         m_mainCamera.ResultFlg();
@@ -72,7 +73,8 @@ public class MainGameManager : MonoBehaviour
 
 	void GameOver()
 	{
-        PlayerAndTerritoryManager.instance.mainPlayer.gameObject.GetComponent<PlayerInput>().GameOverAnimation();
+        PlayerAndTerritoryManager.instance.mainPlayer.input.GameOverAnimation();
+		MarkPointManager.instance.SetCountScale(0.0f);
         ResultCall.GameOver();
 		m_source.enabled = false;
 		m_isEnd = true;

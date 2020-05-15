@@ -70,9 +70,9 @@ MonoBehaviour:
   m_divisionVolume: 60
   m_radiusVolume: 5
   m_calucrateTerritoryIntervalSeconds: 0.2
-  m_featureRadiusVolume: 3.1
-  m_calucrateFeatureTerritoryIntervalSeconds: 0.2
-  m_featureTerritoryExcludeSeconds: 3
+  m_safetyRadiusVolume: 5.1
+  m_calucrateSafetyTerritoryIntervalSeconds: 0.2
+  m_safetyTerritoryExcludeSeconds: 0.5
 --- !u!114 &700726607750707241
 MonoBehaviour:
   m_ObjectHideFlags: 0

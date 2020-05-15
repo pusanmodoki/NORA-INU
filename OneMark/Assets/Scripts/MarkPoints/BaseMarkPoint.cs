@@ -110,6 +110,9 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	/// </summary>
 	public void LinkPlayer(GameObject player, DogAIAgent dogAIAgent)
 	{
+		if (linkPlayerID == player.GetInstanceID())
+			return;
+
 		bool isOldLinked = isLinked;
 		//ID登録
 		linkPlayerID = player.GetInstanceID();
@@ -152,9 +155,9 @@ public abstract class BaseMarkPoint : MonoBehaviour
 #endif
 
 		if (isPlayerNearby | isLockFirstPoint | isForceAscendingEffective)
-			effectiveCounter += MarkPointManager.instance.linkAscendingPerSeconds * Time.deltaTime;
+			effectiveCounter += MarkPointManager.instance.acendingDeltaCount;
 		else
-			effectiveCounter -= MarkPointManager.instance.unlinkDecreasingPerSeconds * Time.deltaTime;
+			effectiveCounter -= MarkPointManager.instance.decreasingDeltaCount;
 
 		effectiveCounter = Mathf.Clamp(effectiveCounter, 0.0f, MarkPointManager.instance.effectiveMaxLimiter);
 

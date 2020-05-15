@@ -201,11 +201,16 @@ namespace Editor
 				m_createAssetPath = "Assets/Editor/UserFolder/DataEditorObject.asset";
 			}
 
-			DataEditorObject result = (DataEditorObject)AssetDatabase.FindAssets("t:ScriptableObject", m_findAssetPath) // プロジェクトに存在する全ScriptableObjectのGUIDを取得
-			   .Select(guid => AssetDatabase.GUIDToAssetPath(guid)) // GUIDをパスに変換
-			   .Select(path => AssetDatabase.LoadAssetAtPath(path, typeof(DataEditorObject))) // パスからPermanentDataの取得を試みる
-			   .Where(obj => obj != null) // null要素は取り除く
-			   .FirstOrDefault(); // 取得したPermanentDataのうち、最初の一つだけを取り
+			// プロジェクトに存在する全ScriptableObjectのGUIDを取得
+			DataEditorObject result = (DataEditorObject)AssetDatabase.FindAssets("t:ScriptableObject", m_findAssetPath)
+			   // GUIDをパスに変換
+			   .Select(guid => AssetDatabase.GUIDToAssetPath(guid))
+			   // パスからPermanentDataの取得を試みる
+			   .Select(path => AssetDatabase.LoadAssetAtPath(path, typeof(DataEditorObject)))
+			   // null要素は取り除く
+			   .Where(obj => obj != null)
+			   // 取得したPermanentDataのうち、最初の一つだけを取る
+			   .FirstOrDefault();
 
 			if (result != null)
 				return result;

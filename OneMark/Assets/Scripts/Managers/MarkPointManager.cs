@@ -14,14 +14,16 @@ public class MarkPointManager : MonoBehaviour
 
 	/// <summary>All mark points</summary>
 	public ReadOnlyDictionary<int, BaseMarkPoint> allPoints { get; private set; } = null;
-	/// <summary>リンク時のゲージ上昇速度 per seconds</summary>
-	public float linkAscendingPerSeconds { get { return m_linkAscendingPerSeconds; } }
-	/// <summary>リンク解消時のゲージ減少速度 per seconds</summary>
-	public float unlinkDecreasingPerSeconds { get { return m_unlinkDecreasingPerSeconds; } }
 	/// <summary>初回リンク時のカウンターボーナス</summary>
 	public float effectiveFirstLinkBonus { get { return m_effectiveMaxLimiter * m_effectiveFirstLinkBonusRatio; } }
 	/// <summary>マーキング最大時間</summary>
 	public float effectiveMaxLimiter { get { return m_effectiveMaxLimiter; } }
+	/// <summary>マーキングdelta count (上昇)</summary>
+	public float acendingDeltaCount { get { return m_linkAscendingPerSeconds * Time.deltaTime * countScale; } }
+	/// <summary>マーキングdelta count (減少)</summary>
+	public float decreasingDeltaCount { get { return m_unlinkDecreasingPerSeconds * Time.deltaTime * countScale; } }
+	/// <summary>count scaler</summary>
+	public float countScale { get; private set; } = 1.0f;
 
 	/// <summary>Manage dogs</summary>
 	Dictionary<int, BaseMarkPoint> m_points = null;
@@ -61,6 +63,11 @@ public class MarkPointManager : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// [SetCountScale]
+	/// Set the countScale
+	/// </summary>
+	public void SetCountScale(float set) { countScale = set; }
 	/// <summary>
 	/// [AddMarkPoint]
 	/// BaseMarkPointを登録する
