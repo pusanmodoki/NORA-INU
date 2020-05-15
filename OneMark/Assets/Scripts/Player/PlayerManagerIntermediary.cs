@@ -41,6 +41,8 @@ public class PlayerManagerIntermediary : MonoBehaviour
 
 	[SerializeField, Space, Tooltip("LineRenderer(とりあえず)")]
 	LineRenderer m_lineRenderer = null;
+	[SerializeField, Space, Tooltip("LineRenderer(とりあえず)")]
+	LineRenderer m_lineRenderer1 = null;
 
 	/// <summary>This game object instance id</summary>
 	int m_instanceID = 0;
@@ -74,7 +76,7 @@ public class PlayerManagerIntermediary : MonoBehaviour
 			m_rigidBody, m_followPoints, m_resultCameraLookPoint, m_resultCameraMovePoint);
 
 		//現在のステージ情報を取得
-		var settings = DataManager.GetNowStageSetting();
+		var settings = DataManager.nowStageSettings;
 
 		transform.position = settings.playerPosition;
 		transform.rotation = settings.playerRotation;
@@ -134,6 +136,20 @@ public class PlayerManagerIntermediary : MonoBehaviour
 			else
 			{
 				m_lineRenderer.positionCount = 0;
+			}
+		}
+		if (m_lineRenderer1 != null)
+		{
+			if (playerInfo.safetyTerritorialArea.Count > 1)
+			{
+				m_lineRenderer1.positionCount = playerInfo.safetyTerritorialArea.Count + 1;
+				for (int i = 0; i < playerInfo.safetyTerritorialArea.Count; ++i)
+					m_lineRenderer1.SetPosition(i, playerInfo.safetyTerritorialArea[i]);
+				m_lineRenderer1.SetPosition(m_lineRenderer1.positionCount - 1, playerInfo.safetyTerritorialArea[0]);
+			}
+			else
+			{
+				m_lineRenderer1.positionCount = 0;
 			}
 		}
 	}

@@ -70,15 +70,10 @@ public class DogAIAgent : AIAgent
 	//Debug only
 #if UNITY_EDITOR
 	/// <summary>isSitAndStay</summary>
-	[Header("Dog AI Agent Debug Only"), Tooltip("isOnDrawGizmos"), Space, SerializeField]
-	bool m_dIsOnDrawGizmos = false;
-	/// <summary>isSitAndStay</summary>
-	[Tooltip("isSitAndStay"), Space, SerializeField]
+	[Header("Dog AI Agent Debug Only"), Tooltip("isSitAndStay"), Space, SerializeField]
 	bool m_dIsSitAndStay = false;
 #endif
-
-	/// <summary>BoxCastHits</summary>
-	RaycastHit[] m_boxCastHits = null;
+	
 	/// <summary>Link mark point</summary>
 	BaseMarkPoint m_linkMarkPoint = null;
 	/// <summary>Player別の自身のIndex</summary>

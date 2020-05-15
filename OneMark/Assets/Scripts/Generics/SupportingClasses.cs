@@ -2,6 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public static class Vector2IntExtension
+{
+	public static string ToStageName(this Vector2Int vector2)
+	{
+		string result = "";
+		result += vector2.x == 0 ? "T" : vector2.x.ToString();
+		result += "-" + vector2.y;
+		return result;
+	}
+}
+
 [System.Serializable]
 public struct RendererMaterial
 {

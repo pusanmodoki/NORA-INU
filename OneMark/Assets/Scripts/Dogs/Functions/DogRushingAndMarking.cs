@@ -94,9 +94,9 @@ public class DogRushingAndMarking : BaseDogAIFunction
 		//Animation Set
 		m_animationController.editAnimation.SetTriggerRolling();
 
-		//強制的に増加させる
-		if (m_markPoint.linkPlayerID == dogAIAgent.linkPlayer.GetInstanceID())
-			m_markPoint.SetForceAscendingEffective(true);
+		////強制的に増加させる
+		//if (m_markPoint.linkPlayerID == dogAIAgent.linkPlayer.GetInstanceID())
+		//	m_markPoint.SetForceAscendingEffective(true);
 	}
 	/// <summary>
 	/// [AIEnd]
@@ -105,11 +105,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 	/// </summary>
 	public override void AIEnd(BaseAIFunction nextFunction)
 	{
-		if (functionState == State.Rushing || functionState == State.Rotation)
-		{
-			m_animationController.editAnimation.SetTriggerReturnRun();
-		}
-		else if (functionState != State.End)
+		if (functionState != State.End)
 		{
 			m_animationController.editAnimation.SetTriggerForceChangeStand();
 			PlayerAndTerritoryManager.instance.allPlayers[dogAIAgent.linkPlayer.GetInstanceID()].input.ChangeShotFlags(dogAIAgent, false);
@@ -120,7 +116,20 @@ public class DogRushingAndMarking : BaseDogAIFunction
 			m_sePlayer.Stop(m_markingSEIndex);
 			m_markingEffect.SetActive(false);
 		}
-		Debug.Log(functionState);
+
+		if (functionState != State.End && functionState != State.Rushing
+			&& m_markPoint.linkServantID == dogAIAgent.aiAgentInstanceID)
+		{
+#if UNITY_EDITOR
+			Debug.Log("Error!! DogRushingAndMarking: AIEnd->(functionState != State.End && functionState != State.Rushing \n" +
+				"m_markPoint.linkServantID == dogAIAgent.aiAgentInstanceID");
+#endif
+			//ポイントをリンク解除
+			m_markPoint.UnlinkPlayer();
+			//動け！
+			dogAIAgent.SetSitAndStay(false, m_markPoint);
+		}
+
 		m_markPoint = null;
 		navMeshAgent.isStopped = false;
 		functionState = State.Null;
@@ -136,14 +145,19 @@ public class DogRushingAndMarking : BaseDogAIFunction
 		//万が一の無効条件
 		if (m_markPoint == null)
 		{
-			Debug.Log("1");
+#if UNITY_EDITOR
+			Debug.Log("Error!! DogRushingAndMarking: AIUpdate->m_markPoint == null");
+#endif
 			EndAIFunction(updateIdentifier);
 			return;
 		}
 		else if (m_markPoint.isLinked && 
 			(m_markPoint.linkServantID != dogAIAgent.aiAgentInstanceID && m_markPoint.linkServantID != -1))
 		{
-			Debug.Log("2");
+#if UNITY_EDITOR
+			Debug.Log("Error!! DogRushingAndMarking: AIUpdate->m_markPoint.isLinked && \n" + 
+				"(m_markPoint.linkServantID != dogAIAgent.aiAgentInstanceID && m_markPoint.linkServantID != -1)");
+#endif
 			EndAIFunction(updateIdentifier);
 			return;
 		}
@@ -166,6 +180,14 @@ public class DogRushingAndMarking : BaseDogAIFunction
 						//指定ポイントと合致
 						if (hitCollisions[i].gameObject.GetInstanceID() == m_markPoint.gameObject.GetInstanceID())
 						{
+							//強制的に増加させる
+							if (m_markPoint.linkPlayerID != dogAIAgent.linkPlayer.GetInstanceID())
+								m_markPoint.AddFirstLinkBonus();
+							//ポイントをリンクさせる
+							m_markPoint.LinkPlayer(dogAIAgent.linkPlayer, dogAIAgent);
+							//待て！
+							dogAIAgent.SetSitAndStay(true, m_markPoint);
+
 							//移動, 回転停止
 							navMeshAgent.isStopped = true;
 							dogAIAgent.speedChanger.SetManualAcceleration(0.0f);
@@ -212,13 +234,6 @@ public class DogRushingAndMarking : BaseDogAIFunction
 					{
 						functionState = State.End;
 						m_markingEffect.SetActive(false);
-						//強制的に増加させる
-						if (m_markPoint.linkPlayerID != dogAIAgent.linkPlayer.GetInstanceID())
-							m_markPoint.AddFirstLinkBonus();
-						//ポイントをリンクさせる
-						m_markPoint.LinkPlayer(dogAIAgent.linkPlayer, dogAIAgent);
-						//待て！
-						dogAIAgent.SetSitAndStay(true, m_markPoint);
 						//Animation Set
 						m_animationController.editAnimation.SetTriggerSleepStart();
 						//終了
