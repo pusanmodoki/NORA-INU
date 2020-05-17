@@ -13,13 +13,25 @@ public class AreaMesh : MonoBehaviour
     [SerializeField]
     private List<int> triangles = new List<int>();
 
+    [SerializeField]
+    private List<Vector3> safetyMeshPoints = new List<Vector3>();
+    [SerializeField]
+    private List<Vector2> safetyUvs = new List<Vector2>();
+    [SerializeField]
+    private List<int> safetyTriangles = new List<int>();
+
+
     private Mesh mesh = null;
     private MeshRenderer render = null;
+
+    private Mesh safetyMesh = null;
+    private MeshRenderer safetyRender = null;
 
     [SerializeField]
     private Material m_material = null;
 
     private GameObject m_meshObject = null;
+    private GameObject m_safetyMeshObject = null;
 
 
     // Start is called before the first frame update
@@ -34,12 +46,21 @@ public class AreaMesh : MonoBehaviour
         mesh = m_meshObject.GetComponent<MeshFilter>().mesh;
         render.material = m_material;
         m_meshObject.layer = LayerMask.NameToLayer("Area");
+
+        m_safetyMeshObject = new GameObject("SafeAreaMesh");
+
+        m_safetyMeshObject.AddComponent<MeshFilter>();
+        safetyRender = m_safetyMeshObject.AddComponent<MeshRenderer>();
+        safetyMesh = m_safetyMeshObject.GetComponent<MeshFilter>().mesh;
+        safetyRender.material = m_material;
+        m_safetyMeshObject.layer = LayerMask.NameToLayer("Area");
     }
 
     // Update is called once per frame
     void Update()
     {
         MeshCreate();
+        //SafetyMeshCreate();
     }
 
     public void MeshCreate()
@@ -78,9 +99,55 @@ public class AreaMesh : MonoBehaviour
         mesh.triangles = triangles.ToArray();
         mesh.uv = uvs.ToArray();
 
+        render.material.color = Color.red;
+
         //　Boundsの再計算
         mesh.RecalculateBounds();
         //　NormalMapの再計算
         mesh.RecalculateNormals();
     }
+
+    public void SafetyMeshCreate()
+    {
+        Vector3 vec = player.allTerritorys[0].transform.position;
+
+        // 初期化
+        safetyMeshPoints.Clear();
+        safetyTriangles.Clear();
+        safetyMesh.Clear();
+        safetyUvs.Clear();
+
+        safetyMeshPoints.Add(vec);
+        safetyMeshPoints.AddRange(player.safetyTerritorialArea);
+
+        for (int i = 0; i < safetyMeshPoints.Count; ++i)
+        {
+            Vector3 pos = safetyMeshPoints[i];
+            pos.y = 1.0f;
+            safetyMeshPoints[i] = pos;
+            safetyUvs.Add(Vector2.zero);
+        }
+
+        for (int i = 0; i < safetyMeshPoints.Count - 2; ++i)
+        {
+            safetyTriangles.Add(0);
+            safetyTriangles.Add(safetyMeshPoints.Count - 1 - i);
+            safetyTriangles.Add(safetyMeshPoints.Count - 1 - i - 1);
+        }
+
+        safetyTriangles.Add(0);
+        safetyTriangles.Add(1);
+        safetyTriangles.Add(safetyMeshPoints.Count - 1);
+
+        safetyMesh.vertices = safetyMeshPoints.ToArray();
+        safetyMesh.triangles = safetyTriangles.ToArray();
+        safetyMesh.uv = safetyUvs.ToArray();
+
+
+        //　Boundsの再計算
+        safetyMesh.RecalculateBounds();
+        //　NormalMapの再計算
+        safetyMesh.RecalculateNormals();
+    }
+
 }

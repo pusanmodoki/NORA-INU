@@ -43,7 +43,7 @@ public abstract class BaseCheckPoint : MonoBehaviour
 	/// プレイヤーとの紐付けを行う
 	/// 引数1: 紐付けるPlayerのInstance ID
 	/// </summary>
-	public void LinkPlayer(int playerInstanceID)
+	public virtual void LinkPlayer(int playerInstanceID)
 	{
 		linkPlayerID = playerInstanceID;
 	}
@@ -51,7 +51,7 @@ public abstract class BaseCheckPoint : MonoBehaviour
 	/// [UnlinkPlayer]
 	/// プレイヤーとの紐付け解除を行う
 	/// </summary>
-	public void UnlinkPlayer()
+	public virtual void UnlinkPlayer()
 	{
 		linkPlayerID = -1;
 	}
