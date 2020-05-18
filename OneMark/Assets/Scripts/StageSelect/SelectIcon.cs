@@ -5,9 +5,6 @@ using UnityEngine.UI;
 public class SelectIcon : MonoBehaviour
 {
     [SerializeField]
-    private string nextSceneName = "";
-
-    [SerializeField]
     private bool isSelected = false;
 
     public bool m_isSelected { get { return isSelected; } set { isSelected = value; } }

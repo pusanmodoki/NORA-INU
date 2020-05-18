@@ -12,9 +12,6 @@ public class StageSlide : MonoBehaviour
     private float interval = 20.0f;
 
     [SerializeField]
-    private float height = -1.0f;
-
-    [SerializeField]
     private float scrollSpeed = 1.0f;
 
     [SerializeField]
@@ -25,10 +22,7 @@ public class StageSlide : MonoBehaviour
     public bool m_isWorldSelect { set { isWorldSelect = value; } }
 
     [SerializeField]
-    private GameObject stagePoints = null;
-
-    [SerializeField]
-    private SelectSoundPlayer SEPlayer;
+    private SelectSoundPlayer SEPlayer = null;
 
     // Start is called before the first frame update
     void Start()

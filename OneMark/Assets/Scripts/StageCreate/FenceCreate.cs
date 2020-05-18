@@ -9,9 +9,6 @@ public class FenceCreate : MonoBehaviour
     int stageDepth = 50;
 
     [SerializeField]
-    GameObject fenceEnd = null;
-
-    [SerializeField]
     GameObject fence = null;
 
 

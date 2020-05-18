@@ -8,7 +8,7 @@ public class SceneName : IComparer<SceneName>
 	public string sceneName { get { return m_sceneName; } }
 
 	[SerializeField]
-	string m_sceneName;
+	string m_sceneName = "";
 
 	public int Compare(SceneName x, SceneName y)
 	{
@@ -33,5 +33,5 @@ public class SceneNameArray
 	}
 
 	[SerializeField]
-	string[] m_sceneNames;
+	string[] m_sceneNames = null;
 }

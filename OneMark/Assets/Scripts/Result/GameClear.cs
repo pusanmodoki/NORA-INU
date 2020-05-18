@@ -5,10 +5,10 @@ using UnityEngine;
 public class GameClear : MonoBehaviour
 {
     [SerializeField]
-    private PlayerInput clearAnime;
+    private PlayerInput clearAnime = null;
 
     [SerializeField]
-    private FollowObject result;
+    private FollowObject result = null;
 
     // Start is called before the first frame update
     void Start()

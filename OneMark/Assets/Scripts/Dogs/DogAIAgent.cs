@@ -9,8 +9,6 @@ using AIComponent;
 /// </summary>
 public class DogAIAgent : AIAgent
 {
-	/// <summary>Change color materials</summary>
-	public ReadOnlyCollection<RendererMaterial> changeColorMaterials { get; set; } = null;
 	/// <summary>Speed changer</summary>
 	public DogSpeedChanger speedChanger { get { return m_speedChanger; } }
 	/// <summary>Link mark point</summary>
@@ -56,9 +54,6 @@ public class DogAIAgent : AIAgent
 	/// <summary>GoMarking時の円形当たり判定で使う半径</summary>
 	[SerializeField, Tooltip("GoMarking時の円形当たり判定で使う半径")]
 	float m_indicatedDogRadius = 2;
-	/// <summary>Change color materials</summary>
-	[SerializeField, Space, Tooltip("Change color materials")]
-	RendererMaterial[] m_changeColorMaterials = null;
 	/// <summary>OffMeshLink controller</summary>
 	[SerializeField, Space, Tooltip("OffMeshLink controller")]
 	DogOffMeshLinkController m_offMeshLinkController = new DogOffMeshLinkController();
@@ -284,7 +279,6 @@ public class DogAIAgent : AIAgent
 	{
 		base.Start();
 		speedChanger.Start();
-		changeColorMaterials = new ReadOnlyCollection<RendererMaterial>(m_changeColorMaterials);
 
 		ServantManager.instance.AddServant(this);
 

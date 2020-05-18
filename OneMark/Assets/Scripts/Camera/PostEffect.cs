@@ -5,7 +5,7 @@ using UnityEngine;
 public class PostEffect : MonoBehaviour
 {
     [SerializeField]
-    private Material postEffect;
+    private Material postEffect = null;
 
     private void Start()
     {

@@ -9,7 +9,7 @@ public class StageName : MonoBehaviour
     void Start()
     {
         Text text = GetComponent<Text>();
-        text.text = SceneTransManager.nowSceneName;
+        text.text = OneMarkSceneManager.instance.nowLoadSceneName;
     }
 
 }
