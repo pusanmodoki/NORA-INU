@@ -1928,7 +1928,7 @@ MonoBehaviour:
   nowSelectIndex: 0
   interval: 2000
   height: -1
-  scrollSpeed: 0.8
+  scrollSpeed: 0.001
   isScroll: 0
   isWorldSelect: 1
   stagePoints: {fileID: 0}
@@ -2668,7 +2668,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3538, y: 0}
+  m_AnchoredPosition: {x: 3220, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1418174639

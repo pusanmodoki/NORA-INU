@@ -99,7 +99,7 @@ public class AreaMesh : MonoBehaviour
         mesh.triangles = triangles.ToArray();
         mesh.uv = uvs.ToArray();
 
-        render.material.color = Color.red;
+        //render.material.color = Color.red;
 
         //　Boundsの再計算
         mesh.RecalculateBounds();

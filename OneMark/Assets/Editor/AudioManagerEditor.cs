@@ -25,7 +25,7 @@ namespace Editor
 		SerializedProperty m_allBgms = null;
 		SerializedProperty m_bgmForEachScenes = null;
 
-		AudioManagerObject m_data = null;
+		AudioManagerEditorObject m_data = null;
 		string[] m_findAssetPath = null;
 		string m_assetPath = null;
 		string m_createAssetPath = null;
@@ -366,7 +366,7 @@ namespace Editor
 
 
 
-		AudioManagerObject LoadScriptableData()
+		AudioManagerEditorObject LoadScriptableData()
 		{
 			if (m_findAssetPath == null)
 			{
@@ -375,11 +375,11 @@ namespace Editor
 				m_createAssetPath = "Assets/Editor/UserFolder/AudioManagerEditorObject.asset";
 			}
 			// プロジェクトに存在する全ScriptableObjectのGUIDを取得
-			AudioManagerObject result = (AudioManagerObject)AssetDatabase.FindAssets("t:ScriptableObject", m_findAssetPath)
+			AudioManagerEditorObject result = (AudioManagerEditorObject)AssetDatabase.FindAssets("t:ScriptableObject", m_findAssetPath)
 			   // GUIDをパスに変換
 			   .Select(guid => AssetDatabase.GUIDToAssetPath(guid))
 			   // パスからPermanentDataの取得を試みる
-			   .Select(path => AssetDatabase.LoadAssetAtPath(path, typeof(AudioManagerObject)))
+			   .Select(path => AssetDatabase.LoadAssetAtPath(path, typeof(AudioManagerEditorObject)))
 			   // null要素は取り除く
 			   .Where(obj => obj != null)
 			   // 取得したPermanentDataのうち、最初の一つだけを取る
@@ -391,7 +391,7 @@ namespace Editor
 			if (!System.IO.Directory.Exists(m_assetPath))
 				System.IO.Directory.CreateDirectory(m_assetPath);
 
-			result = ScriptableObject.CreateInstance<AudioManagerObject>();
+			result = ScriptableObject.CreateInstance<AudioManagerEditorObject>();
 			AssetDatabase.CreateAsset(result, m_createAssetPath);
 			return result;
 		}

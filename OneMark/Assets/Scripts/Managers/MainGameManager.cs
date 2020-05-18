@@ -21,10 +21,14 @@ public class MainGameManager : MonoBehaviour
 
     [SerializeField]
     private Vector2 m_stageSize = new Vector3(30.0f, 30.0f);
+	[SerializeField]
+	float m_waitResultSeconds = 1.0f;
 
     public Vector2 stageSize { get { return m_stageSize; } private set { m_stageSize = value; } }
 
     private FollowObject m_mainCamera = null;
+
+	Timer m_resultTimer = new Timer();
 
     /// <summary>[Awake]</summary>
     void Awake()
@@ -57,10 +61,20 @@ public class MainGameManager : MonoBehaviour
 			if (e.Value.isLinked) ++checkCounter;
 
 		if (m_allCheckPoints.Count == checkCounter)
-			GameClear();
+		{
+			if (m_resultTimer.isStop)
+				m_resultTimer.Start();
+			else if (m_resultTimer.elapasedTime > m_waitResultSeconds)
+				GameClear();
+		}
 
 		if (PlayerAndTerritoryManager.instance.mainPlayer.maualCollisionAdministrator.isTerritoryExit)
-			GameOver();
+		{
+			if (m_resultTimer.isStop)
+				m_resultTimer.Start();
+			else if (m_resultTimer.elapasedTime > m_waitResultSeconds)
+				GameOver();
+		}
 	}
 
 	void GameClear()

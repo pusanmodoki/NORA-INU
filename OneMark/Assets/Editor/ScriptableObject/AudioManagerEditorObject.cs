@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class AudioManagerObject : ScriptableObject
+public class AudioManagerEditorObject : ScriptableObject
 {
 	public List<bool> isFoldoutAllBgmInfos { get { return m_isFoldoutAllBgmInfos; } }
 	public bool isFoldoutAllBgms { get { return m_isFoldoutAllBgms; } set { m_isFoldoutAllBgms = value; } }

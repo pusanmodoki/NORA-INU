@@ -39,10 +39,10 @@ public class PlayerManagerIntermediary : MonoBehaviour
 	[SerializeField, Tooltip("Result camera move point")]
 	GameObject m_resultCameraMovePoint = null;
 
-	[SerializeField, Space, Tooltip("LineRenderer(とりあえず)")]
-	LineRenderer m_lineRenderer = null;
-	[SerializeField, Space, Tooltip("LineRenderer(とりあえず)")]
-	LineRenderer m_lineRenderer1 = null;
+	//[SerializeField, Space, Tooltip("LineRenderer(とりあえず)")]
+	//LineRenderer m_lineRenderer = null;
+	//[SerializeField, Space, Tooltip("LineRenderer(とりあえず)")]
+	//LineRenderer m_lineRenderer1 = null;
 
 	/// <summary>This game object instance id</summary>
 	int m_instanceID = 0;
@@ -100,6 +100,7 @@ public class PlayerManagerIntermediary : MonoBehaviour
 			m_firstPoint.LinkPlayer(gameObject, null);
 			//即時計算要請
 			PlayerAndTerritoryManager.instance.CalucrateTerritory(playerInfo);
+			PlayerAndTerritoryManager.instance.CalucrateSafetyTerritory(playerInfo);
 			//Info設定
 			m_playerMaualCollisionAdministrator.SetPlayerInfo(playerInfo);
 			thisInfo = playerInfo;
@@ -120,37 +121,37 @@ public class PlayerManagerIntermediary : MonoBehaviour
 	/// [Update]
 	/// とりあえずの処理たち
 	/// </summary>
-	void Update()
-	{
-		var playerInfo = PlayerAndTerritoryManager.instance.allPlayers[m_instanceID];
+	//void Update()
+	//{
+		//var playerInfo = PlayerAndTerritoryManager.instance.allPlayers[m_instanceID];
 
-		if (m_lineRenderer != null)
-		{
-			if (playerInfo.territorialArea.Count > 1)
-			{
-				m_lineRenderer.positionCount = playerInfo.territorialArea.Count + 1;
-				for (int i = 0; i < playerInfo.territorialArea.Count; ++i)
-					m_lineRenderer.SetPosition(i, playerInfo.territorialArea[i]);
-				m_lineRenderer.SetPosition(m_lineRenderer.positionCount - 1, playerInfo.territorialArea[0]);
-			}
-			else
-			{
-				m_lineRenderer.positionCount = 0;
-			}
-		}
-		if (m_lineRenderer1 != null)
-		{
-			if (playerInfo.safetyTerritorialArea.Count > 1)
-			{
-				m_lineRenderer1.positionCount = playerInfo.safetyTerritorialArea.Count + 1;
-				for (int i = 0; i < playerInfo.safetyTerritorialArea.Count; ++i)
-					m_lineRenderer1.SetPosition(i, playerInfo.safetyTerritorialArea[i]);
-				m_lineRenderer1.SetPosition(m_lineRenderer1.positionCount - 1, playerInfo.safetyTerritorialArea[0]);
-			}
-			else
-			{
-				m_lineRenderer1.positionCount = 0;
-			}
-		}
-	}
+		//if (m_lineRenderer != null)
+		//{
+		//	if (playerInfo.territorialArea.Count > 1)
+		//	{
+		//		m_lineRenderer.positionCount = playerInfo.territorialArea.Count + 1;
+		//		for (int i = 0; i < playerInfo.territorialArea.Count; ++i)
+		//			m_lineRenderer.SetPosition(i, playerInfo.territorialArea[i]);
+		//		m_lineRenderer.SetPosition(m_lineRenderer.positionCount - 1, playerInfo.territorialArea[0]);
+		//	}
+		//	else
+		//	{
+		//		m_lineRenderer.positionCount = 0;
+		//	}
+		//}
+		//if (m_lineRenderer1 != null)
+		//{
+		//	if (playerInfo.safetyTerritorialArea.Count > 1)
+		//	{
+		//		m_lineRenderer1.positionCount = playerInfo.safetyTerritorialArea.Count + 1;
+		//		for (int i = 0; i < playerInfo.safetyTerritorialArea.Count; ++i)
+		//			m_lineRenderer1.SetPosition(i, playerInfo.safetyTerritorialArea[i]);
+		//		m_lineRenderer1.SetPosition(m_lineRenderer1.positionCount - 1, playerInfo.safetyTerritorialArea[0]);
+		//	}
+		//	else
+		//	{
+		//		m_lineRenderer1.positionCount = 0;
+		//	}
+		//}
+	//}
 }

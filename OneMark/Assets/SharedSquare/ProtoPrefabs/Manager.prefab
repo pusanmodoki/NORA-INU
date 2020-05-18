@@ -114,6 +114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_source: {fileID: 0}
   m_stageSize: {x: 30, y: 30}
+  m_waitResultSeconds: 2
 --- !u!114 &6836522414734074658
 MonoBehaviour:
   m_ObjectHideFlags: 0
