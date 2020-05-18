@@ -63,7 +63,7 @@ public class DataManager : MonoBehaviour
 	{
 		get
 		{
-			string sceneName = SceneManager.GetActiveScene().name;
+			string sceneName = OneMarkSceneManager.instance.nowLoadSceneName;
 			int result0 = 0, result1 = 0;
 
 			if (sceneName.Length >= 3 && sceneName[1] == '-'

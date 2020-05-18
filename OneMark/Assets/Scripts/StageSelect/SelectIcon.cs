@@ -28,6 +28,6 @@ public class SelectIcon : MonoBehaviour
 
     public void ThisSelectSceneTrans()
     {
-        SceneFadeTrans.SimpleFadeTrans(nextSceneName, Color.white, 1.0f);
+        //SceneFadeTrans.SimpleFadeTrans(nextSceneName, Color.white, 1.0f);
     }
 }

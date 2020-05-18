@@ -33,6 +33,8 @@ public class MainGameManager : MonoBehaviour
 		instance = this;
 
         m_mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<FollowObject>();
+		//m_mainCamera.transform.position = Vector3.zero;
+		//m_mainCamera.StartFlg();
 
 		//m_clearBoard.SetActive(false);
 		//m_overBoard.SetActive(false);
@@ -64,9 +66,9 @@ public class MainGameManager : MonoBehaviour
 	void GameClear()
 	{
         PlayerAndTerritoryManager.instance.mainPlayer.input.GameClearAnimation();
+		AudioManager.instance.StopBgm(AudioManager.instance.bgmForNowScene.loadBgmKeys[0]);
 		MarkPointManager.instance.SetCountScale(0.0f);
         ResultCall.GameClear();
-		m_source.enabled = false;
         m_mainCamera.ResultFlg();
 		m_isEnd = true;
 	}
@@ -74,9 +76,9 @@ public class MainGameManager : MonoBehaviour
 	void GameOver()
 	{
         PlayerAndTerritoryManager.instance.mainPlayer.input.GameOverAnimation();
+		AudioManager.instance.StopBgm(AudioManager.instance.bgmForNowScene.loadBgmKeys[0]);
 		MarkPointManager.instance.SetCountScale(0.0f);
         ResultCall.GameOver();
-		m_source.enabled = false;
 		m_isEnd = true;
 	}
 }

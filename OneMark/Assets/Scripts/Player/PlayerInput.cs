@@ -41,7 +41,7 @@ public class PlayerInput : MonoBehaviour
 
 	Vector3 m_moveInput = Vector3.zero;
 
-	Timer[] m_shotTimers = new Timer[3];
+	Timer m_shotTimers = new Timer();
 	bool[] m_isShotFlags = new bool[3];
 
 	public void GameClearAnimation()
@@ -66,8 +66,7 @@ public class PlayerInput : MonoBehaviour
 
 	void Start()
     {
-		for (int i = 0; i < m_shotTimers.Length; ++i)
-			m_shotTimers[i] = new Timer();
+		m_shotTimers = new Timer();
 	}
 
     // Update is called once per frame
@@ -111,49 +110,91 @@ public class PlayerInput : MonoBehaviour
 		if (!isEnableInput)
 			return;
 
-		if (Input.GetButtonDown("Fire1")
-			&& m_shotTimers[0].elapasedTime >= m_shotDeactivateSeconds)
-		{
-			ShotServant(0);
-		}
+		//if (Input.GetButtonDown("Fire1")
+		//	&& m_shotTimers[0].elapasedTime >= m_shotDeactivateSeconds)
+		//{
+		//	ShotServant(0);
+		//}
 
-		if (Input.GetButtonDown("Fire2")
-			&& m_shotTimers[1].elapasedTime >= m_shotDeactivateSeconds)
-		{
-			ShotServant(1);
-		}
+		//if (Input.GetButtonDown("Fire2")
+		//	&& m_shotTimers[1].elapasedTime >= m_shotDeactivateSeconds)
+		//{
+		//	ShotServant(1);
+		//}
 
-		if (Input.GetButtonDown("Fire3")
-			&& m_shotTimers[2].elapasedTime >= m_shotDeactivateSeconds)
+		if (Input.GetButtonDown("Fire3") && m_shotTimers.elapasedTime >= m_shotDeactivateSeconds)
 		{
-			ShotServant(2);
+			ShotServant();
 		}
 	}
 
-	void ShotServant(int id)
+	void ShotServant()
 	{
-		var servant = ServantManager.instance.servantByMainPlayer[id];
+		if (m_maualCollisionAdministrator.hitVisibilityMarkPoint == null) return;
 
-		if (m_isShotFlags[id] && servant.ComeBecauseEndOfMarking(
-				m_maualCollisionAdministrator.IsHitInstructionsReturnDog(servant)))
+		int linkServantID = m_maualCollisionAdministrator.hitVisibilityMarkPoint.linkServantID;
+
+		//Unlink
+		if (linkServantID != -1)
 		{
-			m_isShotFlags[id] = false;
-			m_shotTimers[id].Start();
+			ServantManager.instance.allServants[linkServantID].ComeBecauseEndOfMarking(
+				m_maualCollisionAdministrator.IsHitInstructionsReturnDog(ServantManager.instance.allServants[linkServantID]));
+			m_shotTimers.Start();
+
 		}
-		else if(!m_isShotFlags[id] && m_maualCollisionAdministrator.isVisibilityStay
-			&& m_maualCollisionAdministrator.hitVisibilityMarkPoint != null)
+		//Go!
+		else
 		{
-			bool isResult = m_maualCollisionAdministrator.IsHitInstructionsGoingDog(servant);
+			int followIndex = 0;
+			for (int i = 0, count = 3; i < count; ++i)
+			{
+				var servant = ServantManager.instance.servantByPlayers[gameObject.GetInstanceID()][i];
+
+				if (!servant.isAccompanyingPlayer)
+					++followIndex;
+				else
+					break;
+			}
+
+			if (followIndex == 3) return;
+
+			bool isResult = m_maualCollisionAdministrator.IsHitInstructionsGoingDog(
+				ServantManager.instance.servantByPlayers[gameObject.GetInstanceID()][followIndex]);
 
 			if (isResult)
 				isResult &= m_maualCollisionAdministrator.IsHitInstructionsMarkPoint(
 					m_maualCollisionAdministrator.hitVisibilityMarkPoint);
 
-			if (isResult && servant.GoSoStartOfMarking(m_maualCollisionAdministrator.hitVisibilityMarkPoint))
+
+			if (isResult && ServantManager.instance.servantByPlayers[gameObject.GetInstanceID()][followIndex]
+				.GoSoStartOfMarking(m_maualCollisionAdministrator.hitVisibilityMarkPoint))
 			{
-				m_isShotFlags[id] = true;
-				m_shotTimers[id].Start();
+				m_shotTimers.Start();
 			}
 		}
+
+		//var servant = ServantManager.instance.servantByMainPlayer[id];
+
+		//if (m_isShotFlags[id] && servant.ComeBecauseEndOfMarking(
+		//		m_maualCollisionAdministrator.IsHitInstructionsReturnDog(servant)))
+		//{
+		//	m_isShotFlags[id] = false;
+		//	m_shotTimers[id].Start();
+		//}
+		//else if(!m_isShotFlags[id] && m_maualCollisionAdministrator.isVisibilityStay
+		//	&& m_maualCollisionAdministrator.hitVisibilityMarkPoint != null)
+		//{
+		//	bool isResult = m_maualCollisionAdministrator.IsHitInstructionsGoingDog(servant);
+
+		//	if (isResult)
+		//		isResult &= m_maualCollisionAdministrator.IsHitInstructionsMarkPoint(
+		//			m_maualCollisionAdministrator.hitVisibilityMarkPoint);
+
+		//	if (isResult && servant.GoSoStartOfMarking(m_maualCollisionAdministrator.hitVisibilityMarkPoint))
+		//	{
+		//		m_isShotFlags[id] = true;
+		//		m_shotTimers[id].Start();
+		//	}
+		//}
 	}
 }

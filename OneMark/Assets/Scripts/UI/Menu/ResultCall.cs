@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ResultCall : MonoBehaviour
+public static class ResultCall
 {
     static public void GameClear()
     {
-        SceneManager.LoadScene("GameClear", LoadSceneMode.Additive);
+		OneMarkSceneManager.instance.SetActiveAccessoryScene("GameClear", true);
     }
     static public void GameOver()
     {
-        SceneManager.LoadScene("GameOver", LoadSceneMode.Additive);
+		OneMarkSceneManager.instance.SetActiveAccessoryScene("GameOver", true);
     }
 }

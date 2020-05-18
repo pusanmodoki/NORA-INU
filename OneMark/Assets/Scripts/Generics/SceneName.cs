@@ -14,6 +14,10 @@ public class SceneName : IComparer<SceneName>
 	{
 		return string.Compare(x.m_sceneName, y.m_sceneName);
 	}
+	public static implicit operator string(SceneName name)
+	{
+		return name.m_sceneName;
+	}
 }
 
 

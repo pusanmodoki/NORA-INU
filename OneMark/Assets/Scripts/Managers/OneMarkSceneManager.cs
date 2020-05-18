@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[DefaultExecutionOrder(-180)]
 public class OneMarkSceneManager : MonoBehaviour
 {
 	public enum SceneState
@@ -28,10 +29,10 @@ public class OneMarkSceneManager : MonoBehaviour
 	(
 		new Vector2Int[]
 		{
-			new Vector2Int(0, 0), new Vector2Int(0, 1), new Vector2Int(0, 2), new Vector2Int(0, 3),
-			new Vector2Int(1, 0), new Vector2Int(1, 1), new Vector2Int(1, 2), new Vector2Int(1, 3),
-			new Vector2Int(2, 0), new Vector2Int(2, 1), new Vector2Int(2, 2), new Vector2Int(2, 3),
-			new Vector2Int(3, 0), new Vector2Int(3, 1), new Vector2Int(3, 2), new Vector2Int(3, 3),
+			new Vector2Int(0, 1), new Vector2Int(0, 2), new Vector2Int(0, 3), new Vector2Int(0, 4),
+			new Vector2Int(1, 1), new Vector2Int(1, 2), new Vector2Int(1, 3), new Vector2Int(1, 4),
+			new Vector2Int(2, 1), new Vector2Int(2, 2), new Vector2Int(2, 3), new Vector2Int(2, 4),
+			new Vector2Int(3, 1), new Vector2Int(3, 2), new Vector2Int(3, 3), new Vector2Int(3, 4),
 		}
 	);
 	public static Vector2Int cInvalidStageIndex = new Vector2Int(-1, -1);
@@ -43,15 +44,13 @@ public class OneMarkSceneManager : MonoBehaviour
 	{
 		get
 		{
-			if (!m_nowScene.isLoaded) return cInvalidStageIndex;
-
 			Vector2Int result = Vector2Int.zero;
 			int index = -1;
 
-			if (int.TryParse(m_nowScene.name[0].ToString(), out index)) result.x = index;
-			else if (m_nowScene.name[0] != 'T') return cInvalidStageIndex;
+			if (int.TryParse(nowLoadSceneName[0].ToString(), out index)) result.x = index;
+			else if (nowLoadSceneName[0] != 'T') return cInvalidStageIndex;
 
-			if (int.TryParse(m_nowScene.name[2].ToString(), out index)) result.y = index;
+			if (int.TryParse(nowLoadSceneName[2].ToString(), out index)) result.y = index;
 			else return cInvalidStageIndex;
 
 			return cStageSceneIndexes.Contains(result) ? result : cInvalidStageIndex;
@@ -67,10 +66,12 @@ public class OneMarkSceneManager : MonoBehaviour
 				|| (result == cStageSceneIndexes[cStageSceneIndexes.Count - 1])) return cInvalidStageIndex;
 
 			if (++result.y > cStageSceneIndexes[cStageSceneIndexes.Count - 1].y)
+			{
 				result.y = 0;
 
-			if (++result.x > cStageSceneIndexes[cStageSceneIndexes.Count - 1].x)
-				result.x = 0;
+				if (++result.x > cStageSceneIndexes[cStageSceneIndexes.Count - 1].x)
+					result.x = 0;
+			}
 
 			return result;
 		}
@@ -79,46 +80,87 @@ public class OneMarkSceneManager : MonoBehaviour
 	{
 		get
 		{
-			if (!m_nowScene.isLoaded) return false;
-
 			int parse = 0;
 			bool isResult = true;
-			isResult &= ((m_nowScene.name[0] == 'T') || (int.TryParse(m_nowScene.name[0].ToString(), out parse)));
-			isResult &= (m_nowScene.name[1] == '-');
-			isResult &= (int.TryParse(m_nowScene.name[2].ToString(), out parse));
+			isResult &= ((nowLoadSceneName[0] == 'T') || (int.TryParse(nowLoadSceneName[0].ToString(), out parse)));
+			isResult &= (nowLoadSceneName[1] == '-');
+			isResult &= (int.TryParse(nowLoadSceneName[2].ToString(), out parse));
 
 			return isResult;
 		}
 	}
+	public string nowLoadSceneName { get; private set; } = "";
 	public float loadProgress { get; private set; } = 0.0f;
 	public bool isNowFinalStage { get { return m_nowScene.isLoaded && m_nowScene.name == "4-4"; } }
+	public bool isCompleteFadeOut { get { return m_fadeScreen.isCompletedTransition && m_fadeScreen.fadeState == FadeScreen.FadeState.Fadeout; } }
+	public bool isActiveOption { get; private set; } = false;
 
+	[Header("Scene Transition"), SerializeField]
+	SceneName m_gameStartSceneName = default;
 	[SerializeField]
-	SceneName m_selectTitleScene = default;
+	SceneName m_titleSceneName = default;
 	[SerializeField]
-	SceneName m_selectStageSelectScene = default;
+	SceneName m_stageSelectSceneName = default;
 	[SerializeField]
-	SceneName m_selectOptionScene = default;
+	SceneName m_optionSceneName = default;
 	[SerializeField]
-	SceneName m_selectLoadScene = default;
+	SceneName m_loadScenename = default;
 	[SerializeField]
 	SceneNameArray m_accessoriesForStageScenes = default;
+	[SerializeField]
+	float m_minTimeToLoad = 1.0f;
+
+	[Header("Fade In And Out"), SerializeField]
+	FadeScreen m_fadeScreen = null;
+	[SerializeField]
+	Color m_fadeColor = Color.black;
+	[SerializeField]
+	float m_fadeSpeedPerSeconds = 1.0f;
 
 	Dictionary<string, Scene> m_accessoryScenes = null;
 	Scene m_nowScene = default;
 	Scene m_optionScene = default;
+	AsyncOperation m_optionOperation = null;
 
 	public void MoveScene(SceneState sceneState)
 	{
-
+		switch(sceneState)
+		{
+			case SceneState.Title:
+				{
+					StartCoroutine(LoadScene(m_titleSceneName, false));
+					break;
+				}
+			case SceneState.StageSelect:
+				{
+					StartCoroutine(LoadScene(m_stageSelectSceneName, false));
+					break;
+				}
+		}
 	}
-	public void MoveScene(SceneState sceneState, Vector2Int sceneIndex)
+	public void ReloadScene()
 	{
-
+		if (nowLoadSceneName == m_titleSceneName
+			|| nowLoadSceneName == m_stageSelectSceneName)
+		{
+			StartCoroutine(LoadScene(nowLoadSceneName, false));
+		}
+		else
+		{
+			StartCoroutine(LoadScene(nowLoadSceneName, true));
+		}
 	}
-	public void MoveScene(SceneState sceneState, int sceneIndex)
+	public void MoveStageScene(Vector2Int sceneIndex)
 	{
+		if (!cStageSceneIndexes.Contains(sceneIndex)) return;
 
+		StartCoroutine(LoadScene(sceneIndex.ToStageName(), true));
+	}
+	public void MoveStageScene(int sceneIndex)
+	{
+		if (cStageSceneIndexes.Count <= sceneIndex || sceneIndex < 0) return;
+
+		StartCoroutine(LoadScene(cStageSceneIndexes[sceneIndex].ToStageName(), true));
 	}
 	public bool MoveNextStage()
 	{
@@ -145,6 +187,7 @@ public class OneMarkSceneManager : MonoBehaviour
 		if (m_optionScene.IsValid() == false || m_optionScene.isLoaded == false)
 			return;
 
+		isActiveOption = isSet;
 		var gameObjects = m_optionScene.GetRootGameObjects();
 		for (int i = 0, length = gameObjects.Length; i < length; ++i)
 			gameObjects[i].SetActive(isSet);
@@ -156,8 +199,30 @@ public class OneMarkSceneManager : MonoBehaviour
 		{
 			m_isCreateInstance = true;
 			instance = this;
-			Init();
+			nowLoadSceneName = SceneManager.GetActiveScene().name;
 			DontDestroyOnLoad(gameObject);
+			Init();
+
+			if (SceneManager.GetSceneByName(m_gameStartSceneName).IsValid())
+				StartCoroutine(LoadScene(m_titleSceneName, false, true));
+			else if (isNowStageScene)
+			{
+				StartCoroutine(LoadSceneOptionAndAccessory(true));
+
+				AudioManager.instance.LoadAudios(nowLoadSceneName);
+				AudioManager.instance.WaitLoadAudios(nowLoadSceneName);
+				if (AudioManager.instance.bgmForNowScene.loadBgmKeys.Count > 0)
+					AudioManager.instance.PlayBgm(AudioManager.instance.bgmForNowScene.loadBgmKeys[0]);
+			}
+			else
+			{
+				StartCoroutine(LoadSceneOptionAndAccessory(false));
+
+				AudioManager.instance.LoadAudios(nowLoadSceneName);
+				AudioManager.instance.WaitLoadAudios(nowLoadSceneName);
+				if (AudioManager.instance.bgmForNowScene.loadBgmKeys.Count > 0)
+					AudioManager.instance.PlayBgm(AudioManager.instance.bgmForNowScene.loadBgmKeys[0]);
+			}
 		}
 		else
 		{
@@ -171,160 +236,195 @@ public class OneMarkSceneManager : MonoBehaviour
 		for (int i = 0; i < m_accessoriesForStageScenes.length; ++i)
 			m_accessoryScenes.Add(m_accessoriesForStageScenes[i], default);
 
-		SceneManager.LoadScene(m_selectOptionScene.sceneName, LoadSceneMode.Additive);
+		SceneManager.sceneLoaded += SceneLoaded;
 	}
 
-	IEnumerator LoadScene(string sceneName, bool isLoadAccessory)
+	void SceneLoaded(Scene scene, LoadSceneMode mode)
 	{
-		AsyncOperation mainSceneOperation = null;
+		if (mode == LoadSceneMode.Additive)
+		{
+			var gameObjects = scene.GetRootGameObjects();
+			foreach (var e in gameObjects) e.SetActive(false);
+		}
+	}
 
+	IEnumerator LoadScene(string sceneName, bool isLoadAccessory, bool isFirstLoad = false)
+	{
+		if (!isFirstLoad)
+		{
+			m_fadeScreen.OnFadeScreen(m_fadeColor, m_fadeSpeedPerSeconds, FadeScreen.FadeState.Fadein, false);
+			while (!m_fadeScreen.isCompletedTransition) yield return null;
+		}
+		else
+			m_fadeScreen.SetFadeIn(m_fadeColor);
+
+		var stopwatch = new System.Diagnostics.Stopwatch();
 		loadProgress = 0.0f;
 		m_nowScene = default;
+		isActiveOption = false;
+		stopwatch.Start();
 
 		yield return UnloadScenes();
+		nowLoadSceneName = sceneName;
 
 		{
-			AsyncOperation operation = SceneManager.LoadSceneAsync(
-				m_selectLoadScene.sceneName, LoadSceneMode.Single);
+			AsyncOperation operation = SceneManager.LoadSceneAsync(m_loadScenename, LoadSceneMode.Single);
 			while (!operation.isDone) yield return null;
+			while (true)
+			{
+				var loadScene = SceneManager.GetActiveScene();
+				if (loadScene.IsValid() && loadScene.isLoaded && loadScene.name == m_loadScenename) break;
+				else yield return null;
+			}
 		}
 
-		mainSceneOperation = SceneManager.LoadSceneAsync(
-			sceneName, LoadSceneMode.Single);
-		mainSceneOperation.allowSceneActivation = false;
+		yield return LoadSceneOptionAndAccessory(isLoadAccessory);
 
-		while (true)
 		{
-			loadProgress = mainSceneOperation.progress;
+			AudioManager.instance.LoadAudios(sceneName);
+			AsyncOperation mainSceneOperation = SceneManager.LoadSceneAsync(
+				sceneName, LoadSceneMode.Additive);
+			mainSceneOperation.allowSceneActivation = false;
 
-			if (mainSceneOperation.progress >= 0.9f) break;
-			else yield return null;
-		}
+			while (true)
+			{
+				loadProgress = mainSceneOperation.progress;
 
-		if (!isLoadAccessory)
-		{
-			AsyncOperation optionOperation = null;
-			LoadOptionScene(optionOperation, 0.1f);
+				if (mainSceneOperation.progress >= 0.9f) break;
+				else yield return null;
+			}
+
+			AudioManager.instance.WaitLoadAudios(sceneName);
 
 			mainSceneOperation.allowSceneActivation = true;
 			while (true)
 			{
-				var scene = SceneManager.GetActiveScene();
-				if (scene.IsValid() && scene.isLoaded && scene.name == sceneName)
+				var mainScene = SceneManager.GetSceneByName(sceneName);
+				if (mainScene.IsValid() && mainScene.isLoaded && mainScene.name == sceneName)
 				{
-					m_nowScene = scene;
+					m_nowScene = mainScene;
 					break;
 				}
 				else yield return null;
 			}
+		}
 
-			optionOperation.allowSceneActivation = true;
+		{
+			stopwatch.Stop();
+			float elapased = (stopwatch.ElapsedMilliseconds * 0.001f);
+			if (elapased < m_minTimeToLoad) yield return new WaitForSeconds(m_minTimeToLoad - elapased);
+		}
+
+		{
+			AsyncOperation operation = SceneManager.UnloadSceneAsync(m_loadScenename);
+			while (!operation.isDone) yield return null;
+		}
+
+		{
+			SceneManager.SetActiveScene(m_nowScene);
+			var gameObjects = m_nowScene.GetRootGameObjects();
+			foreach (var e in gameObjects) e.SetActive(true);
+		}
+
+		if (AudioManager.instance.bgmForNowScene.loadBgmKeys.Count > 0)
+			AudioManager.instance.PlayBgm(AudioManager.instance.bgmForNowScene.loadBgmKeys[0]);
+		m_fadeScreen.OnFadeScreen(m_fadeColor, m_fadeSpeedPerSeconds, FadeScreen.FadeState.Fadeout, true);
+	}
+
+	IEnumerator LoadSceneOptionAndAccessory(bool isLoadAccessory)
+	{
+		float eachProgress = isLoadAccessory ? (0.1f / (m_accessoryScenes.Count + 1)) : 0.1f;
+
+		{
+			AsyncOperation optionOperation = null;
+			AudioManager.instance.LoadAudios(m_optionSceneName);
+			yield return LoadOptionScene(optionOperation, eachProgress);
+
+			AudioManager.instance.WaitLoadAudios(m_optionSceneName);
+			m_optionOperation.allowSceneActivation = true;
+			yield return null;
 			while (true)
 			{
-				var scene = SceneManager.GetSceneByName(m_selectLoadScene.sceneName);
-				if (scene.IsValid() && scene.isLoaded)
+				var optionScene = SceneManager.GetSceneByName(m_optionSceneName);
+				if (optionScene.IsValid() && optionScene.isLoaded && optionScene.name == m_optionSceneName)
 				{
-					m_optionScene = scene;
-					yield break;
+					m_optionScene = optionScene;
+					break;
 				}
 				else yield return null;
 			}
 		}
-		else
+
+		if (isLoadAccessory)
 		{
 			List<AsyncOperation> operations = new List<AsyncOperation>();
-			AsyncOperation optionOperation = null;
-			float eachProgress = 0.1f / (m_accessoryScenes.Count + 1);
 			float addProgress = eachProgress;
-
-			LoadOptionScene(optionOperation, eachProgress);
 
 			for (int i = 0; i < m_accessoryScenes.Count; ++i, addProgress += eachProgress)
 			{
-				operations.Add(SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single));
+				operations.Add(SceneManager.LoadSceneAsync(m_accessoriesForStageScenes[i], LoadSceneMode.Additive));
+				AudioManager.instance.LoadAudios(m_accessoriesForStageScenes[i]);
+
 				operations[i].allowSceneActivation = false;
 
 				while (true)
 				{
-					loadProgress = 0.9f + addProgress + (operations[i].progress / eachProgress);
+					loadProgress = 0.9f + addProgress + (eachProgress / (operations[i].progress / 0.9f));
 
 					if (operations[i].progress >= 0.9f) break;
 					else yield return null;
 				}
-			}
 
-			mainSceneOperation.allowSceneActivation = true;
-			while (true)
-			{
-				var scene = SceneManager.GetActiveScene();
-				if (scene.IsValid() && scene.isLoaded && scene.name == sceneName)
-				{
-					m_nowScene = scene;
-					break;
-				}
-				else yield return null;
-			}
-
-			optionOperation.allowSceneActivation = true;
-			while (true)
-			{
-				var scene = SceneManager.GetSceneByName(m_selectLoadScene.sceneName);
-				if (scene.IsValid() && scene.isLoaded)
-				{
-					m_optionScene = scene;
-					break;
-				}
-				else yield return null;
-			}
-
-			for (int i = 0, count = operations.Count; i < count; ++i)
+				AudioManager.instance.WaitLoadAudios(m_accessoriesForStageScenes[i]);
 				operations[i].allowSceneActivation = true;
-
-			for (int i = 0, count = m_accessoryScenes.Count; i < count; ++i)
-			{
+				yield return null;
 				while (true)
 				{
-					var scene = SceneManager.GetSceneByName(m_accessoriesForStageScenes[i]);
-					if (scene.IsValid() && scene.isLoaded)
+					var accessoryScene = SceneManager.GetSceneByName(m_accessoriesForStageScenes[i]);
+					if (accessoryScene.IsValid() && accessoryScene.isLoaded && accessoryScene.name == m_accessoriesForStageScenes[i])
 					{
-						m_accessoryScenes[scene.name] = scene;
+						m_accessoryScenes[accessoryScene.name] = accessoryScene;
 						break;
 					}
 					else yield return null;
 				}
 			}
-
-			yield break;
 		}
 	}
 	IEnumerator LoadOptionScene(AsyncOperation operation, float thisProgress)
 	{
 		float progress = loadProgress;
-		operation = SceneManager.LoadSceneAsync(
-			m_selectOptionScene.sceneName, LoadSceneMode.Additive);
-		operation.allowSceneActivation = false;
+		m_optionOperation = SceneManager.LoadSceneAsync(m_optionSceneName, LoadSceneMode.Additive);
+		m_optionOperation.allowSceneActivation = false;
 
 		while (true)
 		{
-			loadProgress = progress + ((operation.progress / 0.9f) / thisProgress);
+			loadProgress = progress + (thisProgress / (m_optionOperation.progress / 0.9f));
 
-			if (operation.progress < 0.9f) yield return null;
+			if (m_optionOperation.progress < 0.9f) yield return null;
 			else yield break;
 		}
 	}
 	IEnumerator UnloadScenes()
 	{
-		foreach (var key in m_accessoryScenes.Keys)
+		foreach (var key in m_accessoriesForStageScenes.sceneNames)
 		{
 			if (m_accessoryScenes[key].IsValid())
 			{
 				yield return UnloadScene(m_accessoryScenes[key].name);
+				AudioManager.instance.UnloadAudios(key);
 				m_accessoryScenes[key] = default;
 			}
 		}
 
-		yield return UnloadScene(m_optionScene.name);
-		m_optionScene = default;
+		if (m_optionScene.IsValid())
+		{
+			yield return UnloadScene(m_optionSceneName);
+			m_optionScene = default;
+		}
+
+		if (nowLoadSceneName != "")
+			AudioManager.instance.UnloadAudios(nowLoadSceneName);
 	}
 	IEnumerator UnloadScene(string sceneName)
 	{

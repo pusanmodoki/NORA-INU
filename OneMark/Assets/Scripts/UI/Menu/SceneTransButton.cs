@@ -6,18 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class SceneTransButton : MonoBehaviour
 {
-    [SerializeField]
-    string sceneName = "";
-
-    public string m_sceneName{ get { return sceneName; } set { sceneName = value; } }
-
-    [SerializeField]
-    Color fadeColor = Color.white;
-
-    [SerializeField]
-    float fadeSpeed = 1.0f;
     public void OnButtonSceneTrans()
     {
-        SceneFadeTrans.SimpleFadeTrans(sceneName, fadeColor, fadeSpeed);
-    }
+#if UNITY_EDITOR
+		Debug.Log("旧バージョンです");
+#endif
+		//OneMarkSceneManager.instance.MoveScene(m_transitionSceneName);
+		//SceneFadeTrans.SimpleFadeTrans(sceneName, fadeColor, fadeSpeed);
+	}
 }

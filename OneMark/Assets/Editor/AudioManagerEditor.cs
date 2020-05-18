@@ -45,8 +45,8 @@ namespace Editor
 			serializedObject.Update();
 
 			if (m_data == null) m_data = LoadScriptableData();
-			if (m_data.sceneNames == null || m_data.sceneNames.Length == 0
-				|| m_bgmForEachScenes.arraySize == 0)
+			if ((m_data.sceneNames == null || m_data.sceneNames.Length == 0
+				|| m_bgmForEachScenes.arraySize == 0) && !EditorApplication.isPlaying)
 				CheckSceneNames(false);
 
 			ShowPlaySourceAndClips(ref sizeX, ref sizeElementCount);
@@ -99,6 +99,7 @@ namespace Editor
 					EditorGUILayout.BeginHorizontal();
 					{
 						EditorGUI.BeginChangeCheck();
+						while (m_data.isFoldoutAllBgmInfos.Count <= i) m_data.isFoldoutAllBgmInfos.Add(false);
 						m_data.isFoldoutAllBgmInfos[i] = EditorGUILayout.Foldout(m_data.isFoldoutAllBgmInfos[i],
 							"ID: " + (i).ToString().PadLeft(3, ' ') + ",  Unique key: " + uniqueKey.stringValue);
 						if (EditorGUI.EndChangeCheck()) EditorUtility.SetDirty(m_data);
@@ -240,6 +241,7 @@ namespace Editor
 					EditorGUILayout.BeginHorizontal();
 					{
 						EditorGUI.BeginChangeCheck();
+						while (m_data.isFoldoutBgmForEachSceneInfos.Count <= i) m_data.isFoldoutBgmForEachSceneInfos.Add(false);
 						m_data.isFoldoutBgmForEachSceneInfos[i] = EditorGUILayout.Foldout(
 							m_data.isFoldoutBgmForEachSceneInfos[i], element.FindPropertyRelative(m_cSceneName).stringValue);
 						if (EditorGUI.EndChangeCheck()) EditorUtility.SetDirty(m_data);

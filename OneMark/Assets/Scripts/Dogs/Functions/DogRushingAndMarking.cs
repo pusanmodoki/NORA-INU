@@ -234,6 +234,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 					{
 						functionState = State.End;
 						m_markingEffect.SetActive(false);
+						m_sePlayer.Stop(m_markingSEIndex);
 						//Animation Set
 						m_animationController.editAnimation.SetTriggerSleepStart();
 						//終了

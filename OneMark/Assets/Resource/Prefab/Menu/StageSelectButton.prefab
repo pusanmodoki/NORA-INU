@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7480241901153954634}
   - component: {fileID: 7480241901153954635}
   - component: {fileID: 7480241901153954632}
-  - component: {fileID: 7480241901153954629}
+  - component: {fileID: 3374850934101512132}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -119,8 +119,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7480241901153954629}
-        m_MethodName: OnButtonSceneTrans
+      - m_Target: {fileID: 3374850934101512132}
+        m_MethodName: OnButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -130,7 +130,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &7480241901153954629
+--- !u!114 &3374850934101512132
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -139,10 +139,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7480241901153954638}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c2f3cb513bd97e46b06444ecc86e5b0, type: 3}
+  m_Script: {fileID: 11500000, guid: c4c62e5a3d81e5d4390a0a151e857ab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: StageSelect
 --- !u!1 &7480241902045012800
 GameObject:
   m_ObjectHideFlags: 0

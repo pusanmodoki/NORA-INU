@@ -7,6 +7,10 @@ public class ContinueStage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<SceneTransButton>().m_sceneName = SceneTransManager.nowSceneName;
-    }
+
+#if UNITY_EDITOR
+		Debug.Log("KARIZISSO");
+#endif
+		//GetComponent<SceneTransButton>().m_sceneName = SceneTransManager.nowSceneName;
+	}
 }

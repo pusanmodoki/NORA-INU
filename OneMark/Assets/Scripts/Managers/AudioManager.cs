@@ -59,7 +59,7 @@ public class AudioManager : MonoBehaviour
 
 	public ReadOnlyDictionary<string, AudioInfo> allBgms { get; private set; } = null;
 	public ReadOnlyDictionary<string, LoadBgmInfo> bgmForEachScenes { get; private set; } = null;
-	public LoadBgmInfo bgmForNowScene { get { return m_bgmForEachScenesDictionary[SceneManager.GetActiveScene().name]; } }
+	public LoadBgmInfo bgmForNowScene { get { return m_bgmForEachScenesDictionary[OneMarkSceneManager.instance.nowLoadSceneName]; } }
 
 	[SerializeField]
 	AudioSource m_bgmSource = null;
@@ -98,6 +98,10 @@ public class AudioManager : MonoBehaviour
 		m_bgmSource.loop = true;
 		m_bgmSource.Play();
 	}
+	public void StopBgm(string uniqueKey)
+	{
+		m_bgmSource.Stop();
+	}
 
 	void Awake()
 	{
@@ -112,10 +116,6 @@ public class AudioManager : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
-
-		LoadAudios(SceneManager.GetActiveScene().name);
-		WaitLoadAudios(SceneManager.GetActiveScene().name);
-		PlayBgm(bgmForNowScene.loadBgmKeys[0]);
 	}
 
 	void InitDictionary()
