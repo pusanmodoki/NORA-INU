@@ -3011,8 +3011,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageWidth: 48
   stageDepth: 48
-  fenceEnd: {fileID: 6814185466558705376, guid: 3cb211b1c8377c746b2b344403297904,
-    type: 3}
   fence: {fileID: 7497448344173584469, guid: 363fadb2635ff65448a25a0715654c1c, type: 3}
 --- !u!1001 &1025363763
 PrefabInstance:

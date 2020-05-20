@@ -67,7 +67,7 @@ public class OneMarkSceneManager : MonoBehaviour
 
 			if (++result.y > cStageSceneIndexes[cStageSceneIndexes.Count - 1].y)
 			{
-				result.y = 0;
+				result.y = 1;
 
 				if (++result.x > cStageSceneIndexes[cStageSceneIndexes.Count - 1].x)
 					result.x = 0;

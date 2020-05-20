@@ -6,6 +6,13 @@ using UnityEngine;
 [DefaultExecutionOrder(-99)]
 public class MainGameManager : MonoBehaviour
 {
+	enum ResultState
+	{
+		Null,
+		GameClear,
+		GameEnd
+	}
+
 	/// <summary>Static instance</summary>
 	public static MainGameManager instance { get; private set; } = null;
 
@@ -20,13 +27,17 @@ public class MainGameManager : MonoBehaviour
     [SerializeField]
     private Vector2 m_stageSize = new Vector3(30.0f, 30.0f);
 	[SerializeField]
-	float m_waitResultSeconds = 1.0f;
+	float m_waitResultClearSeconds = 2.0f;
+	[SerializeField]
+	float m_waitResultOverSeconds = 1.0f;
 
-    public Vector2 stageSize { get { return m_stageSize; } private set { m_stageSize = value; } }
+	public Vector2 stageSize { get { return m_stageSize; } private set { m_stageSize = value; } }
 
     private FollowObject m_mainCamera = null;
 
+	ResultState m_resultState = ResultState.Null;
 	Timer m_resultTimer = new Timer();
+	bool isGameOver = false;
 
     /// <summary>[Awake]</summary>
     void Awake()
@@ -34,7 +45,6 @@ public class MainGameManager : MonoBehaviour
 		//インスタンス登録
 		instance = this;
 
-        m_mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<FollowObject>();
 		//m_mainCamera.transform.position = Vector3.zero;
 		//m_mainCamera.StartFlg();
 
@@ -46,6 +56,8 @@ public class MainGameManager : MonoBehaviour
 	void Start()
 	{
 		m_allCheckPoints = CheckPointManager.instance.allPoints;
+        m_mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<FollowObject>();
+		Debug.Log(m_mainCamera != null);
 	}
 
 	/// <summary>[LateUpdate]</summary>
@@ -53,24 +65,32 @@ public class MainGameManager : MonoBehaviour
 	{
 		if (m_isEnd) return;
 
-		int checkCounter = 0;
-
-		foreach (var e in m_allCheckPoints)
-			if (e.Value.isLinked) ++checkCounter;
-
-		if (m_allCheckPoints.Count == checkCounter)
+		if (m_resultState == ResultState.Null)
 		{
-			if (m_resultTimer.isStop)
+			int checkCounter = 0;
+
+			foreach (var e in m_allCheckPoints)
+				if (e.Value.isLinked) ++checkCounter;
+
+			if (m_allCheckPoints.Count == checkCounter)
+			{
+				m_resultState = ResultState.GameClear;
 				m_resultTimer.Start();
-			else if (m_resultTimer.elapasedTime > m_waitResultSeconds)
+			}
+			if (PlayerAndTerritoryManager.instance.mainPlayer.maualCollisionAdministrator.isTerritoryExit)
+			{
+				m_resultState = ResultState.GameEnd;
+				m_resultTimer.Start();
+			}
+		}
+		else if (m_resultState == ResultState.GameClear)
+		{
+			if (m_resultTimer.elapasedTime > m_waitResultClearSeconds)
 				GameClear();
 		}
-
-		if (PlayerAndTerritoryManager.instance.mainPlayer.maualCollisionAdministrator.isTerritoryExit)
+		else if (m_resultState == ResultState.GameEnd)
 		{
-			if (m_resultTimer.isStop)
-				m_resultTimer.Start();
-			else if (m_resultTimer.elapasedTime > m_waitResultSeconds)
+			if (m_resultTimer.elapasedTime > m_waitResultOverSeconds)
 				GameOver();
 		}
 	}

@@ -4967,8 +4967,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageWidth: 48
   stageDepth: 48
-  fenceEnd: {fileID: 6814185466558705376, guid: 3cb211b1c8377c746b2b344403297904,
-    type: 3}
   fence: {fileID: 7497448344173584469, guid: 363fadb2635ff65448a25a0715654c1c, type: 3}
 --- !u!1001 &1885055478
 PrefabInstance:
@@ -5639,7 +5637,8 @@ PrefabInstance:
       propertyPath: g_nextSceneName
       value: 1-4
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6836522414734074658, guid: e5a4bb9f89d1eb145a3fb921b570b6f2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e5a4bb9f89d1eb145a3fb921b570b6f2, type: 3}
 --- !u!1001 &7408335374917133766
 PrefabInstance:

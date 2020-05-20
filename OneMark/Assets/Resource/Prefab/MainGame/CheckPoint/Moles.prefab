@@ -50,19 +50,6 @@ MonoBehaviour:
   m_drawingLinkPlayerID: -1
   m_animation: {fileID: 3878455104144492049}
   m_boneAnimation: {fileID: 2405624162408387751}
---- !u!114 &3448503436377019107
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5319593639048327625}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56018ee319f6e5247a5bb1380c561d0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 2405624162408387751}
 --- !u!95 &3878455104144492049
 Animator:
   serializedVersion: 3
@@ -232,12 +219,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4332391edd29e6e468002392502d210b, type: 3}
---- !u!1 &5319593639048327625 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 875080389865107935, guid: 4332391edd29e6e468002392502d210b,
-    type: 3}
-  m_PrefabInstance: {fileID: 5041241849448546326}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7514068473365940759 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3292487258053446145, guid: 4332391edd29e6e468002392502d210b,

@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 700726607750707241}
   - component: {fileID: 700726607750707246}
   - component: {fileID: 700726607750707245}
-  - component: {fileID: 6836522414734074658}
   - component: {fileID: 8109872767512352151}
   m_Layer: 0
   m_Name: Manager
@@ -50,10 +49,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64de5e6580ce75f42bcb0ef86f798ed1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_dogColors:
-  - {r: 0.6313726, g: 0.7529412, b: 0.49019608, a: 1}
-  - {r: 0.15294118, g: 0.49411765, b: 0.6117647, a: 1}
-  - {r: 0.69411767, g: 0.2901961, b: 0.27058825, a: 1}
 --- !u!114 &700726607750707240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,23 +107,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610fb6cd333048e40aa530890e9645da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_source: {fileID: 0}
   m_stageSize: {x: 30, y: 30}
-  m_waitResultSeconds: 2
---- !u!114 &6836522414734074658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 700726607750707236}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ea3bcb3b6d6b7b40a7ade3d03245faa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  g_nowSceneName: 
-  g_nextSceneName: 
+  m_waitResultClearSeconds: 2
+  m_waitResultOverSeconds: 1
 --- !u!114 &8109872767512352151
 MonoBehaviour:
   m_ObjectHideFlags: 0
