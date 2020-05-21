@@ -378,7 +378,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		}
 
 		//forwardとの角度差でソートを行う
-		float minDot = 10000.0f;
+		float minDot = 0.0f;
 		int minIndex = -1;
 		for (int i = 0, count = markPoints.Count; i < count; ++i)
 		{
@@ -390,7 +390,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		}
 
 		//もっとも角度差が小さいものを選択する
-		hitVisibilityMarkPoint = markPoints[markPoints.Count - 1].markPoint;
+		hitVisibilityMarkPoint = markPoints[minIndex].markPoint;
         m_nowTargetObject = hitVisibilityMarkPoint.gameObject;
         m_targetMarker.SetTarget(m_nowTargetObject);
 		EditVisibilityHitFlag(true);
