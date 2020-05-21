@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8730597360503155380}
   - component: {fileID: 3155532279527830864}
+  - component: {fileID: 8002983692619161762}
   m_Layer: 0
   m_Name: Moles
   m_TagString: Untagged
@@ -50,6 +51,19 @@ MonoBehaviour:
   m_drawingLinkPlayerID: -1
   m_animation: {fileID: 3878455104144492049}
   m_boneAnimation: {fileID: 2405624162408387751}
+--- !u!114 &8002983692619161762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4712897242695533026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04521ddc8484f8a479bbec0fe1daf8bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_effects: []
 --- !u!95 &3878455104144492049
 Animator:
   serializedVersion: 3
@@ -69,6 +83,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4027031284205351917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5500741764613675466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b648cf1c9e8011949b30895eb97f2c56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_animator: {fileID: 2405624162408387751}
 --- !u!1001 &4573232161791623363
 PrefabInstance:
   m_ObjectHideFlags: 0
