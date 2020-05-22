@@ -1430,32 +1430,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1048501261}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &430511117 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7704356482033076808, guid: b5fe37bc20384a9459589a926e5dd358,
-    type: 3}
-  m_PrefabInstance: {fileID: 1072793575}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &430511123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 430511117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AgentTypeID: 0
-  m_StartPoint: {x: -7, y: 3, z: 0}
-  m_EndPoint: {x: -9, y: -2, z: 0}
-  m_Width: 8
-  m_CostModifier: -1
-  m_Bidirectional: 1
-  m_AutoUpdatePosition: 0
-  m_Area: 2
 --- !u!1001 &459367764
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2119,24 +2093,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 782971781}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &737517446 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7704356482033076808, guid: b5fe37bc20384a9459589a926e5dd358,
-    type: 3}
-  m_PrefabInstance: {fileID: 873639161}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &737517452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 737517446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 071d901408a330f488b8674e77ff938d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &766785722
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2414,6 +2370,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cube (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7704356482033076808, guid: b5fe37bc20384a9459589a926e5dd358,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7704356482033076812, guid: b5fe37bc20384a9459589a926e5dd358,
         type: 3}
@@ -3122,6 +3083,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cube (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7704356482033076808, guid: b5fe37bc20384a9459589a926e5dd358,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7704356482033076812, guid: b5fe37bc20384a9459589a926e5dd358,
         type: 3}
