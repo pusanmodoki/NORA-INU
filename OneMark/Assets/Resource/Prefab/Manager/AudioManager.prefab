@@ -94,6 +94,30 @@ MonoBehaviour:
     - Title
   - m_sceneName: Load
     m_loadBgmKeys: []
+  - m_sceneName: 2-1
+    m_loadBgmKeys: []
+  - m_sceneName: 2-2
+    m_loadBgmKeys: []
+  - m_sceneName: 2-3
+    m_loadBgmKeys: []
+  - m_sceneName: 2-4
+    m_loadBgmKeys: []
+  - m_sceneName: 3-1
+    m_loadBgmKeys: []
+  - m_sceneName: 3-2
+    m_loadBgmKeys: []
+  - m_sceneName: 3-3
+    m_loadBgmKeys: []
+  - m_sceneName: 3-4
+    m_loadBgmKeys: []
+  - m_sceneName: 4-1
+    m_loadBgmKeys: []
+  - m_sceneName: 4-2
+    m_loadBgmKeys: []
+  - m_sceneName: 4-3
+    m_loadBgmKeys: []
+  - m_sceneName: 4-4
+    m_loadBgmKeys: []
 --- !u!82 &1051493700475355825
 AudioSource:
   m_ObjectHideFlags: 0
