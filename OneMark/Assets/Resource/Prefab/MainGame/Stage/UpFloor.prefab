@@ -14,8 +14,6 @@ GameObject:
   - component: {fileID: 7704356482033076815}
   - component: {fileID: 7704356482033076803}
   - component: {fileID: 7704356482033076802}
-  - component: {fileID: 1746442257064567695}
-  - component: {fileID: 587950933752669569}
   - component: {fileID: 3560728802241678902}
   m_Layer: 10
   m_Name: UpFloor
@@ -111,9 +109,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AgentTypeID: 0
-  m_StartPoint: {x: 0, y: 2.5, z: 1}
-  m_EndPoint: {x: 0, y: -2, z: 4}
-  m_Width: 4
+  m_StartPoint: {x: 8, y: 3, z: 14}
+  m_EndPoint: {x: 12, y: -2, z: 14}
+  m_Width: 18
   m_CostModifier: -1
   m_Bidirectional: 1
   m_AutoUpdatePosition: 0
@@ -131,49 +129,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AgentTypeID: 0
-  m_StartPoint: {x: 0, y: 2.5, z: -1}
-  m_EndPoint: {x: 0, y: -2, z: -4}
-  m_Width: 4
-  m_CostModifier: -1
-  m_Bidirectional: 1
-  m_AutoUpdatePosition: 0
-  m_Area: 2
---- !u!114 &1746442257064567695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7704356482033076808}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AgentTypeID: 0
-  m_StartPoint: {x: -1, y: 2.5, z: 0}
-  m_EndPoint: {x: -4, y: -2, z: 0}
-  m_Width: 4
-  m_CostModifier: -1
-  m_Bidirectional: 1
-  m_AutoUpdatePosition: 0
-  m_Area: 2
---- !u!114 &587950933752669569
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7704356482033076808}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AgentTypeID: 0
-  m_StartPoint: {x: 1, y: 2.5, z: 0}
-  m_EndPoint: {x: 4, y: -2, z: 0}
-  m_Width: 4
+  m_StartPoint: {x: 8, y: 2.5, z: -14}
+  m_EndPoint: {x: 12, y: -2, z: -14}
+  m_Width: 18
   m_CostModifier: -1
   m_Bidirectional: 1
   m_AutoUpdatePosition: 0

@@ -61,6 +61,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 
 	BaseMarkPoint m_markPoint = null;
 	LayerMaskEx m_markPointLayerMask = 0;
+	Vector3 m_targetPoint = Vector3.zero;
 
 	Quaternion m_targetRotation = Quaternion.identity;
 
@@ -88,8 +89,13 @@ public class DogRushingAndMarking : BaseDogAIFunction
 		dogAIAgent.speedChanger.SetManualAcceleration(m_rushingAddAcceleration);
 
 		//初期化
+		UnityEngine.AI.NavMeshHit navMeshHit;
+		UnityEngine.AI.NavMesh.SamplePosition(m_markPoint.transform.position,
+			out navMeshHit, 2.0f, UnityEngine.AI.NavMesh.AllAreas);
+		m_targetPoint = navMeshHit.position;
+
 		SetUpdatePosition(true);
-		navMeshAgent.destination = m_markPoint.transform.position;
+		navMeshAgent.destination = m_targetPoint;
 		functionState = State.Rushing;
 		//Animation Set
 		m_animationController.editAnimation.SetTriggerRolling();
@@ -169,7 +175,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 			case State.Rushing:
 				{
 					//設定
-					navMeshAgent.destination = m_markPoint.transform.position;
+					navMeshAgent.destination = m_targetPoint;
 
 					//半径でOverlapを行う
 					var hitCollisions = Physics.OverlapSphere(transform.position, m_rushingArrivalDistance, m_markPointLayerMask);
