@@ -199,7 +199,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 							dogAIAgent.speedChanger.SetManualAcceleration(0.0f);
 
 							//回転を決める
-							Vector3 absolute = m_markPoint.transform.position - transform.position;
+							Vector3 absolute = m_targetPoint - transform.position;
 							absolute.y = 0.0f;
 							m_targetRotation = Quaternion.LookRotation(absolute.normalized) * Quaternion.AngleAxis(-90, Vector3.up);
 							//Stateを進める
