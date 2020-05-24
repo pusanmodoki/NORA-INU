@@ -116,6 +116,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 		if (functionState != State.End)
 		{
 			m_animationController.editAnimation.SetTriggerForceChangeStand();
+			Debug.Log(gameObject.name);
 			PlayerAndTerritoryManager.instance.allPlayers[dogAIAgent.linkPlayer.GetInstanceID()].input.ChangeShotFlags(dogAIAgent, false);
 		}
 
@@ -174,8 +175,6 @@ public class DogRushingAndMarking : BaseDogAIFunction
 			EndAIFunction(updateIdentifier);
 			return;
 		}
-
-        Debug.Log(m_sePlayer.GetSource(0).isPlaying);
 
 		//state switch
 		switch (functionState)
