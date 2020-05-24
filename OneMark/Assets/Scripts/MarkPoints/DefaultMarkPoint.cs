@@ -20,18 +20,34 @@ public class DefaultMarkPoint : BaseMarkPoint
 	/// </summary>
 	public override void UpdatePoint()
 	{
-		if (isLinked)
+        if (isLinked)
 			m_uiSlider.value = effectiveCounter / MarkPointManager.instance.effectiveMaxLimiter;
-	}
 
-	/// <summary>
-	/// [LinkPoint] (Virtual)
-	/// ポイントがリンクされた際にコールバックされる関数
-	/// </summary>
-	public override void LinkPoint()
+        if (isForceAscendingEffective && effectiveCounter < MarkPointManager.instance.effectiveMaxLimiter)
+        {
+            ParticleSystem.EmissionModule emission = effects.GetParticleSystem("flower").emission;
+
+            emission.rateOverTime = 11.0f;
+        }
+        else
+        {
+            ParticleSystem.EmissionModule emission = effects.GetParticleSystem("flower").emission;
+
+            emission.rateOverTime = 0.0f;
+        }
+
+        ParticleSystem.SizeOverLifetimeModule size = effects.GetParticleSystem("ring").sizeOverLifetime;
+        size.size.curve.AddKey(1.0f, effectiveCounter / MarkPointManager.instance.effectiveMaxLimiter);
+    }
+
+    /// <summary>
+    /// [LinkPoint] (Virtual)
+    /// ポイントがリンクされた際にコールバックされる関数
+    /// </summary>
+    public override void LinkPoint()
 	{
 		m_uiObject.SetActive(true);
-        effects.OnEffect(0);
+        effects.OnEffectByInteger(0);
 
 	}
 	/// <summary>

@@ -46,7 +46,7 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-							float a = sin(_Time);
+							float a = sin(_Time * 50) * 0.5 + 0.5;
 
 							return fixed4(1, a, a, 1);
             }
