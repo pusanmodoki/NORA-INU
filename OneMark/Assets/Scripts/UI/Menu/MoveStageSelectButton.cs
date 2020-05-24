@@ -6,6 +6,6 @@ public class MoveStageSelectButton : MonoBehaviour
 {
 	public void OnButton()
 	{
-		OneMarkSceneManager.instance.MoveScene(OneMarkSceneManager.SceneState.StageSelect);
+        OneMarkSceneManager.instance.MoveScene(OneMarkSceneManager.SceneState.StageSelect);
 	}
 }
