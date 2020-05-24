@@ -27,6 +27,7 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	/// <summary>強制カウンター増加状態？</summary>
 	public bool isForceAscendingEffective { get; private set; } = false;
 
+
 	//Debug only
 #if UNITY_EDITOR
 	[Header("Debug Only"), SerializeField]
@@ -44,12 +45,15 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	[SerializeField, Tooltip("リンクしているServantのID")]
 	int m_drawingLinkServantID = -1;
 
+    [SerializeField]
+    Animator m_selectAnimation = null;
 
-	/// <summary>
-	/// [LinkPoint] (Virtual)
-	/// ポイントがリンクされた際にコールバックされる関数
-	/// </summary>
-	public virtual void LinkPoint() { }
+
+    /// <summary>
+    /// [LinkPoint] (Virtual)
+    /// ポイントがリンクされた際にコールバックされる関数
+    /// </summary>
+    public virtual void LinkPoint() { }
 	/// <summary>
 	/// [UnlinkPoint] (Virtual)
 	/// ポイントがリンク解除された際にコールバックされる関数
@@ -164,6 +168,17 @@ public abstract class BaseMarkPoint : MonoBehaviour
 		if (isLinked && effectiveCounter <= 0.0f)
 			UnlinkPlayer();
 	}
+
+    public GameObject SelectThisPoint()
+    {
+        m_selectAnimation.SetInteger("State", 1);
+        return gameObject;
+    }
+
+    public void RemovedThisPoint()
+    {
+        m_selectAnimation.SetInteger("State", 0);
+    }
 
 	/// <summary>[Awake]</summary>
 	void Awake()

@@ -8,6 +8,7 @@ public class EffectControler : MonoBehaviour
     private List<GameObject> m_effects = new List<GameObject>();
 
     private Dictionary<string, GameObject> m_effectDictionary = new Dictionary<string, GameObject>();
+    private Dictionary<string, ParticleSystem> m_particleSystems = new Dictionary<string, ParticleSystem>();
 
     // Start is called before the first frame update
     void Start()
@@ -15,33 +16,48 @@ public class EffectControler : MonoBehaviour
         foreach(var obj in m_effects)
         {
             m_effectDictionary.Add(obj.name, obj);
+            m_particleSystems.Add(obj.name, obj.GetComponent<ParticleSystem>());
         }
     }
-    public void OnEffect(string _effectName)
+    public void OnEffectByString(string _effectName)
     {
-        if (enabled)
+        if (m_effectDictionary[_effectName].activeSelf)
         {
             m_effectDictionary[_effectName].SetActive(false);
         }
         m_effectDictionary[_effectName].SetActive(true);
     }
 
-    public void OnEffect(int _effectNum)
+    public void OnEffectByInteger(int _effectNum)
     {
-        if (enabled)
+        if (m_effects[_effectNum].activeSelf)
         {
             m_effects[_effectNum].SetActive(false);
         }
         m_effects[_effectNum].SetActive(true);
     }
 
-    public void OffEffect(string _effectName)
+    public void OffEffectByString(string _effectName)
     {
         m_effectDictionary[_effectName].SetActive(false);
     }
 
-    public void OffEffect(int _effectNum)
+    public void OffEffectByInteger(int _effectNum)
     {
         m_effects[_effectNum].SetActive(false);
+    }
+
+    public bool IsPlayByString(string _effectName)
+    {
+        return m_effectDictionary[_effectName].activeSelf;
+    }
+    public bool IsPlayByInteger(int _effectNum)
+    {
+        return m_effects[_effectNum].activeSelf;
+    }
+
+    public ParticleSystem GetParticleSystem(string _effectName)
+    {
+        return m_particleSystems[_effectName];
     }
 }
