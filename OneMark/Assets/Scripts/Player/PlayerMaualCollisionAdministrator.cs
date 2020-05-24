@@ -47,6 +47,8 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	public float personalDistance { get { return m_personalRadius; } }
 	/// <summary>視界判定に使用する距離</summary>
 	public float visibilityDistance { get { return m_visibilityDistance; } }
+	/// <summary>視界判定時優先的にヒットさせる距離</summary>
+	public float visibilityPreferentialDistance { get { return m_visibilityPreferentialDistance; } }
 
 	/// <summary>Forward方向のテリトリー法線(β)</summary>
 	public Vector3 territoryForwardSideNormal { get { return m_territoryForwardSideNormal; } }
@@ -87,6 +89,8 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	public bool isVisibilityEnter { get { return m_isPublicFlags[13]; } private set { m_isPublicFlags[14] = value; } }
 	/// <summary>Visibility hit exit</summary>
 	public bool isVisibilityExit { get { return m_isPublicFlags[14]; } private set { m_isPublicFlags[14] = value; } }
+	/// <summary>Visibility hit using preferential point</summary>
+	public bool isVisibilityUsingPreferential { get { return m_isPublicFlags[15]; } private set { m_isPublicFlags[15] = value; } }
 
 	//debug only
 #if UNITY_EDITOR
@@ -125,6 +129,9 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	/// <summary>視界判定に使用する距離</summary>
 	[SerializeField, Tooltip("視界判定に使用する距離")]
 	float m_visibilityDistance = 10;
+	/// <summary>視界判定時優先的にヒットさせる距離</summary>
+	[SerializeField, Tooltip("視界判定時優先的にヒットさせる距離")]
+	float m_visibilityPreferentialDistance = 2.0f;
 
 	/// <summary>MarkPointのレイヤーマスク</summary>
 	[Header("Markpoint Monitoring"), SerializeField, Tooltip("MarkPointのレイヤーマスク")]
@@ -167,7 +174,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	/// <summary>Fixed update completed -> true</summary>
 	bool m_isFixedUpdateCompleted = false;
 	/// <summary>public bool flags array</summary>
-	bool[] m_isPublicFlags = new bool[15];
+	bool[] m_isPublicFlags = new bool[16];
 
 	/// <summary>
 	/// [SetPlayerInfo]
@@ -328,29 +335,68 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		VisibilityContainer container = new VisibilityContainer();
 		//候補を保存するリスト
 		List<VisibilityContainer> markPoints = new List<VisibilityContainer>();
+		List<VisibilityContainer> preferentialMarkPoints = new List<VisibilityContainer>();
 		//Overlap collisions
 		var collisions = Physics.OverlapSphere(position, m_visibilityDistance, m_visibilityLayerMask);
 
+		Vector3 positionXZ = position; positionXZ.y = 0.0f;
+		isVisibilityUsingPreferential = false;
 
-        //Collision判定ループ
-        for (int i = 0, length = collisions.Length; i < length; ++i)
+		//Collision判定ループ
+		for (int i = 0, length = collisions.Length; i < length; ++i)
 		{
 			//GetComponent
 			var point = collisions[i].GetComponent<BaseMarkPoint>();
 
 			//Nullかリンクありでコンティニュー
 			if (point == null || (point.isLockFirstPoint)) continue;
-			
+
+			Vector3 pointXZ = point.transform.position; pointXZ.y = 0.0f;
+			Vector3 absolute = pointXZ - positionXZ;
+
 			//Point格納
 			container.SetPoint(point);
-			//リストに存在しなければforwardとのDotを計算してリスト追加
-			if (!markPoints.Contains(container))
+			float a = absolute.magnitude;
+			//リストに存在しなければforwardとのDotを計算してリスト追加, 距離が近ければ優先リストに追加
+			if (absolute.sqrMagnitude < m_visibilityPreferentialDistance * m_visibilityPreferentialDistance)
 			{
-				container.forwardToPositionDot = Vector3.Dot(forward, (point.transform.position - position).normalized);
+				if (!preferentialMarkPoints.Contains(container))
+				{
+					container.forwardToPositionDot = Vector3.Dot(forward, absolute.normalized);
+					preferentialMarkPoints.Add(container);
+				}
+			}
+			else if (!markPoints.Contains(container))
+			{
+				container.forwardToPositionDot = Vector3.Dot(forward, absolute.normalized);
 				markPoints.Add(container);
 			}
 		}
 
+		//優先リストを処理するかで分岐
+		if (preferentialMarkPoints.Count > 0)
+		{
+			var old = hitVisibilityMarkPoint;
+			JudgeHitVisibility(preferentialMarkPoints);
+
+			if (!isVisibilityStay)
+			{
+				hitVisibilityMarkPoint = old;
+				JudgeHitVisibility(markPoints);
+			}
+			else
+				isVisibilityUsingPreferential = true;
+		}
+		else
+			JudgeHitVisibility(markPoints);
+	}
+
+	/// <summary>
+	/// [JudgeHitVisibility]
+	/// ヒットリストを使用して当たり判定計算を行う
+	/// </summary>
+	void JudgeHitVisibility(List<VisibilityContainer> markPoints)
+	{
 		//視界判定ループ
 		for (int i = 0; i < markPoints.Count;)
 		{
@@ -365,23 +411,26 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		//この時点でCount0なら終了
 		if (markPoints.Count == 0)
 		{
+			if (hitVisibilityMarkPoint != null) hitVisibilityMarkPoint.RemovedThisPoint();
+
+			hitVisibilityMarkPoint = null;
 			EditVisibilityHitFlag(false);
-            m_targetMarker.SetTarget(null);
+			m_targetMarker.SetTarget(null);
 			return;
 		}
 		//この時点でCount1ならヒット確定として終了
 		else if (markPoints.Count == 1)
 		{
-            if (hitVisibilityMarkPoint != markPoints[0].markPoint)
-            {
-                if (hitVisibilityMarkPoint)
-                    hitVisibilityMarkPoint.RemovedThisPoint();
-                hitVisibilityMarkPoint = markPoints[0].markPoint;
-                m_nowTargetObject = hitVisibilityMarkPoint.SelectThisPoint();
-                m_targetMarker.SetTarget(m_nowTargetObject);
-                EditVisibilityHitFlag(true);
-            }
-            return;
+			if (hitVisibilityMarkPoint != markPoints[0].markPoint)
+			{
+				if (hitVisibilityMarkPoint != null) hitVisibilityMarkPoint.RemovedThisPoint();
+
+				hitVisibilityMarkPoint = markPoints[0].markPoint;
+				m_nowTargetObject = hitVisibilityMarkPoint.SelectThisPoint();
+				m_targetMarker.SetTarget(m_nowTargetObject);
+				EditVisibilityHitFlag(true);
+			}
+			return;
 		}
 
 		//forwardとの角度差でソートを行う
@@ -396,17 +445,17 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			}
 		}
 
-        //もっとも角度差が小さいものを選択する
-        if(hitVisibilityMarkPoint != markPoints[minIndex].markPoint)
-        {
-            if (hitVisibilityMarkPoint)
-                hitVisibilityMarkPoint.RemovedThisPoint();
-            hitVisibilityMarkPoint = markPoints[minIndex].markPoint;
-            m_nowTargetObject = hitVisibilityMarkPoint.SelectThisPoint();
-            m_targetMarker.SetTarget(m_nowTargetObject);
-            EditVisibilityHitFlag(true);
-        }
-    }
+		//もっとも角度差が小さいものを選択する
+		if (hitVisibilityMarkPoint != markPoints[minIndex].markPoint)
+		{
+			if (hitVisibilityMarkPoint != null) hitVisibilityMarkPoint.RemovedThisPoint();
+
+			hitVisibilityMarkPoint = markPoints[minIndex].markPoint;
+			m_nowTargetObject = hitVisibilityMarkPoint.SelectThisPoint();
+			m_targetMarker.SetTarget(m_nowTargetObject);
+			EditVisibilityHitFlag(true);
+		}
+	}
 
 	/// <summary>
 	/// [EditVisibilityHitFlag]
@@ -483,6 +532,8 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	{
 		if (!m_dIsDrawGizmos) return;
 
+		Vector3 position = transform.position;
+
 		Gizmos.color = Color.green;
 		Gizmos.DrawWireSphere(transform.position + Vector3.up, m_collisionRadius);
 
@@ -493,7 +544,6 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 
 		Gizmos.color = Color.cyan;
 		Gizmos.DrawWireSphere(transform.LocalToWorldPosition(m_instructionsGoingDogCenter), m_instructionsGoingDogRadius);
-
 
 		bool isHit = IsHitInstructionsMarkPoint(hitVisibilityMarkPoint);
 		m_instructionsMarkPointInfos.DOnDrawGizmos(transform, isHit ? Color.red : Color.yellow,
