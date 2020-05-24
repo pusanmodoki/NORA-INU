@@ -261,7 +261,8 @@ MonoBehaviour:
   safetyMeshPoints: []
   safetyUvs: []
   safetyTriangles: 
-  m_material: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  m_material: {fileID: 2100000, guid: 3b9f0156f8b6fc842ad6121bbcc893b6, type: 2}
+  m_safetyMaterial: {fileID: 2100000, guid: 4a6db170c12a80242b5aa9f850b781db, type: 2}
 --- !u!114 &1799358298510147809
 MonoBehaviour:
   m_ObjectHideFlags: 0

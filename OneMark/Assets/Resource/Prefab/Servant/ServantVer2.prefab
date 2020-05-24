@@ -94,7 +94,7 @@ MonoBehaviour:
   m_seSources:
   - source: {fileID: 962901136369165173}
     playInterval: 0.1
-    dAudioClipName: JGA2020_amateur_thema
+    dAudioClipName: JGA2020_amateur_thema4
     playTime: 0
 --- !u!82 &962901136369165173
 AudioSource:
@@ -106,10 +106,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 41cbd32e61138b148b8638f0e5787d7c, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ec21f036741792f40b580c066d3e4eb4, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
-  m_Pitch: 3
+  m_Pitch: 1.05
   Loop: 0
   Mute: 0
   Spatialize: 0

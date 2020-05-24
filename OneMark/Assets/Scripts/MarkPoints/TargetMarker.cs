@@ -10,6 +10,10 @@ public class TargetMarker : MonoBehaviour
     [SerializeField]
     private float rotateSpeed = 1.0f;
 
+    [SerializeField]
+    ParticleSystem m_lineEffect = null;
+
+
     private List<MeshRenderer> m_renderers = new List<MeshRenderer>();
 	Quaternion rotation = Quaternion.identity;
 
@@ -25,50 +29,50 @@ public class TargetMarker : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update()
+	void LateUpdate()
     {
-        TurningEffect();
+        ParticleSystem.EmissionModule emission = m_lineEffect.emission;
+        ParticleSystem.MainModule main = m_lineEffect.main;
+        if (target)
+        {
+            float distance = Vector3.Distance(transform.position, target.transform.position);
+            emission.rateOverTime = distance;
+            main.startSpeed = distance;
+            m_lineEffect.transform.LookAt(target.transform);
+        }
+
+        //TurningEffect();
     }
 
-    private void TurningEffect()
-    {
-		if (target != null)
-			transform.position = target.transform.position;
+    //   private void TurningEffect()
+    //   {
+    //	if (target != null)
+    //		transform.position = target.transform.position;
 
-		rotation = Quaternion.Slerp(rotation, 
-			rotation * Quaternion.AngleAxis(rotateSpeed, Vector3.up), Time.deltaTime);
-		transform.rotation = rotation;
+    //	rotation = Quaternion.Slerp(rotation, 
+    //		rotation * Quaternion.AngleAxis(rotateSpeed, Vector3.up), Time.deltaTime);
+    //	transform.rotation = rotation;
 
-		//transform.Rotate(0.0f, rotateSpeed * Time.deltaTime, 0.0f);
-	}
+    //	//transform.Rotate(0.0f, rotateSpeed * Time.deltaTime, 0.0f);
+    //}
 
     public void SetTarget(GameObject _target)
     {
+        ParticleSystem.EmissionModule emission = m_lineEffect.emission;
+        ParticleSystem.MainModule main = m_lineEffect.main;
         target = _target;
         if(target == null)
         {
-            OffEffect();
-            return;
+            m_lineEffect.gameObject.SetActive(false);
         }
-
-        transform.position = target.transform.position;
-        OnEffect();
-    }
-
-    private void OffEffect()
-    {
-        foreach(var renderer in m_renderers)
+        else
         {
-            renderer.enabled = false;
+            if (!m_lineEffect.gameObject.activeSelf)
+            {
+                m_lineEffect.gameObject.SetActive(true);
+            }
         }
-    }
 
-    private void OnEffect()
-    {
-        foreach (var renderer in m_renderers)
-        {
-            renderer.enabled = true;
-        }
     }
 
 }
