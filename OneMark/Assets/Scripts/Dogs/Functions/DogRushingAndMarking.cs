@@ -25,6 +25,8 @@ public class DogRushingAndMarking : BaseDogAIFunction
 		End,
 	}
 
+	static int m_bgmChangeAgentID = -1;
+
 	/// <summary>State</summary>
 	public State functionState { get; private set; } = State.Null;
 
@@ -121,6 +123,11 @@ public class DogRushingAndMarking : BaseDogAIFunction
 		{
 			m_sePlayer.Stop(m_markingSEIndex);
 			m_markingEffect.SetActive(false);
+			if (m_bgmChangeAgentID == dogAIAgent.aiAgentInstanceID)
+			{
+				m_bgmChangeAgentID = -1;
+				AudioManager.instance.FadeinBgm("Marking");
+			}
 		}
 
 		if (functionState != State.End && functionState != State.Rushing
@@ -222,6 +229,8 @@ public class DogRushingAndMarking : BaseDogAIFunction
 					if (timer.elapasedTime >= m_rotationSeconds)
 					{
 						m_sePlayer.PlaySE(m_markingSEIndex, true);
+						m_bgmChangeAgentID = dogAIAgent.aiAgentInstanceID;
+						AudioManager.instance.FadeoutBgm("Marking");
 						m_markingEffect.SetActive(true);
 						functionState = State.Marking;
 						timer.Start();
@@ -241,6 +250,11 @@ public class DogRushingAndMarking : BaseDogAIFunction
 						functionState = State.End;
 						m_markingEffect.SetActive(false);
 						m_sePlayer.Stop(m_markingSEIndex);
+						if (m_bgmChangeAgentID == dogAIAgent.aiAgentInstanceID)
+						{
+							m_bgmChangeAgentID = -1;
+							AudioManager.instance.FadeinBgm("Marking");
+						}
 						//Animation Set
 						m_animationController.editAnimation.SetTriggerSleepStart();
 						//終了

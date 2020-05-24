@@ -52,6 +52,12 @@ MonoBehaviour:
   - m_uniqueKey: Stage 0
     m_clip: {fileID: 8300000, guid: 42a45b907edca9946a5b0d43e5c34a04, type: 3}
     m_volume: 1
+  - m_uniqueKey: GameClear
+    m_clip: {fileID: 8300000, guid: 4bc2b7d82c622b34d8b2f638354129e7, type: 3}
+    m_volume: 1
+  - m_uniqueKey: GameOver
+    m_clip: {fileID: 8300000, guid: 4b827c23f2073ed4a95fb8244c061798, type: 3}
+    m_volume: 1
   m_bgmForEachScenes:
   - m_sceneName: GameStart
     m_loadBgmKeys: []
@@ -88,10 +94,10 @@ MonoBehaviour:
     m_loadBgmKeys: []
   - m_sceneName: GameClear
     m_loadBgmKeys:
-    - Title
+    - GameClear
   - m_sceneName: GameOver
     m_loadBgmKeys:
-    - Title
+    - GameClear
   - m_sceneName: Load
     m_loadBgmKeys: []
   - m_sceneName: 2-1
@@ -118,6 +124,16 @@ MonoBehaviour:
     m_loadBgmKeys: []
   - m_sceneName: 4-4
     m_loadBgmKeys: []
+  m_allVolumeChangePresets:
+  - m_uniqueKey: SceneChange
+    m_minVolume: 0
+    m_changeSeconds: 1
+  - m_uniqueKey: Marking
+    m_minVolume: 0.2
+    m_changeSeconds: 0.5
+  - m_uniqueKey: MoveResult
+    m_minVolume: 0.2
+    m_changeSeconds: 0.2
 --- !u!82 &1051493700475355825
 AudioSource:
   m_ObjectHideFlags: 0

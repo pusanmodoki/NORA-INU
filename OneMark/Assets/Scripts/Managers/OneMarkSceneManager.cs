@@ -212,7 +212,10 @@ public class OneMarkSceneManager : MonoBehaviour
 				AudioManager.instance.LoadAudios(nowLoadSceneName);
 				AudioManager.instance.WaitLoadAudios(nowLoadSceneName);
 				if (AudioManager.instance.bgmForNowScene.loadBgmKeys.Count > 0)
+				{
 					AudioManager.instance.PlayBgm(AudioManager.instance.bgmForNowScene.loadBgmKeys[0]);
+					AudioManager.instance.FadeinBgm("SceneChange", true);
+				}
 			}
 			else
 			{
@@ -221,7 +224,10 @@ public class OneMarkSceneManager : MonoBehaviour
 				AudioManager.instance.LoadAudios(nowLoadSceneName);
 				AudioManager.instance.WaitLoadAudios(nowLoadSceneName);
 				if (AudioManager.instance.bgmForNowScene.loadBgmKeys.Count > 0)
+				{
 					AudioManager.instance.PlayBgm(AudioManager.instance.bgmForNowScene.loadBgmKeys[0]);
+					AudioManager.instance.FadeinBgm("SceneChange", true);
+				}
 			}
 		}
 		else
@@ -327,7 +333,10 @@ public class OneMarkSceneManager : MonoBehaviour
 		}
 
 		if (AudioManager.instance.bgmForNowScene.loadBgmKeys.Count > 0)
+		{
 			AudioManager.instance.PlayBgm(AudioManager.instance.bgmForNowScene.loadBgmKeys[0]);
+			AudioManager.instance.FadeinBgm("SceneChange", true);
+		}
 		m_fadeScreen.OnFadeScreen(m_fadeColor, m_fadeSpeedPerSeconds, FadeScreen.FadeState.Fadeout, true);
 	}
 
@@ -407,6 +416,9 @@ public class OneMarkSceneManager : MonoBehaviour
 	}
 	IEnumerator UnloadScenes()
 	{
+		bool isResult = AudioManager.instance.FadeoutBgm("SceneChange", AudioManager.FadeoutOption.AutoStop);
+		while (isResult && !AudioManager.instance.isCompleteFadeChange) yield return null;
+
 		foreach (var key in m_accessoriesForStageScenes.sceneNames)
 		{
 			if (m_accessoryScenes[key].IsValid())

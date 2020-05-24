@@ -57,7 +57,6 @@ public class MainGameManager : MonoBehaviour
 	{
 		m_allCheckPoints = CheckPointManager.instance.allPoints;
         m_mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<FollowObject>();
-		Debug.Log(m_mainCamera != null);
 	}
 
 	/// <summary>[LateUpdate]</summary>
@@ -98,19 +97,21 @@ public class MainGameManager : MonoBehaviour
 	void GameClear()
 	{
         PlayerAndTerritoryManager.instance.mainPlayer.input.GameClearAnimation();
-		AudioManager.instance.StopBgm(AudioManager.instance.bgmForNowScene.loadBgmKeys[0]);
+		AudioManager.instance.FadeoutAndChangeBgm("MoveResult", "GameClear");
 		MarkPointManager.instance.SetCountScale(0.0f);
-        ResultCall.GameClear();
-        m_mainCamera.ResultFlg();
+		OneMarkSceneManager.instance.SetActiveAccessoryScene("GameClear", true);
+		// ResultCall.GameClear();
+		m_mainCamera.ResultFlg();
 		m_isEnd = true;
 	}
 
 	void GameOver()
 	{
         PlayerAndTerritoryManager.instance.mainPlayer.input.GameOverAnimation();
-		AudioManager.instance.StopBgm(AudioManager.instance.bgmForNowScene.loadBgmKeys[0]);
+		AudioManager.instance.FadeoutAndChangeBgm("MoveResult", "GameOver");
 		MarkPointManager.instance.SetCountScale(0.0f);
-        ResultCall.GameOver();
+		OneMarkSceneManager.instance.SetActiveAccessoryScene("GameOver", true);
+		//  ResultCall.GameOver();
 		m_isEnd = true;
 	}
 }
