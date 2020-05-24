@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 21004177958354081}
   - component: {fileID: 5580322870505018953}
   - component: {fileID: 3891217480911795302}
+  - component: {fileID: 1799358298510147809}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -260,7 +261,25 @@ MonoBehaviour:
   safetyMeshPoints: []
   safetyUvs: []
   safetyTriangles: 
-  m_material: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  m_material: {fileID: 2100000, guid: 3b9f0156f8b6fc842ad6121bbcc893b6, type: 2}
+  m_safetyMaterial: {fileID: 2100000, guid: 4a6db170c12a80242b5aa9f850b781db, type: 2}
+--- !u!114 &1799358298510147809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530330881339226992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c5a7908cf4033f41b46cdd0490045b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_height: 1
+  m_meshPoints: []
+  m_uvs: []
+  m_triangles: 
+  m_material: {fileID: 2100000, guid: e448811d09faae04ab8daf92326fad6e, type: 2}
 --- !u!1 &1441870852321385993
 GameObject:
   m_ObjectHideFlags: 0

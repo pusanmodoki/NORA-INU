@@ -331,8 +331,9 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		//Overlap collisions
 		var collisions = Physics.OverlapSphere(position, m_visibilityDistance, m_visibilityLayerMask);
 
-		//Collision判定ループ
-		for (int i = 0, length = collisions.Length; i < length; ++i)
+
+        //Collision判定ループ
+        for (int i = 0, length = collisions.Length; i < length; ++i)
 		{
 			//GetComponent
 			var point = collisions[i].GetComponent<BaseMarkPoint>();
@@ -370,11 +371,17 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		}
 		//この時点でCount1ならヒット確定として終了
 		else if (markPoints.Count == 1)
-		{ 
-			hitVisibilityMarkPoint = markPoints[0].markPoint;
-            m_targetMarker.SetTarget(markPoints[0].markPoint.gameObject);
-			EditVisibilityHitFlag(true);
-			return;
+		{
+            if (hitVisibilityMarkPoint != markPoints[0].markPoint)
+            {
+                if (hitVisibilityMarkPoint)
+                    hitVisibilityMarkPoint.RemovedThisPoint();
+                hitVisibilityMarkPoint = markPoints[0].markPoint;
+                m_nowTargetObject = hitVisibilityMarkPoint.SelectThisPoint();
+                m_targetMarker.SetTarget(m_nowTargetObject);
+                EditVisibilityHitFlag(true);
+            }
+            return;
 		}
 
 		//forwardとの角度差でソートを行う
@@ -389,12 +396,17 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			}
 		}
 
-		//もっとも角度差が小さいものを選択する
-		hitVisibilityMarkPoint = markPoints[minIndex].markPoint;
-        m_nowTargetObject = hitVisibilityMarkPoint.gameObject;
-        m_targetMarker.SetTarget(m_nowTargetObject);
-		EditVisibilityHitFlag(true);
-	}
+        //もっとも角度差が小さいものを選択する
+        if(hitVisibilityMarkPoint != markPoints[minIndex].markPoint)
+        {
+            if (hitVisibilityMarkPoint)
+                hitVisibilityMarkPoint.RemovedThisPoint();
+            hitVisibilityMarkPoint = markPoints[minIndex].markPoint;
+            m_nowTargetObject = hitVisibilityMarkPoint.SelectThisPoint();
+            m_targetMarker.SetTarget(m_nowTargetObject);
+            EditVisibilityHitFlag(true);
+        }
+    }
 
 	/// <summary>
 	/// [EditVisibilityHitFlag]

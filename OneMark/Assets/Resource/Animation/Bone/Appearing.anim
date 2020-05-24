@@ -284,8 +284,8 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.5
-    functionName: OnEffect
-    data: Checkpoint_kan_star
+    functionName: OnEffectByString
+    data: GetBorn
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

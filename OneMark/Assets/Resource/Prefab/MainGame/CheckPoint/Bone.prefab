@@ -253,7 +253,7 @@ PrefabInstance:
     - target: {fileID: 1479218288588566839, guid: b152698ecac39664ca9538cd36b323fa,
         type: 3}
       propertyPath: m_Name
-      value: Checkpoint_kan_star
+      value: GetBorn
       objectReference: {fileID: 0}
     - target: {fileID: 1479218288588566839, guid: b152698ecac39664ca9538cd36b323fa,
         type: 3}

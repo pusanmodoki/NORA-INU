@@ -175,6 +175,8 @@ public class DogRushingAndMarking : BaseDogAIFunction
 			return;
 		}
 
+        Debug.Log(m_sePlayer.GetSource(0).isPlaying);
+
 		//state switch
 		switch (functionState)
 		{
