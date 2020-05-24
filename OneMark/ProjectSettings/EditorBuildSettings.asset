@@ -11,9 +11,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Title.unity
     guid: 46710ecf67546994b843ec10f1986c61
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/StageSelect.unity
     guid: bcd319c0aed62784ebea3f5714a19469
+  - enabled: 1
+    path: Assets/UserFolder/Matsumoto/StageSelect.unity
+    guid: 8a0dd362eacc5ef47941caa54c0ecd43
   - enabled: 1
     path: Assets/Scenes/Stage/StageT/T-1.unity
     guid: 1806e736a3e3ed44d8455016f65488d1

@@ -6,12 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class SceneTransButton : MonoBehaviour
 {
+    [SerializeField]
+    Vector2Int stageNum = Vector2Int.zero;
     public void OnButtonSceneTrans()
     {
 #if UNITY_EDITOR
 		Debug.Log("旧バージョンです");
 #endif
-		//OneMarkSceneManager.instance.MoveScene(m_transitionSceneName);
-		//SceneFadeTrans.SimpleFadeTrans(sceneName, fadeColor, fadeSpeed);
-	}
+        OneMarkSceneManager.instance.MoveStageScene(stageNum);
+        //SceneFadeTrans.SimpleFadeTrans(sceneName, fadeColor, fadeSpeed);
+    }
 }

@@ -35,9 +35,6 @@ public class DefaultMarkPoint : BaseMarkPoint
 
             emission.rateOverTime = 0.0f;
         }
-
-        ParticleSystem.SizeOverLifetimeModule size = effects.GetParticleSystem("ring").sizeOverLifetime;
-        size.size.curve.AddKey(1.0f, effectiveCounter / MarkPointManager.instance.effectiveMaxLimiter);
     }
 
     /// <summary>

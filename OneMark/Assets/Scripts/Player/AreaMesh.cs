@@ -67,6 +67,7 @@ public class AreaMesh : MonoBehaviour
 
     public void MeshCreate()
     {
+        if (player.territorialArea.Count < 3) { return; }
         Vector3 vec = player.territorialArea[0];
 
         // 初期化
@@ -111,6 +112,7 @@ public class AreaMesh : MonoBehaviour
 
     public void SafetyMeshCreate()
     {
+        if(player.safetyTerritorialArea.Count < 3) { return; }
         Vector3 vec = player.safetyTerritorialArea[0];
 
         // 初期化
