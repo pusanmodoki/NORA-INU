@@ -63,7 +63,7 @@ public class AreaBorderMesh : MonoBehaviour
             m_meshPoints[i] = point;
         }
 
-        for(int i = 0; i < m_player.territorialArea.Count - 2; ++i)
+        for(int i = 0; i < m_player.territorialArea.Count - 1; ++i)
         {
             m_triangles.Add(i);
             m_triangles.Add(i + 1);
@@ -73,6 +73,15 @@ public class AreaBorderMesh : MonoBehaviour
             m_triangles.Add(i + 1 + m_player.territorialArea.Count);
             m_triangles.Add(i + 1);
         }
+
+        m_triangles.Add(m_player.territorialArea.Count - 1);
+        m_triangles.Add(0);
+        m_triangles.Add(m_meshPoints.Count - 1);
+
+        m_triangles.Add(m_meshPoints.Count - 1);
+        m_triangles.Add(m_player.territorialArea.Count);
+        m_triangles.Add(0);
+
 
         m_mesh.vertices = m_meshPoints.ToArray();
         m_mesh.triangles = m_triangles.ToArray();

@@ -3,7 +3,12 @@ guid: d8675861d0299574797d6e292922cf51
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Dentyuu_refine_initialShadingGroup1
+    second: {fileID: 2100000, guid: 61852d38435f6ba4583b22b17c75cf7e, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
