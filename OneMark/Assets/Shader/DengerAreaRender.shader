@@ -1,8 +1,10 @@
 ﻿Shader "Unlit/DengerAreaRender"
 {
-    Properties
-    {
-        _MainTex ("Texture", 2D) = "white" {}
+	Properties
+	{
+			_Color("Color", Color) = (0.6, 0, 0, 1)
+			_MaxAlpha("MaxAlpha", Float) = 0.5
+			_FlashingSpeed("FlashingSpeed", Float) = 50
     }
     SubShader
     {
@@ -32,7 +34,10 @@
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _MainTex;
+						float _FlashingSpeed;
+						float _MaxAlpha;
+
+            fixed4 _Color;
             float4 _MainTex_ST;
 
             v2f vert (appdata v)
@@ -46,9 +51,9 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-							float a = sin(_Time * 50) * 0.5 + 0.5;
+							float a = (sin(_Time * _FlashingSpeed) * 0.5 + 0.5) * _MaxAlpha;
 
-							return fixed4(1, a, a, 1);
+							return fixed4(_Color.r, _Color.g, _Color.b, a);
             }
             ENDCG
         }

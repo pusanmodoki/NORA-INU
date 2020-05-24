@@ -45,7 +45,6 @@ public class DefaultMarkPoint : BaseMarkPoint
 	{
 		m_uiObject.SetActive(true);
         effects.OnEffectByInteger(0);
-
 	}
 	/// <summary>
 	/// [UnlinkPoint] (Virtual)
