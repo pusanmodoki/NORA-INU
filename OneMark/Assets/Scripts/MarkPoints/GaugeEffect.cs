@@ -13,6 +13,23 @@ public class GaugeEffect : MonoBehaviour
     [SerializeField]
     ParticleSystem m_effect = null;
 
+    [SerializeField, Range(0.0f, 1.0f)]
+    float m_safetyLine = 0.8f;
+
+    [SerializeField, Range(0.0f, 1.0f)]
+    float m_dangerLine = 0.3f;
+
+    [SerializeField]
+    float m_rate = 20.0f;
+
+    [SerializeField]
+    Color m_safetyColor = Color.white;
+    [SerializeField]
+    Color m_color = Color.white;
+    [SerializeField]
+    Color m_dangerColor = Color.white;
+
+
     // Update is called once per frame
     void Update()
     {
@@ -30,7 +47,22 @@ public class GaugeEffect : MonoBehaviour
         }
         else
         {
-            emission.rateOverTime = 100.0f;
+            emission.rateOverTime = m_rate;
+        }
+
+        ParticleSystem.MainModule main = m_effect.main;
+
+        if(t > m_safetyLine)
+        {
+            main.startColor = m_safetyColor;
+        }
+        else if(t < m_dangerLine)
+        {
+            main.startColor = m_dangerColor;
+        }
+        else
+        {
+            main.startColor = m_color;
         }
     }
 }

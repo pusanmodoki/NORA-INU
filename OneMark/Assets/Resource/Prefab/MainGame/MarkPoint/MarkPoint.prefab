@@ -266,6 +266,12 @@ MonoBehaviour:
   m_markPoint: {fileID: 719799095898562748}
   m_gauge: {fileID: 2997188047596561891}
   m_effect: {fileID: 8431737320825841643}
+  m_safetyLine: 0.6
+  m_dangerLine: 0.5
+  m_rate: 100
+  m_safetyColor: {r: 0.31764707, g: 0.36862746, b: 0.9137255, a: 1}
+  m_color: {r: 1, g: 1, b: 1, a: 1}
+  m_dangerColor: {r: 0.6117647, g: 0.050980393, b: 0.019607844, a: 1}
 --- !u!1 &4680166412188868110
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,7 +387,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2
+      scalar: 1.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -1569,7 +1575,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.95686275, g: 0.9490196, b: 0.62352943, a: 1}
+        key0: {r: 1, g: 1, b: 1, a: 1}
         key1: {r: 0.95686275, g: 0.9490196, b: 0.62352943, a: 0}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
@@ -5259,6 +5265,21 @@ PrefabInstance:
         type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2766546353849466614, guid: 864a10e5e09761a4591a0c79b907363d,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.9811321
+      objectReference: {fileID: 0}
+    - target: {fileID: 2766546353849466614, guid: 864a10e5e09761a4591a0c79b907363d,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.6614682
+      objectReference: {fileID: 0}
+    - target: {fileID: 2766546353849466614, guid: 864a10e5e09761a4591a0c79b907363d,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.09718761
       objectReference: {fileID: 0}
     - target: {fileID: 3408495015253700382, guid: 864a10e5e09761a4591a0c79b907363d,
         type: 3}
