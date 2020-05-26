@@ -14,6 +14,10 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	public int pointInstanceID { get; private set; } = -1;
 	/// <summary>有効化カウンター</summary>
 	public float effectiveCounter { get; private set; } = 0.0f;
+	/// <summary>有効化カウンター (0 ~ 1)</summary>
+	public float effectiveCounter01 { get { return effectiveCounter / MarkPointManager.instance.effectiveMaxLimiter; } }
+	/// <summary>初回リンク時のカウンターボーナス割合</summary>
+	public float effectiveFirstLinkBonusRatio { get { return Mathf.Clamp01(EffectiveFirstLinkBonusRatio()); } }
 	/// <summary>リンクしているPlayerのID</summary>
 	public int linkPlayerID { get { return m_drawingLinkPlayerID; } private set { m_drawingLinkPlayerID = value; } }
 	/// <summary>リンクしているServantのID</summary>
@@ -48,6 +52,19 @@ public abstract class BaseMarkPoint : MonoBehaviour
     [SerializeField]
     Animator m_selectAnimation = null;
 
+	/*
+	/// <summary>リンク時のゲージ上昇速度 per seconds</summary>
+	[SerializeField, Tooltip("リンク時のゲージ上昇速度 per seconds")]
+	float m_linkAscendingPerSeconds = 1.0f;
+	/// <summary>リンク解消時のゲージ減少速度 per seconds</summary>
+	[SerializeField, Tooltip("リンク解消時のゲージ減少速度 per seconds")]
+	float m_unlinkDecreasingPerSeconds = 1.0f;
+	/// <summary>マーキング最大時間</summary>
+	[SerializeField, Tooltip("マーキング最大時間")]
+	float m_effectiveMaxLimiter = 7.5f;
+	/// <summary>初回リンク時のカウンターボーナス割合</summary>
+	[SerializeField, Range(0.0f, 1.0f), Tooltip("初回リンク時のカウンターボーナス割合")]
+	float m_effectiveFirstLinkBonusRatio = 0.5f;*/
 
     /// <summary>
     /// [LinkPoint] (Virtual)
@@ -65,6 +82,31 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	/// </summary>
 	public abstract void UpdatePoint();
 
+	/// <summary>
+	/// [LinkAscendingPerSeconds] (Virtual)
+	/// return: リンク時のゲージ上昇速度 per seconds
+	/// </summary>
+	public abstract float LinkAscendingPerSeconds();
+	/// <summary>
+	/// [UnlinkDecreasingPerSeconds] (Virtual)
+	/// return: リンク解消時のゲージ減少速度 per seconds
+	/// </summary>
+	public abstract float UnlinkDecreasingPerSeconds();
+	/// <summary>
+	/// [EffectiveMaxLimiter] (Virtual)
+	/// return: マーキング最大時間
+	/// </summary>
+	public abstract float EffectiveMaxLimiter();
+	/// <summary>
+	/// [EffectiveMaxLimiter] (Virtual)
+	/// return: 初回リンク時のカウンターボーナス割合 (0.0f ~ 1.0f)
+	/// </summary>
+	protected abstract float EffectiveFirstLinkBonusRatio();
+	/// <summary>
+	/// [IsJoinSafetyAreaWhenLink] (Virtual)
+	/// return: リンク中Safetyエリアに加えるか？
+	/// </summary>
+	public abstract bool IsJoinSafetyAreaWhenLink();
 
 
 	/// <summary>
