@@ -6,6 +6,7 @@
 			_RampTex("Ramp", 2D) = "white"{}
 			_BumpMap("Bumpmap", 2D) = "bump" {}
 			_AreaTex("AreaTexture", 2D) = "white"{}
+			_SafetyAreaTex("SafetyAreaTexture", 2D) = "white"{}
 	}
 		
 	SubShader
@@ -20,6 +21,7 @@
 
 		sampler2D _MainTex;
 		sampler2D _AreaTex;
+		sampler2D _SafetyAreaTex;
 		sampler2D _RampTex;
 		sampler2D _BumpMap;
 
@@ -42,8 +44,15 @@
 
 		void surf(Input IN, inout SurfaceOutput o) {
 				fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
+				fixed4 dangerMask = tex2D(_AreaTex, IN.uv_MainTex);
 				fixed4 mask = tex2D(_AreaTex, IN.uv_MainTex);
-				o.Albedo = c.rgb * mask.rgb;
+				fixed4 safetyMask = tex2D(_SafetyAreaTex, IN.uv_MainTex);
+				mask.r = mask.g = mask.b = max(step(mask.b, 0), mask.r);
+				c.rgb = c.rgb * mask.rgb;
+				c.r = lerp(c.r, dangerMask.r, mask.a * (1 - safetyMask.a));
+				c.g = lerp(c.g, dangerMask.g, mask.a * (1 - safetyMask.a));
+				c.b = lerp(c.b, dangerMask.b, mask.a * (1 - safetyMask.a));
+				o.Albedo = c.rgb;
 				o.Alpha = c.a;
 				o.Normal = UnpackNormal(tex2D(_BumpMap, IN.uv_BumpMap));
 		}

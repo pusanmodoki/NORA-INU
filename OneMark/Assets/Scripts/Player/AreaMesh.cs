@@ -55,7 +55,7 @@ public class AreaMesh : MonoBehaviour
         safetyRender = m_safetyMeshObject.AddComponent<MeshRenderer>();
         safetyMesh = m_safetyMeshObject.GetComponent<MeshFilter>().mesh;
         safetyRender.material = m_safetyMaterial;
-        m_safetyMeshObject.layer = LayerMask.NameToLayer("Area");
+        m_safetyMeshObject.layer = LayerMask.NameToLayer("SafetyArea");
     }
 
     // Update is called once per frame
