@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Title.unity
     guid: 46710ecf67546994b843ec10f1986c61
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/StageSelect.unity
     guid: bcd319c0aed62784ebea3f5714a19469
   - enabled: 1
@@ -50,4 +50,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Load.unity
     guid: c7dca0d5a6efb2b42bebc53a9b7d743a
+  - enabled: 1
+    path: Assets/UserFolder/Sayonnu/StageSelect.unity
+    guid: 4eff7952422ed4c4daf92f799d0bd9b4
   m_configObjects: {}
