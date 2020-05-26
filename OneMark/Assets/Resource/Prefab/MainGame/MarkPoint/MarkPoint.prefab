@@ -266,9 +266,9 @@ MonoBehaviour:
   m_markPoint: {fileID: 719799095898562748}
   m_gauge: {fileID: 2997188047596561891}
   m_effect: {fileID: 8431737320825841643}
-  m_safetyLine: 0.6
+  m_safetyLine: 0.51
   m_dangerLine: 0.5
-  m_rate: 100
+  m_rate: 200
   m_safetyColor: {r: 0.31764707, g: 0.36862746, b: 0.9137255, a: 1}
   m_color: {r: 1, g: 1, b: 1, a: 1}
   m_dangerColor: {r: 0.6117647, g: 0.050980393, b: 0.019607844, a: 1}
@@ -387,7 +387,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.5
+      scalar: 2
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -440,7 +440,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
