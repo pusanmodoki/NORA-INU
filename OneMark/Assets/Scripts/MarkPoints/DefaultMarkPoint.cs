@@ -20,8 +20,8 @@ public class DefaultMarkPoint : BaseMarkPoint
 	/// </summary>
 	public override void UpdatePoint()
 	{
-        if (isLinked)
-			m_uiSlider.value = effectiveCounter / MarkPointManager.instance.effectiveMaxLimiter;
+   //     if (isLinked)
+			//m_uiSlider.value = effectiveCounter / MarkPointManager.instance.effectiveMaxLimiter;
 
         if (isForceAscendingEffective && effectiveCounter < MarkPointManager.instance.effectiveMaxLimiter)
         {
@@ -43,7 +43,7 @@ public class DefaultMarkPoint : BaseMarkPoint
     /// </summary>
     public override void LinkPoint()
 	{
-		m_uiObject.SetActive(true);
+		//m_uiObject.SetActive(true);
         effects.OnEffectByInteger(0);
 	}
 	/// <summary>
@@ -52,6 +52,6 @@ public class DefaultMarkPoint : BaseMarkPoint
 	/// </summary>
 	public override void UnlinkPoint()
 	{
-		m_uiObject.SetActive(false);
+		//m_uiObject.SetActive(false);
 	}
 }
