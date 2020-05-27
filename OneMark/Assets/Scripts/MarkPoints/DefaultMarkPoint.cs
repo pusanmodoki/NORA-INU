@@ -14,14 +14,22 @@ public class DefaultMarkPoint : BaseMarkPoint
     [SerializeField]
     EffectControler effects = null;
 
+    [SerializeField]
+    GameObject m_button = null;
+
 	/// <summary>
 	/// [UpdatePoint] (Virtual)
 	/// ポイントの更新を行う
 	/// </summary>
 	public override void UpdatePoint()
 	{
+<<<<<<< HEAD
         if (isLinked)
 			m_uiSlider.value = effectiveCounter / effectiveMaxLimiter;
+=======
+   //     if (isLinked)
+			//m_uiSlider.value = effectiveCounter / MarkPointManager.instance.effectiveMaxLimiter;
+>>>>>>> 502e0334edc2e6d756ebaf7fba980d9ae4fd69cf
 
         if (isForceAscendingEffective && effectiveCounter < effectiveMaxLimiter)
         {
@@ -35,6 +43,9 @@ public class DefaultMarkPoint : BaseMarkPoint
 
             emission.rateOverTime = 0.0f;
         }
+
+        if (isTarget && !m_button.activeSelf) { m_button.SetActive(true); }
+        else if(!isTarget && m_button.activeSelf) { m_button.SetActive(false); }
     }
 
     /// <summary>
@@ -43,7 +54,7 @@ public class DefaultMarkPoint : BaseMarkPoint
     /// </summary>
     public override void LinkPoint()
 	{
-		m_uiObject.SetActive(true);
+		//m_uiObject.SetActive(true);
         effects.OnEffectByInteger(0);
 	}
 	/// <summary>
@@ -52,6 +63,6 @@ public class DefaultMarkPoint : BaseMarkPoint
 	/// </summary>
 	public override void UnlinkPoint()
 	{
-		m_uiObject.SetActive(false);
+		//m_uiObject.SetActive(false);
 	}
 }
