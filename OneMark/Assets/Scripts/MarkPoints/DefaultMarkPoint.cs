@@ -23,8 +23,8 @@ public class DefaultMarkPoint : BaseMarkPoint
 	/// </summary>
 	public override void UpdatePoint()
 	{
-        if (isLinked)
-			m_uiSlider.value = effectiveCounter / effectiveMaxLimiter;
+   //     if (isLinked)
+			//m_uiSlider.value = effectiveCounter / effectiveMaxLimiter;
    //     if (isLinked)
 			//m_uiSlider.value = effectiveCounter / MarkPointManager.instance.effectiveMaxLimiter;
 
