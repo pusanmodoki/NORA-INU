@@ -14,6 +14,9 @@ public class DefaultMarkPoint : BaseMarkPoint
     [SerializeField]
     EffectControler effects = null;
 
+    [SerializeField]
+    GameObject m_button = null;
+
 	/// <summary>
 	/// [UpdatePoint] (Virtual)
 	/// ポイントの更新を行う
@@ -35,6 +38,9 @@ public class DefaultMarkPoint : BaseMarkPoint
 
             emission.rateOverTime = 0.0f;
         }
+
+        if (isTarget && !m_button.activeSelf) { m_button.SetActive(true); }
+        else if(!isTarget && m_button.activeSelf) { m_button.SetActive(false); }
     }
 
     /// <summary>

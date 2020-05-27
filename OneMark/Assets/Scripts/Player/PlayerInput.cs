@@ -13,7 +13,7 @@ public class PlayerInput : MonoBehaviour
     }
 
 	public Vector3 moveInput { get { return m_moveInput; } }
-	public bool isEnableInput { get; private set; } = true;
+	public bool isEnableInput { get; set; } = true;
 
 	/// <summary>This PlayerMaualCollisionAdministrator</summary>
 	[SerializeField, Tooltip("This PlayerMaualCollisionAdministrator")]

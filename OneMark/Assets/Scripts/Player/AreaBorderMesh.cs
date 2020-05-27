@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AreaBorderMesh : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class AreaBorderMesh : MonoBehaviour
 
     Mesh m_mesh = null;
     MeshRenderer m_renderer = null;
+
     
     // Start is called before the first frame update
     void Start()
@@ -42,6 +44,7 @@ public class AreaBorderMesh : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         CreateBorder();
     }
 

@@ -27,6 +27,7 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	/// <summary>強制カウンター増加状態？</summary>
 	public bool isForceAscendingEffective { get; private set; } = false;
 
+    public bool isTarget { get; set; } = false;
 
 	//Debug only
 #if UNITY_EDITOR
@@ -172,11 +173,13 @@ public abstract class BaseMarkPoint : MonoBehaviour
     public GameObject SelectThisPoint()
     {
         m_selectAnimation.SetInteger("State", 1);
+        isTarget = true;
         return gameObject;
     }
 
     public void RemovedThisPoint()
     {
+        isTarget = false;
         m_selectAnimation.SetInteger("State", 0);
     }
 

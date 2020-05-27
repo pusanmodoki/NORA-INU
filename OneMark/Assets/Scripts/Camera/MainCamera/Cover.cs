@@ -24,7 +24,10 @@ public class Cover : MonoBehaviour
 
     private void LateUpdate()
     {
-        Interpolation();
+        if (movePoint.isMoving)
+        {
+            Interpolation();
+        }
     }
 
     private void Interpolation()

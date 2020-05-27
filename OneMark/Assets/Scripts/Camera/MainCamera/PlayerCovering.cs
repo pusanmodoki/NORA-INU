@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerCovering : BaseMovePoint
 {
@@ -17,6 +18,8 @@ public class PlayerCovering : BaseMovePoint
 
     GameObject m_player = null;
 
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,25 +27,30 @@ public class PlayerCovering : BaseMovePoint
 
         m_stageHeight = MainGameManager.instance.stageSize.y;
         m_stageWidth = MainGameManager.instance.stageSize.x;
-
         transform.SetParent(null);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (transform.parent)
+        {
+            transform.SetParent(null);
+        }
         SetPosition();
     }
 
     public override void MovePointUpdate(Vector3 _vec)
     {
-        base.MovePointUpdate(_vec);
+        Vector3 point = m_cover.startPoint.position + _vec;
+        transform.position = Vector3.Lerp(transform.position, point, m_late);
+
         Look();
     }
 
     private void SetPosition()
     {
-        m_cover.t = Mathf.Lerp(m_cover.t, m_player.transform.position.z / m_stageHeight, m_late);
+        m_cover.t = m_player.transform.position.z / m_stageHeight;
     }
 
     private void Look()
@@ -52,5 +60,7 @@ public class PlayerCovering : BaseMovePoint
         point.z = m_stageHeight / 2.0f;
 
         transform.LookAt(point);
+
+        
     }
 }
