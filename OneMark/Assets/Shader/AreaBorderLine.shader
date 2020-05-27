@@ -42,12 +42,15 @@
 						float4 _Color;
 						float4 _Color2;
 
+						float random(fixed2 p) {
+							return frac(sin(dot(p, fixed2(12.9898, 78.233))) * 43758.5453);
+						}
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
 								o.color = _Color * ((_Height - v.vertex.y) / _Height) + _Color2 * v.vertex.y / _Height;
-								o.color.a = ((_Height - v.vertex.y) / _Height) - (v.vertex.y / _Height * sin(_Time * 100 + v.vertex.x + v.vertex.z) * 0.5 + 0.3) ;
+								o.color.a = ((_Height - v.vertex.y) / _Height) - (v.vertex.y / _Height * sin(_Time * 30 + v.vertex.x *- v.vertex.z) * 0.5 + 0.5) ;
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
