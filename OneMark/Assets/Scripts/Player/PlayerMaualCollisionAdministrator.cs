@@ -231,7 +231,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	}
 	/// <summary>
 	/// [IsHitInstructionsGoingDog]
-	/// Dogと円形判定を行う
+	/// Dogと当たり判定を行う
 	/// </summary>
 	public bool IsHitInstructionsReturnDog(DogAIAgent dogAIAgent)
 	{

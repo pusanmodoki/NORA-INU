@@ -37,7 +37,6 @@ public class MainGameManager : MonoBehaviour
 
 	ResultState m_resultState = ResultState.Null;
 	Timer m_resultTimer = new Timer();
-	bool isGameOver = false;
 
     /// <summary>[Awake]</summary>
     void Awake()

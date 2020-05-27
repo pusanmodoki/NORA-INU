@@ -13,11 +13,17 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	/// <summary>Instance id (mark point)</summary>
 	public int pointInstanceID { get; private set; } = -1;
 	/// <summary>有効化カウンター</summary>
-	public float effectiveCounter { get; private set; } = 0.0f;
+	public float effectiveCounter { get; protected set; } = 0.0f;
 	/// <summary>有効化カウンター (0 ~ 1)</summary>
-	public float effectiveCounter01 { get { return effectiveCounter / MarkPointManager.instance.effectiveMaxLimiter; } }
-	/// <summary>初回リンク時のカウンターボーナス割合</summary>
-	public float effectiveFirstLinkBonusRatio { get { return Mathf.Clamp01(EffectiveFirstLinkBonusRatio()); } }
+	public float effectiveCounter01 { get { return effectiveCounter / effectiveMaxLimiter; } }
+	/// <summary>マーキングdelta count (上昇)</summary>
+	public float acendingDeltaCount { get { return m_linkAscendingPerSeconds * Time.deltaTime * MarkPointManager.instance.countScale; } }
+	/// <summary>マーキングdelta count (減少)</summary>
+	public float decreasingDeltaCount { get { return m_unlinkDecreasingPerSeconds * Time.deltaTime * MarkPointManager.instance.countScale; } }
+	/// <summary>マーキング最大時間</summary>
+	public float effectiveMaxLimiter { get { return m_effectiveMaxLimiter; } }
+	/// <summary>初回リンク時のカウンターボーナス</summary>
+	public float effectiveFirstLinkBonus { get { return m_effectiveMaxLimiter * m_effectiveFirstLinkBonusRatio; } }
 	/// <summary>リンクしているPlayerのID</summary>
 	public int linkPlayerID { get { return m_drawingLinkPlayerID; } private set { m_drawingLinkPlayerID = value; } }
 	/// <summary>リンクしているServantのID</summary>
@@ -30,7 +36,8 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	public bool isLockFirstPoint { get; private set; } = false;
 	/// <summary>強制カウンター増加状態？</summary>
 	public bool isForceAscendingEffective { get; private set; } = false;
-
+	/// <summary>リンク中Safetyエリアに加えるか？</summary>
+	public bool isJoinSafetyAreaWhenLink { get { return m_isJoinSafetyAreaWhenLink; } }
 
 	//Debug only
 #if UNITY_EDITOR
@@ -43,16 +50,14 @@ public abstract class BaseMarkPoint : MonoBehaviour
 #endif
 
 	/// <summary>リンクしているPlayerのID</summary>
-	[Space, Space, SerializeField, Tooltip("リンクしているPlayerのID")]
+	[Space, SerializeField, Tooltip("リンクしているPlayerのID")]
 	int m_drawingLinkPlayerID = -1;
 	/// <summary>リンクしているServantのID</summary>
 	[SerializeField, Tooltip("リンクしているServantのID")]
 	int m_drawingLinkServantID = -1;
 
-    [SerializeField]
+    [Header("Values"), SerializeField, Space, Space]
     Animator m_selectAnimation = null;
-
-	/*
 	/// <summary>リンク時のゲージ上昇速度 per seconds</summary>
 	[SerializeField, Tooltip("リンク時のゲージ上昇速度 per seconds")]
 	float m_linkAscendingPerSeconds = 1.0f;
@@ -62,15 +67,18 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	/// <summary>マーキング最大時間</summary>
 	[SerializeField, Tooltip("マーキング最大時間")]
 	float m_effectiveMaxLimiter = 7.5f;
-	/// <summary>初回リンク時のカウンターボーナス割合</summary>
-	[SerializeField, Range(0.0f, 1.0f), Tooltip("初回リンク時のカウンターボーナス割合")]
-	float m_effectiveFirstLinkBonusRatio = 0.5f;*/
+	/// <summary>初回リンク時のカウンターボーナス割合 (0.0f ~ 1.0f)</summary>
+	[SerializeField, Range(0.0f, 1.0f), Tooltip("初回リンク時のカウンターボーナス割合 (0.0f ~ 1.0f)")]
+	float m_effectiveFirstLinkBonusRatio = 0.5f;
+	/// <summary>リンク中Safetyエリアに加えるか？</summary>
+	[SerializeField, Tooltip("リンク中Safetyエリアに加えるか？"), Space]
+	bool m_isJoinSafetyAreaWhenLink = true;
 
-    /// <summary>
-    /// [LinkPoint] (Virtual)
-    /// ポイントがリンクされた際にコールバックされる関数
-    /// </summary>
-    public virtual void LinkPoint() { }
+	/// <summary>
+	/// [LinkPoint] (Virtual)
+	/// ポイントがリンクされた際にコールバックされる関数
+	/// </summary>
+	public virtual void LinkPoint() { }
 	/// <summary>
 	/// [UnlinkPoint] (Virtual)
 	/// ポイントがリンク解除された際にコールバックされる関数
@@ -83,37 +91,10 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	public abstract void UpdatePoint();
 
 	/// <summary>
-	/// [LinkAscendingPerSeconds] (Virtual)
-	/// return: リンク時のゲージ上昇速度 per seconds
-	/// </summary>
-	public abstract float LinkAscendingPerSeconds();
-	/// <summary>
-	/// [UnlinkDecreasingPerSeconds] (Virtual)
-	/// return: リンク解消時のゲージ減少速度 per seconds
-	/// </summary>
-	public abstract float UnlinkDecreasingPerSeconds();
-	/// <summary>
-	/// [EffectiveMaxLimiter] (Virtual)
-	/// return: マーキング最大時間
-	/// </summary>
-	public abstract float EffectiveMaxLimiter();
-	/// <summary>
-	/// [EffectiveMaxLimiter] (Virtual)
-	/// return: 初回リンク時のカウンターボーナス割合 (0.0f ~ 1.0f)
-	/// </summary>
-	protected abstract float EffectiveFirstLinkBonusRatio();
-	/// <summary>
-	/// [IsJoinSafetyAreaWhenLink] (Virtual)
-	/// return: リンク中Safetyエリアに加えるか？
-	/// </summary>
-	public abstract bool IsJoinSafetyAreaWhenLink();
-
-
-	/// <summary>
 	/// [AddFirstLinkBonus]
 	/// カウンタにAddFirstLinkBonus加算
 	/// </summary>
-	public void AddFirstLinkBonus() { effectiveCounter += MarkPointManager.instance.effectiveFirstLinkBonus; }
+	public void AddFirstLinkBonus() { effectiveCounter += effectiveFirstLinkBonus; }
 	/// <summary>
 	/// [SetPlayerNearby]
 	/// Set PlayerNearby
@@ -131,7 +112,7 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	public void SetLockFirstPoint(bool isSet)
 	{
 		if ((isLockFirstPoint ^ isSet) & isSet)
-			effectiveCounter = MarkPointManager.instance.effectiveMaxLimiter;
+			effectiveCounter = effectiveMaxLimiter;
 
 		isLockFirstPoint = isSet;
 	}
@@ -201,11 +182,11 @@ public abstract class BaseMarkPoint : MonoBehaviour
 #endif
 
 		if (isPlayerNearby | isLockFirstPoint | isForceAscendingEffective)
-			effectiveCounter += MarkPointManager.instance.acendingDeltaCount;
+			effectiveCounter += acendingDeltaCount;
 		else
-			effectiveCounter -= MarkPointManager.instance.decreasingDeltaCount;
+			effectiveCounter -= decreasingDeltaCount;
 
-		effectiveCounter = Mathf.Clamp(effectiveCounter, 0.0f, MarkPointManager.instance.effectiveMaxLimiter);
+		effectiveCounter = Mathf.Clamp(effectiveCounter, 0.0f, effectiveMaxLimiter);
 
 		if (isLinked && effectiveCounter <= 0.0f)
 			UnlinkPlayer();

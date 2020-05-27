@@ -210,8 +210,8 @@ public class OneMarkSceneManager : MonoBehaviour
 				StartCoroutine(LoadSceneOptionAndAccessory(true));
 
 				AudioManager.instance.LoadAudios(nowLoadSceneName);
-				AudioManager.instance.WaitLoadAudios(nowLoadSceneName);
-				if (AudioManager.instance.bgmForNowScene.loadBgmKeys.Count > 0)
+				if (AudioManager.instance.bgmForEachScenes.ContainsKey(nowLoadSceneName)
+					&& AudioManager.instance.bgmForNowScene.loadBgmKeys.Count > 0)
 				{
 					AudioManager.instance.PlayBgm(AudioManager.instance.bgmForNowScene.loadBgmKeys[0]);
 					AudioManager.instance.FadeinBgm("SceneChange", true);

@@ -74,6 +74,13 @@ public class AudioManager : MonoBehaviour
 		public float minVolume { get { return m_minVolume; } }
 		public float changeSeconds { get { return m_changeSeconds; } }
 
+		public VolumeInfo(string uniqueKey, float minVolume, float changeSeconds)
+		{
+			m_uniqueKey = uniqueKey;
+			m_minVolume = minVolume;
+			m_changeSeconds = changeSeconds;
+		}
+
 		[SerializeField]
 		string m_uniqueKey;
 		[SerializeField, Range(0.0f, 1.0f)]
@@ -113,11 +120,15 @@ public class AudioManager : MonoBehaviour
 
 	public void LoadAudios(string sceneName)
 	{
+		if (!bgmForEachScenes.ContainsKey(sceneName)) return;
+
 		foreach(var bgmKey in bgmForEachScenes[sceneName].loadBgmKeys)
 			allBgms[bgmKey].clip.LoadAudioData();
 	}
 	public bool WaitLoadAudios(string sceneName)
 	{
+		if (!bgmForEachScenes.ContainsKey(sceneName)) return false;
+
 		foreach (var bgmKey in bgmForEachScenes[sceneName].loadBgmKeys)
 		{
 			if (allBgms[bgmKey].clip.loadState != AudioDataLoadState.Loaded)
@@ -127,6 +138,8 @@ public class AudioManager : MonoBehaviour
 	}
 	public void UnloadAudios(string sceneName)
 	{
+		if (!bgmForEachScenes.ContainsKey(sceneName)) return;
+
 		m_playUniqueKey = null;
 		foreach (var bgmKey in bgmForEachScenes[sceneName].loadBgmKeys)
 			allBgms[bgmKey].clip.UnloadAudioData();
@@ -134,6 +147,8 @@ public class AudioManager : MonoBehaviour
 
 	public void PlayBgm(string uniqueKey)
 	{
+		if (!m_allBgmsDictionary.ContainsKey(uniqueKey)) return;
+
 		m_playUniqueKey = uniqueKey;
 		m_bgmSource.clip = m_allBgmsDictionary[uniqueKey].clip;
 		m_bgmSource.volume = m_allBgmsDictionary[uniqueKey].volume;
@@ -142,6 +157,8 @@ public class AudioManager : MonoBehaviour
 	}
 	public void StopBgm(string uniqueKey)
 	{
+		if (!m_allBgmsDictionary.ContainsKey(uniqueKey)) return;
+
 		m_playUniqueKey = null;
 		m_bgmSource.Stop();
 	}

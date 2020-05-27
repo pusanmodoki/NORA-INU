@@ -35,14 +35,11 @@ public class PlayerInput : MonoBehaviour
 #if UNITY_EDITOR
 	[Header("Debug Only"), SerializeField]
 	Vector2 m_dMoveInput = Vector2.zero;
-	[SerializeField]
-	bool[] m_dIsShotFlags = null;
 #endif
 
 	Vector3 m_moveInput = Vector3.zero;
 
 	Timer m_shotTimers = new Timer();
-	bool[] m_isShotFlags = new bool[3];
 
 	public void GameClearAnimation()
 	{
@@ -58,12 +55,7 @@ public class PlayerInput : MonoBehaviour
 		m_animator.SetInteger("State", (int)m_state);
 		isEnableInput = false;
 	}
-
-	public void ChangeShotFlags(DogAIAgent agent, bool isShot)
-	{
-		m_isShotFlags[agent.linkPlayerServantsOwnIndex] = isShot;
-	}
-
+	
 	void Start()
     {
 		m_shotTimers = new Timer();
@@ -94,7 +86,6 @@ public class PlayerInput : MonoBehaviour
 
 #if UNITY_EDITOR
 		m_dMoveInput = m_moveInput;
-		m_dIsShotFlags = m_isShotFlags.Clone() as bool[];
 #endif
 
 		if (m_moveInput.sqrMagnitude > 0.0f)
