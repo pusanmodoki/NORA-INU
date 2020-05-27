@@ -35,7 +35,7 @@ public class GaugeEffect : MonoBehaviour
     {
         Vector3 pos = transform.localPosition;
 
-        float t = m_markPoint.effectiveCounter / MarkPointManager.instance.effectiveMaxLimiter;
+        float t = m_markPoint.effectiveCounter01;
 
         pos.y = t * m_gauge.m_maxHeight * 0.8f;
 

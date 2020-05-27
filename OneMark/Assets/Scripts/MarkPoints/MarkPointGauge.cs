@@ -37,7 +37,7 @@ public class MarkPointGauge : MonoBehaviour
 
     private void Update()
     {
-        m_material.SetFloat("_Gauge", m_markPoint.effectiveCounter / MarkPointManager.instance.effectiveMaxLimiter);
+        m_material.SetFloat("_Gauge", m_markPoint.effectiveCounter01);
 
     }
 }

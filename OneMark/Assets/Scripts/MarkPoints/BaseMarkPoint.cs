@@ -36,13 +36,9 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	public bool isLockFirstPoint { get; private set; } = false;
 	/// <summary>強制カウンター増加状態？</summary>
 	public bool isForceAscendingEffective { get; private set; } = false;
-<<<<<<< HEAD
 	/// <summary>リンク中Safetyエリアに加えるか？</summary>
 	public bool isJoinSafetyAreaWhenLink { get { return m_isJoinSafetyAreaWhenLink; } }
-=======
-
     public bool isTarget { get; set; } = false;
->>>>>>> 502e0334edc2e6d756ebaf7fba980d9ae4fd69cf
 
 	//Debug only
 #if UNITY_EDITOR
