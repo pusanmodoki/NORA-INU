@@ -155,10 +155,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AgentTypeID: 0
   m_StartPoint: {x: -2.9845276, y: -0.65846205, z: 0}
-  m_EndPoint: {x: 2.273262, y: 3.3088722, z: 0}
+  m_EndPoint: {x: 2.273262, y: 4, z: -0.000003335864}
   m_Width: 1
   m_CostModifier: -1
-  m_Bidirectional: 1
+  m_Bidirectional: 0
   m_AutoUpdatePosition: 0
   m_Area: 0
 --- !u!114 &7637421135212074117

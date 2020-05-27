@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7704356482033076802}
   - component: {fileID: 1746442257064567695}
   - component: {fileID: 3560728802241678902}
+  - component: {fileID: 4358829439174457802}
   m_Layer: 10
   m_Name: UpFloor
   m_TagString: Untagged
@@ -169,3 +170,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 071d901408a330f488b8674e77ff938d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4358829439174457802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7704356482033076808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 912edd69b5770e0498d3a1a821836bd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_renderer: {fileID: 7704356482033076814}
