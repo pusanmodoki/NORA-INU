@@ -37,8 +37,8 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		/// <summary>[コンストラクタ]</summary>
 		public PlayerInfo(GameObject gameObject, PlayerManagerIntermediary territoryIntermediary,
 			PlayerMaualCollisionAdministrator maualCollisionAdministrator, PlayerNavMeshController navMeshController,
-			PlayerInput input,
-			BoxCastFlags groundFlag, UnityEngine.AI.NavMeshAgent navMeshAgent, Rigidbody rigidBody, 
+			PlayerInput input, BoxCastFlags groundFlag, UnityEngine.AI.NavMeshAgent navMeshAgent, 
+			Rigidbody rigidBody, AreaMesh areaMesh, AreaBorderMesh areaBorderMesh,
 			GameObject[] followPoints, GameObject resultCameraLookPoint, GameObject resultCameraMovePoint)
 		{
 			this.gameObject = gameObject;
@@ -53,7 +53,12 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 			this.followPoints = followPoints;
 			this.resultCameraLookPoint = resultCameraLookPoint;
 			this.resultCameraMovePoint = resultCameraMovePoint;
+			this.areaMesh = areaMesh;
+			this.areaBorderMesh = areaBorderMesh;
 			instanceID = gameObject.GetInstanceID();
+
+			areaMesh.InitMesh();
+			areaBorderMesh.InitMesh();
 		}
 
 		/// <summary>Player game object</summary>
@@ -74,6 +79,10 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		public UnityEngine.AI.NavMeshAgent navMeshAgent { get; private set; }
 		/// <summary>Player rigid body</summary>
 		public Rigidbody rigidBody { get; private set; }
+		/// <summary>Player area mesh</summary>
+		public AreaMesh areaMesh { get; private set; }
+		/// <summary>Player area mesh</summary>
+		public AreaBorderMesh areaBorderMesh { get; private set; }
 		/// <summary>Player instance id</summary>
 		public int instanceID { get; private set; }
 		/// <summary>All territory mark points (クラス)</summary>
@@ -310,6 +319,9 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		//結果をリストに構築
 		for (int i = 0; i < result; ++i)
 			playerInfo.territorialArea.Add(m_grahamResult[i].position);
+
+		playerInfo.areaMesh.MeshCreate(playerInfo.territorialArea);
+		playerInfo.areaBorderMesh.CreateBorder(playerInfo.territorialArea);
 	}
 	/// <summary>
 	/// [CalucrateSafetyTerritory]
@@ -348,6 +360,8 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		//結果をリストに構築
 		for (int i = 0; i < result; ++i)
 			playerInfo.safetyTerritorialArea.Add(m_grahamResult[i].position);
+
+		playerInfo.areaMesh.SafetyMeshCreate(playerInfo.safetyTerritorialArea);
 	}
 
 
@@ -412,9 +426,9 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	/// </summary>
 	public void AddPlayer(GameObject player, PlayerManagerIntermediary managerIntermediary,
 		PlayerMaualCollisionAdministrator maualCollisionAdministrator, PlayerNavMeshController navMeshController,
-		PlayerInput input,
-		BoxCastFlags groundFlag, UnityEngine.AI.NavMeshAgent navMeshAgent, Rigidbody rigidBody, 
-		GameObject[] followPoints, GameObject resultCameraLookPoint, GameObject resultCameraMovePoint, bool isMainPlayer = true)
+		PlayerInput input, BoxCastFlags groundFlag, UnityEngine.AI.NavMeshAgent navMeshAgent, Rigidbody rigidBody,
+		AreaMesh areaMesh, AreaBorderMesh areaBorderMesh, GameObject[] followPoints, 
+		GameObject resultCameraLookPoint, GameObject resultCameraMovePoint, bool isMainPlayer = true)
 	{
 		//debug only, invalid key対策
 #if UNITY_EDITOR
@@ -425,8 +439,9 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		}
 #endif
 
-		PlayerInfo info = new PlayerInfo(player, managerIntermediary, maualCollisionAdministrator, navMeshController,
-			input, groundFlag, navMeshAgent, rigidBody,  followPoints, resultCameraLookPoint, resultCameraMovePoint);
+		PlayerInfo info = new PlayerInfo(player, managerIntermediary, maualCollisionAdministrator, 
+			navMeshController, input, groundFlag, navMeshAgent, rigidBody, 
+			areaMesh, areaBorderMesh, followPoints, resultCameraLookPoint, resultCameraMovePoint);
 
 		m_players.Add(player.GetInstanceID(), info);
 		if (isMainPlayer)

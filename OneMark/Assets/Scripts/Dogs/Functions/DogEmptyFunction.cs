@@ -17,6 +17,7 @@ public class DogEmptyFunction : BaseDogAIFunction
 	public override void AIBegin(BaseAIFunction beforeFunction)
 	{
 	}
+
 	/// <summary>
 	/// [AIEnd]
 	/// 関数が実行登録を解除される際に呼ばれるコールバック関数

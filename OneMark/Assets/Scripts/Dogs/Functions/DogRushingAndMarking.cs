@@ -21,10 +21,13 @@ public class DogRushingAndMarking : BaseDogAIFunction
 		Rotation,
 		/// <summary>マーキング</summary>
 		Marking,
+		/// <summary>マーキング終了</summary>
+		MarkingEnd,
 		/// <summary>終了</summary>
-		End,
+		FunctionEnd,
 	}
 
+	static readonly Quaternion m_targetRotation = Quaternion.LookRotation(-Vector3.forward);
 	static int m_bgmChangeAgentID = -1;
 
 	/// <summary>State</summary>
@@ -46,26 +49,17 @@ public class DogRushingAndMarking : BaseDogAIFunction
 	/// <summary>突進時追加加速度</summary>
 	[Header("Rushing"), SerializeField, Tooltip("突進時追加加速度")]
 	float m_rushingAddAcceleration = 10.0f;
-	/// <summary>到着と見做す距離(半径で当たり判定を行う)</summary>
-	[SerializeField, Tooltip("到着と見做す距離(半径で当たり判定を行う)")]
-	float m_rushingArrivalDistance = 0.8f;
 
 	/// <summary>回転速度 (this * deltaTime)</summary>
 	[Header("Rotation"), SerializeField, Tooltip("回転速度 (this * deltaTime)")]
 	float m_rotationSpeed = 0.9f;
-	/// <summary>回転時間</summary>
-	[SerializeField, Tooltip("回転時間")]
-	float m_rotationSeconds = 1.0f;
 
 	/// <summary>マーキング時間</summary>
 	[Header("Marking"), SerializeField, Tooltip("マーキング時間")]
 	float m_markingSeconds = 0.9f;
 
 	BaseMarkPoint m_markPoint = null;
-	LayerMaskEx m_markPointLayerMask = 0;
-	Vector3 m_targetPoint = Vector3.zero;
-
-	Quaternion m_targetRotation = Quaternion.identity;
+	Vector3 m_moveTarget = Vector3.zero;
 
 	/// <summary>
 	/// [SetAdvanceInformation]
@@ -75,7 +69,14 @@ public class DogRushingAndMarking : BaseDogAIFunction
 	public void SetAdvanceInformation(BaseMarkPoint markPoint)
 	{
 		m_markPoint = markPoint;
-		m_markPointLayerMask.SetValue(markPoint.gameObject);
+	}
+	/// <summary>
+	/// [MoveStateFromMarkingEndToFunctionEnd]
+	/// functionState == MarkingEnd時, FunctionEndへStateを進める
+	/// </summary>
+	public void MoveStateFromMarkingEndToFunctionEnd()
+	{
+		if (functionState == State.MarkingEnd) functionState = State.FunctionEnd;
 	}
 
 	/// <summary>
@@ -94,13 +95,16 @@ public class DogRushingAndMarking : BaseDogAIFunction
 		UnityEngine.AI.NavMeshHit navMeshHit;
 		UnityEngine.AI.NavMesh.SamplePosition(m_markPoint.transform.position,
 			out navMeshHit, 2.0f, UnityEngine.AI.NavMesh.AllAreas);
-		m_targetPoint = navMeshHit.position;
+		//m_targetPoint = navMeshHit.position;
+		m_moveTarget = m_markPoint.markingTarget;
+	//	m_rotationTarget = m_markPoint.transform.position;
+	//	m_rotationTarget.y = 0.0f;
 
 		SetUpdatePosition(true);
-		navMeshAgent.destination = m_targetPoint;
+		navMeshAgent.destination = m_moveTarget;
 		functionState = State.Rushing;
 		//Animation Set
-		m_animationController.editAnimation.SetTriggerRolling();
+		m_animationController.editAnimation.state = DogAnimationController.AnimationState.Rolling;
 
 		////強制的に増加させる
 		//if (m_markPoint.linkPlayerID == dogAIAgent.linkPlayer.GetInstanceID())
@@ -113,10 +117,9 @@ public class DogRushingAndMarking : BaseDogAIFunction
 	/// </summary>
 	public override void AIEnd(BaseAIFunction nextFunction)
 	{
-		if (functionState != State.End)
+		if (functionState != State.FunctionEnd)
 		{
-			m_animationController.editAnimation.SetTriggerForceChangeStand();
-			Debug.Log(gameObject.name);
+			m_animationController.editAnimation.TriggerForceChangeStand();
 			//PlayerAndTerritoryManager.instance.allPlayers[dogAIAgent.linkPlayer.GetInstanceID()].input.ChangeShotFlags(dogAIAgent, false);
 		}
 
@@ -131,7 +134,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 			}
 		}
 
-		if (functionState != State.End && functionState != State.Rushing
+		if (functionState != State.FunctionEnd && functionState != State.Rushing
 			&& m_markPoint.linkServantID == dogAIAgent.aiAgentInstanceID)
 		{
 #if UNITY_EDITOR
@@ -141,7 +144,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 			//ポイントをリンク解除
 			m_markPoint.UnlinkPlayer();
 			//動け！
-			dogAIAgent.SetSitAndStay(false, m_markPoint);
+			dogAIAgent.SetWaitAndRun(false, m_markPoint);
 		}
 
 		m_markPoint = null;
@@ -183,41 +186,27 @@ public class DogRushingAndMarking : BaseDogAIFunction
 			case State.Rushing:
 				{
 					//設定
-					navMeshAgent.destination = m_targetPoint;
+					navMeshAgent.destination = m_moveTarget;
 
-					//半径でOverlapを行う
-					var hitCollisions = Physics.OverlapSphere(transform.position, m_rushingArrivalDistance, m_markPointLayerMask);
-
-					//指定ポイントがヒットしているか確認
-					for (int i = 0, length = hitCollisions.Length; i < length; ++i)
+					if (navMeshAgent.remainingDistance < 0.1f)
 					{
-						//指定ポイントと合致
-						if (hitCollisions[i].gameObject.GetInstanceID() == m_markPoint.gameObject.GetInstanceID())
-						{
-							//強制的に増加させる
-							if (m_markPoint.linkPlayerID != dogAIAgent.linkPlayer.GetInstanceID())
-								m_markPoint.AddFirstLinkBonus();
-							//ポイントをリンクさせる
-							m_markPoint.LinkPlayer(dogAIAgent.linkPlayer, dogAIAgent);
-							//待て！
-							dogAIAgent.SetSitAndStay(true, m_markPoint);
+						//強制的に増加させる
+						if (m_markPoint.linkPlayerID != dogAIAgent.linkPlayer.GetInstanceID())
+							m_markPoint.AddFirstLinkBonus();
+						//ポイントをリンクさせる
+						m_markPoint.LinkPlayer(dogAIAgent.linkPlayer, dogAIAgent);
+						//待て！
+						dogAIAgent.SetWaitAndRun(true, m_markPoint);
 
-							//移動, 回転停止
-							navMeshAgent.isStopped = true;
-							dogAIAgent.speedChanger.SetManualAcceleration(0.0f);
+						//移動, 回転停止
+						navMeshAgent.isStopped = true;
+						dogAIAgent.speedChanger.SetManualAcceleration(0.0f);
 
-							//回転を決める
-							Vector3 absolute = m_targetPoint - transform.position;
-							absolute.y = 0.0f;
-							m_targetRotation = Quaternion.LookRotation(absolute.normalized) * Quaternion.AngleAxis(-90, Vector3.up);
-							//Stateを進める
-							functionState = State.Rotation;
-							//Animation Set
-							m_animationController.editAnimation.SetTriggerMarking();
-							//Timer再スタート
-							timer.Start();
-							break;
-						}
+						//Animation Set
+						m_animationController.editAnimation.state = DogAnimationController.AnimationState.Run;
+
+						//Stateを進める
+						functionState = State.Rotation;
 					}
 
 					break;
@@ -226,20 +215,25 @@ public class DogRushingAndMarking : BaseDogAIFunction
 			//回転
 			case State.Rotation:
 				{
-					//指定時間経過でステートを進める
-					if (timer.elapasedTime >= m_rotationSeconds)
+					Quaternion rotation = transform.rotation;
+
+					//等値比較でステートを進める
+					if (Mathf.Abs(Quaternion.Dot(rotation, m_targetRotation)) > 0.99999f)
 					{
+						//Animation Set
+						m_animationController.editAnimation.TriggerMarking();
+
 						m_sePlayer.PlaySE(m_markingSEIndex, true);
 						m_bgmChangeAgentID = dogAIAgent.aiAgentInstanceID;
 						AudioManager.instance.FadeoutBgm("Marking");
+
 						m_markingEffect.SetActive(true);
 						functionState = State.Marking;
 						timer.Start();
 					}
 
 					//回転
-					transform.rotation =
-						Quaternion.Slerp(transform.rotation, m_targetRotation, m_rotationSpeed * Time.deltaTime);
+					transform.rotation = Quaternion.Slerp(rotation, m_targetRotation, m_rotationSpeed * Time.deltaTime);
 					break;
 				}
 			//マーキング実行
@@ -248,7 +242,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 					//指定時間経過
 					if (timer.elapasedTime >= m_markingSeconds)
 					{
-						functionState = State.End;
+						functionState = State.MarkingEnd;
 						m_markingEffect.SetActive(false);
 						m_sePlayer.Stop(m_markingSEIndex);
 						if (m_bgmChangeAgentID == dogAIAgent.aiAgentInstanceID)
@@ -257,11 +251,18 @@ public class DogRushingAndMarking : BaseDogAIFunction
 							AudioManager.instance.FadeinBgm("Marking");
 						}
 						//Animation Set
-						m_animationController.editAnimation.SetTriggerSleepStart();
-						//終了
-						EndAIFunction(updateIdentifier);
+						m_animationController.editAnimation.TriggerMarkingEnd();
 					}
 
+					break;
+				}
+			//マーキング終了→関数終了
+			case State.FunctionEnd:
+				{
+					//Animation Set
+					m_animationController.editAnimation.TriggerWaitRunStart();
+					//終了
+					EndAIFunction(updateIdentifier);
 					break;
 				}
 			default:

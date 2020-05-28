@@ -9,7 +9,11 @@ public abstract class BaseMarkPoint : MonoBehaviour
 {
 	/// <summary>Instance counter(static)</summary>
 	static int m_instanceIDCounter = 0;
-	
+
+	/// <summary>Marking target point</summary>
+	public Vector3 markingTarget { get; private set; } = Vector3.zero;
+	/// <summary>Marking target point(local)</summary>
+	public Vector3 localMarkingTarget { get { return m_markingTarget; } }
 	/// <summary>Instance id (mark point)</summary>
 	public int pointInstanceID { get; private set; } = -1;
 	/// <summary>有効化カウンター</summary>
@@ -59,6 +63,8 @@ public abstract class BaseMarkPoint : MonoBehaviour
 
     [Header("Values"), SerializeField, Space, Space]
     Animator m_selectAnimation = null;
+	[SerializeField]
+	Vector3 m_markingTarget = new Vector3(2.0f, 0.0f, 0.0f);
 	/// <summary>リンク時のゲージ上昇速度 per seconds</summary>
 	[SerializeField, Tooltip("リンク時のゲージ上昇速度 per seconds")]
 	float m_linkAscendingPerSeconds = 1.0f;
@@ -161,7 +167,7 @@ public abstract class BaseMarkPoint : MonoBehaviour
 		//Managerの紐付け登録解除
 		PlayerAndTerritoryManager.instance.allPlayers[linkPlayerID].RemoveMarkPoint(this);
 		if (linkServantID != -1)
-			ServantManager.instance.GetServant(linkServantID).SetSitAndStay(false, this);
+			ServantManager.instance.GetServant(linkServantID).SetWaitAndRun(false, this);
 
 		//ID登録解除
 		linkPlayerID = -1;
@@ -210,8 +216,12 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	void Awake()
 	{
 		pointInstanceID = ++m_instanceIDCounter;
-
+	
 		MarkPointManager.instance.AddMarkPoint(this);
+
+		Matrix4x4 matrix = Matrix4x4.Translate(transform.position);
+		matrix *= Matrix4x4.Rotate(transform.rotation);
+		markingTarget = matrix.MultiplyPoint(m_markingTarget);
 	}
 	/// <summary>[OnDestroy]</summary>
 	void OnDestroy()
@@ -219,4 +229,20 @@ public abstract class BaseMarkPoint : MonoBehaviour
 		if (MarkPointManager.instance != null)
 			MarkPointManager.instance.RemoveMarkPoint(this);
 	}
+#if UNITY_EDITOR
+	static readonly Vector3 m_dScale = new Vector3(0.1f, 2.0f, 0.1f);
+
+	/// <summary>[OnDestroy]</summary>
+	void OnDrawGizmos()
+	{
+		if (UnityEditor.EditorApplication.isPlaying)
+			Gizmos.DrawWireCube(markingTarget, m_dScale);
+		else
+		{
+			Matrix4x4 matrix = Matrix4x4.Translate(transform.position);
+			matrix *= Matrix4x4.Rotate(transform.rotation);
+			Gizmos.DrawWireCube(matrix.MultiplyPoint(m_markingTarget), m_dScale);
+		}
+	}
+#endif
 }

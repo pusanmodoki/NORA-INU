@@ -7,10 +7,6 @@ using UnityEngine;
 /// </summary>
 public class DefaultMarkPoint : BaseMarkPoint
 {
-	[SerializeField]
-	GameObject m_uiObject = null;
-	[SerializeField]
-	UnityEngine.UI.Slider m_uiSlider = null;
     [SerializeField]
     EffectControler effects = null;
 
@@ -23,8 +19,8 @@ public class DefaultMarkPoint : BaseMarkPoint
 	/// </summary>
 	public override void UpdatePoint()
 	{
-        if (isLinked)
-			m_uiSlider.value = effectiveCounter / effectiveMaxLimiter;
+   //     if (isLinked)
+			//m_uiSlider.value = effectiveCounter / effectiveMaxLimiter;
    //     if (isLinked)
 			//m_uiSlider.value = effectiveCounter / MarkPointManager.instance.effectiveMaxLimiter;
 

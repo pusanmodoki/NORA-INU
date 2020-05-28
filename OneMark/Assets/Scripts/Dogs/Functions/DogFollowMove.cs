@@ -23,9 +23,6 @@ public class DogFollowMove : BaseDogAIFunction
 	/// <summary>回転済みしたとみなす角度</summary>
 	[SerializeField, Tooltip("回転済みしたとみなす角度")]
 	float m_arrivalRotation = 5.0f;
-	/// <summary>走るモーションに変更するスピード</summary>
-	[SerializeField, Tooltip("走るモーションに変更するスピード")]
-	float m_animationChangeSpeed = 1.0f;
 
 	Transform m_followTransform = null;
 
@@ -63,9 +60,8 @@ public class DogFollowMove : BaseDogAIFunction
 
 		navMeshAgent.destination = setDestination;
 
-		if (navMeshAgent.velocity.sqrMagnitude >= 
-			m_animationChangeSpeed * m_animationChangeSpeed)
-		m_animationController.editAnimation.SetStateRun();
+		m_animationController.editAnimation.state = navMeshAgent.remainingDistance > 0.1f ?
+			DogAnimationController.AnimationState.Run : DogAnimationController.AnimationState.Stand;
 	}
 	/// <summary>
 	/// [AIEnd]
@@ -78,7 +74,7 @@ public class DogFollowMove : BaseDogAIFunction
 		navMeshAgent.isStopped = false;
 		
 		if (nextFunction != this)
-			m_animationController.editAnimation.SetStateStand();
+			m_animationController.editAnimation.state = DogAnimationController.AnimationState.Stand;
 	}
 
 	/// <summary>
@@ -96,11 +92,8 @@ public class DogFollowMove : BaseDogAIFunction
 		else
 			navMeshAgent.isStopped = false;
 
-		if (navMeshAgent.velocity.sqrMagnitude >=
-			m_animationChangeSpeed * m_animationChangeSpeed)
-			m_animationController.editAnimation.SetStateRun();
-		else
-			m_animationController.editAnimation.SetStateStand();
+		m_animationController.editAnimation.state = navMeshAgent.remainingDistance > 0.1f ?
+			DogAnimationController.AnimationState.Run : DogAnimationController.AnimationState.Stand;
 
 		Vector3 absoluteNotYNormalized = (dogAIAgent.linkPlayer.transform.position - transform.position);
 		absoluteNotYNormalized.y = 0.0f;

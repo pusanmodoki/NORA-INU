@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class AreaBorderMesh : MonoBehaviour
 {
-    private PlayerAndTerritoryManager.PlayerInfo m_player = null;
-
     [SerializeField]
     float m_height = 1.0f;
 
@@ -29,10 +27,8 @@ public class AreaBorderMesh : MonoBehaviour
 
     
     // Start is called before the first frame update
-    void Start()
+    public void InitMesh()
     {
-        m_player = PlayerAndTerritoryManager.instance.mainPlayer;
-
         m_meshObject = new GameObject("AreaBorderMesh");
 
         m_meshObject.AddComponent<MeshFilter>();
@@ -41,14 +37,7 @@ public class AreaBorderMesh : MonoBehaviour
         m_renderer.material = m_material;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-        CreateBorder();
-    }
-
-    public void CreateBorder()
+    public void CreateBorder(List<Vector3> territorialArea)
     {
         m_meshPoints.Clear();
         m_triangles.Clear();
@@ -56,33 +45,33 @@ public class AreaBorderMesh : MonoBehaviour
         m_uvs.Clear();
 
         //m_meshPoints.Add(vec);
-        m_meshPoints.AddRange(m_player.territorialArea);
-        m_meshPoints.AddRange(m_player.territorialArea);
+        m_meshPoints.AddRange(territorialArea);
+        m_meshPoints.AddRange(territorialArea);
 
-        for(int i = 0; i < m_player.territorialArea.Count; ++i)
+        for(int i = 0; i < territorialArea.Count; ++i)
         {
             Vector3 point = m_meshPoints[i];
             point.y += m_height;
             m_meshPoints[i] = point;
         }
 
-        for(int i = 0; i < m_player.territorialArea.Count - 1; ++i)
+        for(int i = 0; i < territorialArea.Count - 1; ++i)
         {
             m_triangles.Add(i);
             m_triangles.Add(i + 1);
-            m_triangles.Add(i + m_player.territorialArea.Count);
+            m_triangles.Add(i + territorialArea.Count);
 
-            m_triangles.Add(i + m_player.territorialArea.Count);
-            m_triangles.Add(i + 1 + m_player.territorialArea.Count);
+            m_triangles.Add(i + territorialArea.Count);
+            m_triangles.Add(i + 1 + territorialArea.Count);
             m_triangles.Add(i + 1);
         }
 
-        m_triangles.Add(m_player.territorialArea.Count - 1);
+        m_triangles.Add(territorialArea.Count - 1);
         m_triangles.Add(0);
         m_triangles.Add(m_meshPoints.Count - 1);
 
         m_triangles.Add(m_meshPoints.Count - 1);
-        m_triangles.Add(m_player.territorialArea.Count);
+        m_triangles.Add(territorialArea.Count);
         m_triangles.Add(0);
 
 

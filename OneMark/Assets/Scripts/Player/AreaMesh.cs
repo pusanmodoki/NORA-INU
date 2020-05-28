@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class AreaMesh : MonoBehaviour
 {
-    private PlayerAndTerritoryManager.PlayerInfo player = null;
-
     [SerializeField]
     private List<Vector3> meshPoints = new List<Vector3>();
     [SerializeField]
@@ -37,10 +35,8 @@ public class AreaMesh : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    public void InitMesh()
     {
-        player = PlayerAndTerritoryManager.instance.mainPlayer;
-
         m_meshObject = new GameObject("AreaMesh");
 
         m_meshObject.AddComponent<MeshFilter>();
@@ -58,17 +54,11 @@ public class AreaMesh : MonoBehaviour
         m_safetyMeshObject.layer = LayerMask.NameToLayer("SafetyArea");
     }
 
-    // Update is called once per frame
-    void Update()
+    
+    public void MeshCreate(List<Vector3> territorialArea)
     {
-        MeshCreate();
-        SafetyMeshCreate();
-    }
-
-    public void MeshCreate()
-    {
-        if (player.territorialArea.Count < 3) { return; }
-        Vector3 vec = player.territorialArea[0];
+        if (territorialArea.Count < 3) { return; }
+        Vector3 vec = territorialArea[0];
 
         // 初期化
         meshPoints.Clear();
@@ -77,7 +67,7 @@ public class AreaMesh : MonoBehaviour
         uvs.Clear();
 
         meshPoints.Add(vec);
-        meshPoints.AddRange(player.territorialArea);
+        meshPoints.AddRange(territorialArea);
 
         for(int i = 0; i < meshPoints.Count; ++i)
         {
@@ -110,10 +100,10 @@ public class AreaMesh : MonoBehaviour
         mesh.RecalculateNormals();
     }
 
-    public void SafetyMeshCreate()
+    public void SafetyMeshCreate(List<Vector3> safetyTerritorialArea)
     {
-        if(player.safetyTerritorialArea.Count < 3) { return; }
-        Vector3 vec = player.safetyTerritorialArea[0];
+        if(safetyTerritorialArea.Count < 3) { return; }
+        Vector3 vec = safetyTerritorialArea[0];
 
         // 初期化
         safetyMeshPoints.Clear();
@@ -122,7 +112,7 @@ public class AreaMesh : MonoBehaviour
         safetyUvs.Clear();
 
         safetyMeshPoints.Add(vec);
-        safetyMeshPoints.AddRange(player.safetyTerritorialArea);
+        safetyMeshPoints.AddRange(safetyTerritorialArea);
 
         for (int i = 0; i < safetyMeshPoints.Count; ++i)
         {

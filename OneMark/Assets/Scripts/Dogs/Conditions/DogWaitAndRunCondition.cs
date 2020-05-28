@@ -4,9 +4,9 @@ using UnityEngine;
 using AIComponent;
 
 /// <summary>
-/// SitAndStayしているかを判断するDogSitAndStayCondition 
+/// WaitAndRunしているかを判断するDogWaitAndRunCondition
 /// </summary>
-public class DogSitAndStayCondition : BaseAICondition
+public class DogWaitAndRunCondition : BaseAICondition
 {
 	/// <summary>This DogAIAgent</summary>
 	[SerializeField, Tooltip("This DogAIAgent")]
@@ -19,6 +19,6 @@ public class DogSitAndStayCondition : BaseAICondition
 	public override bool IsCondition()
 	{
 		return m_dogAIAgent != null && (m_dogAIAgent.isLinkPlayer 
-			& m_dogAIAgent.isLinkMarkPoint & m_dogAIAgent.isSitAndStaySelf);
+			& m_dogAIAgent.isLinkMarkPoint & m_dogAIAgent.isWaitAndRunSelf);
 	}
 }

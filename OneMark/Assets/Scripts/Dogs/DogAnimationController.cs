@@ -4,92 +4,56 @@ using UnityEngine;
 
 public class DogAnimationController : MonoBehaviour
 {
+	public enum AnimationState : int
+	{
+		Stand = 0,
+		Run = 1,
+		Rolling = 2
+	}
+
 	public class EditAnimation
 	{
-		public EditAnimation(Animator animator)
-		{
-			m_animator = animator;
+		public EditAnimation(Animator animator) { m_animator = animator; }
 
-			if (m_stateIntegerID == -1)
-			{
-				m_stateIntegerID = Animator.StringToHash("State");
-				m_rollingTriggerID = Animator.StringToHash("Rolling");
-				m_markingTriggerID = Animator.StringToHash("Marking");
-				m_sleepStartTriggerID = Animator.StringToHash("SleepStart");
-				m_wakeUpTriggerID = Animator.StringToHash("WakeUp");
-				m_returnRunTriggerID = Animator.StringToHash("ReturnRun");
-				m_nextChangeTriggerID = Animator.StringToHash("NextChange");
-				m_forceChangeStandID= Animator.StringToHash("ForceChangeStand");
-				m_isSearchBoolID = Animator.StringToHash("IsSearch");
-			}
+		public AnimationState state
+		{
+			get { return (AnimationState)m_animator.GetInteger(m_stateIntegerID); }
+			set { m_animator.SetInteger(m_stateIntegerID, (int)value); }
+		}
+		public bool isWakeUpNextSearch
+		{
+			get { return m_animator.GetBool(m_isSearchBoolID); }
+			set { m_animator.SetBool(m_isSearchBoolID, value); }
 		}
 
-		public void SetStateStand()
-		{
-			m_animator.SetInteger(m_stateIntegerID, 0);
-		}
-		public void SetStateRun()
-		{
-			m_animator.SetInteger(m_stateIntegerID, 1);
-		}
-		public void SetBoolIsNextSearch(bool isSet)
-		{
-			m_animator.SetBool(m_isSearchBoolID, isSet);
-		}
-		public bool GetBoolIsNextSearch()
-		{
-			return m_animator.GetBool(m_isSearchBoolID);
-		}
+		public void TriggerMarking() { m_animator.SetTrigger(m_markingTriggerID); }
+		public void TriggerMarkingEnd() { m_animator.SetTrigger(m_markingEndTriggerID); }
+		public void TriggerWaitRunStart() { m_animator.SetTrigger(m_waitRunStartTriggerID); }
+		public void TriggerForceChangeStand() { m_animator.SetTrigger(m_forceChangeStandID); }
+		public void TriggerWakeUp() { m_animator.SetTrigger(m_wakeUpTriggerID); }
+		public void TriggerWakeUpNext() { m_animator.SetTrigger(m_wakeUpNextTriggerID); }
 
-		public void SetTriggerRolling()
-		{
-			m_animator.SetTrigger(m_rollingTriggerID);
-		}
-		public void SetTriggerMarking()
-		{
-			m_animator.SetTrigger(m_markingTriggerID);
-		}
-		public void SetTriggerReturnRun()
-		{
-			m_animator.SetTrigger(m_returnRunTriggerID);
-		}
-
-		public void SetTriggerSleepStart()
-		{
-			m_animator.SetTrigger(m_sleepStartTriggerID);
-		}
-		public void SetTriggerForceChangeStand()
-		{
-			m_animator.SetTrigger(m_forceChangeStandID);
-		}
-		public void SetTriggerWakeUp()
-		{
-			m_animator.SetTrigger(m_wakeUpTriggerID);
-		}
-		public void SetTriggerNextChange()
-		{
-			m_animator.SetTrigger(m_nextChangeTriggerID);
-		}
+		static int m_stateIntegerID = Animator.StringToHash("State");
+		static int m_isSearchBoolID = Animator.StringToHash("IsSearch");
+		static int m_markingTriggerID = Animator.StringToHash("Marking");
+		static int m_markingEndTriggerID = Animator.StringToHash("MarkingEnd");
+		static int m_waitRunStartTriggerID = Animator.StringToHash("WaitRunStart");
+		static int m_forceChangeStandID = Animator.StringToHash("ForceChangeStand");
+		static int m_wakeUpTriggerID = Animator.StringToHash("WakeUp");
+		static int m_wakeUpNextTriggerID = Animator.StringToHash("WakeUpNext");
 
 		Animator m_animator = null;
-
-		static int m_stateIntegerID = -1;
-		static int m_rollingTriggerID = -1;
-		static int m_markingTriggerID = -1;
-		static int m_sleepStartTriggerID = -1;
-		static int m_wakeUpTriggerID = -1;
-		static int m_returnRunTriggerID = -1;
-		static int m_nextChangeTriggerID = -1;
-		static int m_forceChangeStandID = -1;
-		static int m_isSearchBoolID = -1;
 	}
 
 	public EditAnimation editAnimation { get; private set; } = null;
+	public DogAIAgent aiAgent { get { return m_aiAgent; } }
 
 	[SerializeField]
 	Animator m_animator = null;
 	[SerializeField]
 	DogAIAgent m_aiAgent = null;
+	[SerializeField]
+	DogRushingAndMarking m_rushingAndMarking = null;
 
 	// Start is called before the first frame update
 	void Awake()
@@ -97,12 +61,20 @@ public class DogAnimationController : MonoBehaviour
 		editAnimation = new EditAnimation(m_animator);
     }
 
+	public void AnimationMarkingEndCallback()
+	{
+		if (m_rushingAndMarking != null)
+			m_rushingAndMarking.MoveStateFromMarkingEndToFunctionEnd();
+	}
 	public void AnimationWakeUpCallback()
 	{
-		editAnimation.SetTriggerNextChange();
+		editAnimation.TriggerWakeUpNext();
 
 		//ステイ終了
-		if (!editAnimation.GetBoolIsNextSearch())
-			m_aiAgent.SetSitAndStay(false, m_aiAgent.linkMarkPoint);
+		if (!editAnimation.isWakeUpNextSearch)
+		{
+			m_aiAgent.SetWaitAndRun(false, m_aiAgent.linkMarkPoint);
+			m_aiAgent.navMeshAgent.isStopped = false;
+		}
 	}
 }

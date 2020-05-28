@@ -72,8 +72,12 @@ MonoBehaviour:
   m_drawingLinkPlayerID: -1
   m_drawingLinkServantID: -1
   m_selectAnimation: {fileID: 2883376484833703371}
-  m_uiObject: {fileID: 0}
-  m_uiSlider: {fileID: 0}
+  m_markingTarget: {x: -2, y: 0, z: 0}
+  m_linkAscendingPerSeconds: 1
+  m_unlinkDecreasingPerSeconds: 1
+  m_effectiveMaxLimiter: 7.5
+  m_effectiveFirstLinkBonusRatio: 0.5
+  m_isJoinSafetyAreaWhenLink: 1
   effects: {fileID: 3425003610696155427}
   m_button: {fileID: 8695553012689865288}
 --- !u!114 &3425003610696155427

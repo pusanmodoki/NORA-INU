@@ -25,11 +25,11 @@ public class DogAIAgent : AIAgent
 	public float indicatedDogRadius { get { return m_indicatedDogRadius; } }
 	/// <summary>Player別の自身のIndex</summary>
 	public int linkPlayerServantsOwnIndex { get { return m_linkPlayerServantsOwnIndex; } }
-	/// <summary>Is sit & stay now?</summary>
-	public bool isSitAndStaySelf { get; private set; } = false;
+	/// <summary>Is wait & run now?</summary>
+	public bool isWaitAndRunSelf { get; private set; } = false;
 	/// <summary>Playerに同行中？</summary>
 	public bool isAccompanyingPlayer { get {
-			return isLinkPlayer & !isSitAndStaySelf &
+			return isLinkPlayer & !isWaitAndRunSelf &
 				m_rushingAndMarkingFunction.functionState == DogRushingAndMarking.State.Null; } }
 	/// <summary>Is linked player?</summary>
 	public bool isLinkPlayer { get { return linkPlayer != null; } }
@@ -66,7 +66,7 @@ public class DogAIAgent : AIAgent
 #if UNITY_EDITOR
 	/// <summary>isSitAndStay</summary>
 	[Header("Dog AI Agent Debug Only"), Tooltip("isSitAndStay"), Space, SerializeField]
-	bool m_dIsSitAndStay = false;
+	bool m_dIsWaitAndRun = false;
 #endif
 	
 	/// <summary>Link mark point</summary>
@@ -157,7 +157,7 @@ public class DogAIAgent : AIAgent
 #endif
 			return false;
 		}
-		else if (!isSitAndStaySelf)
+		else if (!isWaitAndRunSelf)
 		{
 #if UNITY_EDITOR
 			Debug.LogWarning("Warning!! DogAIAgent->ComeBecauseEndOfMarking\n GoSoStartOfMarking is not running.");
@@ -187,8 +187,8 @@ public class DogAIAgent : AIAgent
 			else
 			{
 				//Animation Set
-				m_animationController.editAnimation.SetTriggerWakeUp();
-				m_animationController.editAnimation.SetBoolIsNextSearch(false);
+				m_animationController.editAnimation.TriggerWakeUp();
+				m_animationController.editAnimation.isWakeUpNextSearch = false;
 				m_linkMarkPoint.ChangeAgent(null);
 				m_linkMarkPoint = null;
 			}
@@ -205,8 +205,8 @@ public class DogAIAgent : AIAgent
 			else
 			{
 				//Animation Set
-				m_animationController.editAnimation.SetTriggerWakeUp();
-				m_animationController.editAnimation.SetBoolIsNextSearch(true);
+				m_animationController.editAnimation.TriggerWakeUp();
+				m_animationController.editAnimation.isWakeUpNextSearch = true;
 				m_linkMarkPoint.ChangeAgent(null);
 				m_linkMarkPoint = null;
 			}
@@ -235,25 +235,25 @@ public class DogAIAgent : AIAgent
 		}
 	}
 	/// <summary>
-	/// [SetSitAndStay]
-	/// おすわり！待て！を設定する
+	/// [SetWaitAndRun]
+	/// 待て！周りを走れ！を設定する
 	/// 引数1: Set value
 	/// 引数2: Link mark point
 	/// </summary>
-	public void SetSitAndStay(bool isSet, BaseMarkPoint markPoint)
+	public void SetWaitAndRun(bool isSet, BaseMarkPoint markPoint)
 	{
-		if (markPoint == null || isSet == isSitAndStaySelf)
+		if (markPoint == null || isSet == isWaitAndRunSelf)
 			return;
 
-		isSitAndStaySelf = isSet;
+		isWaitAndRunSelf = isSet;
 		if (isSet)
 		{
 			//強制的な増加を設定
 			markPoint.SetForceAscendingEffective(true);
 
 			linkMarkPoint = markPoint;
-			navMeshAgent.updatePosition = false;
-			navMeshAgent.updateRotation = false;
+			//navMeshAgent.updatePosition = false;
+			//navMeshAgent.updateRotation = false;
 		}
 		else
 		{
@@ -261,15 +261,15 @@ public class DogAIAgent : AIAgent
 			markPoint.SetForceAscendingEffective(false);
 
 			linkMarkPoint = null;
-			navMeshAgent.updatePosition = true;
-			navMeshAgent.updateRotation = true;
-			navMeshAgent.Warp(transform.position);
+			//navMeshAgent.updatePosition = true;
+			//navMeshAgent.updateRotation = true;
+			//navMeshAgent.Warp(transform.position);
 		}
 
 
 	//Debug only
 #if UNITY_EDITOR
-	m_dIsSitAndStay = isSet;
+	m_dIsWaitAndRun = isSet;
 #endif
 }
 
@@ -307,8 +307,8 @@ public class DogAIAgent : AIAgent
 		if (m_isReservationEndOfMarking && !navMeshAgent.isOnOffMeshLink)
 		{
 			m_isReservationEndOfMarking = false;
-			m_animationController.editAnimation.SetTriggerWakeUp();
-			m_animationController.editAnimation.SetBoolIsNextSearch(m_isSetBoolIsNextSearch);
+			m_animationController.editAnimation.TriggerWakeUp();
+			m_animationController.editAnimation.isWakeUpNextSearch = m_isSetBoolIsNextSearch;
 			m_linkMarkPoint.ChangeAgent(null);
 			m_linkMarkPoint = null;
 		}

@@ -22,6 +22,12 @@ public class PlayerManagerIntermediary : MonoBehaviour
 	/// <summary>This GroundFlag</summary>
 	[SerializeField, Tooltip("This GroundFlag")]
 	BoxCastFlags m_groundFlag = null;
+	/// <summary>This AreaMesh</summary>
+	[SerializeField, Tooltip("This AreaMesh")]
+	AreaMesh m_areaMesh = null;
+	/// <summary>This AreaBorderMesh</summary>
+	[SerializeField, Tooltip("This AreaBorderMesh")]
+	AreaBorderMesh m_areaBorderMesh = null;
 	/// <summary>This NavMeshAgent</summary>
 	[SerializeField, Tooltip("This NavMeshAgent")]
 	UnityEngine.AI.NavMeshAgent m_navMeshAgent = null;
@@ -71,9 +77,9 @@ public class PlayerManagerIntermediary : MonoBehaviour
 	void Awake()
     {
 		//Managerにインスタンス追加
-		PlayerAndTerritoryManager.instance.AddPlayer(gameObject, this, 
-			m_playerMaualCollisionAdministrator, m_navMeshController, m_input, m_groundFlag, m_navMeshAgent,
-			m_rigidBody, m_followPoints, m_resultCameraLookPoint, m_resultCameraMovePoint);
+		PlayerAndTerritoryManager.instance.AddPlayer(gameObject, this, m_playerMaualCollisionAdministrator, 
+			m_navMeshController, m_input, m_groundFlag, m_navMeshAgent, m_rigidBody, m_areaMesh, 
+			m_areaBorderMesh, m_followPoints, m_resultCameraLookPoint, m_resultCameraMovePoint);
 
 		//現在のステージ情報を取得
 		var settings = DataManager.nowStageSettings;

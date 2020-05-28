@@ -550,7 +550,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			hitVisibilityMarkPoint != null ? (hitVisibilityMarkPoint.transform.position - transform.position).normalized : transform.forward,
 			hitVisibilityMarkPoint != null ? Vector3.Distance(transform.position, hitVisibilityMarkPoint.transform.position) : 10.0f);
 
-
+		int instanceID = gameObject.GetInstanceID();
 		if (PlayerAndTerritoryManager.instance == null)
 			m_instructionsReturnDogInfos.DOnDrawGizmos(transform, Color.white, transform.forward, 15.0f);
 		else
