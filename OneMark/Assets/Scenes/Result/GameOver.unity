@@ -780,6 +780,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: ContinueButton
       objectReference: {fileID: 0}
+    - target: {fileID: 7635190839985411428, guid: 37be6df4b2d33934b888dab705be300f,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: e7d436dd3c8cac74a9c1cefe09bb77fd,
+        type: 3}
     - target: {fileID: 7635190839985411430, guid: 37be6df4b2d33934b888dab705be300f,
         type: 3}
       propertyPath: m_LocalPosition.x
