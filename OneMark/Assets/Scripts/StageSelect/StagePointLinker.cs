@@ -39,7 +39,6 @@ public class StagePointLinker : MonoBehaviour
         }
         else if (Input.GetButtonDown("Fire1"))
         {
-            transform.parent.parent.GetComponent<StageSlide>().m_isWorldSelect = true;
             gameObject.SetActive(false);
         }
         if (Input.GetButtonDown("Horizontal"))

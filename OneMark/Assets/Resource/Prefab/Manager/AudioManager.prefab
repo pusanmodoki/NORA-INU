@@ -65,7 +65,8 @@ MonoBehaviour:
     m_loadBgmKeys:
     - Title
   - m_sceneName: StageSelect
-    m_loadBgmKeys: []
+    m_loadBgmKeys:
+    - Title
   - m_sceneName: T-1
     m_loadBgmKeys:
     - Stage 0

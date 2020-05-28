@@ -9,44 +9,50 @@ public class StageSlide : MonoBehaviour
     private int nowSelectIndex = 0;
 
     [SerializeField]
-    private float interval = 20.0f;
+    private float interval = 40.0f;
 
     [SerializeField]
-    private float scrollSpeed = 1.0f;
+    private float scrollSpeed = 0.03f;
 
     [SerializeField]
-    private bool isScroll = false;
+    private bool isInput_Yoko = false;
 
     [SerializeField]
-    private bool isWorldSelect = true;
-    public bool m_isWorldSelect { set { isWorldSelect = value; } }
+    private SelectSoundPlayer se = null;
 
-    [SerializeField]
-    private SelectSoundPlayer SEPlayer = null;
+    //[SerializeField]
+    //private GameObject logo = null;
+
+    //List<Image> stageLogo = new List<Image>();
+
+    public int worldIndex { get { return nowSelectIndex; } }
 
     // Start is called before the first frame update
     void Start()
     {
         for(int i = 0; i < transform.childCount; ++i)
         {
-            Vector3 localPos = transform.GetChild(i).GetComponent<RectTransform>().localPosition;
+            Vector3 localPos = transform.GetChild(i).GetComponent<Transform>().localPosition;
             localPos.x = i * interval;
-            transform.GetChild(i).GetComponent<RectTransform>().localPosition = localPos;
+            transform.GetChild(i).GetComponent<Transform>().localPosition = localPos;
         }
+
+        //for (int i = 0; i < 4; ++i) 
+        //{
+        //    stageLogo.Add(logo.transform.GetChild(i).GetComponent<Image>());
+        //}
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isWorldSelect) return;
-        if (!isScroll)
+        if (!isInput_Yoko)
         {
             InputRightAndLeft();
         }
-        else
-        {
-            ScrollUpdate();
-        }
+        
+        ScrollUpdate();
+
     }
 
     /// <summary>
@@ -57,46 +63,36 @@ public class StageSlide : MonoBehaviour
         float value = 0.0f;
         if (Input.GetButton("Horizontal"))
         {
+            se.SelectPlay();
+
             value = Input.GetAxisRaw("Horizontal");
             if (value == -1.0f)
             {
                 if (nowSelectIndex == 0) return;
                 --nowSelectIndex;
-                isScroll = true;
-                SEPlayer.SelectPlay();
+                isInput_Yoko = true;
             }
             else
             {
                 if (nowSelectIndex == transform.childCount - 1) return;
                 ++nowSelectIndex;
-                isScroll = true;
-                SEPlayer.SelectPlay();
+                isInput_Yoko = true;
             }
-        }
-        if (Input.GetButton("Fire2"))
-        {
-            SEPlayer.EnterPlay();
-            isWorldSelect = false;
-            transform.GetChild(nowSelectIndex).GetChild(0).gameObject.SetActive(true);
         }
     }
     
     void ScrollUpdate()
     {
         float pointx = (float)(-nowSelectIndex) * interval;
-        float lerpx = Mathf.Lerp(GetComponent<RectTransform>().localPosition.x, pointx, scrollSpeed);
+        float lerpx = Mathf.Lerp(GetComponent<Transform>().localPosition.x, pointx, scrollSpeed);
 
-        Vector3 vec = GetComponent<RectTransform>().localPosition;
+        Vector3 vec = GetComponent<Transform>().localPosition;
         vec.x = lerpx;
-        GetComponent<RectTransform>().localPosition = vec;
+        GetComponent<Transform>().localPosition = vec;
 
-        if(Mathf.Abs(GetComponent<RectTransform>().localPosition.x - pointx) < 0.01f)
+        if(Mathf.Abs(GetComponent<Transform>().localPosition.x - pointx) < 2.0f)
         {
-            vec = GetComponent<RectTransform>().localPosition;
-            vec.x = pointx;
-
-            GetComponent<RectTransform>().localPosition = vec;
-            isScroll = false;
+            isInput_Yoko = false;
         }
     }
 }
