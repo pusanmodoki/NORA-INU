@@ -14,7 +14,7 @@ public class AreaCameraSetup : MonoBehaviour
         transform.position = pos;
 
         camera.orthographic = true;
-        camera.orthographicSize = MainGameManager.instance.stageSize.x / 2.0f;
+        camera.orthographicSize = MainGameManager.instance.stageSize.y / 2.0f;
     }
 
 }
