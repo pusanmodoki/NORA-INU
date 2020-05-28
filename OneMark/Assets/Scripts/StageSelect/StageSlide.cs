@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StageSlide : MonoBehaviour
 {
@@ -14,7 +15,15 @@ public class StageSlide : MonoBehaviour
     private float scrollSpeed = 0.03f;
 
     [SerializeField]
-    private bool isInput = false;
+    private bool isInput_Yoko = false;
+
+    [SerializeField]
+    private SelectSoundPlayer se = null;
+
+    [SerializeField]
+    private GameObject logo = null;
+
+    List<Image> stageLogo = new List<Image>();
 
     public int worldIndex { get { return nowSelectIndex; } }
 
@@ -27,12 +36,17 @@ public class StageSlide : MonoBehaviour
             localPos.x = i * interval;
             transform.GetChild(i).GetComponent<Transform>().localPosition = localPos;
         }
+
+        for (int i = 0; i < 4; ++i) 
+        {
+            stageLogo.Add(logo.transform.GetChild(i).GetComponent<Image>());
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isInput)
+        if (!isInput_Yoko)
         {
             InputRightAndLeft();
         }
@@ -49,18 +63,20 @@ public class StageSlide : MonoBehaviour
         float value = 0.0f;
         if (Input.GetButton("Horizontal"))
         {
+            se.SelectPlay();
+
             value = Input.GetAxisRaw("Horizontal");
             if (value == -1.0f)
             {
                 if (nowSelectIndex == 0) return;
                 --nowSelectIndex;
-                isInput = true;
+                isInput_Yoko = true;
             }
             else
             {
                 if (nowSelectIndex == transform.childCount - 1) return;
                 ++nowSelectIndex;
-                isInput = true;
+                isInput_Yoko = true;
             }
         }
     }
@@ -74,9 +90,9 @@ public class StageSlide : MonoBehaviour
         vec.x = lerpx;
         GetComponent<Transform>().localPosition = vec;
 
-        if(Mathf.Abs(GetComponent<Transform>().localPosition.x - pointx) < 2.5f)
+        if(Mathf.Abs(GetComponent<Transform>().localPosition.x - pointx) < 2.0f)
         {
-            isInput = false;
+            isInput_Yoko = false;
         }
     }
 }

@@ -13,21 +13,6 @@ public class SelectSoundPlayer : MonoBehaviour
     [SerializeField]
     bool isThisPlayDetect = false;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (!isThisPlayDetect) return;
-        if (Input.GetButtonDown("Horizontal") ||
-            Input.GetButtonDown("Vertical"))
-        {
-            select.Play();
-        }
-        if (Input.GetButtonDown("Fire2"))
-        {
-            enter.Play();
-        }
-    }
-
     public void SelectPlay()
     {
         select.Play();

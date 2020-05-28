@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class SelectButton : MonoBehaviour
 {
@@ -10,19 +9,19 @@ public class SelectButton : MonoBehaviour
     private int nowSelectIndex = 0;
 
     [SerializeField]
-    private bool isInput = false;
+    private bool isInput_Tate = false;
 
     [SerializeField]
     private int stageNo = 4;
 
     List<Image> button = new List<Image>();
 
-    float seconds = 0.0f;
+    [SerializeField]
+    private SelectSoundPlayer se = null;
 
     // Start is called before the first frame update
     void Start()
     {
-
         for (int i = 0; i < stageNo; ++i)
         {
             button.Add(transform.GetChild(i).GetComponent<Image>());
@@ -32,7 +31,7 @@ public class SelectButton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isInput)
+        if (!isInput_Tate)
         {
             InputUpAndDown();
         }
@@ -44,28 +43,35 @@ public class SelectButton : MonoBehaviour
     void InputUpAndDown()
     {
         float value = 0.0f;
-        if (Input.GetButton("Vertical"))
+        if (Input.GetButtonDown("Vertical"))
         {
+            se.SelectPlay();
+
             value = Input.GetAxisRaw("Vertical");
             if (value == -1.0f)
             {// 下
                 if (nowSelectIndex == stageNo - 1) return;
                 ++nowSelectIndex;
-                isInput = true;
+                isInput_Tate = true;
             }
             else
             {// 上
                 if (nowSelectIndex == 0) return;
                 --nowSelectIndex;
-                isInput = true;
+                isInput_Tate = true;
             }
         }
 
         // 決定
-        if (Input.GetButton("Fire2"))
+        if (Input.GetButtonDown("Fire2"))
         {
+            se.EnterPlay();
+
+            //Debug.Log(StageSelectManager.instance.worldNum +1);
+            //Debug.Log(nowSelectIndex);
+
             transform.GetChild(nowSelectIndex).GetChild(0).gameObject.SetActive(true);
-            OneMarkSceneManager.instance.MoveStageScene(StageSelectManager.instance.worldNum);
+            OneMarkSceneManager.instance.MoveStageScene(new Vector2Int(StageSelectManager.instance.worldNum + 1, nowSelectIndex + 1));
         }
 
     }
@@ -90,12 +96,7 @@ public class SelectButton : MonoBehaviour
             button[nowSelectIndex - 1].color = Color.gray;
         }
 
-        seconds += Time.deltaTime;
-        if (seconds >= 0.357f)
-        {
-            seconds = 0.0f;
-            isInput = false;
-        }
+        isInput_Tate = false;
 
     }
 }
