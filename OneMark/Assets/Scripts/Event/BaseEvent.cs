@@ -10,7 +10,7 @@ public abstract class BaseEvent : MonoBehaviour
 
 	[SerializeField]
 	bool m_isAutoTrigger = false;
-
+	
 	public void CallNearbyIfManualTrigger()
 	{
 		NearbyIfManualTrigger();

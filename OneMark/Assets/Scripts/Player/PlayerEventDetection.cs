@@ -104,7 +104,9 @@ public class PlayerEventDetection : MonoBehaviour
 			for (int i = 0, count = m_hitEvents.Count; i < count; ++i)
 			{
 				float sqrMagnitude = (m_hitEvents[i].transform.position - overlapPosition).sqrMagnitude;
-				if (minDistance > sqrMagnitude && !(isAutoTrigger && m_oldHitAutoEvents.Contains(m_hitEvents[i])))
+				if (minDistance > sqrMagnitude  
+					&& true
+					 && !(isAutoTrigger && m_oldHitAutoEvents.Contains(m_hitEvents[i])))
 				{
 					result = m_hitEvents[i];
 					minDistance = sqrMagnitude;
