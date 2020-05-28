@@ -30,8 +30,10 @@ public class AreaBorderMesh : MonoBehaviour
     public void InitMesh()
     {
         m_meshObject = new GameObject("AreaBorderMesh");
+		UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(
+			m_meshObject, OneMarkSceneManager.instance.nowScene);
 
-        m_meshObject.AddComponent<MeshFilter>();
+		m_meshObject.AddComponent<MeshFilter>();
         m_renderer = m_meshObject.AddComponent<MeshRenderer>();
         m_mesh = m_meshObject.GetComponent<MeshFilter>().mesh;
         m_renderer.material = m_material;

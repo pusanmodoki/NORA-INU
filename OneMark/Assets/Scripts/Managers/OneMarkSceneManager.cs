@@ -40,6 +40,7 @@ public class OneMarkSceneManager : MonoBehaviour
 	public static OneMarkSceneManager instance { get; private set; } = null;
 	static bool m_isCreateInstance = false;
 
+	public Scene nowScene { get { return SceneManager.GetSceneByName(nowLoadSceneName); } }
 	public Vector2Int nowStageSceneIndex
 	{
 		get
@@ -328,6 +329,7 @@ public class OneMarkSceneManager : MonoBehaviour
 
 		{
 			SceneManager.SetActiveScene(m_nowScene);
+			yield return null;
 			var gameObjects = m_nowScene.GetRootGameObjects();
 			foreach (var e in gameObjects) e.SetActive(true);
 		}

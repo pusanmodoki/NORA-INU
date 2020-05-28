@@ -37,7 +37,11 @@ public class AreaMesh : MonoBehaviour
     // Start is called before the first frame update
     public void InitMesh()
     {
-        m_meshObject = new GameObject("AreaMesh");
+		var scene = OneMarkSceneManager.instance.nowScene;
+
+		m_meshObject = new GameObject("AreaMesh");
+		UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(
+			m_meshObject, scene);
 
         m_meshObject.AddComponent<MeshFilter>();
         render= m_meshObject.AddComponent<MeshRenderer>();
@@ -46,8 +50,10 @@ public class AreaMesh : MonoBehaviour
         m_meshObject.layer = LayerMask.NameToLayer("Area");
 
         m_safetyMeshObject = new GameObject("SafeAreaMesh");
+		UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(
+			m_safetyMeshObject, scene);
 
-        m_safetyMeshObject.AddComponent<MeshFilter>();
+		m_safetyMeshObject.AddComponent<MeshFilter>();
         safetyRender = m_safetyMeshObject.AddComponent<MeshRenderer>();
         safetyMesh = m_safetyMeshObject.GetComponent<MeshFilter>().mesh;
         safetyRender.material = m_safetyMaterial;
