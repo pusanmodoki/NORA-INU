@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1727380172475297848}
   - component: {fileID: 1727380172475297855}
   - component: {fileID: 1727380172475297854}
+  - component: {fileID: 2005519165271903561}
   m_Layer: 0
   m_Name: SafetyAreaCamera
   m_TagString: Untagged
@@ -87,3 +88,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bae578745a12573469c50b42ac9dcfde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2005519165271903561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1727380172475297853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79387fb9b8425184bab3ba4f512331f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_texture: {fileID: 0}

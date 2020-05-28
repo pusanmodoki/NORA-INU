@@ -61,6 +61,5 @@ public class PlayerCovering : BaseMovePoint
 
         transform.LookAt(point);
 
-        
     }
 }
