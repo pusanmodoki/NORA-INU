@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4580299090591010659}
   - component: {fileID: 8526488377165057769}
   - component: {fileID: 5318640843263660893}
+  - component: {fileID: 3780443308318177430}
   m_Layer: 0
   m_Name: AreaCamera
   m_TagString: Untagged
@@ -41,8 +42,8 @@ Camera:
   m_GameObject: {fileID: 8740790345037677472}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.433, g: 0.433, b: 0.433, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -87,3 +88,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bae578745a12573469c50b42ac9dcfde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3780443308318177430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8740790345037677472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e02660f0abba2bb4794383dda6ea3fce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_texture: {fileID: 0}

@@ -10,7 +10,7 @@ NavMeshProjectSettings:
   - name: Not Walkable
     cost: 1
   - name: Jump
-    cost: 4
+    cost: 14
   - name: Ascent
     cost: 3
   - name: Sliding

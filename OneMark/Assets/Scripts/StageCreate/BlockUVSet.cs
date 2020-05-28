@@ -6,7 +6,7 @@ public class BlockUVSet : MonoBehaviour
 {
     public static float s_stageSize { get; set; }
 
-    Mesh m_mesh;
+    Mesh m_mesh = null;
     // Start is called before the first frame update
     void Start()
     {

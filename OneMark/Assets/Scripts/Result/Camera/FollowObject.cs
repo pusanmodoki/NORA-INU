@@ -36,6 +36,9 @@ public class FollowObject : MonoBehaviour
     [SerializeField, Tooltip("リザルトの時にカメラが動き出す時間")]
     private float lookPointMoveTime = 5.0f;
 
+    [SerializeField]
+    PlayerCovering m_covering = null;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -86,20 +89,24 @@ public class FollowObject : MonoBehaviour
 
     public void ResultFlg()
     {
+
+        m_covering.isMoving = false;
         resultFlg = true;
     }
 
     private void MoveCameraPoint()
     {
-        followingObject.transform.localPosition =
-            Vector3.Lerp(followingObject.transform.localPosition, new Vector3(0.0f, 33.0f, -13.0f), startCameraSpeed);
+        //followingObject.transform.localPosition =
+        //    Vector3.Lerp(followingObject.transform.localPosition, new Vector3(0.0f, 33.0f, -13.0f), startCameraSpeed);
 
-        this.transform.position =
-                Vector3.Slerp(this.transform.position, followingObject.transform.position, startCameraSpeed);
+        //this.transform.position =
+        //        Vector3.Slerp(this.transform.position, followingObject.transform.position, startCameraSpeed);
 
-        this.transform.LookAt(lookObject.transform);
-
+        //this.transform.LookAt(lookObject.transform);
+        m_covering.isMoving = true;
         startFlg = false;
+        playerObject.GetComponent<PlayerInput>().isEnableInput = true;
+
     }
 
     private void MoveLookPoint()

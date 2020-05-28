@@ -29,6 +29,8 @@ public class AreaMesh : MonoBehaviour
 
     [SerializeField]
     private Material m_material = null;
+    [SerializeField]
+    private Material m_safetyMaterial = null;
 
     private GameObject m_meshObject = null;
     private GameObject m_safetyMeshObject = null;
@@ -52,20 +54,21 @@ public class AreaMesh : MonoBehaviour
         m_safetyMeshObject.AddComponent<MeshFilter>();
         safetyRender = m_safetyMeshObject.AddComponent<MeshRenderer>();
         safetyMesh = m_safetyMeshObject.GetComponent<MeshFilter>().mesh;
-        safetyRender.material = m_material;
-        m_safetyMeshObject.layer = LayerMask.NameToLayer("Area");
+        safetyRender.material = m_safetyMaterial;
+        m_safetyMeshObject.layer = LayerMask.NameToLayer("SafetyArea");
     }
 
     // Update is called once per frame
     void Update()
     {
         MeshCreate();
-        //SafetyMeshCreate();
+        SafetyMeshCreate();
     }
 
     public void MeshCreate()
     {
-        Vector3 vec = player.allTerritorys[0].transform.position;
+        if (player.territorialArea.Count < 3) { return; }
+        Vector3 vec = player.territorialArea[0];
 
         // 初期化
         meshPoints.Clear();
@@ -109,7 +112,8 @@ public class AreaMesh : MonoBehaviour
 
     public void SafetyMeshCreate()
     {
-        Vector3 vec = player.allTerritorys[0].transform.position;
+        if(player.safetyTerritorialArea.Count < 3) { return; }
+        Vector3 vec = player.safetyTerritorialArea[0];
 
         // 初期化
         safetyMeshPoints.Clear();

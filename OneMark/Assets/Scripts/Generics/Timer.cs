@@ -12,9 +12,6 @@ public class TimeSignal
     public float startTime { get; protected set; }
     /// <summary> Check Signal Interval</summary>
     public float signalInterval { get; protected set; }
- 
-    /// <summary>now</summary>
-    float m_nowLimitTime = 0.0f;
     
     /// <summary>
     /// [Start]
@@ -25,7 +22,6 @@ public class TimeSignal
     {
         startTime = Time.time;
         this.signalInterval = signaInterval;
-        m_nowLimitTime = signaInterval;
     }
 
     /// <summary>
@@ -34,10 +30,9 @@ public class TimeSignal
     /// </summary>
     public bool Check()
     {
-        if (Time.time - startTime >= m_nowLimitTime)
+        if (Time.time - startTime >= signalInterval)
         {
             startTime = Time.time;
-            m_nowLimitTime = signalInterval + Time.time - startTime;
             return true;
         }
         else

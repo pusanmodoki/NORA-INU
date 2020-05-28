@@ -9,37 +9,43 @@ using System.Collections.ObjectModel;
 [DefaultExecutionOrder(-100)]
 public class MarkPointManager : MonoBehaviour
 {
+	public struct TemporarilyDeactiveInfo : IEqualityComparer<TemporarilyDeactiveInfo>
+	{
+		public TemporarilyDeactiveInfo(int pointInstanceID, float deacitiveSeconds)
+		{
+			this.pointInstanceID = pointInstanceID;
+			this.deacitiveSeconds = deacitiveSeconds;
+			this.timer = new Timer(); timer.Start();
+		}
+
+		public int pointInstanceID { get; private set; }
+		public float deacitiveSeconds { get; private set; }
+		public bool isDesignatedTimeElapsed { get { return timer.elapasedTime > deacitiveSeconds; } }
+		Timer timer { get; set; }
+
+		public bool Equals(TemporarilyDeactiveInfo x, TemporarilyDeactiveInfo y)
+		{
+			return x.pointInstanceID == y.pointInstanceID;
+		}
+
+		public int GetHashCode(TemporarilyDeactiveInfo obj)
+		{
+			return obj.GetHashCode();
+		}
+	}
+
 	/// <summary>Static instance</summary>
 	public static MarkPointManager instance { get; private set; } = null;
 
 	/// <summary>All mark points</summary>
 	public ReadOnlyDictionary<int, BaseMarkPoint> allPoints { get; private set; } = null;
-	/// <summary>初回リンク時のカウンターボーナス</summary>
-	public float effectiveFirstLinkBonus { get { return m_effectiveMaxLimiter * m_effectiveFirstLinkBonusRatio; } }
-	/// <summary>マーキング最大時間</summary>
-	public float effectiveMaxLimiter { get { return m_effectiveMaxLimiter; } }
-	/// <summary>マーキングdelta count (上昇)</summary>
-	public float acendingDeltaCount { get { return m_linkAscendingPerSeconds * Time.deltaTime * countScale; } }
-	/// <summary>マーキングdelta count (減少)</summary>
-	public float decreasingDeltaCount { get { return m_unlinkDecreasingPerSeconds * Time.deltaTime * countScale; } }
 	/// <summary>count scaler</summary>
 	public float countScale { get; private set; } = 1.0f;
 
-	/// <summary>Manage dogs</summary>
+	/// <summary>Manage points</summary>
 	Dictionary<int, BaseMarkPoint> m_points = null;
-
-	/// <summary>リンク時のゲージ上昇速度 per seconds</summary>
-	[SerializeField, Tooltip("リンク時のゲージ上昇速度 per seconds")]
-	float m_linkAscendingPerSeconds = 1.0f;
-	/// <summary>リンク解消時のゲージ減少速度 per seconds</summary>
-	[SerializeField, Tooltip("リンク解消時のゲージ減少速度 per seconds")]
-	float m_unlinkDecreasingPerSeconds = 1.0f;
-	/// <summary>マーキング最大時間</summary>
-	[SerializeField, Tooltip("マーキング最大時間")]
-	float m_effectiveMaxLimiter = 7.5f;
-	/// <summary>初回リンク時のカウンターボーナス割合</summary>
-	[SerializeField, Range(0.0f, 1.0f), Tooltip("初回リンク時のカウンターボーナス割合")]
-	float m_effectiveFirstLinkBonusRatio = 0.5f;
+	/// <summary>非アクティブ化ポイントリスト</summary>
+	List<TemporarilyDeactiveInfo> m_temporarilyDeactivePoints = new List<TemporarilyDeactiveInfo>();
 
 	/// <summary>[Awake]</summary>
 	void Awake()
@@ -56,10 +62,23 @@ public class MarkPointManager : MonoBehaviour
 	/// <summary>[Update]</summary>
 	void Update()
 	{
+		for (int i = 0; i < m_temporarilyDeactivePoints.Count; ++i)
+		{
+			if (m_temporarilyDeactivePoints[i].isDesignatedTimeElapsed)
+			{
+				allPoints[m_temporarilyDeactivePoints[i].pointInstanceID].gameObject.SetActive(true);
+				m_temporarilyDeactivePoints.RemoveAt(i);
+				--i;
+			}
+		}
+
 		foreach (var e in m_points)
 		{
-			e.Value.UpdateBasePoint();
-			e.Value.UpdatePoint();
+			if (e.Value.gameObject.activeSelf)
+			{
+				e.Value.UpdateBasePoint();
+				e.Value.UpdatePoint();
+			}
 		}
 	}
 
@@ -85,5 +104,21 @@ public class MarkPointManager : MonoBehaviour
 	public void RemoveMarkPoint(BaseMarkPoint point)
 	{
 		m_points.Remove(point.pointInstanceID);
+	}
+
+	/// <summary>
+	/// [RegisterTemporarilyDeactive]
+	/// BaseMarkPointを一時的に非アクティブ化する
+	/// 引数1: BaseMarkPoint
+	/// 引数2: 非アクティブ化秒数
+	/// </summary>
+	public void RegisterTemporarilyDeactive(BaseMarkPoint markPoint, float deactiveSeconds)
+	{
+		TemporarilyDeactiveInfo newInfo = new TemporarilyDeactiveInfo(markPoint.pointInstanceID, deactiveSeconds);
+
+		if (!m_temporarilyDeactivePoints.Contains(newInfo))
+			m_temporarilyDeactivePoints.Add(newInfo);
+
+		markPoint.gameObject.SetActive(false);
 	}
 }

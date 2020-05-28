@@ -20,10 +20,10 @@ public class StageSlide : MonoBehaviour
     [SerializeField]
     private SelectSoundPlayer se = null;
 
-    [SerializeField]
-    private GameObject logo = null;
+    //[SerializeField]
+    //private GameObject logo = null;
 
-    List<Image> stageLogo = new List<Image>();
+    //List<Image> stageLogo = new List<Image>();
 
     public int worldIndex { get { return nowSelectIndex; } }
 
@@ -37,10 +37,10 @@ public class StageSlide : MonoBehaviour
             transform.GetChild(i).GetComponent<Transform>().localPosition = localPos;
         }
 
-        for (int i = 0; i < 4; ++i) 
-        {
-            stageLogo.Add(logo.transform.GetChild(i).GetComponent<Image>());
-        }
+        //for (int i = 0; i < 4; ++i) 
+        //{
+        //    stageLogo.Add(logo.transform.GetChild(i).GetComponent<Image>());
+        //}
     }
 
     // Update is called once per frame

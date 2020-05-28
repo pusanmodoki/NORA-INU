@@ -62,7 +62,7 @@ public class MoveMarkPoint : BaseMarkPoint
 	public override void UpdatePoint()
 	{
 		if (isLinked)
-			m_alphaUiSlider.value = effectiveCounter / MarkPointManager.instance.effectiveMaxLimiter;
+			m_alphaUiSlider.value = effectiveCounter / effectiveMaxLimiter;
 
 		if (m_intervalTimer.elapasedTime > m_checkOverlapInterval)
 		{

@@ -16,6 +16,9 @@ namespace Editor
 		static readonly string m_cClip = "m_clip";
 		static readonly string m_cVolume = "m_volume";
 
+		static readonly string m_cMinVolume = "m_minVolume";
+		static readonly string m_cChangeSeconds = "m_changeSeconds";
+
 		static readonly string m_cSceneName = "m_sceneName";
 		static readonly string m_cLoadBgmKeys = "m_loadBgmKeys";
 
@@ -23,6 +26,7 @@ namespace Editor
 
 		SerializedProperty m_bgmSource = null;
 		SerializedProperty m_allBgms = null;
+		SerializedProperty m_allVolumeChangePresets = null;
 		SerializedProperty m_bgmForEachScenes = null;
 
 		AudioManagerEditorObject m_data = null;
@@ -34,6 +38,7 @@ namespace Editor
 		{
 			m_bgmSource = serializedObject.FindProperty("m_bgmSource");
 			m_allBgms = serializedObject.FindProperty("m_allBgms");
+			m_allVolumeChangePresets = serializedObject.FindProperty("m_allVolumeChangePresets");
 			m_bgmForEachScenes = serializedObject.FindProperty("m_bgmForEachScenes");
 		}
 		public override void OnInspectorGUI()
@@ -49,6 +54,8 @@ namespace Editor
 				|| m_bgmForEachScenes.arraySize == 0) && !EditorApplication.isPlaying)
 				CheckSceneNames(false);
 
+			ShowVolumePresets(ref sizeX, ref sizeElementCount);
+
 			ShowPlaySourceAndClips(ref sizeX, ref sizeElementCount);
 
 			ShowBgmToLoadInEachScene(ref sizeX, ref sizeElementCount, ref sizeAddElement);
@@ -57,12 +64,105 @@ namespace Editor
 		}
 
 
+		void ShowVolumePresets(ref Vector2 sizeX, ref Vector2 sizeElementCount)
+		{
+			var style = new GUIStyle(GUI.skin.label);
+			style.fontStyle = FontStyle.Bold;
+			EditorGUILayout.LabelField("Volume Change Presets", style);
 
+			EditorGUILayout.BeginHorizontal();
+			{
+				EditorGUI.BeginChangeCheck();
+				m_data.isFoldoutAllVolumePreset = EditorGUILayout.Foldout(m_data.isFoldoutAllVolumePreset, "Presets");
+				if (EditorGUI.EndChangeCheck()) EditorUtility.SetDirty(m_data);
+
+				EditorGUILayout.LabelField("element count: "
+					+ m_allVolumeChangePresets.arraySize.ToString().PadLeft(3, ' '), GUILayout.Width(sizeElementCount.x));
+			}
+			EditorGUILayout.EndHorizontal();
+
+			if (m_data.isFoldoutAllVolumePreset)
+			{
+				if (m_allVolumeChangePresets.arraySize == 0)
+					EditorGUILayout.HelpBox("Preset empty.", MessageType.Info);
+
+				++EditorGUI.indentLevel;
+				for (int i = 0; i < m_allVolumeChangePresets.arraySize; ++i)
+				{
+					var element = m_allVolumeChangePresets.GetArrayElementAtIndex(i);
+					var uniqueKey = element.FindPropertyRelative(m_cUniqueKey);
+					var minVolume = element.FindPropertyRelative(m_cMinVolume);
+					var changeSeconds = element.FindPropertyRelative(m_cChangeSeconds);
+
+					EditorGUILayout.BeginHorizontal();
+					{
+						EditorGUI.BeginChangeCheck();
+						while (m_data.isFoldoutAllVolumePresetInfos.Count <= i) m_data.isFoldoutAllVolumePresetInfos.Add(false);
+						m_data.isFoldoutAllVolumePresetInfos[i] = EditorGUILayout.Foldout(m_data.isFoldoutAllVolumePresetInfos[i],
+							"ID: " + (i).ToString().PadLeft(3, ' ') + ",  Unique key: " + uniqueKey.stringValue);
+						if (EditorGUI.EndChangeCheck()) EditorUtility.SetDirty(m_data);
+
+						GUI.backgroundColor = Color.red;
+						if (GUILayout.Button("X", GUILayout.Width(sizeX.x)))
+						{
+							if (m_data.isFoldoutAllVolumePresetInfos.Count > i)
+							{
+								m_data.isFoldoutAllVolumePresetInfos.RemoveAt(i);
+								EditorUtility.SetDirty(m_data);
+							}
+
+							m_allVolumeChangePresets.DeleteArrayElementAtIndex(i);
+							GUI.backgroundColor = Color.white;
+							--i;
+							continue;
+						}
+						GUI.backgroundColor = Color.white;
+					}
+					EditorGUILayout.EndHorizontal();
+
+
+					if (m_data.isFoldoutAllVolumePresetInfos[i])
+					{
+						EditorGUILayout.PropertyField(uniqueKey);
+						EditorGUILayout.PropertyField(minVolume);
+						EditorGUILayout.PropertyField(changeSeconds);
+					}
+				}
+				--EditorGUI.indentLevel;
+
+				EditorGUILayout.BeginHorizontal();
+				EditorGUILayout.Space();
+				if (GUILayout.Button("Add element"))
+				{
+					m_allVolumeChangePresets.InsertArrayElementAtIndex(m_allVolumeChangePresets.arraySize);
+					m_data.isFoldoutAllVolumePresetInfos.Add(true);
+					EditorUtility.SetDirty(m_data);
+
+					var addData = m_allVolumeChangePresets.GetArrayElementAtIndex(m_allVolumeChangePresets.arraySize - 1);
+					addData.FindPropertyRelative(m_cMinVolume).floatValue = 0.0f;
+					addData.FindPropertyRelative(m_cChangeSeconds).floatValue = 1.0f;
+
+					int count = 0;
+					for (int i = 0; i < m_allVolumeChangePresets.arraySize - 1; ++i)
+						if (m_allVolumeChangePresets.GetArrayElementAtIndex(i).FindPropertyRelative(m_cUniqueKey).stringValue.StartsWith(m_cDefaultKey))
+							++count;
+
+					if (count == 0)
+						addData.FindPropertyRelative(m_cUniqueKey).stringValue = m_cDefaultKey;
+					else
+						addData.FindPropertyRelative(m_cUniqueKey).stringValue = m_cDefaultKey + '(' + count + ')';
+				}
+				EditorGUILayout.EndHorizontal();
+			}
+		}
 
 		void ShowPlaySourceAndClips(ref Vector2 sizeX, ref Vector2 sizeElementCount)
 		{
 			m_data.uniqueKeys.Clear();
 
+			EditorGUILayout.Space();
+			EditorGUILayout.Space();
+			EditorGUILayout.Space();
 			var style = new GUIStyle(GUI.skin.label);
 			style.fontStyle = FontStyle.Bold;
 			EditorGUILayout.LabelField("Play Source And Clips", style);
@@ -125,7 +225,7 @@ namespace Editor
 
 					if (m_data.isFoldoutAllBgmInfos[i])
 					{
-						++EditorGUI.indentLevel;
+						//++EditorGUI.indentLevel;
 						EditorGUILayout.PropertyField(uniqueKey);
 
 						EditorGUI.BeginChangeCheck();
@@ -145,7 +245,7 @@ namespace Editor
 						}
 
 						EditorGUILayout.PropertyField(volume);
-						--EditorGUI.indentLevel;
+						//--EditorGUI.indentLevel;
 					}
 				}
 				--EditorGUI.indentLevel;
@@ -184,7 +284,6 @@ namespace Editor
 					if (!m_data.uniqueKeys.Contains(uniqueKey.stringValue))
 						m_data.uniqueKeys.Add(uniqueKey.stringValue);
 				}
-
 			}
 		}
 
@@ -273,7 +372,8 @@ namespace Editor
 								int result = Mathf.Clamp(m_data.uniqueKeys.IndexOf(keys.GetArrayElementAtIndex(k).stringValue)
 									, 0, m_data.uniqueKeys.Count - 1);
 
-								result = EditorGUILayout.Popup("element" + k.ToString().PadLeft(3, ' ') + ":", result, m_data.uniqueKeysToArray);
+								if (k > 0) result = EditorGUILayout.Popup("element" + k.ToString().PadLeft(3, ' ') + ":", result, m_data.uniqueKeysToArray);
+								else result = EditorGUILayout.Popup("element" + k.ToString().PadLeft(3, ' ') + "(auto play bgm):", result, m_data.uniqueKeysToArray);
 								keys.GetArrayElementAtIndex(k).stringValue = m_data.uniqueKeys[result];
 
 								GUI.backgroundColor = Color.red;

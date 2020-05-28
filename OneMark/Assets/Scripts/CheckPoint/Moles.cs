@@ -27,7 +27,6 @@ public class Moles : BaseCheckPoint
     private void Escape()
     {
         m_animation.SetTrigger("Escape");
-        m_boneAnimation.SetTrigger("Appear");
     }
 
     private void Appear()
