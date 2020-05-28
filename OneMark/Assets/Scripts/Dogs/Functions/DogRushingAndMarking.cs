@@ -188,7 +188,8 @@ public class DogRushingAndMarking : BaseDogAIFunction
 					//設定
 					navMeshAgent.destination = m_moveTarget;
 
-					if (navMeshAgent.remainingDistance < 0.1f)
+					Vector3 position = navMeshAgent.transform.position; position.y = m_moveTarget.y;
+					if ((position - m_moveTarget).sqrMagnitude < 0.1f * 0.1f)
 					{
 						//強制的に増加させる
 						if (m_markPoint.linkPlayerID != dogAIAgent.linkPlayer.GetInstanceID())
