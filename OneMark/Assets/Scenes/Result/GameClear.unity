@@ -462,7 +462,6 @@ GameObject:
   - component: {fileID: 1067463081}
   - component: {fileID: 1067463083}
   - component: {fileID: 1067463082}
-  - component: {fileID: 1067463084}
   m_Layer: 5
   m_Name: Logo
   m_TagString: Untagged
@@ -525,25 +524,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1067463080}
   m_CullTransparentMesh: 0
---- !u!95 &1067463084
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1067463080}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 66c46db096a714a4ca25f09e1904af19, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &1707084373
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -724,6 +704,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 874649320}
     m_Modifications:
+    - target: {fileID: 233950226, guid: 51edd2833232753479b068be6b377a46, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 2fc63c4cef6ed1a488ac6cf29e900c26, type: 2}
     - target: {fileID: 8018161432800060826, guid: 51edd2833232753479b068be6b377a46,
         type: 3}
       propertyPath: m_Name
@@ -869,7 +853,8 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 233950226, guid: 51edd2833232753479b068be6b377a46, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 51edd2833232753479b068be6b377a46, type: 3}
 --- !u!1001 &6146115067355194162
 PrefabInstance:

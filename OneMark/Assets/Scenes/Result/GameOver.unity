@@ -608,7 +608,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: TitleButton
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 841499051, guid: e3532a26c418bae419b180fcbfc77cb8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e3532a26c418bae419b180fcbfc77cb8, type: 3}
 --- !u!224 &1096775306 stripped
 RectTransform:
