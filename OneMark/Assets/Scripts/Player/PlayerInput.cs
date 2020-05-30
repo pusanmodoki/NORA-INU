@@ -149,16 +149,10 @@ public class PlayerInput : MonoBehaviour
 
 			if (followIndex == 3) return;
 
-			bool isResult = m_maualCollisionAdministrator.IsHitInstructionsGoingDog(
-				ServantManager.instance.servantByPlayers[gameObject.GetInstanceID()][followIndex]);
-
-			if (isResult)
-				isResult &= m_maualCollisionAdministrator.IsHitInstructionsMarkPoint(
-					m_maualCollisionAdministrator.hitVisibilityMarkPoint);
-
-
-			if (isResult && ServantManager.instance.servantByPlayers[gameObject.GetInstanceID()][followIndex]
-				.GoSoStartOfMarking(m_maualCollisionAdministrator.hitVisibilityMarkPoint))
+			if (m_maualCollisionAdministrator.IsHitInstructionsGoingDog(
+					ServantManager.instance.servantByPlayers[gameObject.GetInstanceID()][followIndex]) &&
+				ServantManager.instance.servantByPlayers[gameObject.GetInstanceID()][followIndex]
+					.GoSoStartOfMarking(m_maualCollisionAdministrator.hitVisibilityMarkPoint))
 			{
 				m_shotTimers.Start();
 			}

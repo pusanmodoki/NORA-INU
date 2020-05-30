@@ -5,20 +5,16 @@ using UnityEngine;
 public class TargetMarker : MonoBehaviour
 {
     [SerializeField]
-    private GameObject target = null;
-
-    [SerializeField]
-    private float rotateSpeed = 1.0f;
-
-    [SerializeField]
     ParticleSystem m_lineEffect = null;
-
 
     private List<MeshRenderer> m_renderers = new List<MeshRenderer>();
 	Quaternion rotation = Quaternion.identity;
 
-    // Start is called before the first frame update
-    void Start()
+	Vector3 m_targetPosition = Vector3.zero;
+	bool m_isEnabled = false;
+
+	// Start is called before the first frame update
+	void Start()
     {
         for(int i = 0; i < transform.childCount; ++i)
         {
@@ -33,12 +29,13 @@ public class TargetMarker : MonoBehaviour
     {
         ParticleSystem.EmissionModule emission = m_lineEffect.emission;
         ParticleSystem.MainModule main = m_lineEffect.main;
-        if (target)
+
+        if (m_isEnabled)
         {
-            float distance = Vector3.Distance(transform.position, target.transform.position);
+            float distance = Vector3.Distance(transform.position, m_targetPosition);
             emission.rateOverTime = distance;
             main.startSpeed = distance;
-            m_lineEffect.transform.LookAt(target.transform);
+            m_lineEffect.transform.LookAt(m_targetPosition);
         }
 
         //TurningEffect();
@@ -56,24 +53,18 @@ public class TargetMarker : MonoBehaviour
     //	//transform.Rotate(0.0f, rotateSpeed * Time.deltaTime, 0.0f);
     //}
 
-    public void SetTarget(GameObject _target)
-    {
-        //ParticleSystem.EmissionModule emission = m_lineEffect.emission;
-        //ParticleSystem.MainModule main = m_lineEffect.main;
+	public void EnableMarker(Vector3 target)
+	{
+		if (!m_lineEffect.gameObject.activeSelf) m_lineEffect.gameObject.SetActive(true);
 
-        target = _target;
-        if(target == null)
-        {
-            m_lineEffect.gameObject.SetActive(false);
-        }
-        else
-        {
-            if (!m_lineEffect.gameObject.activeSelf)
-            {
-                m_lineEffect.gameObject.SetActive(true);
-            }
-        }
+		m_targetPosition = target;
+		m_isEnabled = true;
+	}
+	public void DisableMarker()
+	{
+		if (m_lineEffect.gameObject.activeSelf) m_lineEffect.gameObject.SetActive(false);
 
-    }
+		m_isEnabled = false;
+	}
 
 }

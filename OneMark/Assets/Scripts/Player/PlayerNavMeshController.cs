@@ -30,7 +30,9 @@ public class PlayerNavMeshController : MonoBehaviour
 
 	BaseUniqueOffMeshLink m_pointUniqueOffMeshLink = null;
 	BaseUniqueOffMeshLink m_copyUniqueOffMeshLink = null;
+	Vector3 m_position = Vector3.zero;
 	Vector3 m_velocity = Vector3.zero;
+	Vector3 m_moveVelocity = Vector3.zero;
 	Vector3 m_destination = Vector3.zero;
 	Vector3 m_territoryNormal = Vector3.zero;
 	Vector3 m_territoryHitPoint = Vector3.zero;
@@ -73,9 +75,9 @@ public class PlayerNavMeshController : MonoBehaviour
 
 		transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(m_input.moveInput), m_rotationSpeed * Time.deltaTime);
 
+		m_position = transform.position;
 		m_velocity = m_input.moveInput * m_moveSpeed * Time.deltaTime;
 		m_destination = transform.position + m_velocity;
-
 
 		if (m_maualCollisionAdministrator.isTerritoryStay
 			& m_maualCollisionAdministrator.isTerritorySegmentStay)
@@ -88,12 +90,29 @@ public class PlayerNavMeshController : MonoBehaviour
 					  (new Vector3(m_destination.x, 0.0f, m_destination.z) - m_territoryHitPoint).magnitude;
 			}
 		}
+
 		m_navMeshAgent.Move(m_velocity);
+		m_moveVelocity = transform.position - m_position;
+
+		if (m_moveVelocity != m_velocity)
+		{
+			if (CollisionTerritory.HitRayTerritory(PlayerAndTerritoryManager.instance.mainPlayer.territorialArea,
+				m_position - m_moveVelocity, m_moveVelocity.normalized, m_moveVelocity.magnitude * 2.0f,
+				out m_territoryNormal, out m_territoryHitPoint))
+			{
+				m_destination = transform.position + m_moveVelocity;
+
+				m_moveVelocity += m_territoryNormal *
+					  (new Vector3(m_destination.x, 0.0f, m_destination.z) - m_territoryHitPoint).magnitude;
+				transform.position = m_position;
+				m_navMeshAgent.Move(m_moveVelocity);
+			}
+		}
 
 
 		//debug only
 #if UNITY_EDITOR
-		 m_dVelocity = m_velocity;
+		m_dVelocity = m_velocity;
 #endif
 	}
 

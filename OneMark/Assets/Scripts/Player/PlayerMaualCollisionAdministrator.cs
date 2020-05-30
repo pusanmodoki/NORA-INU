@@ -143,14 +143,14 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
     GameObject m_nowTargetObject = null;
 
 	/// <summary>GoMarking時にMarkPointへのBoxCast判定で使う情報</summary>
-	[Header("Instructions to dogs"), SerializeField, Tooltip("GoMarking時にMarkPointへのBoxCast判定で使う情報")]
-	BoxCastInfos m_instructionsMarkPointInfos = default;
+	[Header("Instructions to dogs"), SerializeField, Tooltip("GoMarking時にMarkPointへのRaycast判定で使う情報")]
+	RaycastInfos m_instructionsMarkPointInfos = new RaycastInfos(0, Vector3.up);
 	/// <summary>GoMarking時にMarkPointへのBoxCast判定した際に障害物と判断するLayer</summary>
 	[SerializeField, Tooltip("GoMarking時にMarkPointへのBoxCast判定した際に障害物と判断するLayer")]
 	LayerMaskEx m_instructionsMarkPointObstacleLayerMask = 0;
 	/// <summary>EndMarking時にオス犬へのBoxCast判定で使う情報</summary>
-	[SerializeField, Tooltip("EndMarking時にオス犬へのBoxCast判定で使う情報")]
-	BoxCastInfos m_instructionsReturnDogInfos = default;
+	[SerializeField, Tooltip("EndMarking時にオス犬へのRaycast判定で使う情報")]
+	RaycastInfos m_instructionsReturnDogInfos = default;
 	/// <summary>EndMarking時にオス犬へのBoxCast判定した際に障害物と判断するLayer</summary>
 	[SerializeField, Tooltip("EndMarking時にオス犬へのBoxCast判定した際に障害物と判断するLayer")]
 	LayerMaskEx m_instructionsReturnDogObstacleLayerMask = 0;
@@ -187,35 +187,8 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			m_playerInfo = info;
 	}
 	/// <summary>
-	/// [IsHitInstructionsMarkPoint]
-	/// MarkPointとBoxCast判定を行う
-	/// </summary>
-	public bool IsHitInstructionsMarkPoint(BaseMarkPoint markPoint)
-	{
-		if (markPoint == null) return false;
-
-		Vector3 position = m_instructionsMarkPointInfos.WorldCenter(transform);
-		Vector3 target = markPoint.transform.position;
-		var collisions = Physics.BoxCastAll(position, m_instructionsMarkPointInfos.overlapSize, (target - position).normalized,
-			transform.rotation, Vector3.Distance(target, position), m_instructionsMarkPointInfos.layerMask);
-
-		int instanceID = markPoint.transform.GetInstanceID();
-		bool isHit = false;
-
-		for (int i = 0, length = collisions.Length; i < length; ++i)
-		{
-			if (m_instructionsMarkPointObstacleLayerMask.EqualBitsForGameObject(collisions[i].transform.gameObject)
-				&& (collisions[i].point - position).sqrMagnitude < (target - position).sqrMagnitude)
-				return false;
-			else if (collisions[i].transform.GetInstanceID() == instanceID)
-				isHit = true;
-		}
-
-		return isHit;
-	}
-	/// <summary>
 	/// [IsHitInstructionsGoingDog]
-	/// DogとBoxCast判定を行う
+	/// Dogと当たり判定を行う
 	/// </summary>
 	public bool IsHitInstructionsGoingDog(DogAIAgent dogAIAgent)
 	{
@@ -224,14 +197,13 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		Vector3 position = transform.LocalToWorldPosition(m_instructionsGoingDogCenter);
 		Vector3 target = dogAIAgent.transform.LocalToWorldPosition(dogAIAgent.indicatedDogCenter);
 		float radius = (m_instructionsGoingDogRadius + dogAIAgent.indicatedDogRadius);
-		radius *= radius;
 		position.y = target.y = 0.0f;
 
-		return (target - position).sqrMagnitude < radius;
+		return (target - position).sqrMagnitude < radius * radius;
 	}
 	/// <summary>
 	/// [IsHitInstructionsGoingDog]
-	/// Dogと当たり判定を行う
+	/// DogとBoxCast判定を行う
 	/// </summary>
 	public bool IsHitInstructionsReturnDog(DogAIAgent dogAIAgent)
 	{
@@ -239,23 +211,24 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 
 		Vector3 position = m_instructionsReturnDogInfos.WorldCenter(transform);
 		Vector3 target = dogAIAgent.transform.position;
+		float toTargetSqrMagnitude = (target - position).sqrMagnitude;
+		int instanceID = dogAIAgent.transform.root.GetInstanceID();
 
-		var collisions = Physics.BoxCastAll(position, m_instructionsReturnDogInfos.overlapSize, 
-			(target - position).normalized, transform.rotation, Vector3.Distance(target, position) * 2.0f, m_instructionsReturnDogInfos.layerMask);
-
-		int instanceID = dogAIAgent.transform.GetInstanceID();
-		bool isHit = false;
+		var collisions = m_instructionsReturnDogInfos.RaycastAll(transform, (target - position).normalized, toTargetSqrMagnitude);
 
 		for (int i = 0, length = collisions.Length; i < length; ++i)
 		{
 			if (m_instructionsReturnDogObstacleLayerMask.EqualBitsForGameObject(collisions[i].transform.gameObject)
-				&& (collisions[i].point - position).sqrMagnitude < (target - position).sqrMagnitude)
+				&& (collisions[i].point - position).sqrMagnitude < toTargetSqrMagnitude)
 				return false;
-			else if (collisions[i].transform.GetInstanceID() == instanceID)
-				isHit = true;
 		}
-
-		return isHit;
+		for (int i = 0, length = collisions.Length; i < length; ++i)
+		{
+			if (collisions[i].transform.root.GetInstanceID() == instanceID)
+				return true;
+		}
+		
+		return false;
 	}
 
 	/// <summary>[Awake]</summary>
@@ -415,19 +388,32 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 
 			hitVisibilityMarkPoint = null;
 			EditVisibilityHitFlag(false);
-			m_targetMarker.SetTarget(null);
+			m_targetMarker.DisableMarker();
 			return false;
 		}
 		//この時点でCount1ならヒット確定として終了
 		else if (markPoints.Count == 1)
 		{
+			Vector3 hitPoint;
+			if (!IsRaycastMarkPoint(markPoints[0].markPoint, out hitPoint))
+			{
+				if (isMaybeRunItAgain) return false;
+
+				if (hitVisibilityMarkPoint != null) hitVisibilityMarkPoint.RemovedThisPoint();
+
+				hitVisibilityMarkPoint = null;
+				EditVisibilityHitFlag(false);
+				m_targetMarker.EnableMarker(hitPoint);
+				return false;
+			}
+
 			if (hitVisibilityMarkPoint != markPoints[0].markPoint && hitVisibilityMarkPoint != null)
 				hitVisibilityMarkPoint.RemovedThisPoint();
 
 			EditVisibilityHitFlag(true);
 			hitVisibilityMarkPoint = markPoints[0].markPoint;
 			m_nowTargetObject = hitVisibilityMarkPoint.SelectThisPoint();
-			m_targetMarker.SetTarget(m_nowTargetObject);
+			m_targetMarker.EnableMarker(m_nowTargetObject.transform.position);
 			return true;
 		}
 
@@ -449,12 +435,48 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 
 		hitVisibilityMarkPoint = markPoints[minIndex].markPoint;
 		m_nowTargetObject = hitVisibilityMarkPoint.SelectThisPoint();
-		m_targetMarker.SetTarget(m_nowTargetObject);
+		m_targetMarker.EnableMarker(m_nowTargetObject.transform.position);
 		EditVisibilityHitFlag(true);
 
 		return true;
 	}
+	/// <summary>
+	/// [IsBoxCastMarkPoint]
+	/// MarkPointとBoxCast判定を行う
+	/// </summary>
+	public bool IsRaycastMarkPoint(BaseMarkPoint markPoint, out Vector3 hitPoint)
+	{
+		hitPoint = Vector3.zero;
+		if (markPoint == null) return false;
 
+		Vector3 position = m_instructionsMarkPointInfos.WorldCenter(transform);
+		Vector3 target = markPoint.transform.position;
+		float toTargetSqrMagnitude = (target - position).sqrMagnitude;
+		int instanceID = markPoint.transform.root.GetInstanceID();
+
+		var collisions = m_instructionsMarkPointInfos.RaycastAll(transform, (target - position).normalized, toTargetSqrMagnitude);
+	
+		for (int i = 0, length = collisions.Length; i < length; ++i)
+		{
+			if (m_instructionsMarkPointObstacleLayerMask.EqualBitsForGameObject(collisions[i].transform.gameObject)
+				&& (collisions[i].point - position).sqrMagnitude < toTargetSqrMagnitude)
+			{
+				hitPoint = collisions[i].point;
+				return false;
+			}
+		}
+		for (int i = 0, length = collisions.Length; i < length; ++i)
+		{
+			if (collisions[i].transform.root.GetInstanceID() == instanceID)
+			{
+				hitPoint = collisions[i].point;
+				return true;
+			}
+		}
+
+		hitPoint = Vector3.zero;
+		return false;
+	}
 	/// <summary>
 	/// [EditVisibilityHitFlag]
 	/// Edited visibility hit flag
@@ -543,10 +565,11 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		Gizmos.color = Color.cyan;
 		Gizmos.DrawWireSphere(transform.LocalToWorldPosition(m_instructionsGoingDogCenter), m_instructionsGoingDogRadius);
 
-		bool isHit = IsHitInstructionsMarkPoint(hitVisibilityMarkPoint);
+		Vector3 vec;
+		bool isHit = IsRaycastMarkPoint(hitVisibilityMarkPoint, out vec);
 		m_instructionsMarkPointInfos.DOnDrawGizmos(transform, isHit ? Color.red : Color.yellow,
 			hitVisibilityMarkPoint != null ? (hitVisibilityMarkPoint.transform.position - transform.position).normalized : transform.forward,
-			hitVisibilityMarkPoint != null ? Vector3.Distance(transform.position, hitVisibilityMarkPoint.transform.position) : 10.0f);
+			!isHit || vec != Vector3.zero ? vec.magnitude : 10.0f);
 
 		int instanceID = gameObject.GetInstanceID();
 		if (PlayerAndTerritoryManager.instance == null)

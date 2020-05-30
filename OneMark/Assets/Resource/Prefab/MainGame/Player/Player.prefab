@@ -175,9 +175,8 @@ MonoBehaviour:
     m_layerMask:
       m_layerMask:
         serializedVersion: 2
-        m_Bits: 99840
+        m_Bits: 66048
     m_center: {x: 0, y: 1, z: 0}
-    m_size: {x: 2, y: 8, z: 1}
   m_instructionsMarkPointObstacleLayerMask:
     m_layerMask:
       serializedVersion: 2
@@ -186,9 +185,8 @@ MonoBehaviour:
     m_layerMask:
       m_layerMask:
         serializedVersion: 2
-        m_Bits: 101376
+        m_Bits: 67584
     m_center: {x: 0, y: 1, z: 0}
-    m_size: {x: 2, y: 8, z: 1}
   m_instructionsReturnDogObstacleLayerMask:
     m_layerMask:
       serializedVersion: 2
@@ -232,7 +230,7 @@ MonoBehaviour:
     m_layerMask:
       m_layerMask:
         serializedVersion: 2
-        m_Bits: 163840
+        m_Bits: 131072
     m_center: {x: 0, y: 1, z: 0.5}
     m_size: {x: 2, y: 1, z: 2}
   m_isEnabledAutoTriggerDetection: 1

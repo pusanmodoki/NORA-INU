@@ -87,7 +87,7 @@ public class PlayerEventDetection : MonoBehaviour
 		Vector3 overlapPosition = boxCastInfos.WorldCenter(thisTransform);
 
 		var collisions = Physics.OverlapBox(overlapPosition, 
-			boxCastInfos.overlapSize * 0.5f, thisTransform.rotation, boxCastInfos.layerMask);
+			boxCastInfos.overlapSize, thisTransform.rotation, boxCastInfos.layerMask);
 
 		m_hitEvents.Clear();
 		for (int i = 0, length = collisions.Length; i < length; ++i)

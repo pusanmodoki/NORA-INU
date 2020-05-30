@@ -34,6 +34,113 @@ public struct RendererMaterial
 }
 
 [System.Serializable]
+public struct RaycastInfos
+{
+	public RaycastInfos(LayerMaskEx layerMask, Vector3 center)
+	{
+		m_layerMask = layerMask;
+		m_center = center;
+	}
+
+	public LayerMaskEx layerMask { get { return m_layerMask; } }
+	public Vector3 center { get { return m_center; } }
+
+	[SerializeField]
+	LayerMaskEx m_layerMask;
+	[SerializeField]
+	Vector3 m_center;
+
+	public Vector3 WorldCenter(Transform transform) { return transform.LocalToWorldPosition(m_center); }
+
+	public bool Raycast(Transform transform, Vector3 direction, float distance)
+	{
+		return Physics.Raycast(WorldCenter(transform), direction, distance, layerMask);
+	}
+	public bool Raycast(Transform transform, Vector3 direction, out RaycastHit raycastHit, float distance)
+	{
+		return Physics.Raycast(WorldCenter(transform), direction, out raycastHit, distance, layerMask);
+	}
+	public RaycastHit[] RaycastAll(Transform transform, Vector3 direction, float distance)
+	{
+		return Physics.RaycastAll(WorldCenter(transform), direction, distance, layerMask);
+	}
+
+	//debug only
+#if UNITY_EDITOR
+	public void DOnDrawGizmos(Transform transform, Color color, Vector3 direction, float distance)
+	{
+		Vector3 worldCenter = WorldCenter(transform);
+
+		//Color
+		Gizmos.color = color;
+		//Ray
+		Gizmos.matrix = Matrix4x4.identity;
+		Gizmos.DrawRay(worldCenter, direction * distance);
+		//Matrix
+		Gizmos.matrix = Matrix4x4.Translate(worldCenter + direction * distance);
+		Gizmos.matrix *= Matrix4x4.Rotate(transform.rotation);
+		//Draw Cube
+		Gizmos.DrawWireCube(Vector3.zero, new Vector3(0.1f, 0.1f, 0.3f));
+	}
+#endif
+}
+
+[System.Serializable]
+public struct AdvanceRaycastInfos
+{
+	public AdvanceRaycastInfos(LayerMaskEx layerMask, Vector3 center, float distance)
+	{
+		m_layerMask = layerMask;
+		m_center = center;
+		m_distance = distance;
+	}
+
+	public LayerMaskEx layerMask { get { return m_layerMask; } }
+	public Vector3 center { get { return m_center; } }
+	float distance { get { return m_distance; } }
+
+	[SerializeField]
+	LayerMaskEx m_layerMask;
+	[SerializeField]
+	Vector3 m_center;
+	[SerializeField]
+	float m_distance;
+
+	public Vector3 WorldCenter(Transform transform) { return transform.LocalToWorldPosition(m_center); }
+
+	public bool Raycast(Transform transform, Vector3 direction)
+	{
+		return Physics.Raycast(WorldCenter(transform), direction, distance, layerMask);
+	}
+	public bool Raycast(Transform transform, Vector3 direction, out RaycastHit raycastHit)
+	{
+		return Physics.Raycast(WorldCenter(transform), direction, out raycastHit, distance, layerMask);
+	}
+	public RaycastHit[] RaycastAll(Transform transform, Vector3 direction)
+	{
+		return Physics.RaycastAll(WorldCenter(transform), direction, distance, layerMask);
+	}
+	//debug only
+#if UNITY_EDITOR
+	public void DOnDrawGizmos(Transform transform, Color color, Vector3 direction)
+	{
+		Vector3 worldCenter = WorldCenter(transform);
+
+		//Color
+		Gizmos.color = color;
+		//Ray
+		Gizmos.matrix = Matrix4x4.identity;
+		Gizmos.DrawRay(worldCenter, direction * distance);
+		//Matrix
+		Gizmos.matrix = Matrix4x4.Translate(worldCenter + direction * distance);
+		Gizmos.matrix *= Matrix4x4.Rotate(transform.rotation);
+		//Draw Cube
+		Gizmos.DrawWireCube(Vector3.zero, new Vector3(0.1f, 0.1f, 0.3f));
+	}
+#endif
+}
+
+[System.Serializable]
 public struct BoxCastInfos
 {
 	public BoxCastInfos(LayerMaskEx layerMask, Vector3 center, Vector3 size)
