@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 119
   m_IsActive: 1
 --- !u!4 &5758720318941370317
 Transform:
@@ -90,7 +90,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 119
   m_IsActive: 1
 --- !u!4 &5561859487521518639
 Transform:
@@ -202,6 +202,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree_20 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 1c7d759936afb684193a312b265a7c34,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c7d759936afb684193a312b265a7c34, type: 3}
 --- !u!4 &6057013450442098754 stripped
@@ -276,6 +281,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Snowman_x20 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 033004dc68f349a4d9b4d1fcca241c61,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 033004dc68f349a4d9b4d1fcca241c61, type: 3}
@@ -367,6 +377,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree_20 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 1c7d759936afb684193a312b265a7c34,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c7d759936afb684193a312b265a7c34, type: 3}
 --- !u!4 &7626736506525973119 stripped
@@ -456,6 +471,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tree_20 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 1c7d759936afb684193a312b265a7c34,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c7d759936afb684193a312b265a7c34, type: 3}
@@ -547,6 +567,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree_20 (7)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 1c7d759936afb684193a312b265a7c34,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c7d759936afb684193a312b265a7c34, type: 3}
 --- !u!4 &9217062338436701845 stripped
@@ -622,6 +647,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Snowman_x20 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 033004dc68f349a4d9b4d1fcca241c61,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 033004dc68f349a4d9b4d1fcca241c61, type: 3}
 --- !u!4 &605991481507470944 stripped
@@ -696,6 +726,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Snowman_x20
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 033004dc68f349a4d9b4d1fcca241c61,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 033004dc68f349a4d9b4d1fcca241c61, type: 3}
@@ -787,6 +822,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree_20 (5)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 1c7d759936afb684193a312b265a7c34,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c7d759936afb684193a312b265a7c34, type: 3}
 --- !u!4 &2131757806828483594 stripped
@@ -877,6 +917,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree_20 (8)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 1c7d759936afb684193a312b265a7c34,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c7d759936afb684193a312b265a7c34, type: 3}
 --- !u!4 &2830616728061899939 stripped
@@ -951,6 +996,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Snowstatue_x20
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: d9f0d9fb9e0f0f24cb33ec09e82cd66f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9f0d9fb9e0f0f24cb33ec09e82cd66f, type: 3}
@@ -1042,6 +1092,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree_20 (6)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 1c7d759936afb684193a312b265a7c34,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c7d759936afb684193a312b265a7c34, type: 3}
 --- !u!4 &3567762759088193891 stripped
@@ -1132,6 +1187,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree_20
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 1c7d759936afb684193a312b265a7c34,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c7d759936afb684193a312b265a7c34, type: 3}
 --- !u!4 &3488957859676403473 stripped
@@ -1221,6 +1281,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tree_20 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 1c7d759936afb684193a312b265a7c34,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c7d759936afb684193a312b265a7c34, type: 3}
