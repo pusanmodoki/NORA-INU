@@ -3,7 +3,17 @@ guid: 033004dc68f349a4d9b4d1fcca241c61
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bucket
+    second: {fileID: 2100000, guid: a26f4e611bcd85d4c8ca34447bec7842, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: snowbody
+    second: {fileID: 2100000, guid: 2592db6d5389f3e49911649b30328be3, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

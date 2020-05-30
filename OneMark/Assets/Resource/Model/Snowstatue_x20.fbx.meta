@@ -3,7 +3,17 @@ guid: d9f0d9fb9e0f0f24cb33ec09e82cd66f
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Dog_F_High_brendshape_Ribonattached_Ribon1
+    second: {fileID: 2100000, guid: ac1bf195072b081489084a47d9542f42, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert3
+    second: {fileID: 2100000, guid: 247593d420039824491a60a3c653cf52, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
