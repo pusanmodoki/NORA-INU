@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class AreaBorderMesh : MonoBehaviour
 {
-	public MeshRenderer renderer { get { return m_renderer; } }
+	public MeshRenderer meshRenderer { get { return m_renderer; } }
 
 	[SerializeField]
     float m_height = 1.0f;

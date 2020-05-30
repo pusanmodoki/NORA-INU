@@ -96,7 +96,7 @@ public class MainGameManager : MonoBehaviour
 	void GameClear()
 	{
         PlayerAndTerritoryManager.instance.mainPlayer.input.GameClearAnimation();
-		PlayerAndTerritoryManager.instance.mainPlayer.areaBorderMesh.renderer.enabled = false;
+		PlayerAndTerritoryManager.instance.mainPlayer.areaBorderMesh.meshRenderer.enabled = false;
 		AudioManager.instance.FadeoutAndChangeBgm("MoveResult", "GameClear");
 		MarkPointManager.instance.SetCountScale(0.0f);
 		OneMarkSceneManager.instance.SetActiveAccessoryScene("GameClear", true);
