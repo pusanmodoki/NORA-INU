@@ -177,6 +177,11 @@ PrefabInstance:
       propertyPath: m_covering
       value: 
       objectReference: {fileID: 7195776834448709991}
+    - target: {fileID: 1664029199780888505, guid: 23e437d39c64b0b46af679a713df1ae6,
+        type: 3}
+      propertyPath: resultCameraSpeed
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 6051863903506868340, guid: 23e437d39c64b0b46af679a713df1ae6,
         type: 3}
       propertyPath: m_LocalPosition.x
