@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class AreaBorderMesh : MonoBehaviour
 {
-    [SerializeField]
+	public MeshRenderer renderer { get { return m_renderer; } }
+
+	[SerializeField]
     float m_height = 1.0f;
 
     [SerializeField]
@@ -24,7 +26,6 @@ public class AreaBorderMesh : MonoBehaviour
 
     Mesh m_mesh = null;
     MeshRenderer m_renderer = null;
-
     
     // Start is called before the first frame update
     public void InitMesh()

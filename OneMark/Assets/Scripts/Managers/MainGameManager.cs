@@ -96,12 +96,14 @@ public class MainGameManager : MonoBehaviour
 	void GameClear()
 	{
         PlayerAndTerritoryManager.instance.mainPlayer.input.GameClearAnimation();
+		PlayerAndTerritoryManager.instance.mainPlayer.areaBorderMesh.renderer.enabled = false;
 		AudioManager.instance.FadeoutAndChangeBgm("MoveResult", "GameClear");
 		MarkPointManager.instance.SetCountScale(0.0f);
 		OneMarkSceneManager.instance.SetActiveAccessoryScene("GameClear", true);
 		// ResultCall.GameClear();
 		m_mainCamera.ResultFlg();
 		m_isEnd = true;
+		
 	}
 
 	void GameOver()

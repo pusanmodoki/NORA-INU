@@ -11,9 +11,11 @@ public class DogWaitAndRun : BaseDogAIFunction
 	[SerializeField]
 	float m_updateDestinationInterval = 0.05f;
 	[SerializeField]
-	float m_rotationOffset = 90.0f;
+	float m_targetRotationOffset = -10.0f;
 	[SerializeField]
-	float m_rotationSpeed = 10.0f;
+	float m_targetRotationSpeed = -180.0f;
+	[SerializeField]
+	float m_lookPlayerRotationSpeed = 10.0f;
 
 	Timer m_moveTimer = new Timer();
 	Timer m_updateDestinationTimer = new Timer();
@@ -42,7 +44,7 @@ public class DogWaitAndRun : BaseDogAIFunction
 		m_markPointPosition = dogAIAgent.linkMarkPoint.transform.position;
 
 		m_targetRotation = Quaternion.FromToRotation(Vector3.forward,
-			dogAIAgent.linkMarkPoint.localMarkingTarget.normalized) * Quaternion.AngleAxis(m_rotationOffset, Vector3.up);
+			dogAIAgent.linkMarkPoint.localMarkingTarget.normalized) * Quaternion.AngleAxis(m_targetRotationOffset, Vector3.up);
 
 		navMeshAgent.SetDestination(m_markPointPosition + m_targetRotation * m_forwardMultiPointDistance);
 
@@ -88,6 +90,10 @@ public class DogWaitAndRun : BaseDogAIFunction
 				navMeshAgent.isStopped = true;
 				m_updateDestinationTimer.Stop();
 			}
+
+			transform.rotation = Quaternion.Slerp(transform.rotation, 
+				Quaternion.LookRotation((dogAIAgent.linkPlayer.transform.position - transform.position).normalized), 
+				m_lookPlayerRotationSpeed * Time.deltaTime);
 		}
 		else
 		{
@@ -98,7 +104,7 @@ public class DogWaitAndRun : BaseDogAIFunction
 				navMeshAgent.isStopped = false;
 			}
 
-			m_targetRotation *= Quaternion.AngleAxis(m_rotationSpeed * Time.deltaTime, Vector3.up);
+			m_targetRotation *= Quaternion.AngleAxis(m_targetRotationSpeed * Time.deltaTime, Vector3.up);
 			if (m_updateDestinationTimer.elapasedTime > m_updateDestinationInterval)
 			{
 				navMeshAgent.SetDestination(m_markPointPosition + m_targetRotation * m_forwardMultiPointDistance);
