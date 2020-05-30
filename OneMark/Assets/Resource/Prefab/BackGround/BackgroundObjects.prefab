@@ -13,8 +13,8 @@ GameObject:
   m_Name: Torii
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 119
   m_IsActive: 1
 --- !u!4 &3724228400508318425
 Transform:
@@ -49,7 +49,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 119
   m_IsActive: 1
 --- !u!4 &3724228400623088230
 Transform:
@@ -83,8 +83,8 @@ GameObject:
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 119
   m_IsActive: 1
 --- !u!4 &3724228401082238266
 Transform:
@@ -157,8 +157,8 @@ GameObject:
   m_Name: Bamboo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 119
   m_IsActive: 1
 --- !u!4 &3724228401762739410
 Transform:
@@ -286,6 +286,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: bamboo (7)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
 --- !u!4 &8562936294490967385 stripped
@@ -375,6 +385,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: bamboo (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
@@ -466,6 +486,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: bamboo (20)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
 --- !u!4 &8562936294620704154 stripped
@@ -555,6 +585,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: bamboo (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
@@ -646,6 +686,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Torii_x20 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: e9efa0252ebf909458bdbb77e377c890,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: e9efa0252ebf909458bdbb77e377c890,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9efa0252ebf909458bdbb77e377c890, type: 3}
 --- !u!4 &8562936294709634252 stripped
@@ -735,6 +785,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: bamboo (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
@@ -826,6 +886,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Torii_x20
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: e9efa0252ebf909458bdbb77e377c890,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: e9efa0252ebf909458bdbb77e377c890,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9efa0252ebf909458bdbb77e377c890, type: 3}
 --- !u!4 &8562936294891094637 stripped
@@ -915,6 +985,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: bamboo (17)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
@@ -1006,6 +1086,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: bamboo (16)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
 --- !u!4 &8562936295016565895 stripped
@@ -1095,6 +1185,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: bamboo (23)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
@@ -1186,6 +1286,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: bamboo (24)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
 --- !u!4 &8562936295220710697 stripped
@@ -1275,6 +1385,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: bamboo (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
@@ -1366,6 +1486,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: bamboo (29)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
 --- !u!4 &8562936295490910089 stripped
@@ -1455,6 +1585,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: bamboo (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
@@ -1546,6 +1686,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: bamboo (9)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
 --- !u!4 &8562936295651984133 stripped
@@ -1635,6 +1785,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: bamboo (28)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
@@ -1726,6 +1886,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: bamboo (25)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
 --- !u!4 &8562936295738256785 stripped
@@ -1815,6 +1985,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: bamboo (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
@@ -1906,6 +2086,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: bamboo (1)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
 --- !u!4 &8562936295748145775 stripped
@@ -1995,6 +2185,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Torii_x20 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: e9efa0252ebf909458bdbb77e377c890,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: e9efa0252ebf909458bdbb77e377c890,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9efa0252ebf909458bdbb77e377c890, type: 3}
@@ -2086,6 +2286,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: bamboo (4)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
 --- !u!4 &8562936295884435500 stripped
@@ -2175,6 +2385,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: bamboo (19)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
@@ -2266,6 +2486,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: bamboo (11)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
 --- !u!4 &8562936296026752814 stripped
@@ -2355,6 +2585,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: bamboo (22)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
@@ -2446,6 +2686,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: bamboo (10)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
 --- !u!4 &8562936296198238207 stripped
@@ -2535,6 +2785,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: bamboo
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
@@ -2626,6 +2886,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: bamboo (21)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
 --- !u!4 &8562936296363293216 stripped
@@ -2715,6 +2985,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Torii_x20 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: e9efa0252ebf909458bdbb77e377c890,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: e9efa0252ebf909458bdbb77e377c890,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9efa0252ebf909458bdbb77e377c890, type: 3}
@@ -2806,6 +3086,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Torii_x20 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: e9efa0252ebf909458bdbb77e377c890,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: e9efa0252ebf909458bdbb77e377c890,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9efa0252ebf909458bdbb77e377c890, type: 3}
 --- !u!4 &8562936296395973307 stripped
@@ -2895,6 +3185,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: bamboo (26)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
@@ -2986,6 +3286,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: bamboo (27)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
 --- !u!4 &8562936296446423880 stripped
@@ -3075,6 +3385,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: bamboo (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
@@ -3166,6 +3486,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: bamboo (3)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
 --- !u!4 &8562936296481041816 stripped
@@ -3256,6 +3586,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: bamboo (12)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
 --- !u!4 &8562936296516245684 stripped
@@ -3345,6 +3685,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: bamboo (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 6be6fcc6c695e98419adc2b5435625bd,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be6fcc6c695e98419adc2b5435625bd, type: 3}
