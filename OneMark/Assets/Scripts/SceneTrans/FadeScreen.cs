@@ -41,7 +41,6 @@ public class FadeScreen : MonoBehaviour
 				fadeState = FadeState.Null;
 				isCompletedTransition = true;
 				if (isAutoDisabled) m_canvas.enabled = false;
-				return;
 			}
 
 			m_screenImage.color = new Color(m_screenImage.color.r, m_screenImage.color.g, m_screenImage.color.b, alpha);
@@ -56,7 +55,6 @@ public class FadeScreen : MonoBehaviour
 				fadeState = FadeState.Null;
 				isCompletedTransition = true;
 				if (isAutoDisabled) m_canvas.enabled = false;
-				return;
 			}
 
 			m_screenImage.color = new Color(m_screenImage.color.r, m_screenImage.color.g, m_screenImage.color.b, alpha);
