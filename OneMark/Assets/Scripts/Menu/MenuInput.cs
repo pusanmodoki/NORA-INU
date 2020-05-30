@@ -14,7 +14,7 @@ public class MenuInput : MonoBehaviour
     int m_nowSelectIndex = 0;
 
     [SerializeField, Tooltip("選択オブジェクトのリスト（ボタンとか）")]
-    List<SelectedObject> m_selectedObjects = new List<SelectedObject>();
+    List<BaseSelectedObject> m_selectedObjects = new List<BaseSelectedObject>();
 
     [SerializeField, Range(0.0f, 1.0f), Tooltip("入力のデッドゾーン")]
     float m_deadZone = 0.1f;
@@ -22,16 +22,22 @@ public class MenuInput : MonoBehaviour
     [SerializeField, Tooltip("カーソル移動のインターバル")]
     float m_interval = 0.5f;
 
-    public int objectCount { get { return m_selectedObjects.Count; } }
+    [SerializeField]
+    bool m_isInverse = false;
 
-    public bool isSelectInput { get; private set; }
+    public int objectCount { get { return m_selectedObjects.Count; } }
+    public bool isSelectInput { get; private set; } = true;
+    public int nowSelectIndex { get { return m_nowSelectIndex; } }
+
 
     private void Start()
     {
         foreach(var obj in m_selectedObjects)
         {
             obj.OffCirsol();
+            obj.SetMenu(this);
         }
+        m_selectedObjects[nowSelectIndex].OnCirsol();
     }
 
 
@@ -72,11 +78,13 @@ public class MenuInput : MonoBehaviour
     {
         float inputValue = Input.GetAxis(m_inputMove);
 
-        if(inputValue > m_deadZone)
+        if ((inputValue > m_deadZone && !m_isInverse) ||
+            (inputValue < -m_deadZone && m_isInverse))
         {
             return 1;
         }
-        else if(inputValue < -m_deadZone)
+        else if ((inputValue > m_deadZone && m_isInverse) ||
+            (inputValue < -m_deadZone && !m_isInverse))
         {
             return -1;
         }
