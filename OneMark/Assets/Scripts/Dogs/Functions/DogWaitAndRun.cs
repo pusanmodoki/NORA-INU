@@ -21,6 +21,7 @@ public class DogWaitAndRun : BaseDogAIFunction
 	Vector3 m_markPointPosition = Vector3.zero;
 	Vector3 m_forwardMultiPointDistance = Vector3.zero;
 	float m_pointDistance = 0.0f;
+	bool m_isWakeUp = false;
 
 	/// <summary>
 	/// [AIBegin]
@@ -44,6 +45,9 @@ public class DogWaitAndRun : BaseDogAIFunction
 			dogAIAgent.linkMarkPoint.localMarkingTarget.normalized) * Quaternion.AngleAxis(m_rotationOffset, Vector3.up);
 
 		navMeshAgent.SetDestination(m_markPointPosition + m_targetRotation * m_forwardMultiPointDistance);
+
+		dogAIAgent.animationController.editAnimation.isWakeUp = false;
+		m_isWakeUp = false;
 	}
 	/// <summary>
 	/// [AIEnd]
@@ -54,6 +58,7 @@ public class DogWaitAndRun : BaseDogAIFunction
 	public override void AIEnd(BaseAIFunction nextFunction)
 	{
 		if (dogAIAgent.linkMarkPoint == null) return;
+		navMeshAgent.isStopped = false;
 	}
 	/// <summary>
 	/// [AIUpdate]
@@ -73,11 +78,32 @@ public class DogWaitAndRun : BaseDogAIFunction
 			return;
 		}
 
-		m_targetRotation *= Quaternion.AngleAxis(m_rotationSpeed * Time.deltaTime, Vector3.up);
-		if (m_updateDestinationTimer.elapasedTime > m_updateDestinationInterval)
+		if (dogAIAgent.linkMarkPoint == dogAIAgent.linkPlayerInfo.manualCollisionAdministrator.hitVisibilityMarkPoint
+			&& dogAIAgent.linkMarkPoint != null)
 		{
-			navMeshAgent.SetDestination(m_markPointPosition + m_targetRotation * m_forwardMultiPointDistance);
-			m_updateDestinationTimer.Start();
+			if (!m_isWakeUp)
+			{
+				dogAIAgent.animationController.editAnimation.isWakeUp = true;
+				m_isWakeUp = true;
+				navMeshAgent.isStopped = true;
+				m_updateDestinationTimer.Stop();
+			}
+		}
+		else
+		{
+			if (m_isWakeUp)
+			{
+				dogAIAgent.animationController.editAnimation.isWakeUp = false;
+				m_isWakeUp = false;
+				navMeshAgent.isStopped = false;
+			}
+
+			m_targetRotation *= Quaternion.AngleAxis(m_rotationSpeed * Time.deltaTime, Vector3.up);
+			if (m_updateDestinationTimer.elapasedTime > m_updateDestinationInterval)
+			{
+				navMeshAgent.SetDestination(m_markPointPosition + m_targetRotation * m_forwardMultiPointDistance);
+				m_updateDestinationTimer.Start();
+			}
 		}
 	}
 }

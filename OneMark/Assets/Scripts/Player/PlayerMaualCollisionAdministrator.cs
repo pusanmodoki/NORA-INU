@@ -376,26 +376,24 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		//優先リストを処理するかで分岐
 		if (preferentialMarkPoints.Count > 0)
 		{
-			var old = hitVisibilityMarkPoint;
-			JudgeHitVisibility(preferentialMarkPoints);
-
-			if (!isVisibilityStay)
+			if (!JudgeHitVisibility(preferentialMarkPoints, true))
 			{
-				hitVisibilityMarkPoint = old;
-				JudgeHitVisibility(markPoints);
+				JudgeHitVisibility(markPoints, false);
+				if (isVisibilityStay && !hitVisibilityMarkPoint.isTarget)
+					hitVisibilityMarkPoint.SelectThisPoint();
 			}
 			else
 				isVisibilityUsingPreferential = true;
 		}
 		else
-			JudgeHitVisibility(markPoints);
+			JudgeHitVisibility(markPoints, false);
 	}
 
 	/// <summary>
 	/// [JudgeHitVisibility]
 	/// ヒットリストを使用して当たり判定計算を行う
 	/// </summary>
-	void JudgeHitVisibility(List<VisibilityContainer> markPoints)
+	bool JudgeHitVisibility(List<VisibilityContainer> markPoints, bool isMaybeRunItAgain)
 	{
 		//視界判定ループ
 		for (int i = 0; i < markPoints.Count;)
@@ -411,26 +409,26 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		//この時点でCount0なら終了
 		if (markPoints.Count == 0)
 		{
+			if (isMaybeRunItAgain) return false;
+
 			if (hitVisibilityMarkPoint != null) hitVisibilityMarkPoint.RemovedThisPoint();
 
 			hitVisibilityMarkPoint = null;
 			EditVisibilityHitFlag(false);
 			m_targetMarker.SetTarget(null);
-			return;
+			return false;
 		}
 		//この時点でCount1ならヒット確定として終了
 		else if (markPoints.Count == 1)
 		{
-			if (hitVisibilityMarkPoint != markPoints[0].markPoint)
-			{
-				if (hitVisibilityMarkPoint != null) hitVisibilityMarkPoint.RemovedThisPoint();
+			if (hitVisibilityMarkPoint != markPoints[0].markPoint && hitVisibilityMarkPoint != null)
+				hitVisibilityMarkPoint.RemovedThisPoint();
 
-				hitVisibilityMarkPoint = markPoints[0].markPoint;
-				m_nowTargetObject = hitVisibilityMarkPoint.SelectThisPoint();
-				m_targetMarker.SetTarget(m_nowTargetObject);
-				EditVisibilityHitFlag(true);
-			}
-			return;
+			EditVisibilityHitFlag(true);
+			hitVisibilityMarkPoint = markPoints[0].markPoint;
+			m_nowTargetObject = hitVisibilityMarkPoint.SelectThisPoint();
+			m_targetMarker.SetTarget(m_nowTargetObject);
+			return true;
 		}
 
 		//forwardとの角度差でソートを行う
@@ -446,15 +444,15 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		}
 
 		//もっとも角度差が小さいものを選択する
-		if (hitVisibilityMarkPoint != markPoints[minIndex].markPoint)
-		{
-			if (hitVisibilityMarkPoint != null) hitVisibilityMarkPoint.RemovedThisPoint();
+		if (hitVisibilityMarkPoint != markPoints[minIndex].markPoint && hitVisibilityMarkPoint != null)
+			hitVisibilityMarkPoint.RemovedThisPoint();
 
-			hitVisibilityMarkPoint = markPoints[minIndex].markPoint;
-			m_nowTargetObject = hitVisibilityMarkPoint.SelectThisPoint();
-			m_targetMarker.SetTarget(m_nowTargetObject);
-			EditVisibilityHitFlag(true);
-		}
+		hitVisibilityMarkPoint = markPoints[minIndex].markPoint;
+		m_nowTargetObject = hitVisibilityMarkPoint.SelectThisPoint();
+		m_targetMarker.SetTarget(m_nowTargetObject);
+		EditVisibilityHitFlag(true);
+
+		return true;
 	}
 
 	/// <summary>

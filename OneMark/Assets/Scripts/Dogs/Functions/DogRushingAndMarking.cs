@@ -261,6 +261,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 			case State.FunctionEnd:
 				{
 					//Animation Set
+					m_animationController.editAnimation.isWakeUp = false;
 					m_animationController.editAnimation.TriggerWaitRunStart();
 					//終了
 					EndAIFunction(updateIdentifier);

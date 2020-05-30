@@ -58,8 +58,9 @@ public class TargetMarker : MonoBehaviour
 
     public void SetTarget(GameObject _target)
     {
-        ParticleSystem.EmissionModule emission = m_lineEffect.emission;
-        ParticleSystem.MainModule main = m_lineEffect.main;
+        //ParticleSystem.EmissionModule emission = m_lineEffect.emission;
+        //ParticleSystem.MainModule main = m_lineEffect.main;
+
         target = _target;
         if(target == null)
         {

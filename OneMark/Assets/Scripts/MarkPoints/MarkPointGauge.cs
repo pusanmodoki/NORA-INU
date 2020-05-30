@@ -22,8 +22,7 @@ public class MarkPointGauge : MonoBehaviour
         List<Vector3> list = new List<Vector3>();
         m_mesh.sharedMesh.GetVertices(list);
         m_material = m_renderer.material;
-        Debug.Log(m_mesh.mesh.vertexCount);
-        Debug.Log(list.Count);
+
         for (int i = 0; i < m_mesh.mesh.vertexCount; ++i)
         {
             if(list[i].y > m_maxHeight)

@@ -75,7 +75,7 @@ public class MainGameManager : MonoBehaviour
 				m_resultState = ResultState.GameClear;
 				m_resultTimer.Start();
 			}
-			if (PlayerAndTerritoryManager.instance.mainPlayer.maualCollisionAdministrator.isTerritoryExit)
+			if (PlayerAndTerritoryManager.instance.mainPlayer.manualCollisionAdministrator.isTerritoryExit)
 			{
 				m_resultState = ResultState.GameEnd;
 				m_resultTimer.Start();

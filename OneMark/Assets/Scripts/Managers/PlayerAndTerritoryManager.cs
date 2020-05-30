@@ -44,7 +44,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 			this.gameObject = gameObject;
 			this.transform = gameObject.transform;
 			this.managerIntermediary = territoryIntermediary;
-			this.maualCollisionAdministrator = maualCollisionAdministrator;
+			this.manualCollisionAdministrator = maualCollisionAdministrator;
 			this.input = input;
 			this.navMeshController = navMeshController;
 			this.groundFlag = groundFlag;
@@ -68,7 +68,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		/// <summary>Player manager intermediary</summary>
 		public PlayerManagerIntermediary managerIntermediary { get; private set; }
 		/// <summary>Player maual collision administrator</summary>
-		public PlayerMaualCollisionAdministrator maualCollisionAdministrator { get; private set; }
+		public PlayerMaualCollisionAdministrator manualCollisionAdministrator { get; private set; }
 		/// <summary>Player input</summary>
 		public PlayerInput input { get; private set; }
 		/// <summary>Player nav mesh controller</summary>

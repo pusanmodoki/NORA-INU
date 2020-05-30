@@ -17,6 +17,11 @@ public class DogAIAgent : AIAgent
 	public BoxCastFlags groundFlag { get { return m_groundFlag; } } 
 	/// <summary>Link player</summary>
 	public GameObject linkPlayer { get; private set; } = null;
+	/// <summary>Link player</summary>
+	public PlayerAndTerritoryManager.PlayerInfo linkPlayerInfo
+	{
+		get { return linkPlayer != null ? PlayerAndTerritoryManager.instance.allPlayers[linkPlayer.GetInstanceID()] : null; }
+	}
 	/// <summary>Link mark point</summary>
 	public BaseMarkPoint linkMarkPoint { get; private set; } = null;
 	/// <summary>GoMarking時の円形当たり判定で使うCenter</summary>
@@ -187,7 +192,7 @@ public class DogAIAgent : AIAgent
 			else
 			{
 				//Animation Set
-				m_animationController.editAnimation.TriggerWakeUp();
+				m_animationController.editAnimation.TriggerReturnWakeUp();
 				m_animationController.editAnimation.isWakeUpNextSearch = false;
 				m_linkMarkPoint.ChangeAgent(null);
 				m_linkMarkPoint = null;
@@ -205,7 +210,7 @@ public class DogAIAgent : AIAgent
 			else
 			{
 				//Animation Set
-				m_animationController.editAnimation.TriggerWakeUp();
+				m_animationController.editAnimation.TriggerReturnWakeUp();
 				m_animationController.editAnimation.isWakeUpNextSearch = true;
 				m_linkMarkPoint.ChangeAgent(null);
 				m_linkMarkPoint = null;
@@ -307,7 +312,7 @@ public class DogAIAgent : AIAgent
 		if (m_isReservationEndOfMarking && !navMeshAgent.isOnOffMeshLink)
 		{
 			m_isReservationEndOfMarking = false;
-			m_animationController.editAnimation.TriggerWakeUp();
+			m_animationController.editAnimation.TriggerReturnWakeUp();
 			m_animationController.editAnimation.isWakeUpNextSearch = m_isSetBoolIsNextSearch;
 			m_linkMarkPoint.ChangeAgent(null);
 			m_linkMarkPoint = null;
