@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2223e2b01f2ac6845a000d859d1deb96
+guid: 60894c7f2099a304d95367e1b5c4481c
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
@@ -7,18 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Sin_Mogura_Mogura_ver03
-    second: {fileID: 2100000, guid: 83c3963673d24f04aa821873dc51e628, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Sin_Mogura_OtherParts
-    second: {fileID: 2100000, guid: 5a118638a5e689d42a9a627e664ece68, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Sin_Mogura_ground
-    second: {fileID: 2100000, guid: 05ee49cecce024640b14892abe9c4759, type: 2}
+      name: M_jampPad
+    second: {fileID: 2100000, guid: 8293ded4778fd304c8400e8dee5184c4, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
