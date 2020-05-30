@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 16375cd9886f3c5448d7871f9165405b
+guid: a6d34213b8823e6499c3513c4f904c47
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: castle_material
-    second: {fileID: 2100000, guid: 24d25025d9228fb42a6354fc20dcfaa0, type: 2}
+      name: deer_Deer_material
+    second: {fileID: 2100000, guid: 313982d415a1f7744b5d3e1f860bf8df, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

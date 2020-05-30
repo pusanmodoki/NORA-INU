@@ -1,14 +1,12 @@
 fileFormatVersion: 2
-guid: 16375cd9886f3c5448d7871f9165405b
+guid: 9f4ffaeefb612c244ad946428dfc4cd0
 ModelImporter:
   serializedVersion: 19300
-  internalIDToNameTable: []
-  externalObjects:
+  internalIDToNameTable:
   - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: castle_material
-    second: {fileID: 2100000, guid: 24d25025d9228fb42a6354fc20dcfaa0, type: 2}
+      74: 1827226128182048838
+    second: Take 001
+  externalObjects: {}
   materials:
     materialImportMode: 1
     materialName: 0
