@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 3425003610696155427}
   - component: {fileID: 2883376484833703371}
   - component: {fileID: 2997188047596561891}
-  - component: {fileID: 6304042797466129160}
   m_Layer: 18
   m_Name: MoveMarkPoint
   m_TagString: Untagged
@@ -181,22 +180,6 @@ MonoBehaviour:
   m_mesh: {fileID: 8961707881554224979}
   m_renderer: {fileID: 3414547365947792298}
   m_markPoint: {fileID: 312057158371433832}
---- !u!208 &6304042797466129160
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 719799095898562750}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!82 &2105173661276678690
 AudioSource:
   m_ObjectHideFlags: 0
@@ -24481,12 +24464,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a04ee1ba85c87d34c839712e36449b29, type: 3}
---- !u!4 &6374381390335807111 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7607028194092740347, guid: a04ee1ba85c87d34c839712e36449b29,
-    type: 3}
-  m_PrefabInstance: {fileID: 3596069106632417404}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6084301184742719037 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7316109129863863873, guid: a04ee1ba85c87d34c839712e36449b29,
@@ -24499,6 +24476,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d06f528475e80c842a19490348fdb86e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &6374381390335807111 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7607028194092740347, guid: a04ee1ba85c87d34c839712e36449b29,
+    type: 3}
+  m_PrefabInstance: {fileID: 3596069106632417404}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4935896434517816959
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24588,6 +24571,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d8675861d0299574797d6e292922cf51, type: 3}
+--- !u!4 &73578671102008677 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: d8675861d0299574797d6e292922cf51,
+    type: 3}
+  m_PrefabInstance: {fileID: 4935896434517816959}
+  m_PrefabAsset: {fileID: 0}
 --- !u!23 &3414547365947792298 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -1504981713932161579, guid: d8675861d0299574797d6e292922cf51,
@@ -24597,12 +24586,6 @@ MeshRenderer:
 --- !u!33 &8961707881554224979 stripped
 MeshFilter:
   m_CorrespondingSourceObject: {fileID: -5178661895559278292, guid: d8675861d0299574797d6e292922cf51,
-    type: 3}
-  m_PrefabInstance: {fileID: 4935896434517816959}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &73578671102008677 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: d8675861d0299574797d6e292922cf51,
     type: 3}
   m_PrefabInstance: {fileID: 4935896434517816959}
   m_PrefabAsset: {fileID: 0}
