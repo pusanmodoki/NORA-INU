@@ -169,7 +169,7 @@ MonoBehaviour:
     m_layerMask:
       serializedVersion: 2
       m_Bits: 512
-  m_personalRadius: 4
+  m_personalRadius: 6
   m_nowTargetObject: {fileID: 0}
   m_instructionsMarkPointInfos:
     m_layerMask:
