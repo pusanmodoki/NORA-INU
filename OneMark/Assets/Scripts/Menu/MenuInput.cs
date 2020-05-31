@@ -34,10 +34,10 @@ public class MenuInput : MonoBehaviour
     {
         foreach(var obj in m_selectedObjects)
         {
-            obj.OffCirsol();
+            obj.OffCursor();
             obj.SetMenu(this);
         }
-        m_selectedObjects[nowSelectIndex].OnCirsol();
+        m_selectedObjects[nowSelectIndex].OnCursor();
     }
 
 
@@ -55,11 +55,11 @@ public class MenuInput : MonoBehaviour
         m_nowSelectIndex += MoveInputCheck();
         if(m_nowSelectIndex != prevIndex)
         {
-            m_selectedObjects[prevIndex].OffCirsol();
+            m_selectedObjects[prevIndex].OffCursor();
             m_selectedObjects[prevIndex].isSelected = false;
             if (m_nowSelectIndex < 0) { m_nowSelectIndex = 0; }
             else if (m_nowSelectIndex >= objectCount) { m_nowSelectIndex = objectCount - 1; }
-            m_selectedObjects[m_nowSelectIndex].OnCirsol();
+            m_selectedObjects[m_nowSelectIndex].OnCursor();
             isSelectInput = false;
             m_selectedObjects[m_nowSelectIndex].isSelected = true;
             StartCoroutine("InputInterval");

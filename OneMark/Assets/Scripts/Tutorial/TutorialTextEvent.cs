@@ -43,7 +43,7 @@ public class TutorialTextEvent : MonoBehaviour
             m_eventTexts["text1-2"].SetActive(true);
             activeText = m_eventTexts["text1-2"];
         }
-        if (!m_eventTexts["text1-3"].activeSelf && MainGameManager.instance.m_resultState == MainGameManager.ResultState.GameClear)
+        if (!m_eventTexts["text1-3"].activeSelf && MainGameManager.instance.resultState == MainGameManager.ResultState.GameClear)
         {
             activeText.SetActive(false);
             m_eventTexts["text1-3"].SetActive(true);
@@ -79,8 +79,8 @@ public class TutorialTextEvent : MonoBehaviour
             }
         }
         else if (m_eventTexts["text2-3"].activeSelf && 
-            (MainGameManager.instance.m_resultState == MainGameManager.ResultState.GameClear ||
-            MainGameManager.instance.m_resultState == MainGameManager.ResultState.GameEnd))
+            (MainGameManager.instance.resultState == MainGameManager.ResultState.GameClear ||
+            MainGameManager.instance.resultState == MainGameManager.ResultState.GameEnd))
         {
             m_eventTexts["text2-3"].SetActive(false);
             m_eventTexts["text2-4"].SetActive(true);

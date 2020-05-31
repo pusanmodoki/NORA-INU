@@ -105,7 +105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_stageSize: {x: 30, y: 30}
   m_waitResultClearSeconds: 2
-  m_waitResultOverSeconds: 1
+  m_waitResultOverSeconds: 0.1
 --- !u!114 &8109872767512352151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,7 +219,7 @@ MonoBehaviour:
   m_Center: {x: 0, y: 1, z: 0}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 108032
+    m_Bits: 632320
   m_UseGeometry: 1
   m_DefaultArea: 0
   m_IgnoreNavMeshAgent: 1

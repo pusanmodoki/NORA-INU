@@ -19,12 +19,12 @@ public class DefaultSelectButton : BaseSelectedObject
     [SerializeField]
     UnityEngine.UI.Image m_image = null;
 
-    public override void OnCirsol()
+    public override void OnCursor()
     {
         m_image.color = m_selectedColor;
     }
 
-    public override void OffCirsol()
+    public override void OffCursor()
     {
         m_image.color = m_nonSelectedColor;
     }

@@ -17,7 +17,7 @@ public class BaseSelectedObject : MonoBehaviour
 
     public virtual void OnEnter() { }
     
-    public virtual void OnCirsol() { }
+    public virtual void OnCursor() { }
 
-    public virtual void OffCirsol() { }
+    public virtual void OffCursor() { }
 }

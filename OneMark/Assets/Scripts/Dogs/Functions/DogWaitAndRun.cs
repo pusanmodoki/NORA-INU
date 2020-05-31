@@ -61,7 +61,7 @@ public class DogWaitAndRun : BaseDogAIFunction
 	{
 		if (nextFunction != this && m_fukidashiObject.isEnableEffect)
 			m_fukidashiObject.DisableEffect();
-		Debug.Log(nextFunction.functionName);
+
 		navMeshAgent.isStopped = false;
 	}
 	/// <summary>

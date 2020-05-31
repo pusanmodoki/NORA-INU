@@ -35,7 +35,7 @@ public class MainGameManager : MonoBehaviour
 
     private FollowObject m_mainCamera = null;
 
-	public ResultState m_resultState { get; private set; } = ResultState.Null;
+	public ResultState resultState { get; private set; } = ResultState.Null;
 	Timer m_resultTimer = new Timer();
 
     /// <summary>[Awake]</summary>
@@ -63,7 +63,7 @@ public class MainGameManager : MonoBehaviour
 	{
 		if (m_isEnd) return;
 
-		if (m_resultState == ResultState.Null)
+		if (resultState == ResultState.Null)
 		{
 			int checkCounter = 0;
 
@@ -72,25 +72,25 @@ public class MainGameManager : MonoBehaviour
 
 			if (m_allCheckPoints.Count == checkCounter)
 			{
-				m_resultState = ResultState.GameClear;
+				resultState = ResultState.GameClear;
 				PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableInput = false;
 				MarkPointManager.instance.SetCountScale(0.0f);
 				m_resultTimer.Start();
 			}
 			if (PlayerAndTerritoryManager.instance.mainPlayer.manualCollisionAdministrator.isTerritoryExit)
 			{
-				m_resultState = ResultState.GameEnd;
+				resultState = ResultState.GameEnd;
 				PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableInput = false;
 				MarkPointManager.instance.SetCountScale(0.0f);
 				m_resultTimer.Start();
 			}
 		}
-		else if (m_resultState == ResultState.GameClear)
+		else if (resultState == ResultState.GameClear)
 		{
 			if (m_resultTimer.elapasedTime > m_waitResultClearSeconds)
 				GameClear();
 		}
-		else if (m_resultState == ResultState.GameEnd)
+		else if (resultState == ResultState.GameEnd)
 		{
 			if (m_resultTimer.elapasedTime > m_waitResultOverSeconds)
 				GameOver();
