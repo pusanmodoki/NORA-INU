@@ -140,8 +140,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3594214010604373509}
   - component: {fileID: 3094700992283858759}
-  - component: {fileID: 2865331995391822821}
   - component: {fileID: 7395785140575013824}
+  - component: {fileID: 4491528012346073783}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged
@@ -191,7 +191,21 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 100
   m_TargetDisplay: 0
---- !u!114 &2865331995391822821
+--- !u!114 &7395785140575013824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2865331995391822842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c9f80f60934a994bbcfb8e36582437e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_canvas: {fileID: 3094700992283858759}
+  m_screenImage: {fileID: 7997212345874032797}
+--- !u!114 &4491528012346073783
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -221,17 +235,3 @@ MonoBehaviour:
   m_fadeScreen: {fileID: 7395785140575013824}
   m_fadeColor: {r: 0, g: 0, b: 0, a: 1}
   m_fadeSpeedPerSeconds: 0.3
---- !u!114 &7395785140575013824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2865331995391822842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c9f80f60934a994bbcfb8e36582437e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_canvas: {fileID: 3094700992283858759}
-  m_screenImage: {fileID: 7997212345874032797}
