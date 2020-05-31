@@ -28,12 +28,12 @@ public class CheckPointCount : MonoBehaviour
                 if(i % 2 == 0)
                 {
                     transform.GetChild(i).GetComponent<RectTransform>().localPosition =
-                        new Vector3((float)(i / 2) * interval + (interval / 2.0f), 0.0f, 0.0f);
+                        new Vector3(0.0f, (float)(i / 2) * interval + (interval / 2.0f), 0.0f);
                 }
                 else
                 {
                     transform.GetChild(i).GetComponent<RectTransform>().localPosition =
-                        new Vector3(-((float)(i / 2) * interval + (interval / 2.0f)), 0.0f, 0.0f);
+                        new Vector3(0.0f, -((float)(i / 2) * interval + (interval / 2.0f)), 0.0f);
                 }
             }
         }
@@ -45,12 +45,12 @@ public class CheckPointCount : MonoBehaviour
                 if (i % 2 == 0)
                 {
                     transform.GetChild(i).GetComponent<RectTransform>().localPosition =
-                        new Vector3((float)((i + 1) / 2) * interval, 0.0f, 0.0f);
+                        new Vector3(0.0f, (float)((i + 1) / 2) * interval, 0.0f);
                 }
                 else
                 {
                     transform.GetChild(i).GetComponent<RectTransform>().localPosition =
-                        new Vector3(-((float)((i + 1) / 2) * interval), 0.0f, 0.0f);
+                        new Vector3(0.0f, -((float)((i + 1) / 2) * interval), 0.0f);
                 }
             }
 
