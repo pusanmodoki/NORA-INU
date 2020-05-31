@@ -6,7 +6,7 @@ using UnityEngine;
 [DefaultExecutionOrder(-99)]
 public class MainGameManager : MonoBehaviour
 {
-	enum ResultState
+	public enum ResultState
 	{
 		Null,
 		GameClear,
@@ -35,7 +35,7 @@ public class MainGameManager : MonoBehaviour
 
     private FollowObject m_mainCamera = null;
 
-	ResultState m_resultState = ResultState.Null;
+	public ResultState m_resultState { get; private set; } = ResultState.Null;
 	Timer m_resultTimer = new Timer();
 
     /// <summary>[Awake]</summary>
