@@ -11,6 +11,10 @@ public class PlayerInput : MonoBehaviour
         GameClear,
         GameOver
     }
+	static readonly int m_cStateID = Animator.StringToHash("State");
+	static readonly int m_cCommandID = Animator.StringToHash("Command");
+	static readonly int m_cCallID = Animator.StringToHash("Call");
+	static readonly int m_cResultID = Animator.StringToHash("Result");
 
 	public Vector3 moveInput { get { return m_moveInput; } }
 	public bool isEnableInput { get; set; } = true;
@@ -43,17 +47,15 @@ public class PlayerInput : MonoBehaviour
 
 	public void GameClearAnimation()
 	{
-		m_animator.SetTrigger("Result");
+		m_animator.SetTrigger(m_cResultID);
 		m_state = AnimationState.GameClear;
-		m_animator.SetInteger("State", (int)m_state);
-		isEnableInput = false;
+		m_animator.SetInteger(m_cStateID, (int)m_state);
 	}
 	public void GameOverAnimation()
 	{
-		m_animator.SetTrigger("Result");
+		m_animator.SetTrigger(m_cResultID);
 		m_state = AnimationState.GameOver;
-		m_animator.SetInteger("State", (int)m_state);
-		isEnableInput = false;
+		m_animator.SetInteger(m_cStateID, (int)m_state);
 	}
 	
 	void Start()
@@ -93,7 +95,7 @@ public class PlayerInput : MonoBehaviour
         else
             m_state = AnimationState.Stand;
 
-		m_animator.SetInteger("State", (int)m_state);
+		m_animator.SetInteger(m_cStateID, (int)m_state);
     }
 
     void ShotInput()
@@ -128,10 +130,12 @@ public class PlayerInput : MonoBehaviour
 		//Unlink
 		if (linkServantID != -1)
 		{
-			ServantManager.instance.allServants[linkServantID].ComeBecauseEndOfMarking(
-				m_maualCollisionAdministrator.IsHitInstructionsReturnDog(ServantManager.instance.allServants[linkServantID]));
-			m_shotTimers.Start();
-
+			if (ServantManager.instance.allServants[linkServantID].ComeBecauseEndOfMarking(
+				m_maualCollisionAdministrator.IsHitInstructionsReturnDog(ServantManager.instance.allServants[linkServantID])))
+			{
+				m_animator.SetTrigger(m_cCallID);
+				m_shotTimers.Start();
+			}
 		}
 		//Go!
 		else
@@ -154,6 +158,7 @@ public class PlayerInput : MonoBehaviour
 				ServantManager.instance.servantByPlayers[gameObject.GetInstanceID()][followIndex]
 					.GoSoStartOfMarking(m_maualCollisionAdministrator.hitVisibilityMarkPoint))
 			{
+				m_animator.SetTrigger(m_cCommandID);
 				m_shotTimers.Start();
 			}
 		}
