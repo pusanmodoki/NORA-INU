@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class DogWaitAndRun : BaseDogAIFunction
 {
+	[SerializeField]
+	FukidashiController m_fukidashiObject = null;
 	/// <summary>移動時間</summary>
 	[SerializeField, Tooltip("移動時間")]
 	float m_moveSeconds = 0.1f;
@@ -58,6 +60,10 @@ public class DogWaitAndRun : BaseDogAIFunction
 	public override void AIEnd(BaseAIFunction nextFunction)
 	{
 		if (dogAIAgent.linkMarkPoint == null) return;
+
+		if (nextFunction != this && m_fukidashiObject.isEnableEffect)
+			m_fukidashiObject.DisableEffect();
+
 		navMeshAgent.isStopped = false;
 	}
 	/// <summary>
@@ -81,6 +87,9 @@ public class DogWaitAndRun : BaseDogAIFunction
 		if (dogAIAgent.linkMarkPoint == dogAIAgent.linkPlayerInfo.manualCollisionAdministrator.hitVisibilityMarkPoint
 			&& dogAIAgent.linkMarkPoint != null)
 		{
+			if (!m_fukidashiObject.isEnableEffect)
+				m_fukidashiObject.EnableEffect();
+
 			if (!dogAIAgent.linkMarkPoint.isMove)
 			{
 				if (!m_isWakeUp)
@@ -114,6 +123,8 @@ public class DogWaitAndRun : BaseDogAIFunction
 		}
 		else
 		{
+			if (m_fukidashiObject.isEnableEffect)
+				m_fukidashiObject.DisableEffect();
 			if (m_isWakeUp)
 			{
 				dogAIAgent.animationController.editAnimation.isWakeUp = false;
