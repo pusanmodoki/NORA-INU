@@ -179,7 +179,7 @@ public class AudioManager : MonoBehaviour
 		else
 		{
 #if UNITY_EDITOR
-			Debug.LogError("Error!! AudioManager->FadeinBgm");
+			Debug.Log("Error!! AudioManager->FadeinBgm bgm key:"+ m_playUniqueKey + "preset" + presetKey);
 #endif
 			return false;
 		}
@@ -200,7 +200,7 @@ public class AudioManager : MonoBehaviour
 		else
 		{
 #if UNITY_EDITOR
-			Debug.LogError("Error!! AudioManager->FadeoutBgm");
+			Debug.Log("Error!! AudioManager->FadeoutBgm key:" + m_playUniqueKey + "preset" + presetKey);
 #endif
 			return false;
 		}
@@ -222,7 +222,7 @@ public class AudioManager : MonoBehaviour
 		else
 		{
 #if UNITY_EDITOR
-			Debug.LogError("Error!! AudioManager->FadeoutBgm");
+			Debug.LogError("Error!! AudioManager->FadeoutBgm key:" + m_playUniqueKey + "preset" + presetKey);
 #endif
 			return false;
 		}
