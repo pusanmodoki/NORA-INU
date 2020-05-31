@@ -709,7 +709,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 129c920fac1d8a24bbe6fd5d1a1c62a0,
+      objectReference: {fileID: 21300000, guid: bc2781ba22831c840984e1f66577a79f,
         type: 3}
     - target: {fileID: 6568650298697101569, guid: 31fd5d41f49d72549b1d27428bde3c0c,
         type: 3}
@@ -816,10 +816,20 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 6568650298697101569, guid: 31fd5d41f49d72549b1d27428bde3c0c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.1122
+      objectReference: {fileID: 0}
     - target: {fileID: 6568650298697101570, guid: 31fd5d41f49d72549b1d27428bde3c0c,
         type: 3}
       propertyPath: m_Name
       value: World1Logo (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6568650298697101570, guid: 31fd5d41f49d72549b1d27428bde3c0c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31fd5d41f49d72549b1d27428bde3c0c, type: 3}
@@ -1471,7 +1481,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 29066f136d35b2a45b38340c877aebf9,
+      objectReference: {fileID: 21300000, guid: 256d2b121480c3d4ca55115913d6a6c6,
         type: 3}
     - target: {fileID: 6568650298697101569, guid: 31fd5d41f49d72549b1d27428bde3c0c,
         type: 3}
@@ -1578,10 +1588,20 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 6568650298697101569, guid: 31fd5d41f49d72549b1d27428bde3c0c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.3364
+      objectReference: {fileID: 0}
     - target: {fileID: 6568650298697101570, guid: 31fd5d41f49d72549b1d27428bde3c0c,
         type: 3}
       propertyPath: m_Name
       value: World1Logo (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6568650298697101570, guid: 31fd5d41f49d72549b1d27428bde3c0c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31fd5d41f49d72549b1d27428bde3c0c, type: 3}
@@ -1875,7 +1895,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 6541b2fb4eeb4f24fb52b8395418c430,
+      objectReference: {fileID: 21300000, guid: b3541eb79e612944d89a93663c5b4956,
         type: 3}
     - target: {fileID: 6568650298697101569, guid: 31fd5d41f49d72549b1d27428bde3c0c,
         type: 3}
