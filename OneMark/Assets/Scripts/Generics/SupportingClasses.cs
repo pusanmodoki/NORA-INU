@@ -12,6 +12,17 @@ public static class Vector2IntExtension
 		return result;
 	}
 }
+public static class Vector3Extension
+{
+	public static Vector3 ToYManual(this Vector3 vector3, float y)
+	{
+		return new Vector3(vector3.x, y, vector3.z);
+	}
+	public static Vector3 ToYZero(this Vector3 vector3)
+	{
+		return new Vector3(vector3.x, 0.0f, vector3.z);
+	}
+}
 
 [System.Serializable]
 public struct RendererMaterial
@@ -50,6 +61,7 @@ public struct RaycastInfos
 	[SerializeField]
 	Vector3 m_center;
 
+	public void SetCenter(Vector3 center) { m_center = center; }
 	public Vector3 WorldCenter(Transform transform) { return transform.LocalToWorldPosition(m_center); }
 
 	public bool Raycast(Transform transform, Vector3 direction, float distance)
@@ -64,6 +76,11 @@ public struct RaycastInfos
 	{
 		return Physics.RaycastAll(WorldCenter(transform), direction, distance, layerMask);
 	}
+	public RaycastHit[] RaycastAll(Transform transform, Vector3 addCenter, Vector3 direction, float distance)
+	{
+		return Physics.RaycastAll(WorldCenter(transform) + addCenter, direction, distance, layerMask);
+	}
+
 
 	//debug only
 #if UNITY_EDITOR

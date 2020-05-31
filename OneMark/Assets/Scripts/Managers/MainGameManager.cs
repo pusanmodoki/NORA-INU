@@ -73,11 +73,15 @@ public class MainGameManager : MonoBehaviour
 			if (m_allCheckPoints.Count == checkCounter)
 			{
 				m_resultState = ResultState.GameClear;
+				PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableInput = false;
+				MarkPointManager.instance.SetCountScale(0.0f);
 				m_resultTimer.Start();
 			}
 			if (PlayerAndTerritoryManager.instance.mainPlayer.manualCollisionAdministrator.isTerritoryExit)
 			{
 				m_resultState = ResultState.GameEnd;
+				PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableInput = false;
+				MarkPointManager.instance.SetCountScale(0.0f);
 				m_resultTimer.Start();
 			}
 		}
@@ -98,7 +102,6 @@ public class MainGameManager : MonoBehaviour
         PlayerAndTerritoryManager.instance.mainPlayer.input.GameClearAnimation();
 		PlayerAndTerritoryManager.instance.mainPlayer.areaBorderMesh.meshRenderer.enabled = false;
 		AudioManager.instance.FadeoutAndChangeBgm("MoveResult", "GameClear");
-		MarkPointManager.instance.SetCountScale(0.0f);
 		OneMarkSceneManager.instance.SetActiveAccessoryScene("GameClear", true);
 		// ResultCall.GameClear();
 		m_mainCamera.ResultFlg();
@@ -109,9 +112,10 @@ public class MainGameManager : MonoBehaviour
 	void GameOver()
 	{
         PlayerAndTerritoryManager.instance.mainPlayer.input.GameOverAnimation();
+		PlayerAndTerritoryManager.instance.mainPlayer.areaBorderMesh.meshRenderer.enabled = false;
 		AudioManager.instance.FadeoutAndChangeBgm("MoveResult", "GameOver");
-		MarkPointManager.instance.SetCountScale(0.0f);
 		OneMarkSceneManager.instance.SetActiveAccessoryScene("GameOver", true);
+		m_mainCamera.ResultFlg();
 		//  ResultCall.GameOver();
 		m_isEnd = true;
 	}

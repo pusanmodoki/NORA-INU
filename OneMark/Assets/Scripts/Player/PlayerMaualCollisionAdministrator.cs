@@ -368,6 +368,8 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	/// </summary>
 	bool JudgeHitVisibility(List<VisibilityContainer> markPoints, bool isMaybeRunItAgain)
 	{
+		Vector3 hitPoint;
+		
 		//視界判定ループ
 		for (int i = 0; i < markPoints.Count;)
 		{
@@ -394,7 +396,6 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		//この時点でCount1ならヒット確定として終了
 		else if (markPoints.Count == 1)
 		{
-			Vector3 hitPoint;
 			if (!IsRaycastMarkPoint(markPoints[0].markPoint, out hitPoint))
 			{
 				if (isMaybeRunItAgain) return false;
@@ -403,7 +404,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 
 				hitVisibilityMarkPoint = null;
 				EditVisibilityHitFlag(false);
-				m_targetMarker.EnableMarker(hitPoint);
+				m_targetMarker.EnableMarker(hitPoint, true);
 				return false;
 			}
 
@@ -418,26 +419,62 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		}
 
 		//forwardとの角度差でソートを行う
+		Vector3 minNotHitPoint = Vector3.zero;
 		float minDot = 0.0f;
 		int minIndex = -1;
+		float minDotNotHit = 0.0f;
+		int minIndexNotHit = -1;
+		bool isResult = false;
 		for (int i = 0, count = markPoints.Count; i < count; ++i)
 		{
-			if (minDot < markPoints[i].forwardToPositionDot)
+			isResult = IsRaycastMarkPoint(markPoints[i].markPoint, out hitPoint);
+			if (isResult && minDot < markPoints[i].forwardToPositionDot)
 			{
 				minDot = markPoints[i].forwardToPositionDot;
 				minIndex = i;
 			}
+			else if (!isResult && hitPoint != Vector3.zero
+				&& minDotNotHit < markPoints[i].forwardToPositionDot)
+			{
+				minNotHitPoint = hitPoint;
+				minDotNotHit = markPoints[i].forwardToPositionDot;
+				minIndexNotHit = i;
+			}
 		}
 
-		//もっとも角度差が小さいものを選択する
-		if (hitVisibilityMarkPoint != markPoints[minIndex].markPoint && hitVisibilityMarkPoint != null)
-			hitVisibilityMarkPoint.RemovedThisPoint();
+		if (minIndex >= 0)
+		{
+			//もっとも角度差が小さいものを選択する
+			if (hitVisibilityMarkPoint != markPoints[minIndex].markPoint && hitVisibilityMarkPoint != null)
+				hitVisibilityMarkPoint.RemovedThisPoint();
 
-		hitVisibilityMarkPoint = markPoints[minIndex].markPoint;
-		m_nowTargetObject = hitVisibilityMarkPoint.SelectThisPoint();
-		m_targetMarker.EnableMarker(m_nowTargetObject.transform.position);
-		EditVisibilityHitFlag(true);
+			hitVisibilityMarkPoint = markPoints[minIndex].markPoint;
+			m_nowTargetObject = hitVisibilityMarkPoint.SelectThisPoint();
+			m_targetMarker.EnableMarker(m_nowTargetObject.transform.position);
+			EditVisibilityHitFlag(true);
+		}
+		else if (minIndexNotHit >= 0)
+		{
+			if (isMaybeRunItAgain) return false;
 
+			if (hitVisibilityMarkPoint != null) hitVisibilityMarkPoint.RemovedThisPoint();
+
+			hitVisibilityMarkPoint = null;
+			EditVisibilityHitFlag(false);
+			m_targetMarker.EnableMarker(minNotHitPoint, true);
+			return false;
+		}
+		else
+		{
+			if (isMaybeRunItAgain) return false;
+
+			if (hitVisibilityMarkPoint != null) hitVisibilityMarkPoint.RemovedThisPoint();
+
+			hitVisibilityMarkPoint = null;
+			EditVisibilityHitFlag(false);
+			m_targetMarker.DisableMarker();
+			return false;
+		}
 		return true;
 	}
 	/// <summary>
@@ -453,7 +490,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		Vector3 target = markPoint.transform.position;
 		float toTargetSqrMagnitude = (target - position).sqrMagnitude;
 		int instanceID = markPoint.transform.root.GetInstanceID();
-
+		
 		var collisions = m_instructionsMarkPointInfos.RaycastAll(transform, (target - position).normalized, toTargetSqrMagnitude);
 	
 		for (int i = 0, length = collisions.Length; i < length; ++i)
@@ -474,13 +511,6 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			}
 		}
 
-		Vector3 worldCenter = m_instructionsMarkPointInfos.WorldCenter(transform);
-
-		//Color
-		Gizmos.color = Color.black;
-		//Ray
-		Gizmos.matrix = Matrix4x4.identity;
-		Debug.DrawRay(worldCenter, (target - position).normalized * toTargetSqrMagnitude);
 		hitPoint = Vector3.zero;
 		return false;
 	}

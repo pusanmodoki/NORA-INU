@@ -19,19 +19,28 @@ public class MoveMarkPoint : BaseMarkPoint
 	static readonly int m_cMoleAnimationEscapeMoveID = Animator.StringToHash("EscapeMove");
 	static readonly int m_cMoleAnimationForceAppearID = Animator.StringToHash("ForceAppear");
 	static readonly int m_cMoleAnimationAppearID = Animator.StringToHash("Appear");
+	static readonly int m_cMoleAnimationStartMoveID = Animator.StringToHash("StartMove");
 
 	[SerializeField, Space]
 	NavMeshAgent m_navMeshAgent = null;
+	[SerializeField]
+	Transform m_mole = null;
 	[SerializeField]
 	Animator m_moleAnimator = null;
 	[SerializeField]
 	float m_waitSeconds = 1.0f;
 	[SerializeField]
+	ParticleSystem[] m_particleSystems = null;
+	[SerializeField]
 	Vector3[] m_targetPoints = null;
 
+	Quaternion m_toNextRotation = Quaternion.identity;
+	Vector3 m_toNextRotationEuler = Vector3.zero;
+	Vector3 m_toNextNormalized = Vector3.zero;
 	Vector2Int m_moveIndexInfo = new Vector2Int(0, 1);
 	Timer m_timer = new Timer();
 	State m_state = State.MoveStart;
+	float m_moleDistance = 0.0f;
 	bool m_isWaitMarking = false;
 	bool m_isWaitMarkingEnd = false;
 
@@ -65,6 +74,7 @@ public class MoveMarkPoint : BaseMarkPoint
 				m_isWaitMarkingEnd = false;
 				m_moleAnimator.SetTrigger(m_cMoleAnimationEscapeMoveID);
 				m_state = State.MoveStart;
+				for (int i = 0; i < m_particleSystems.Length; ++i) m_particleSystems[i].Play();
 			}
 			return;
 		}
@@ -77,11 +87,29 @@ public class MoveMarkPoint : BaseMarkPoint
 
 					if ((m_targetPoints[m_moveIndexInfo.x] - transform.position).sqrMagnitude < m_cRemainingCheckDistance)
 					{
+						int old = m_moveIndexInfo.x;
+
 						m_moveIndexInfo.x += m_moveIndexInfo.y;
 						if (m_moveIndexInfo.x < 0 || m_moveIndexInfo.x >= m_targetPoints.Length)
 						{
 							m_moveIndexInfo.y *= -1;
 							m_moveIndexInfo.x += m_moveIndexInfo.y * 2;
+						}
+		
+						m_toNextNormalized = (m_targetPoints[m_moveIndexInfo.x].ToYZero() - m_targetPoints[old].ToYZero()).normalized;
+						m_toNextRotation = Quaternion.LookRotation(m_toNextNormalized);
+						m_toNextRotationEuler = Quaternion.Inverse(m_toNextRotation).eulerAngles * Mathf.Deg2Rad;
+
+						m_mole.localPosition = (m_targetPoints[old].ToYZero()
+							- m_targetPoints[m_moveIndexInfo.x].ToYZero()).normalized * m_moleDistance;
+
+						m_mole.rotation = m_toNextRotation;
+						for (int i = 0; i < m_particleSystems.Length; ++i)
+						{
+							var main = m_particleSystems[i].main;
+							main.startRotationXMultiplier = m_toNextRotationEuler.x;
+							main.startRotationYMultiplier = m_toNextRotationEuler.y;
+							main.startRotationZMultiplier = m_toNextRotationEuler.z;
 						}
 
 						m_timer.Start();
@@ -89,6 +117,8 @@ public class MoveMarkPoint : BaseMarkPoint
 						m_moleAnimator.SetTrigger(m_cMoleAnimationAppearID);
 						m_navMeshAgent.isStopped = true;
 						isMove = false;
+
+						for (int i = 0; i < m_particleSystems.Length; ++i) m_particleSystems[i].Stop();
 					}
 
 					break;
@@ -99,6 +129,7 @@ public class MoveMarkPoint : BaseMarkPoint
 					{
 						m_state = State.MoveStart;
 						m_moleAnimator.SetTrigger(m_cMoleAnimationEscapeMoveID);
+						for (int i = 0; i < m_particleSystems.Length; ++i) m_particleSystems[i].Play();
 					}
 
 					break;
@@ -127,6 +158,8 @@ public class MoveMarkPoint : BaseMarkPoint
 		m_isWaitMarking = true;
 		m_navMeshAgent.isStopped = true;
 		m_moleAnimator.SetTrigger(m_cMoleAnimationForceAppearID);
+
+		for (int i = 0; i < m_particleSystems.Length; ++i) m_particleSystems[i].Stop();
 	}
 	public override void LinkMarkingEnd()
 	{
@@ -137,8 +170,14 @@ public class MoveMarkPoint : BaseMarkPoint
 
 	void Start()
 	{
-		m_state = State.MoveStart;
+		m_state = State.MoveStart;	
+		m_moleAnimator.SetTrigger(m_cMoleAnimationStartMoveID);
 		m_moleAnimator.SetTrigger(m_cMoleAnimationEscapeMoveID);
+		for (int i = 0; i < m_particleSystems.Length; ++i) m_particleSystems[i].Play();
+
+		Vector3 absolute = m_mole.localPosition;
+		absolute.y = 0.0f;
+		m_moleDistance = absolute.magnitude;
 
 		if (m_targetPoints != null  && m_targetPoints.Length > 1)
 		{
@@ -154,6 +193,10 @@ public class MoveMarkPoint : BaseMarkPoint
 #endif
 				}
 			}
+			
+			m_mole.localPosition = (m_targetPoints[1].ToYZero() - m_targetPoints[0].ToYZero()).normalized * m_moleDistance;
+
+			m_mole.LookAt(m_targetPoints[0].ToYManual(m_mole.position.y));
 		}
 		else
 		{
