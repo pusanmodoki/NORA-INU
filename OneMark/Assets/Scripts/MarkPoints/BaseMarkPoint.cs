@@ -77,7 +77,7 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	[SerializeField]
 	EffectControler m_effectControler = null;
 	[SerializeField]
-	GameObject m_buttonUI = null;
+	FukidashiController m_goFukidashiObject = null;
 	[SerializeField]
 	Vector3 m_markingTarget = new Vector3(2.0f, 0.0f, 0.0f);
 	/// <summary>リンク時のゲージ上昇速度 per seconds</summary>
@@ -242,8 +242,15 @@ public abstract class BaseMarkPoint : MonoBehaviour
 			emission.rateOverTime = 0.0f;
 		}
 
-		if (isTarget && !m_buttonUI.activeSelf) { m_buttonUI.SetActive(true); }
-		else if (!isTarget && m_buttonUI.activeSelf) { m_buttonUI.SetActive(false); }
+		if (isTarget && !m_goFukidashiObject.isEnableEffect && linkServantID == -1)
+		{
+			m_goFukidashiObject.EnableEffect();
+		}
+		else if (m_goFukidashiObject.isEnableEffect &&
+			((linkServantID == -1 && !isTarget) || linkServantID != -1))
+		{
+			m_goFukidashiObject.DisableEffect();
+		}
 	}
 
     public GameObject SelectThisPoint()

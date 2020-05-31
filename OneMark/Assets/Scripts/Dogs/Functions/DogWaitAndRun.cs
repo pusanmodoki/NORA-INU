@@ -59,11 +59,9 @@ public class DogWaitAndRun : BaseDogAIFunction
 	/// </summary>
 	public override void AIEnd(BaseAIFunction nextFunction)
 	{
-		if (dogAIAgent.linkMarkPoint == null) return;
-
 		if (nextFunction != this && m_fukidashiObject.isEnableEffect)
 			m_fukidashiObject.DisableEffect();
-
+		Debug.Log(nextFunction.functionName);
 		navMeshAgent.isStopped = false;
 	}
 	/// <summary>
