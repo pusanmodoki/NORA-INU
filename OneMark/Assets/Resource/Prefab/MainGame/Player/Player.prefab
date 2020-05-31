@@ -161,7 +161,7 @@ MonoBehaviour:
   m_visibilityLayerMask:
     m_layerMask:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 262656
   m_visibilityAngle: 180
   m_visibilityDistance: 16
   m_visibilityPreferentialDistance: 2.5
@@ -175,7 +175,7 @@ MonoBehaviour:
     m_layerMask:
       m_layerMask:
         serializedVersion: 2
-        m_Bits: 66048
+        m_Bits: 328192
     m_center: {x: 0, y: 1, z: 0}
   m_instructionsMarkPointObstacleLayerMask:
     m_layerMask:

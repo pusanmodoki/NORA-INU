@@ -20,7 +20,6 @@ public class DogWaitAndRun : BaseDogAIFunction
 	Timer m_moveTimer = new Timer();
 	Timer m_updateDestinationTimer = new Timer();
 	Quaternion m_targetRotation = Quaternion.identity;
-	Vector3 m_markPointPosition = Vector3.zero;
 	Vector3 m_forwardMultiPointDistance = Vector3.zero;
 	float m_pointDistance = 0.0f;
 	bool m_isWakeUp = false;
@@ -41,12 +40,11 @@ public class DogWaitAndRun : BaseDogAIFunction
 
 		m_pointDistance = dogAIAgent.linkMarkPoint.localMarkingTarget.magnitude;
 		m_forwardMultiPointDistance = Vector3.forward * m_pointDistance;
-		m_markPointPosition = dogAIAgent.linkMarkPoint.transform.position;
 
 		m_targetRotation = Quaternion.FromToRotation(Vector3.forward,
 			dogAIAgent.linkMarkPoint.localMarkingTarget.normalized) * Quaternion.AngleAxis(m_targetRotationOffset, Vector3.up);
 
-		navMeshAgent.SetDestination(m_markPointPosition + m_targetRotation * m_forwardMultiPointDistance);
+		navMeshAgent.SetDestination(dogAIAgent.linkMarkPoint.transform.position + m_targetRotation * m_forwardMultiPointDistance);
 
 		dogAIAgent.animationController.editAnimation.isWakeUp = false;
 		m_isWakeUp = false;
@@ -83,17 +81,36 @@ public class DogWaitAndRun : BaseDogAIFunction
 		if (dogAIAgent.linkMarkPoint == dogAIAgent.linkPlayerInfo.manualCollisionAdministrator.hitVisibilityMarkPoint
 			&& dogAIAgent.linkMarkPoint != null)
 		{
-			if (!m_isWakeUp)
+			if (!dogAIAgent.linkMarkPoint.isMove)
 			{
-				dogAIAgent.animationController.editAnimation.isWakeUp = true;
-				m_isWakeUp = true;
-				navMeshAgent.isStopped = true;
-				m_updateDestinationTimer.Stop();
-			}
+				if (!m_isWakeUp)
+				{
+					dogAIAgent.animationController.editAnimation.isWakeUp = true;
+					m_isWakeUp = true;
+					navMeshAgent.isStopped = true;
+					m_updateDestinationTimer.Stop();
+				}
 
-			transform.rotation = Quaternion.Slerp(transform.rotation, 
-				Quaternion.LookRotation((dogAIAgent.linkPlayer.transform.position - transform.position).normalized), 
-				m_lookPlayerRotationSpeed * Time.deltaTime);
+				transform.rotation = Quaternion.Slerp(transform.rotation,
+					Quaternion.LookRotation((dogAIAgent.linkPlayer.transform.position - transform.position).normalized),
+					m_lookPlayerRotationSpeed * Time.deltaTime);
+			}
+			else
+			{
+				if (m_isWakeUp)
+				{
+					dogAIAgent.animationController.editAnimation.isWakeUp = false;
+					m_isWakeUp = false;
+					navMeshAgent.isStopped = false;
+				}
+
+				m_targetRotation *= Quaternion.AngleAxis(m_targetRotationSpeed * Time.deltaTime, Vector3.up);
+				if (m_updateDestinationTimer.elapasedTime > m_updateDestinationInterval)
+				{
+					navMeshAgent.SetDestination(dogAIAgent.linkMarkPoint.transform.position + m_targetRotation * m_forwardMultiPointDistance);
+					m_updateDestinationTimer.Start();
+				}
+			}
 		}
 		else
 		{
@@ -107,7 +124,7 @@ public class DogWaitAndRun : BaseDogAIFunction
 			m_targetRotation *= Quaternion.AngleAxis(m_targetRotationSpeed * Time.deltaTime, Vector3.up);
 			if (m_updateDestinationTimer.elapasedTime > m_updateDestinationInterval)
 			{
-				navMeshAgent.SetDestination(m_markPointPosition + m_targetRotation * m_forwardMultiPointDistance);
+				navMeshAgent.SetDestination(dogAIAgent.linkMarkPoint.transform.position + m_targetRotation * m_forwardMultiPointDistance);
 				m_updateDestinationTimer.Start();
 			}
 		}

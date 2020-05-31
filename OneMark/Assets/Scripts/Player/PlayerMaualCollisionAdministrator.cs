@@ -474,6 +474,13 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			}
 		}
 
+		Vector3 worldCenter = m_instructionsMarkPointInfos.WorldCenter(transform);
+
+		//Color
+		Gizmos.color = Color.black;
+		//Ray
+		Gizmos.matrix = Matrix4x4.identity;
+		Debug.DrawRay(worldCenter, (target - position).normalized * toTargetSqrMagnitude);
 		hitPoint = Vector3.zero;
 		return false;
 	}
@@ -576,11 +583,12 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			m_instructionsReturnDogInfos.DOnDrawGizmos(transform, Color.white, transform.forward, 15.0f);
 		else
 		{
-			foreach(var e in ServantManager.instance.servantByPlayers[gameObject.GetInstanceID()])
+			Vector3 centerPosition = m_instructionsReturnDogInfos.WorldCenter(transform);
+			foreach (var e in ServantManager.instance.servantByPlayers[gameObject.GetInstanceID()])
 			{
 				isHit = IsHitInstructionsReturnDog(e);
 				m_instructionsReturnDogInfos.DOnDrawGizmos(transform, isHit ? Color.black : Color.white,
-					(e.transform.position - transform.position).normalized, Vector3.Distance(transform.position, e.transform.position));
+					(e.transform.position - centerPosition).normalized, Vector3.Distance(transform.position, e.transform.position));
 			}
 		}
 	}

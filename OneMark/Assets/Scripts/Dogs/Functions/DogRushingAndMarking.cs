@@ -29,6 +29,8 @@ public class DogRushingAndMarking : BaseDogAIFunction
 
 	static readonly Quaternion m_targetRotation = Quaternion.LookRotation(-Vector3.forward);
 	static int m_bgmChangeAgentID = -1;
+	static readonly float m_cRemainingCheckDistance = 0.1f * 0.1f;
+	static readonly float m_cIfPointMoveRemainingCheckDistance = 0.2f * 0.2f;
 
 	/// <summary>State</summary>
 	public State functionState { get; private set; } = State.Null;
@@ -186,16 +188,19 @@ public class DogRushingAndMarking : BaseDogAIFunction
 			case State.Rushing:
 				{
 					//設定
+					m_moveTarget = m_markPoint.calculateMarknigTarget;
 					navMeshAgent.destination = m_moveTarget;
 
 					Vector3 position = navMeshAgent.transform.position; position.y = m_moveTarget.y;
-					if ((position - m_moveTarget).sqrMagnitude < 0.1f * 0.1f)
+					if ((position - m_moveTarget).sqrMagnitude 
+						< (!m_markPoint.isMove ? m_cRemainingCheckDistance : m_cIfPointMoveRemainingCheckDistance))
 					{
 						//強制的に増加させる
 						if (m_markPoint.linkPlayerID != dogAIAgent.linkPlayer.GetInstanceID())
 							m_markPoint.AddFirstLinkBonus();
 						//ポイントをリンクさせる
 						m_markPoint.LinkPlayer(dogAIAgent.linkPlayer, dogAIAgent);
+						m_markPoint.LinkMarkingStart();
 						//待て！
 						dogAIAgent.SetWaitAndRun(true, m_markPoint);
 
@@ -260,6 +265,8 @@ public class DogRushingAndMarking : BaseDogAIFunction
 			//マーキング終了→関数終了
 			case State.FunctionEnd:
 				{
+					m_markPoint.LinkMarkingEnd();
+
 					//Animation Set
 					m_animationController.editAnimation.isWakeUp = false;
 					m_animationController.editAnimation.TriggerWaitRunStart();

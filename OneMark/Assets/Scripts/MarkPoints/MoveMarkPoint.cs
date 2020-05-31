@@ -1,94 +1,119 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
+/// <summary>
+/// 更新を行わないデフォルトクラスとなるDefaultMarkPoint 
+/// </summary>
 public class MoveMarkPoint : BaseMarkPoint
 {
-	public int nowUseAgent { get; private set; } = 0;
-
-	[SerializeField]
-	GameObject m_alphaUiObject = null;
-	[SerializeField]
-	UnityEngine.UI.Slider m_alphaUiSlider = null;
-	[SerializeField]
-	float m_checkOverlapInterval = 0.1f;
-	[SerializeField]
-	BoxCastInfos m_checkOverlapInfo = default;
-
-	[SerializeField, Tooltip("1度に使用できる最大エージェント数, infinity = -1")]
-	int m_maxAgentToUse = 1;
-#if UNITY_EDITOR
-	[SerializeField, Header("Debug Only"), Tooltip("現在のエージェント数")]
-	int m_dNowUseAgent = 0;
-#endif
-
-	List<DogAIAgent> m_useAgents = new List<DogAIAgent>();
-	Timer m_intervalTimer = new Timer();
-
-	public bool AcquisitionRightToUse(DogAIAgent useObject)
+	enum State
 	{
-		if (nowUseAgent < (m_maxAgentToUse >= 0 ? m_maxAgentToUse : int.MaxValue)
-			&& !m_useAgents.Contains(useObject))
+		MoveStart,
+		Move,
+		Wait,
+	}
+
+	static readonly float m_cRemainingCheckDistance = 0.1f * 0.1f;
+	static readonly int m_cMoleAnimationEscapeMoveID = Animator.StringToHash("EscapeMove");
+	static readonly int m_cMoleAnimationForceAppearID = Animator.StringToHash("ForceAppear");
+	static readonly int m_cMoleAnimationAppearID = Animator.StringToHash("Appear");
+
+	[SerializeField, Space]
+	NavMeshAgent m_navMeshAgent = null;
+	[SerializeField]
+	Animator m_moleAnimator = null;
+	[SerializeField]
+	float m_waitSeconds = 1.0f;
+	[SerializeField]
+	Vector3[] m_targetPoints = null;
+
+	Vector2Int m_moveIndexInfo = new Vector2Int(0, 1);
+	Timer m_timer = new Timer();
+	State m_state = State.MoveStart;
+	bool m_isWaitMarking = false;
+	bool m_isWaitMarkingEnd = false;
+
+
+	public void AnimationEscapeCallback()
+	{
+		if (m_state == State.MoveStart && !m_isWaitMarking)
 		{
-			++nowUseAgent;
-			m_useAgents.Add(useObject);
-
-#if UNITY_EDITOR
-			m_dNowUseAgent = nowUseAgent;
-#endif
-			return true;
+			m_navMeshAgent.isStopped = false;
+			m_state = State.Move;
+			m_navMeshAgent.SetDestination(m_targetPoints[m_moveIndexInfo.x]);
 		}
-		else
-			return false;
 	}
-
-	public void UnacquisitionRightToUse(DogAIAgent useObject)
-	{
-		if (m_useAgents.Contains(useObject))
-			return;
-
-		--nowUseAgent;
-		m_useAgents.Remove(useObject);
-
-#if UNITY_EDITOR
-		m_dNowUseAgent = nowUseAgent;
-#endif
-	}
-
 	/// <summary>
 	/// [UpdatePoint] (Virtual)
 	/// ポイントの更新を行う
 	/// </summary>
 	public override void UpdatePoint()
 	{
+		if (m_targetPoints == null || m_targetPoints.Length <= 1) return;
+
 		if (isLinked)
-			m_alphaUiSlider.value = effectiveCounter / effectiveMaxLimiter;
+			PlayerAndTerritoryManager.instance.ReserveCalucrateTerritory(linkPlayerID);
 
-		if (m_intervalTimer.elapasedTime > m_checkOverlapInterval)
+		if (m_isWaitMarking)
 		{
-			var collisions = Physics.OverlapBox(m_checkOverlapInfo.WorldCenter(transform), m_checkOverlapInfo.overlapSize);
+			if (m_isWaitMarkingEnd)
+			{
+				m_navMeshAgent.isStopped = false;
+				m_isWaitMarking = false;
+				m_isWaitMarkingEnd = false;
+				m_moleAnimator.SetTrigger(m_cMoleAnimationEscapeMoveID);
+				m_state = State.MoveStart;
+			}
+			return;
+		}
 
-			for (int i = 0, length = collisions.Length; i < length; ++i)
-				for (int k = 0, count = m_useAgents.Count; k < count; ++k)
+		switch (m_state)
+		{
+			case State.Move:
 				{
-					if (collisions[i].gameObject.GetInstanceID() == m_useAgents[k].gameObject.GetInstanceID())
+					isMove = true;
+
+					if ((m_targetPoints[m_moveIndexInfo.x] - transform.position).sqrMagnitude < m_cRemainingCheckDistance)
 					{
+						m_moveIndexInfo.x += m_moveIndexInfo.y;
+						if (m_moveIndexInfo.x < 0 || m_moveIndexInfo.x >= m_targetPoints.Length)
+						{
+							m_moveIndexInfo.y *= -1;
+							m_moveIndexInfo.x += m_moveIndexInfo.y * 2;
+						}
 
+						m_timer.Start();
+						m_state = State.Wait;
+						m_moleAnimator.SetTrigger(m_cMoleAnimationAppearID);
+						m_navMeshAgent.isStopped = true;
+						isMove = false;
 					}
-				}
 
-			m_intervalTimer.Start();
+					break;
+				}
+			case State.Wait:
+				{
+					if (m_timer.elapasedTime >= m_waitSeconds)
+					{
+						m_state = State.MoveStart;
+						m_moleAnimator.SetTrigger(m_cMoleAnimationEscapeMoveID);
+					}
+
+					break;
+				}
+			default:
+				break;
 		}
 	}
 
-	/// <summary>
-	/// [LinkPoint] (Virtual)
-	/// ポイントがリンクされた際にコールバックされる関数
-	/// </summary>
-	public override void LinkPoint()
+    /// <summary>
+    /// [LinkPoint] (Virtual)
+    /// ポイントがリンクされた際にコールバックされる関数
+    /// </summary>
+    public override void LinkPoint()
 	{
-		m_alphaUiObject.SetActive(true);
-		m_intervalTimer.Start();
 	}
 	/// <summary>
 	/// [UnlinkPoint] (Virtual)
@@ -96,6 +121,68 @@ public class MoveMarkPoint : BaseMarkPoint
 	/// </summary>
 	public override void UnlinkPoint()
 	{
-		m_alphaUiObject.SetActive(false);
 	}
+	public override void LinkMarkingStart()
+	{
+		m_isWaitMarking = true;
+		m_navMeshAgent.isStopped = true;
+		m_moleAnimator.SetTrigger(m_cMoleAnimationForceAppearID);
+	}
+	public override void LinkMarkingEnd()
+	{
+		m_isWaitMarkingEnd = true;
+	}
+
+
+
+	void Start()
+	{
+		m_state = State.MoveStart;
+		m_moleAnimator.SetTrigger(m_cMoleAnimationEscapeMoveID);
+
+		if (m_targetPoints != null  && m_targetPoints.Length > 1)
+		{
+			NavMeshHit navMeshHit;
+			for (int i = 0, length = m_targetPoints.Length; i < length; ++i)
+			{
+				if (NavMesh.SamplePosition(m_targetPoints[i], out navMeshHit, 2.0f, NavMesh.AllAreas))
+					m_targetPoints[i] = navMeshHit.position;
+				else
+				{
+#if UNITY_EDITOR
+					Debug.LogWarning("Error!! MoveMarkPoint->Start, index[" + i + "] invalid position");
+#endif
+				}
+			}
+		}
+		else
+		{
+#if UNITY_EDITOR
+			Debug.LogWarning("Error!! MoveMarkPoint->Start, invalid target positions");
+#endif
+		}
+
+	}
+
+#if UNITY_EDITOR
+	static readonly Vector3 m_dScale = new Vector3(0.1f, 5.0f, 0.1f);
+	new void OnDrawGizmos()
+	{
+		base.OnDrawGizmos();
+
+		for (int i = 0; i < m_targetPoints.Length; ++i)
+		{
+			Gizmos.color = Color.black;
+			Gizmos.DrawWireCube(m_targetPoints[i], m_dScale);
+			Gizmos.color = Color.red;
+			if (i < m_targetPoints.Length - 1)
+			{
+				Vector3 toNext = m_targetPoints[i + 1] - m_targetPoints[i];
+				Gizmos.DrawWireCube(
+					new Vector3(m_targetPoints[i].x + toNext.x * 0.5f, m_targetPoints[i].y, m_targetPoints[i].z + toNext.z * 0.5f),
+					new Vector3(toNext.x, 5.0f, toNext.z));
+			}
+		}
+	}
+#endif
 }

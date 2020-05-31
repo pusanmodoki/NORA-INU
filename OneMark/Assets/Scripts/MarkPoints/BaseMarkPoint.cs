@@ -12,6 +12,16 @@ public abstract class BaseMarkPoint : MonoBehaviour
 
 	/// <summary>Marking target point</summary>
 	public Vector3 markingTarget { get; private set; } = Vector3.zero;
+	/// <summary>Marking target point(移動する等の再計算が必要な場合のみ使用)</summary>
+	public Vector3 calculateMarknigTarget
+	{
+		get
+		{
+			Matrix4x4 matrix = Matrix4x4.Translate(transform.position);
+			matrix *= Matrix4x4.Rotate(transform.rotation);
+			return matrix.MultiplyPoint(m_markingTarget);
+		}
+	}
 	/// <summary>Marking target point(local)</summary>
 	public Vector3 localMarkingTarget { get { return m_markingTarget; } }
 	/// <summary>Instance id (mark point)</summary>
@@ -42,6 +52,7 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	public bool isForceAscendingEffective { get; private set; } = false;
 	/// <summary>リンク中Safetyエリアに加えるか？</summary>
 	public bool isJoinSafetyAreaWhenLink { get { return m_isJoinSafetyAreaWhenLink; } }
+	public bool isMove { get; protected set; } = false;
     public bool isTarget { get; set; } = false;
 
 	//Debug only
@@ -63,6 +74,10 @@ public abstract class BaseMarkPoint : MonoBehaviour
 
     [Header("Values"), SerializeField, Space, Space]
     Animator m_selectAnimation = null;
+	[SerializeField]
+	EffectControler m_effectControler = null;
+	[SerializeField]
+	GameObject m_buttonUI = null;
 	[SerializeField]
 	Vector3 m_markingTarget = new Vector3(2.0f, 0.0f, 0.0f);
 	/// <summary>リンク時のゲージ上昇速度 per seconds</summary>
@@ -86,6 +101,17 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	/// ポイントがリンクされた際にコールバックされる関数
 	/// </summary>
 	public virtual void LinkPoint() { }
+
+	/// <summary>
+	/// [LinkPoint] (Virtual)
+	/// ポイントが既にリンクされているかに関わらず、マーキングを開始した際にコールバックされる関数
+	/// </summary>
+	public virtual void LinkMarkingStart() { }
+	/// <summary>
+	/// [LinkMarkingEnd] (Virtual)
+	/// ポイントが既にリンクされているかに関わらず、マーキングが終了した際にコールバックされる関数
+	/// </summary>
+	public virtual void LinkMarkingEnd() { }
 	/// <summary>
 	/// [UnlinkPoint] (Virtual)
 	/// ポイントがリンク解除された際にコールバックされる関数
@@ -145,7 +171,9 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	public void LinkPlayer(GameObject player, DogAIAgent dogAIAgent)
 	{
 		if (linkPlayerID == player.GetInstanceID())
+		{
 			return;
+		}
 
 		bool isOldLinked = isLinked;
 		//ID登録
@@ -154,7 +182,9 @@ public abstract class BaseMarkPoint : MonoBehaviour
 		//Managerに紐付け登録
 		if (!isOldLinked)
 			PlayerAndTerritoryManager.instance.allPlayers[linkPlayerID].AddMarkPoint(this);
-		
+
+		//Effect On
+		m_effectControler.OnEffectByInteger(0);
 		//Callback
 		LinkPoint();
 	}
@@ -197,6 +227,23 @@ public abstract class BaseMarkPoint : MonoBehaviour
 
 		if (isLinked && effectiveCounter <= 0.0f)
 			UnlinkPlayer();
+
+
+		if (isForceAscendingEffective && effectiveCounter < effectiveMaxLimiter)
+		{
+			ParticleSystem.EmissionModule emission = m_effectControler.GetParticleSystem("flower").emission;
+
+			emission.rateOverTime = 11.0f;
+		}
+		else
+		{
+			ParticleSystem.EmissionModule emission = m_effectControler.GetParticleSystem("flower").emission;
+
+			emission.rateOverTime = 0.0f;
+		}
+
+		if (isTarget && !m_buttonUI.activeSelf) { m_buttonUI.SetActive(true); }
+		else if (!isTarget && m_buttonUI.activeSelf) { m_buttonUI.SetActive(false); }
 	}
 
     public GameObject SelectThisPoint()
@@ -233,7 +280,7 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	static readonly Vector3 m_dScale = new Vector3(0.1f, 2.0f, 0.1f);
 
 	/// <summary>[OnDestroy]</summary>
-	void OnDrawGizmos()
+	protected void OnDrawGizmos()
 	{
 		if (UnityEditor.EditorApplication.isPlaying)
 			Gizmos.DrawWireCube(markingTarget, m_dScale);

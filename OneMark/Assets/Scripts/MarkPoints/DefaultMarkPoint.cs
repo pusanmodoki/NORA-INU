@@ -7,38 +7,12 @@ using UnityEngine;
 /// </summary>
 public class DefaultMarkPoint : BaseMarkPoint
 {
-    [SerializeField]
-    EffectControler effects = null;
-
-    [SerializeField]
-    GameObject m_button = null;
-
 	/// <summary>
 	/// [UpdatePoint] (Virtual)
 	/// ポイントの更新を行う
 	/// </summary>
 	public override void UpdatePoint()
 	{
-   //     if (isLinked)
-			//m_uiSlider.value = effectiveCounter / effectiveMaxLimiter;
-   //     if (isLinked)
-			//m_uiSlider.value = effectiveCounter / MarkPointManager.instance.effectiveMaxLimiter;
-
-        if (isForceAscendingEffective && effectiveCounter < effectiveMaxLimiter)
-        {
-            ParticleSystem.EmissionModule emission = effects.GetParticleSystem("flower").emission;
-
-            emission.rateOverTime = 11.0f;
-        }
-        else
-        {
-            ParticleSystem.EmissionModule emission = effects.GetParticleSystem("flower").emission;
-
-            emission.rateOverTime = 0.0f;
-        }
-
-        if (isTarget && !m_button.activeSelf) { m_button.SetActive(true); }
-        else if(!isTarget && m_button.activeSelf) { m_button.SetActive(false); }
     }
 
     /// <summary>
@@ -47,8 +21,6 @@ public class DefaultMarkPoint : BaseMarkPoint
     /// </summary>
     public override void LinkPoint()
 	{
-		//m_uiObject.SetActive(true);
-        effects.OnEffectByInteger(0);
 	}
 	/// <summary>
 	/// [UnlinkPoint] (Virtual)
@@ -56,6 +28,5 @@ public class DefaultMarkPoint : BaseMarkPoint
 	/// </summary>
 	public override void UnlinkPoint()
 	{
-		//m_uiObject.SetActive(false);
 	}
 }
