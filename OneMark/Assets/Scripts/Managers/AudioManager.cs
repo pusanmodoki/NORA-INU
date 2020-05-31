@@ -81,6 +81,11 @@ public class AudioManager : MonoBehaviour
 			m_changeSeconds = changeSeconds;
 		}
 
+		public float ScalingMinVolume(float startVolume)
+		{
+			return startVolume * minVolume;
+		}
+
 		[SerializeField]
 		string m_uniqueKey;
 		[SerializeField, Range(0.0f, 1.0f)]
@@ -248,6 +253,8 @@ public class AudioManager : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Space))
 			FadeoutBgm("Marking", FadeoutOption.AutoFadein);
 
+		float minVolume = allVolumeChangePresets[m_volumePresetUniqueKey].ScalingMinVolume(m_startVolume);
+
 		switch (m_state)
 		{
 			case State.Null:
@@ -256,7 +263,7 @@ public class AudioManager : MonoBehaviour
 				{
 					if (m_timer.elapasedTime > allVolumeChangePresets[m_volumePresetUniqueKey].changeSeconds)
 					{
-						m_bgmSource.volume = allVolumeChangePresets[m_volumePresetUniqueKey].minVolume;
+						m_bgmSource.volume = minVolume;
 						m_state = State.Null;
 						isCompleteFadeChange = true;
 
@@ -265,10 +272,9 @@ public class AudioManager : MonoBehaviour
 						else if (m_fadeoutOption == FadeoutOption.AutoStop)
 							StopBgm(m_playUniqueKey);
 					}
-					else if (m_bgmSource.volume > allVolumeChangePresets[m_volumePresetUniqueKey].minVolume)
+					else if (m_bgmSource.volume > minVolume)
 					{
-						m_bgmSource.volume = allVolumeChangePresets[m_volumePresetUniqueKey].minVolume
-							+ (m_startVolume - allVolumeChangePresets[m_volumePresetUniqueKey].minVolume)
+						m_bgmSource.volume = minVolume + (m_startVolume - minVolume)
 							* (1.0f - (m_timer.elapasedTime / allVolumeChangePresets[m_volumePresetUniqueKey].changeSeconds));
 					}
 					break;
@@ -283,8 +289,7 @@ public class AudioManager : MonoBehaviour
 					}
 					else if (m_bgmSource.volume < allBgms[m_playUniqueKey].volume)
 					{
-						m_bgmSource.volume = allVolumeChangePresets[m_volumePresetUniqueKey].minVolume
-							+ (allBgms[m_playUniqueKey].volume - m_startVolume)
+						m_bgmSource.volume = minVolume + (allBgms[m_playUniqueKey].volume - m_startVolume)
 							* (m_timer.elapasedTime / allVolumeChangePresets[m_volumePresetUniqueKey].changeSeconds);
 					}
 					break;
@@ -293,17 +298,16 @@ public class AudioManager : MonoBehaviour
 				{
 					if (m_timer.elapasedTime > allVolumeChangePresets[m_volumePresetUniqueKey].changeSeconds)
 					{
-						m_bgmSource.volume = allVolumeChangePresets[m_volumePresetUniqueKey].minVolume;
+						m_bgmSource.volume = minVolume;
 						m_state = State.Null;
 
 						StopBgm(m_playUniqueKey);
 						PlayBgm(m_changeUniqueKey);
 						FadeinBgm(m_volumePresetUniqueKey);
 					}
-					else if (m_bgmSource.volume > allVolumeChangePresets[m_volumePresetUniqueKey].minVolume)
+					else if (m_bgmSource.volume > minVolume)
 					{
-						m_bgmSource.volume = allVolumeChangePresets[m_volumePresetUniqueKey].minVolume
-							+ (m_startVolume - allVolumeChangePresets[m_volumePresetUniqueKey].minVolume)
+						m_bgmSource.volume = minVolume + (m_startVolume - minVolume)
 							* (1.0f - (m_timer.elapasedTime / allVolumeChangePresets[m_volumePresetUniqueKey].changeSeconds));
 					}
 					break;
