@@ -15,10 +15,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Stage/StageT/T-1.unity
     guid: 1806e736a3e3ed44d8455016f65488d1
   - enabled: 1
-    path: Assets/Scenes/Stage/StageT/T-2.unity
+    path: Assets/Scenes/Stage/StageT/T-3.unity
     guid: 94360d179ab3ef440ae2e786c4a8ec5b
   - enabled: 1
-    path: Assets/Scenes/Stage/StageT/T-3.unity
+    path: Assets/Scenes/Stage/StageT/T-2.unity
     guid: 68a227c9d799033459077e7a3a1471d7
   - enabled: 1
     path: Assets/Scenes/Stage/StageT/T-4.unity
