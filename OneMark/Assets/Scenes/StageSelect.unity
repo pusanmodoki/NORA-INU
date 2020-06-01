@@ -348,7 +348,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17ab0d57e18652c428f8ee74ec7b9a4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageSlide: {fileID: 1355552883}
 --- !u!4 &206974164
 Transform:
   m_ObjectHideFlags: 0
@@ -465,6 +464,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Diorama_Yuki_02
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 596d86477c13c9e43b87edffb8edee69,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 596d86477c13c9e43b87edffb8edee69, type: 3}
@@ -1513,7 +1517,6 @@ MonoBehaviour:
   - {fileID: 736553412}
   - {fileID: 1027740087}
   - {fileID: 765271276}
-  - {fileID: 1247896467}
   m_deadZone: 0.1
   m_interval: 0.1
   m_isInverse: 0
@@ -1960,7 +1963,7 @@ PrefabInstance:
     - target: {fileID: 6568650298697101570, guid: 31fd5d41f49d72549b1d27428bde3c0c,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31fd5d41f49d72549b1d27428bde3c0c, type: 3}
