@@ -98,7 +98,9 @@ public class MoveMarkPoint : BaseMarkPoint
 		
 						m_toNextNormalized = (m_targetPoints[m_moveIndexInfo.x].ToYZero() - m_targetPoints[old].ToYZero()).normalized;
 						m_toNextRotation = Quaternion.LookRotation(m_toNextNormalized);
-						m_toNextRotationEuler = Quaternion.Inverse(m_toNextRotation).eulerAngles * Mathf.Deg2Rad;
+						m_toNextRotationEuler = Quaternion.Inverse(m_toNextRotation).eulerAngles;
+						m_toNextRotationEuler.y += 180;
+						m_toNextRotationEuler *= Mathf.Deg2Rad;
 
 						m_mole.localPosition = (m_targetPoints[old].ToYZero()
 							- m_targetPoints[m_moveIndexInfo.x].ToYZero()).normalized * m_moleDistance;
