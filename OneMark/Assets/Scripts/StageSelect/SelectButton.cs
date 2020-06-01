@@ -71,7 +71,7 @@ public class SelectButton : MonoBehaviour
             //Debug.Log(nowSelectIndex);
 
             transform.GetChild(nowSelectIndex).GetChild(0).gameObject.SetActive(true);
-            OneMarkSceneManager.instance.MoveStageScene(new Vector2Int(StageSelectManager.instance.worldNum + 1, nowSelectIndex + 1));
+         //   OneMarkSceneManager.instance.MoveStageScene(new Vector2Int(StageSelectManager.instance.worldNum + 1, nowSelectIndex + 1));
         }
 
     }

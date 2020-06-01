@@ -5,100 +5,52 @@ using UnityEngine.UI;
 
 public class StageSlide : MonoBehaviour
 {
-    [SerializeField]
-    private int nowSelectIndex = 0;
+	public Timer timer { get; private set; } = new Timer();
+	public bool isSlide { get; private set; } = false;
 
     [SerializeField]
     private float interval = 40.0f;
 
     [SerializeField]
-    private float scrollSpeed = 0.03f;
+    private float scrollSeconds = 1.5f;
 
-    [SerializeField]
-    private bool isInput_Yoko = false;
-
-    [SerializeField]
-    private SelectSoundPlayer se = null;
-
-    [SerializeField]
-    private GameObject stageLogo = null;
-
-    List<LogoAnimation> logoAnime = new List<LogoAnimation>();
-
-    public int worldIndex { get { return nowSelectIndex; } }
+	public void StartSlide()
+	{
+		isSlide = true;
+		timer.Start();
+	}
 
     // Start is called before the first frame update
     void Start()
-    {
-        for(int i = 0; i < transform.childCount; ++i)
-        {
-            Vector3 localPos = transform.GetChild(i).GetComponent<Transform>().localPosition;
-            localPos.x = i * interval;
-            transform.GetChild(i).GetComponent<Transform>().localPosition = localPos;
-        }
-
-        for (int i = 0; i < 4; ++i)
-        {
-            logoAnime.Add(stageLogo.transform.GetChild(i).GetComponent<LogoAnimation>());
-        }
-
-        logoAnime[0].LogoOn();
-    }
+	{
+		for (int i = 0; i < transform.childCount; ++i)
+		{
+			Vector3 localPos = transform.GetChild(i).transform.localPosition;
+			localPos.x = i * interval;
+			transform.GetChild(i).transform.localPosition = localPos;
+		}
+		timer.Start();
+	}
 
     // Update is called once per frame
     void Update()
     {
-        if (!isInput_Yoko)
-        {
-            InputRightAndLeft();
-        }
-        
-        ScrollUpdate();
-
+		if (isSlide) ScrollUpdate();
     }
 
-    /// <summary>
-    /// 入力処理
-    /// </summary>
-    void InputRightAndLeft()
-    {
-        float value = 0.0f;
-        if (Input.GetButton("Horizontal"))
-        {
-            se.SelectPlay();
+	void ScrollUpdate()
+	{
+		float pointx = (float)(-(StageSelectIndexer.index.x - 1)) * interval;
+		float lerpx = Mathf.Lerp(transform.localPosition.x, pointx, timer.elapasedTime / scrollSeconds);
 
-            value = Input.GetAxisRaw("Horizontal");
-            if (value == -1.0f)
-            {
-                if (nowSelectIndex == 0) return;
-                logoAnime[nowSelectIndex].LogoOff();
-                --nowSelectIndex;
-                logoAnime[nowSelectIndex].LogoOn();
-                isInput_Yoko = true;
-            }
-            else
-            {
-                if (nowSelectIndex == transform.childCount - 1) return;
-                logoAnime[nowSelectIndex].LogoOff();
-                ++nowSelectIndex;
-                logoAnime[nowSelectIndex].LogoOn();
-                isInput_Yoko = true;
-            }
-        }
-    }
-    
-    void ScrollUpdate()
-    {
-        float pointx = (float)(-nowSelectIndex) * interval;
-        float lerpx = Mathf.Lerp(GetComponent<Transform>().localPosition.x, pointx, scrollSpeed);
+		Vector3 vec = transform.localPosition;
+		vec.x = lerpx;
+		transform.localPosition = vec;
 
-        Vector3 vec = GetComponent<Transform>().localPosition;
-        vec.x = lerpx;
-        GetComponent<Transform>().localPosition = vec;
-
-        if(Mathf.Abs(GetComponent<Transform>().localPosition.x - pointx) < 2.0f)
-        {
-            isInput_Yoko = false;
-        }
-    }
+		if (timer.elapasedTime >= scrollSeconds)
+		{
+			isSlide = false;
+			timer.Start();
+		}
+	}
 }

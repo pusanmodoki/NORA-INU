@@ -2,22 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseSelectedObject : MonoBehaviour
+public abstract class BaseSelectedObject : MonoBehaviour
 {
-    [SerializeField]
-    protected bool m_isSelected = false;
-    public bool isSelected { get { return m_isSelected; } set { m_isSelected = value; } }
+	[SerializeField]
+	protected bool m_isSelected = false;
+	public bool isSelected { get { return m_isSelected; } set { m_isSelected = value; } }
 
-    public MenuInput menu { get; private set; }
+	public MenuInput menu { get; private set; }
 
-    public void SetMenu(MenuInput _menu)
-    {
-        menu = _menu;
-    }
+	public void SetMenu(MenuInput _menu)
+	{
+		menu = _menu;
+	}
 
-    public virtual void OnEnter() { }
-    
-    public virtual void OnCursor() { }
+	public abstract void OnEnter();
 
-    public virtual void OffCursor() { }
+	public abstract void AwakeCursor();
+	public abstract void OnCursor();
+
+	public abstract void OffCursor();
 }

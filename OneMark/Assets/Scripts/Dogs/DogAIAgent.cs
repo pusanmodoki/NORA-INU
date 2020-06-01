@@ -50,6 +50,8 @@ public class DogAIAgent : AIAgent
 	/// <summary>This animation controller</summary>
 	[SerializeField, Tooltip("This animation controller")]
 	DogAnimationController m_animationController = null;
+	[SerializeField]
+	ParticleSystem m_linkEffect = null;
 	/// <summary>This ground flag</summary>
 	[SerializeField, Tooltip("This ground flag")]
 	BoxCastFlags m_groundFlag = null;
@@ -137,6 +139,7 @@ public class DogAIAgent : AIAgent
 		{
 			m_linkMarkPoint.ChangeAgent(this);
 			ForceSpecifyFunction(m_rushingAndMarkingFunction);
+			m_linkEffect.Stop();
 		}
 		return true;
 	}
@@ -196,6 +199,7 @@ public class DogAIAgent : AIAgent
 				m_animationController.editAnimation.isWakeUpNextSearch = false;
 				m_linkMarkPoint.ChangeAgent(null);
 				m_linkMarkPoint = null;
+				m_linkEffect.Play();
 			}
 			return true;
 		}
@@ -308,12 +312,14 @@ public class DogAIAgent : AIAgent
 			m_isReservationStartOfMarking = false;
 			m_linkMarkPoint.ChangeAgent(this);
 			ForceSpecifyFunction(m_rushingAndMarkingFunction);
+			m_linkEffect.Stop();
 		}
 		if (m_isReservationEndOfMarking && !navMeshAgent.isOnOffMeshLink)
 		{
 			m_isReservationEndOfMarking = false;
 			m_animationController.editAnimation.TriggerReturnWakeUp();
 			m_animationController.editAnimation.isWakeUpNextSearch = m_isSetBoolIsNextSearch;
+			if (m_isSetBoolIsNextSearch) m_linkEffect.Play();
 			m_linkMarkPoint.ChangeAgent(null);
 			m_linkMarkPoint = null;
 		}

@@ -24,26 +24,47 @@ public class MenuInput : MonoBehaviour
 
     [SerializeField]
     bool m_isInverse = false;
+	[SerializeField]
+	bool m_isStartCallOffCursor = true;
 
-    public int objectCount { get { return m_selectedObjects.Count; } }
+	public int objectCount { get { return m_selectedObjects.Count; } }
     public bool isSelectInput { get; private set; } = true;
     public int nowSelectIndex { get { return m_nowSelectIndex; } }
+	public bool isEnableInput { get; set; } = true;
 
+	public void ForceSelect(int index)
+	{
+		if (index >= m_selectedObjects.Count) return;
+
+		if (m_nowSelectIndex != index)
+		{
+			m_selectedObjects[m_nowSelectIndex].OffCursor();
+			m_selectedObjects[m_nowSelectIndex].isSelected = false;
+			m_nowSelectIndex = index;
+
+			m_selectedObjects[m_nowSelectIndex].OnCursor();
+			isSelectInput = false;
+			m_selectedObjects[m_nowSelectIndex].isSelected = true;
+			StartCoroutine("InputInterval");
+		}
+	}
 
     private void Start()
     {
         foreach(var obj in m_selectedObjects)
         {
-            obj.OffCursor();
+			if (m_isStartCallOffCursor) obj.OffCursor();
             obj.SetMenu(this);
         }
-        m_selectedObjects[nowSelectIndex].OnCursor();
+        m_selectedObjects[nowSelectIndex].AwakeCursor();
     }
 
 
     // Update is called once per frame
     void Update()
     {
+		if (!isEnableInput) return;
+
         if (isSelectInput) { Select(); }
         Direct();
     }
@@ -52,13 +73,13 @@ public class MenuInput : MonoBehaviour
     void Select()
     {
         int prevIndex = m_nowSelectIndex;
-        m_nowSelectIndex += MoveInputCheck();
+		m_nowSelectIndex = MoveInputCheck();
+
         if(m_nowSelectIndex != prevIndex)
         {
             m_selectedObjects[prevIndex].OffCursor();
             m_selectedObjects[prevIndex].isSelected = false;
-            if (m_nowSelectIndex < 0) { m_nowSelectIndex = 0; }
-            else if (m_nowSelectIndex >= objectCount) { m_nowSelectIndex = objectCount - 1; }
+
             m_selectedObjects[m_nowSelectIndex].OnCursor();
             isSelectInput = false;
             m_selectedObjects[m_nowSelectIndex].isSelected = true;
@@ -68,7 +89,8 @@ public class MenuInput : MonoBehaviour
 
     void Direct()
     {
-        if (Input.GetButtonDown(m_inputDirected))
+        if (m_inputDirected != null && m_inputDirected.Length > 0
+			&& Input.GetButtonDown(m_inputDirected))
         {
             m_selectedObjects[m_nowSelectIndex].OnEnter();
         }
@@ -81,14 +103,18 @@ public class MenuInput : MonoBehaviour
         if ((inputValue > m_deadZone && !m_isInverse) ||
             (inputValue < -m_deadZone && m_isInverse))
         {
-            return 1;
-        }
-        else if ((inputValue > m_deadZone && m_isInverse) ||
+            m_nowSelectIndex += 1;
+
+			return m_nowSelectIndex >= objectCount ? objectCount - 1 : m_nowSelectIndex;
+		}
+		else if ((inputValue > m_deadZone && m_isInverse) ||
             (inputValue < -m_deadZone && !m_isInverse))
         {
-            return -1;
-        }
-        return 0;
+            m_nowSelectIndex  -= 1;
+
+			return m_nowSelectIndex < 0 ? 0 : m_nowSelectIndex;
+		}
+        return m_nowSelectIndex;
     }
     
     IEnumerator InputInterval()

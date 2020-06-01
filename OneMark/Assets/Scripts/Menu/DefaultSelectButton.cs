@@ -40,4 +40,9 @@ public class DefaultSelectButton : BaseSelectedObject
             OneMarkSceneManager.instance.MoveStageScene(stageNum);
         }
     }
+
+	public override void AwakeCursor()
+	{
+		m_image.color = m_selectedColor;
+	}
 }
