@@ -105,7 +105,7 @@ public class FollowObject : MonoBehaviour
         //this.transform.LookAt(lookObject.transform);
         m_covering.isMoving = true;
         startFlg = false;
-        playerObject.GetComponent<PlayerInput>().isEnableInput = true;
+        //playerObject.GetComponent<PlayerInput>().isEnableInput = true;
 
     }
 

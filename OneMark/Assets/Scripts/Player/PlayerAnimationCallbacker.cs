@@ -10,6 +10,6 @@ public class PlayerAnimationCallbacker : MonoBehaviour
 	public void EditEnableInput(int set)
 	{
 		if (set == 0) m_input.isEnableInput = false;
-		else if (set == 1) m_input.isEnableInput = true;
+		else if (set == 1 && MainGameManager.instance.resultState == MainGameManager.ResultState.Null) m_input.isEnableInput = true;
 	}
 }
