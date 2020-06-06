@@ -53,16 +53,22 @@ public class TargetMarker : MonoBehaviour
     //	//transform.Rotate(0.0f, rotateSpeed * Time.deltaTime, 0.0f);
     //}
 
-	public void EnableMarker(Vector3 target, bool isReset = false)
+	public void ClearMarker()
 	{
-		if (target != m_targetPosition || isReset)
-			m_lineEffect.Clear();
+		m_lineEffect.Clear();
+	}
+
+	public void EnableMarker(Vector3 target)
+	{
+		if (!m_isEnabled) m_lineEffect.Play();
 
 		m_targetPosition = target;
 		m_isEnabled = true;
 	}
 	public void DisableMarker()
 	{
+		if (m_isEnabled) m_lineEffect.Stop();
+
 		m_lineEffect.Clear();
 
 		m_isEnabled = false;

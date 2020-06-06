@@ -18,6 +18,8 @@ public class PlayerInput : MonoBehaviour
 
 	public Vector3 moveInput { get { return m_moveInput; } }
 	public bool isEnableInput { get; set; } = true;
+	public bool isEnableActionInput { get; set; } = true;
+	public bool isEnableInputAndActionInput { get { return isEnableInput & isEnableActionInput; } }
 
 	/// <summary>This PlayerMaualCollisionAdministrator</summary>
 	[SerializeField, Tooltip("This PlayerMaualCollisionAdministrator")]
@@ -100,7 +102,7 @@ public class PlayerInput : MonoBehaviour
 
     void ShotInput()
     {
-		if (!isEnableInput)
+		if (!isEnableInputAndActionInput)
 			return;
 
 		//if (Input.GetButtonDown("Fire1")

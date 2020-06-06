@@ -53,7 +53,8 @@ public class PlayerEventDetection : MonoBehaviour
 
 		if (m_intervalTimer.elapasedTime < m_detectionIntervalSeconds)
 		{
-			if (Input.GetButtonDown(m_inputAxisAsTrigger) && nearbyManualEvent != null)
+			if (PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableInputAndActionInput
+				&& Input.GetButtonDown(m_inputAxisAsTrigger) && nearbyManualEvent != null)
 				nearbyManualEvent.TriggerEvent(gameObject);
 			else if (nearbyManualEvent != null)
 				nearbyManualEvent.CallNearbyIfManualTrigger();

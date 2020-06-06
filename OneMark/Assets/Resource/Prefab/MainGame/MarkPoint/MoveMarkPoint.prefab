@@ -125,6 +125,7 @@ MonoBehaviour:
   m_mole: {fileID: 5495642379799390375}
   m_moleAnimator: {fileID: 6269314628372433941}
   m_waitSeconds: 1
+  m_particleAdministratorObject: {fileID: 3368917957651660265}
   m_particleSystems:
   - {fileID: 1874226215255330264}
   - {fileID: 5345822860026034509}
@@ -5643,7 +5644,7 @@ ParticleSystem:
     startRotationY:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.5707963
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -9865,7 +9866,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3368917957651660265}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10481,7 +10482,7 @@ ParticleSystem:
     startRotationY:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.5707963
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -15253,7 +15254,7 @@ ParticleSystem:
     startRotationY:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.5707963
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -20057,7 +20058,7 @@ ParticleSystem:
     startRotationY:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.5707963
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2

@@ -94,6 +94,7 @@ public class FadeScreen : MonoBehaviour
 		}
 		m_screenImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, alpha);
 
+		this.fadeSpeed = fadeSpeed;
 		this.fadeState = fadeState;
 		this.isAutoDisabled = isAutoDisabled;
 		isCompletedTransition = false;

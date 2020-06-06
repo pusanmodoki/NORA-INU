@@ -30,13 +30,16 @@ public class MoveMarkPoint : BaseMarkPoint
 	[SerializeField]
 	float m_waitSeconds = 1.0f;
 	[SerializeField]
+	Transform m_particleAdministratorObject = null;
+	[SerializeField]
 	ParticleSystem[] m_particleSystems = null;
 	[SerializeField]
 	Vector3[] m_targetPoints = null;
 
+	ParticleSystem.MainModule m_mainModule = default;
+	Quaternion[] m_firstRotations= null;
 	Quaternion m_toNextRotation = Quaternion.identity;
 	Vector3 m_toNextRotationEuler = Vector3.zero;
-	Vector3 m_toNextNormalized = Vector3.zero;
 	Vector2Int m_moveIndexInfo = new Vector2Int(0, 1);
 	Timer m_timer = new Timer();
 	State m_state = State.MoveStart;
@@ -51,6 +54,8 @@ public class MoveMarkPoint : BaseMarkPoint
 		{
 			m_navMeshAgent.isStopped = false;
 			m_state = State.Move;
+
+			isMove = true;
 			m_navMeshAgent.SetDestination(m_targetPoints[m_moveIndexInfo.x]);
 		}
 	}
@@ -83,43 +88,16 @@ public class MoveMarkPoint : BaseMarkPoint
 		{
 			case State.Move:
 				{
-					isMove = true;
-
 					if ((m_targetPoints[m_moveIndexInfo.x] - transform.position).sqrMagnitude < m_cRemainingCheckDistance)
 					{
-						int old = m_moveIndexInfo.x;
+						ProceedTargetAndSetMoleAndParticles();
 
-						m_moveIndexInfo.x += m_moveIndexInfo.y;
-						if (m_moveIndexInfo.x < 0 || m_moveIndexInfo.x >= m_targetPoints.Length)
-						{
-							m_moveIndexInfo.y *= -1;
-							m_moveIndexInfo.x += m_moveIndexInfo.y * 2;
-						}
-		
-						m_toNextNormalized = (m_targetPoints[m_moveIndexInfo.x].ToYZero() - m_targetPoints[old].ToYZero()).normalized;
-						m_toNextRotation = Quaternion.LookRotation(m_toNextNormalized);
-						m_toNextRotationEuler = Quaternion.Inverse(m_toNextRotation).eulerAngles;
-						m_toNextRotationEuler.y += 180;
-						m_toNextRotationEuler *= Mathf.Deg2Rad;
-
-						m_mole.localPosition = (m_targetPoints[old].ToYZero()
-							- m_targetPoints[m_moveIndexInfo.x].ToYZero()).normalized * m_moleDistance;
-
-						m_mole.rotation = m_toNextRotation;
-						for (int i = 0; i < m_particleSystems.Length; ++i)
-						{
-							var main = m_particleSystems[i].main;
-							main.startRotationXMultiplier = m_toNextRotationEuler.x;
-							main.startRotationYMultiplier = m_toNextRotationEuler.y;
-							main.startRotationZMultiplier = m_toNextRotationEuler.z;
-						}
-
+						isMove = false;
 						m_timer.Start();
 						m_state = State.Wait;
-						m_moleAnimator.SetTrigger(m_cMoleAnimationAppearID);
 						m_navMeshAgent.isStopped = true;
-						isMove = false;
-
+						m_moleAnimator.SetTrigger(m_cMoleAnimationAppearID);
+						
 						for (int i = 0; i < m_particleSystems.Length; ++i) m_particleSystems[i].Stop();
 					}
 
@@ -175,7 +153,6 @@ public class MoveMarkPoint : BaseMarkPoint
 		m_state = State.MoveStart;	
 		m_moleAnimator.SetTrigger(m_cMoleAnimationStartMoveID);
 		m_moleAnimator.SetTrigger(m_cMoleAnimationEscapeMoveID);
-		for (int i = 0; i < m_particleSystems.Length; ++i) m_particleSystems[i].Play();
 
 		Vector3 absolute = m_mole.localPosition;
 		absolute.y = 0.0f;
@@ -183,6 +160,7 @@ public class MoveMarkPoint : BaseMarkPoint
 
 		if (m_targetPoints != null  && m_targetPoints.Length > 1)
 		{
+			//Search positions
 			NavMeshHit navMeshHit;
 			for (int i = 0, length = m_targetPoints.Length; i < length; ++i)
 			{
@@ -195,10 +173,38 @@ public class MoveMarkPoint : BaseMarkPoint
 #endif
 				}
 			}
-			
-			m_mole.localPosition = (m_targetPoints[1].ToYZero() - m_targetPoints[0].ToYZero()).normalized * m_moleDistance;
 
-			m_mole.LookAt(m_targetPoints[0].ToYManual(m_mole.position.y));
+			//初期回転の設定
+			m_firstRotations = new Quaternion[m_particleSystems.Length];
+			for (int i = 0; i < m_particleSystems.Length; ++i)
+			{
+				m_firstRotations[i] = Quaternion.Euler(
+					m_particleSystems[0].main.startRotationXMultiplier,
+					m_particleSystems[0].main.startRotationYMultiplier,
+					m_particleSystems[0].main.startRotationZMultiplier)
+					* Quaternion.Inverse(m_particleAdministratorObject.rotation);
+			}
+
+			//一番近いindexを探索
+			Vector3 position = transform.position;
+			int minIndex = 0;
+			float buf = 0.0f;
+			float minValue = 100000.0f;
+			for (int i = 0; i < m_targetPoints.Length; ++i)
+			{
+				buf = (m_targetPoints[i] - position).sqrMagnitude;
+				if (minValue > buf)
+				{
+					minIndex = i;
+					minValue = buf;
+				}
+			}
+			//一番近いindexを設定
+			m_moveIndexInfo.x = minIndex;
+
+			//回転と位置の初期設定を行う->再生
+			ProceedTargetAndSetMoleAndParticles();
+			for (int i = 0; i < m_particleSystems.Length; ++i) m_particleSystems[i].Play();
 		}
 		else
 		{
@@ -206,8 +212,43 @@ public class MoveMarkPoint : BaseMarkPoint
 			Debug.LogWarning("Error!! MoveMarkPoint->Start, invalid target positions");
 #endif
 		}
-
 	}
+	void ProceedTargetAndSetMoleAndParticles()
+	{
+		int oldIndex = m_moveIndexInfo.x;
+
+		//Proceed target index
+		m_moveIndexInfo.x += m_moveIndexInfo.y;
+		if (m_moveIndexInfo.x < 0 || m_moveIndexInfo.x >= m_targetPoints.Length)
+		{
+			m_moveIndexInfo.y *= -1;
+			m_moveIndexInfo.x += m_moveIndexInfo.y * 2;
+		}
+
+		//Set mole
+		{
+			m_toNextRotation = Quaternion.LookRotation((m_targetPoints[m_moveIndexInfo.x].ToYZero()
+				- m_targetPoints[oldIndex].ToYZero()).normalized);
+
+			m_mole.localPosition = (m_targetPoints[oldIndex].ToYZero()
+				- m_targetPoints[m_moveIndexInfo.x].ToYZero()).normalized * m_moleDistance;
+			m_mole.rotation = m_toNextRotation;
+		}
+
+		//Set Particle
+		{
+			for (int i = 0; i < m_particleSystems.Length; ++i)
+			{
+				m_mainModule = m_particleSystems[i].main;
+				m_toNextRotationEuler = (m_firstRotations[i] * m_toNextRotation).eulerAngles * Mathf.Deg2Rad;
+
+				m_mainModule.startRotationXMultiplier = m_toNextRotationEuler.x;
+				m_mainModule.startRotationYMultiplier = m_toNextRotationEuler.y;
+				m_mainModule.startRotationZMultiplier = m_toNextRotationEuler.z;
+			}
+		}
+	}
+
 
 #if UNITY_EDITOR
 	static readonly Vector3 m_dScale = new Vector3(0.1f, 5.0f, 0.1f);
@@ -220,12 +261,17 @@ public class MoveMarkPoint : BaseMarkPoint
 			Gizmos.color = Color.black;
 			Gizmos.DrawWireCube(m_targetPoints[i], m_dScale);
 			Gizmos.color = Color.red;
+
 			if (i < m_targetPoints.Length - 1)
 			{
-				Vector3 toNext = m_targetPoints[i + 1] - m_targetPoints[i];
-				Gizmos.DrawWireCube(
-					new Vector3(m_targetPoints[i].x + toNext.x * 0.5f, m_targetPoints[i].y, m_targetPoints[i].z + toNext.z * 0.5f),
-					new Vector3(toNext.x, 5.0f, toNext.z));
+				Vector3 from = m_targetPoints[i], to = m_targetPoints[i + 1];
+				Gizmos.DrawLine(from, to);
+
+				from.y += m_dScale.y * 0.5f;  to.y += m_dScale.y * 0.5f;
+				Gizmos.DrawLine(from, to);
+
+				from.y -= m_dScale.y;  to.y -= m_dScale.y;
+				Gizmos.DrawLine(from, to);
 			}
 		}
 	}

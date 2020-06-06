@@ -10,32 +10,31 @@ public class MainGameManager : MonoBehaviour
 	{
 		Null,
 		GameClear,
+		GameOverWait,
 		GameEnd
 	}
 
 	/// <summary>Static instance</summary>
 	public static MainGameManager instance { get; private set; } = null;
+	
+	public Vector2 stageSize { get { return m_stageSize; } private set { m_stageSize = value; } }
+	public ResultState resultState { get; private set; } = ResultState.Null;
+	public float waitGamerOverCount01 { get { return Mathf.Clamp01(m_gameOverWaitTimer.elapasedTime / m_waitGameOverSeconds); } }
 
-	//[SerializeField, Tooltip("とりあえず")]
-	//GameObject m_clearBoard = null;
-	//[SerializeField, Tooltip("とりあえず")]
-	//GameObject m_overBoard = null;
-
-	ReadOnlyDictionary<int, BaseCheckPoint> m_allCheckPoints = null;
-	bool m_isEnd = false;
-
-    [SerializeField]
+	[SerializeField]
     private Vector2 m_stageSize = new Vector3(30.0f, 30.0f);
 	[SerializeField]
 	float m_waitResultClearSeconds = 2.0f;
 	[SerializeField]
 	float m_waitResultOverSeconds = 1.0f;
+	[SerializeField]
+	float m_waitGameOverSeconds = 3.0f;
 
-	public Vector2 stageSize { get { return m_stageSize; } private set { m_stageSize = value; } }
-
-    private FollowObject m_mainCamera = null;
-
-	public ResultState resultState { get; private set; } = ResultState.Null;
+	ReadOnlyDictionary<int, BaseCheckPoint> m_allCheckPoints = null;
+	bool m_isEnd = false;
+	
+    FollowObject m_mainCamera = null;
+	Timer m_gameOverWaitTimer = new Timer();
 	Timer m_resultTimer = new Timer();
 
     /// <summary>[Awake]</summary>
@@ -62,7 +61,7 @@ public class MainGameManager : MonoBehaviour
 	void LateUpdate()
 	{
 		if (m_isEnd) return;
-
+		
 		if (resultState == ResultState.Null)
 		{
 			int checkCounter = 0;
@@ -78,6 +77,23 @@ public class MainGameManager : MonoBehaviour
 				m_resultTimer.Start();
 			}
 			if (PlayerAndTerritoryManager.instance.mainPlayer.manualCollisionAdministrator.isTerritoryExit)
+			{
+				resultState = ResultState.GameOverWait;
+				PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableActionInput = false;
+				PlayerAndTerritoryManager.instance.mainPlayer.SetGameOverGracePeiod(true);
+				m_gameOverWaitTimer.Start();
+			}
+		}
+		else if (resultState == ResultState.GameOverWait)
+		{
+			if (PlayerAndTerritoryManager.instance.mainPlayer.manualCollisionAdministrator.isTerritoryStay)
+			{
+				resultState = ResultState.Null;
+				PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableActionInput = true;
+				PlayerAndTerritoryManager.instance.mainPlayer.SetGameOverGracePeiod(false);
+				m_gameOverWaitTimer.Stop();
+			}
+			else if (waitGamerOverCount01 >= 1.0f)
 			{
 				resultState = ResultState.GameEnd;
 				PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableInput = false;

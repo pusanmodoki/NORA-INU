@@ -162,8 +162,9 @@ MonoBehaviour:
     m_layerMask:
       serializedVersion: 2
       m_Bits: 262656
-  m_visibilityAngle: 180
-  m_visibilityDistance: 16
+  m_visibilityAngle: 60
+  m_visibilityDistance: 18
+  m_reallyVisibilityDistance: 16
   m_visibilityPreferentialDistance: 2.5
   m_markPointLayerMask:
     m_layerMask:
@@ -233,12 +234,12 @@ MonoBehaviour:
         m_Bits: 131072
     m_center: {x: 0, y: 1, z: 0.5}
     m_size: {x: 2, y: 1, z: 2}
-  m_isEnabledAutoTriggerDetection: 1
+  m_isEnabledAutoTriggerDetection: 0
   m_manualTriggerDetection:
     m_layerMask:
       m_layerMask:
         serializedVersion: 2
-        m_Bits: 32768
+        m_Bits: 131072
     m_center: {x: 0, y: 1, z: 1}
     m_size: {x: 3, y: 1, z: 3}
   m_isEnabledManualTriggerDetection: 1

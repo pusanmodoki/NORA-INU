@@ -49,11 +49,15 @@ namespace Editor
         /// <summary>Mesh Color->Hit</summary>
         static readonly Color m_cMeshColorHit = new Color(1.0f, 0.25f, 0.2f, 0.5f);
         /// <summary>Mesh Color->NotHit</summary>
-        static readonly Color m_cMeshColorNotHit = new Color(0.7f, 0.7f, 0.1f, 0.5f);
+        static readonly Color m_cMeshColorNotHit = new Color(0.7f, 0.7f, 0.1f, 0.4f);
 		/// <summary>Mesh Color->Hit</summary>
-		static readonly Color m_cMeshColorHit1 = new Color(1.0f, 0.2f, 1.0f, 0.5f);
+		static readonly Color m_cMeshColorHit1 = new Color(1.0f, 0.2f, 1.0f, 0.4f);
 		/// <summary>Mesh Color->NotHit</summary>
 		static readonly Color m_cMeshColorNotHit1 = new Color(0.25f, 0.9f, 0.9f, 0.5f);
+		/// <summary>Mesh Color->Hit</summary>
+		static readonly Color m_cMeshColorHit2 = new Color(1.0f, 0.35f, 0.3f, 0.5f);
+		/// <summary>Mesh Color->NotHit</summary>
+		static readonly Color m_cMeshColorNotHit2 = new Color(0.7f, 0.8f, 0.2f, 0.5f);
 		/// <summary>Mesh Destroy Check Interval</summary>
 		static readonly double m_cCheckDestroyTime = 3.0f;
 		//地面に接触する可能性を考慮し描画位置を調整するために使用
@@ -304,6 +308,18 @@ namespace Editor
 				rotation * Quaternion.AngleAxis(270.0f, Vector3.forward), Vector3.one * visibility.visibilityDistance);
 			Gizmos.DrawMesh(visibility.dGizmoMesh, position + m_cAdjustUp,
 				rotation, Vector3.one * visibility.visibilityDistance);
+
+			//視界ヒット
+			if (visibility.isVisibilityStay & !visibility.isVisibilityUsingPreferential) Gizmos.color = m_cMeshColorHit2;
+			//視界ヒットしていない
+			else Gizmos.color = m_cMeshColorNotHit2;
+
+			Gizmos.DrawMesh(visibility.dGizmoMesh, position + m_cAdjustUp,
+				rotation * Quaternion.AngleAxis(90.0f, Vector3.forward), Vector3.one * visibility.reallyVisibilityDistance);
+			Gizmos.DrawMesh(visibility.dGizmoMesh, position + m_cAdjustUp,
+				rotation * Quaternion.AngleAxis(270.0f, Vector3.forward), Vector3.one * visibility.reallyVisibilityDistance);
+			Gizmos.DrawMesh(visibility.dGizmoMesh, position + m_cAdjustUp,
+				rotation, Vector3.one * visibility.reallyVisibilityDistance);
 
 			//視界ヒット
 			if (visibility.isVisibilityStay & visibility.isVisibilityUsingPreferential) Gizmos.color = m_cMeshColorHit1;

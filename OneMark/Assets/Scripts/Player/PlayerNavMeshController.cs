@@ -79,8 +79,8 @@ public class PlayerNavMeshController : MonoBehaviour
 		m_velocity = m_input.moveInput * m_moveSpeed * Time.deltaTime;
 		m_destination = transform.position + m_velocity;
 
-		if (m_maualCollisionAdministrator.isTerritoryStay
-			& m_maualCollisionAdministrator.isTerritorySegmentStay)
+		if (m_maualCollisionAdministrator.isTerritoryStay & m_maualCollisionAdministrator.isTerritorySegmentStay
+			& !PlayerAndTerritoryManager.instance.allPlayers[gameObject.GetInstanceID()].isGameOverGracePeiod)
 		{
 			if (CollisionTerritory.HitRayTerritory(PlayerAndTerritoryManager.instance.mainPlayer.territorialArea,
 				transform.position - m_velocity, m_input.moveInput, m_velocity.magnitude * 2,
@@ -94,7 +94,7 @@ public class PlayerNavMeshController : MonoBehaviour
 		m_navMeshAgent.Move(m_velocity);
 		m_moveVelocity = transform.position - m_position;
 
-		if (m_moveVelocity != m_velocity)
+		if (m_moveVelocity != m_velocity && !PlayerAndTerritoryManager.instance.allPlayers[gameObject.GetInstanceID()].isGameOverGracePeiod)
 		{
 			if (CollisionTerritory.HitRayTerritory(PlayerAndTerritoryManager.instance.mainPlayer.territorialArea,
 				m_position - m_moveVelocity, m_moveVelocity.normalized, m_moveVelocity.magnitude * 2.0f,

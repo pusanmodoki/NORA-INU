@@ -103,9 +103,16 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		public ChangeTerritoryCallback changeTerritoryCallback { get; set; } = null;
 		/// <summary>Link event now?</summary>
 		public bool isLinkEvent { get; private set; }
+		/// <summary>ゲームオーバー猶予期間</summary>
+		public bool isGameOverGracePeiod { get; private set; }
 		/// <summary>Used manager valus</summary>
 		public UsedManager usedManager { get; private set; } = new UsedManager();
 
+		/// <summary>
+		/// [SetGameOverGracePeiod]
+		/// Set isGameOverGracePeiod
+		/// </summary>
+		public void SetGameOverGracePeiod(bool isSet) { isGameOverGracePeiod = isSet; }
 		/// <summary>
 		/// [SetLinkEvent]
 		/// Set isLinkEvent

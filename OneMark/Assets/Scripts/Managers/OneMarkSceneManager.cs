@@ -175,13 +175,22 @@ public class OneMarkSceneManager : MonoBehaviour
 	}
 	public void SetActiveAccessoryScene(string sceneName, bool isSet)
 	{
-		if (!m_accessoryScenes.ContainsKey(sceneName) 
-			|| !m_accessoryScenes[sceneName].IsValid())
+		if ((!m_accessoryScenes.ContainsKey(sceneName) || !m_accessoryScenes[sceneName].IsValid())
+			&& (m_optionSceneName == sceneName && m_optionScene.IsValid()))
 			return;
 
-		var gameObjects = m_accessoryScenes[sceneName].GetRootGameObjects();
-		for (int i = 0, length = gameObjects.Length; i < length; ++i)
-			gameObjects[i].SetActive(isSet);
+		if (m_optionSceneName == sceneName)
+		{
+			var gameObjects = m_optionScene.GetRootGameObjects();
+			for (int i = 0, length = gameObjects.Length; i < length; ++i)
+				gameObjects[i].SetActive(isSet);
+		}
+		else
+		{
+			var gameObjects = m_accessoryScenes[sceneName].GetRootGameObjects();
+			for (int i = 0, length = gameObjects.Length; i < length; ++i)
+				gameObjects[i].SetActive(isSet);
+		}
 	}
 	public void SetActiveOptionScene(bool isSet)
 	{
