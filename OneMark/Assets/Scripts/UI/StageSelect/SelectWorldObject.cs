@@ -7,7 +7,9 @@ public class SelectWorldObject : BaseSelectedObject
 {
 	[SerializeField]
 	LogoAnimation m_animation = null;
-	[SerializeField]
+    [SerializeField]
+    Animator m_fade = null;
+    [SerializeField]
 	StageSlide m_stageSlide = null;
 	[SerializeField]
 	MenuInput m_stageSelect = null;
@@ -25,16 +27,18 @@ public class SelectWorldObject : BaseSelectedObject
 	public override void OnCursor()
 	{
 		m_animation.LogoOn();
-		m_soundPlayer.SelectPlay();
+        m_soundPlayer.SelectPlay();
 		m_stageSelect.ForceSelect(0);
 		StageSelectIndexer.index.x = menu.nowSelectIndex + 1;
 		m_stageSlide.StartSlide();
-	}
+        m_fade.SetTrigger("OnFade");
+    }
 
-	public override void OffCursor()
+    public override void OffCursor()
 	{
 		m_animation.LogoOff();
-	}
+
+    }
 
 	public override void AwakeCursor()
 	{
