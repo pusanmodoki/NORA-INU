@@ -4,30 +4,41 @@ using UnityEngine;
 
 public class MenuInput : MonoBehaviour
 {
-    [SerializeField, Tooltip("カーソル移動ボタン")]
+    [SerializeField, Header("Input"), Tooltip("カーソル移動ボタン")]
     string m_inputMove = "Vertical";
 
     [SerializeField, Tooltip("決定ボタン")]
     string m_inputDirected = "Fire1";
 
-    [SerializeField, Tooltip("参照してるインデックス")]
+    [SerializeField, Range(0.0f, 1.0f), Tooltip("入力のデッドゾーン")]
+    float m_deadZone = 0.1f;
+
+    [SerializeField]
+    bool m_isInverse = false;
+
+    [SerializeField, Tooltip("カーソル移動のインターバル")]
+    float m_interval = 0.5f;
+
+    [SerializeField, Header("Selected Object Infomation"), Tooltip("参照してるインデックス")]
     int m_nowSelectIndex = 0;
 
     [SerializeField, Tooltip("選択オブジェクトのリスト（ボタンとか）")]
     List<BaseSelectedObject> m_selectedObjects = new List<BaseSelectedObject>();
 
-    [SerializeField, Range(0.0f, 1.0f), Tooltip("入力のデッドゾーン")]
-    float m_deadZone = 0.1f;
 
-    [SerializeField, Tooltip("カーソル移動のインターバル")]
-    float m_interval = 0.5f;
-
-    [SerializeField]
-    bool m_isInverse = false;
 	[SerializeField]
 	bool m_isStartCallOffCursor = true;
 
-	public int objectCount { get { return m_selectedObjects.Count; } }
+    [SerializeField, Header("Sound Effect")]
+    AudioSource m_soundEnter = null;
+
+    [SerializeField]
+    AudioSource m_soundSelect = null;
+
+    [SerializeField]
+    AudioSource m_soundClose = null;
+
+    public int objectCount { get { return m_selectedObjects.Count; } }
     public bool isSelectInput { get; private set; } = true;
     public int nowSelectIndex { get { return m_nowSelectIndex; } }
 	public bool isEnableInput { get; set; } = true;
@@ -84,6 +95,11 @@ public class MenuInput : MonoBehaviour
             isSelectInput = false;
             m_selectedObjects[m_nowSelectIndex].isSelected = true;
             StartCoroutine("InputInterval");
+
+            if (m_soundSelect)
+            {
+                m_soundSelect.Play();
+            }
         }
     }
 
@@ -93,6 +109,10 @@ public class MenuInput : MonoBehaviour
 			&& Input.GetButtonDown(m_inputDirected))
         {
             m_selectedObjects[m_nowSelectIndex].OnEnter();
+            if (m_soundEnter)
+            {
+                m_soundEnter.Play();
+            }
         }
     }
 

@@ -350,6 +350,16 @@ PrefabInstance:
       propertyPath: m_state
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1199573596558400175, guid: dc5241dce5f035b48ac129d658b5e729,
+        type: 3}
+      propertyPath: m_selectSound
+      value: 
+      objectReference: {fileID: 462008076}
+    - target: {fileID: 1199573596558400175, guid: dc5241dce5f035b48ac129d658b5e729,
+        type: 3}
+      propertyPath: m_enterSound
+      value: 
+      objectReference: {fileID: 1153927025}
     - target: {fileID: 7480241901153954629, guid: dc5241dce5f035b48ac129d658b5e729,
         type: 3}
       propertyPath: sceneName
@@ -534,6 +544,12 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 7480241901153954629, guid: dc5241dce5f035b48ac129d658b5e729, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: dc5241dce5f035b48ac129d658b5e729, type: 3}
+--- !u!82 &462008076 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 370008886886113945, guid: 9362b6c409aa84a4390127c1e05bee73,
+    type: 3}
+  m_PrefabInstance: {fileID: 370008885797577388}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &499482235
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -546,6 +562,16 @@ PrefabInstance:
       propertyPath: m_state
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1199573596558400175, guid: dc5241dce5f035b48ac129d658b5e729,
+        type: 3}
+      propertyPath: m_selectSound
+      value: 
+      objectReference: {fileID: 462008076}
+    - target: {fileID: 1199573596558400175, guid: dc5241dce5f035b48ac129d658b5e729,
+        type: 3}
+      propertyPath: m_enterSound
+      value: 
+      objectReference: {fileID: 1153927025}
     - target: {fileID: 7480241901153954629, guid: dc5241dce5f035b48ac129d658b5e729,
         type: 3}
       propertyPath: sceneName
@@ -1235,6 +1261,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 1.6850001, y: 0.016, z: 1.079}
+--- !u!82 &1153927025 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 370008885992075000, guid: 9362b6c409aa84a4390127c1e05bee73,
+    type: 3}
+  m_PrefabInstance: {fileID: 370008885797577388}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1195948663
 GameObject:
   m_ObjectHideFlags: 0
@@ -1812,15 +1844,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_inputMove: Vertical
   m_inputDirected: Fire1
+  m_deadZone: 0.1
+  m_isInverse: 1
+  m_interval: 0.2
   m_nowSelectIndex: 0
   m_selectedObjects:
   - {fileID: 1554845373}
   - {fileID: 990359803}
   - {fileID: 1215087135}
-  m_deadZone: 0.1
-  m_interval: 0.2
-  m_isInverse: 1
   m_isStartCallOffCursor: 1
+  m_soundEnter: {fileID: 1153927025}
+  m_soundSelect: {fileID: 462008076}
+  m_soundClose: {fileID: 0}
 --- !u!1 &1836196464
 GameObject:
   m_ObjectHideFlags: 0
@@ -2112,6 +2147,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1779458602}
     m_Modifications:
+    - target: {fileID: 1199573596558400175, guid: dc5241dce5f035b48ac129d658b5e729,
+        type: 3}
+      propertyPath: m_selectSound
+      value: 
+      objectReference: {fileID: 462008076}
+    - target: {fileID: 1199573596558400175, guid: dc5241dce5f035b48ac129d658b5e729,
+        type: 3}
+      propertyPath: m_enterSound
+      value: 
+      objectReference: {fileID: 1153927025}
     - target: {fileID: 7480241901153954629, guid: dc5241dce5f035b48ac129d658b5e729,
         type: 3}
       propertyPath: sceneName
@@ -2615,7 +2660,7 @@ PrefabInstance:
     - target: {fileID: 370008887312840356, guid: 9362b6c409aa84a4390127c1e05bee73,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 370008887312840357, guid: 9362b6c409aa84a4390127c1e05bee73,
         type: 3}
@@ -2677,5 +2722,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 370008887312840357, guid: 9362b6c409aa84a4390127c1e05bee73, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9362b6c409aa84a4390127c1e05bee73, type: 3}
