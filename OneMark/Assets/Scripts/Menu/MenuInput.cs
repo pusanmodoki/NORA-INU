@@ -25,9 +25,12 @@ public class MenuInput : MonoBehaviour
     [SerializeField, Tooltip("選択オブジェクトのリスト（ボタンとか）")]
     List<BaseSelectedObject> m_selectedObjects = new List<BaseSelectedObject>();
 
-
 	[SerializeField]
 	bool m_isStartCallOffCursor = true;
+
+    [SerializeField, Header("Cursor Objecr")]
+    BaseCursorObject m_cursorObject = null;
+
 
     [SerializeField, Header("Sound Effect")]
     AudioSource m_soundEnter = null;
@@ -42,6 +45,9 @@ public class MenuInput : MonoBehaviour
     public bool isSelectInput { get; private set; } = true;
     public int nowSelectIndex { get { return m_nowSelectIndex; } }
 	public bool isEnableInput { get; set; } = true;
+
+    public List<BaseSelectedObject> selectedObjects { get { return m_selectedObjects; } }
+
 
 	public void ForceSelect(int index)
 	{
@@ -68,6 +74,8 @@ public class MenuInput : MonoBehaviour
             obj.SetMenu(this);
         }
         m_selectedObjects[nowSelectIndex].AwakeCursor();
+
+        m_cursorObject.SetMenu(this);
     }
 
 
