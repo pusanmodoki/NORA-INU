@@ -724,6 +724,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6935af880c2ac94c9fce17c07fe6a46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_stageStart: {fileID: 0}
+  m_tutorialUI: {fileID: 7269967376003631040}
+  text: {fileID: 5215132008714244684}
 --- !u!1 &6152061772789311906
 GameObject:
   m_ObjectHideFlags: 0
@@ -897,6 +900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeText: {fileID: 6152061772789311906}
+  m_isTutorialInput: 0
 --- !u!1 &7269967376003631040
 GameObject:
   m_ObjectHideFlags: 0
