@@ -10,8 +10,7 @@ public class SelectSoundPlayer : MonoBehaviour
     [SerializeField]
     AudioSource enter = null;
 
-    [SerializeField]
-    bool isThisPlayDetect = false;
+
 
     public void SelectPlay()
     {

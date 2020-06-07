@@ -38,9 +38,6 @@ public class MenuInput : MonoBehaviour
     [SerializeField]
     AudioSource m_soundSelect = null;
 
-    [SerializeField]
-    AudioSource m_soundClose = null;
-
     public int objectCount { get { return m_selectedObjects.Count; } }
     public bool isSelectInput { get; private set; } = true;
     public int nowSelectIndex { get { return m_nowSelectIndex; } }
@@ -75,7 +72,10 @@ public class MenuInput : MonoBehaviour
         }
         m_selectedObjects[nowSelectIndex].AwakeCursor();
 
-        m_cursorObject.SetMenu(this);
+        if (m_cursorObject)
+        {
+            m_cursorObject.SetMenu(this);
+        }
     }
 
 
