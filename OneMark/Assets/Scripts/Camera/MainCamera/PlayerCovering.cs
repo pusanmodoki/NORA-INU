@@ -5,20 +5,19 @@ using UnityEngine.UI;
 
 public class PlayerCovering : BaseMovePoint
 {
-    [SerializeField]
-    Transform m_lookPoint = null;
 
     [SerializeField]
     float m_late = 1.0f;
-
-    float m_t = 0.0f;
 
     float m_stageHeight = 0.0f;
     float m_stageWidth = 0.0f;
 
     GameObject m_player = null;
 
+    Timer m_timer = new Timer(); 
 
+
+    Vector3 m_lookPoint = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +42,7 @@ public class PlayerCovering : BaseMovePoint
     public override void MovePointUpdate(Vector3 _vec)
     {
         Vector3 point = m_cover.startPoint.position + _vec;
-        transform.position = Vector3.Lerp(transform.position, point, m_late);
+        transform.position = Vector3.Lerp(transform.position, point, Time.deltaTime * m_late);
 
         Look();
     }
@@ -59,7 +58,8 @@ public class PlayerCovering : BaseMovePoint
         point.x = m_stageWidth / 2.0f;
         point.z = m_stageHeight / 2.0f;
 
-        transform.LookAt(point);
+        m_lookPoint = Vector3.Lerp(transform.forward + transform.position, point, Time.deltaTime * 1.0f);
 
+        transform.LookAt(m_lookPoint);
     }
 }

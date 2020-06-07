@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_cover: {fileID: 7195776834400370261}
   m_isMoving: 1
-  m_lookPoint: {fileID: 0}
-  m_late: 0.1
+  m_late: 1
 --- !u!1 &7195776833592062120
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 public class DefaultCursorObject : BaseCursorObject
 {
-    [SerializeField]
-    Animator m_cursorAnimation = null;
-
     public RectTransform rectTransform { get; private set; } = null;
 
     public enum MoveType
@@ -17,8 +14,6 @@ public class DefaultCursorObject : BaseCursorObject
         Lerp
     }
 
-    [SerializeField]
-    MoveType type = MoveType.Warp;
 
     void Start()
     {
