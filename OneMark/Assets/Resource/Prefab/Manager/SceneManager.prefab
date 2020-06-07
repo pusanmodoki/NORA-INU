@@ -234,4 +234,4 @@ MonoBehaviour:
   m_minTimeToLoad: 0.5
   m_fadeScreen: {fileID: 7395785140575013824}
   m_fadeColor: {r: 0, g: 0, b: 0, a: 1}
-  m_fadeSpeedPerSeconds: 15
+  m_fadeSpeedPerSeconds: 0.5

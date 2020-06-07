@@ -9,6 +9,8 @@ public class TutorialTextEvent : MonoBehaviour
     [SerializeField]
     GameObject activeText = null;
 
+    public bool m_isTutorialInput = false;
+
     private void Start()
     {
         for(int i = 0; i < transform.childCount; ++i)
@@ -33,6 +35,10 @@ public class TutorialTextEvent : MonoBehaviour
                     break;
                 }
         }
+        if (m_isTutorialInput)
+        {
+            IsInput();
+        }
     }
 
     void Stage1Event()
@@ -42,12 +48,16 @@ public class TutorialTextEvent : MonoBehaviour
             activeText.SetActive(false);
             m_eventTexts["text1-2"].SetActive(true);
             activeText = m_eventTexts["text1-2"];
+            m_isTutorialInput = true;
+            PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableInput = false;
         }
         if (!m_eventTexts["text1-3"].activeSelf && MainGameManager.instance.resultState == MainGameManager.ResultState.GameClear)
         {
             activeText.SetActive(false);
             m_eventTexts["text1-3"].SetActive(true);
             activeText = m_eventTexts["text1-3"];
+            m_isTutorialInput = true;
+            PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableInput = false;
         }
     }
 
@@ -91,5 +101,14 @@ public class TutorialTextEvent : MonoBehaviour
     }
     void Stage4Event()
     {
+    }
+
+    void IsInput()
+    {
+        if (Input.GetButtonDown("Fire3"))
+        {
+            m_isTutorialInput = false;
+            PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableInput = true;
+        }
     }
 }

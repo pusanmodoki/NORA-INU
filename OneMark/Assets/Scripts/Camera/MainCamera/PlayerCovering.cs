@@ -14,8 +14,6 @@ public class PlayerCovering : BaseMovePoint
 
     GameObject m_player = null;
 
-    Timer m_timer = new Timer(); 
-
 
     Vector3 m_lookPoint = Vector3.zero;
 
@@ -42,7 +40,7 @@ public class PlayerCovering : BaseMovePoint
     public override void MovePointUpdate(Vector3 _vec)
     {
         Vector3 point = m_cover.startPoint.position + _vec;
-        transform.position = Vector3.Lerp(transform.position, point, Time.deltaTime * m_late);
+        transform.position = Vector3.Lerp(transform.position, point, m_late);
 
         Look();
     }
@@ -58,7 +56,7 @@ public class PlayerCovering : BaseMovePoint
         point.x = m_stageWidth / 2.0f;
         point.z = m_stageHeight / 2.0f;
 
-        m_lookPoint = Vector3.Lerp(transform.forward + transform.position, point, Time.deltaTime * 1.0f);
+        m_lookPoint = Vector3.Lerp(transform.forward + transform.position, point, 0.0008f);
 
         transform.LookAt(m_lookPoint);
     }

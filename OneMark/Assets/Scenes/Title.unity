@@ -1227,6 +1227,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: AudioManager
       objectReference: {fileID: 0}
+    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
+        type: 3}
+      propertyPath: m_bgmForEachScenes.Array.size
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
+        type: 3}
+      propertyPath: m_bgmForEachScenes.Array.data[27].m_loadBgmKeys.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
+        type: 3}
+      propertyPath: m_bgmForEachScenes.Array.data[27].m_sceneName
+      value: no1-2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
+        type: 3}
+      propertyPath: m_bgmForEachScenes.Array.data[27].m_loadBgmKeys.Array.data[0]
+      value: Stage4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67b7352149fdd1c47a9a09200de21955, type: 3}
 --- !u!114 &990359803 stripped
@@ -1882,8 +1902,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e920cb8a6714f484684943b6f9f37809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_cursorAnimation: {fileID: 0}
-  type: 0
 --- !u!1 &1750466836 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 6a1a5639a023ca94daba7e9b39e2605c,
@@ -1980,7 +1998,6 @@ MonoBehaviour:
   m_cursorObject: {fileID: 1616259789}
   m_soundEnter: {fileID: 1153927025}
   m_soundSelect: {fileID: 462008076}
-  m_soundClose: {fileID: 0}
 --- !u!1 &1836196464
 GameObject:
   m_ObjectHideFlags: 0

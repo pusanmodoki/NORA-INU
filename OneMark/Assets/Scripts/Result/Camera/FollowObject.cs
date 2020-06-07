@@ -39,6 +39,9 @@ public class FollowObject : MonoBehaviour
     [SerializeField]
     PlayerCovering m_covering = null;
 
+    [SerializeField]
+    Animator m_uiAnimator = null;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,12 +55,12 @@ public class FollowObject : MonoBehaviour
     {
         if (startFlg == true) 
         {
-            followingObject.transform.localPosition = new Vector3(0.0f, 1.5f, 4.0f);
+            followingObject.transform.localPosition = new Vector3(0.0f, 1.0f, 4.0f);
 
             this.transform.position =
                 Vector3.Slerp(this.transform.position, followingObject.transform.position, startCameraSpeed);
 
-            this.transform.LookAt(lookObject.transform);
+            this.transform.LookAt(lookObject.transform.position - new Vector3(0.0f, 0.0f, 0.0f));
 
             Invoke("MoveCameraPoint", followObjectMoveTime);
         }
@@ -106,7 +109,7 @@ public class FollowObject : MonoBehaviour
         m_covering.isMoving = true;
         startFlg = false;
         //playerObject.GetComponent<PlayerInput>().isEnableInput = true;
-
+        m_uiAnimator.SetTrigger("SetPosition");
     }
 
     private void MoveLookPoint()
