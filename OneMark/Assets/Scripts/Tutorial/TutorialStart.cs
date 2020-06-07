@@ -19,7 +19,7 @@ public class TutorialStart : MonoBehaviour
         if (!m_stageStart.isAnimation && !m_tutorialUI.activeSelf) 
         {
             m_tutorialUI.SetActive(true);
-            PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableInput = false;
+			PlayerAndTerritoryManager.instance.mainPlayer.input.StartDisableInput(out text.inputID);
             text.m_isTutorialInput = true;
         }
     }

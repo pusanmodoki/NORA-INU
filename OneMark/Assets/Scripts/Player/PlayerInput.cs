@@ -114,7 +114,7 @@ public class PlayerInput : MonoBehaviour
 
     void ShotInput()
     {
-		if (!isEnableInputAndActionInput)
+		if (!isEnableInputAndActionInput || m_disableEvents.Count > 0)
 			return;
 
 		//if (Input.GetButtonDown("Fire1")

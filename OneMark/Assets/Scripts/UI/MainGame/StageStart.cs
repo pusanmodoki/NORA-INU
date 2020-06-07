@@ -9,7 +9,12 @@ public class StageStart : MonoBehaviour
 
     public bool isAnimation { get { return m_isAnimation; } }
 
-    public void GameStart()
+	private void Start()
+	{
+		PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableInput = false;
+	}
+
+	public void GameStart()
     {
         m_isAnimation = false;
 

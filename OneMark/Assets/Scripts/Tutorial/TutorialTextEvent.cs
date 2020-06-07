@@ -9,7 +9,10 @@ public class TutorialTextEvent : MonoBehaviour
     [SerializeField]
     GameObject activeText = null;
 
+	public int inputID = 0;
     public bool m_isTutorialInput = false;
+
+
 
     private void Start()
     {
@@ -17,10 +20,10 @@ public class TutorialTextEvent : MonoBehaviour
         {
             m_eventTexts.Add(transform.GetChild(i).name, transform.GetChild(i).gameObject);
         }
-    }
+	}
 
 
-    private void Update()
+	private void Update()
     {
         switch (OneMarkSceneManager.instance.nowStageSceneIndex.y)
         {
@@ -49,7 +52,7 @@ public class TutorialTextEvent : MonoBehaviour
             m_eventTexts["text1-2"].SetActive(true);
             activeText = m_eventTexts["text1-2"];
             m_isTutorialInput = true;
-            PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableInput = false;
+			PlayerAndTerritoryManager.instance.mainPlayer.input.StartDisableInput(out inputID);
         }
         if (!m_eventTexts["text1-3"].activeSelf && MainGameManager.instance.resultState == MainGameManager.ResultState.GameClear)
         {
@@ -57,9 +60,9 @@ public class TutorialTextEvent : MonoBehaviour
             m_eventTexts["text1-3"].SetActive(true);
             activeText = m_eventTexts["text1-3"];
             m_isTutorialInput = true;
-            PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableInput = false;
-        }
-    }
+			PlayerAndTerritoryManager.instance.mainPlayer.input.StartDisableInput(out inputID);
+		}
+	}
 
 
 
@@ -108,7 +111,7 @@ public class TutorialTextEvent : MonoBehaviour
         if (Input.GetButtonDown("Fire3"))
         {
             m_isTutorialInput = false;
-            PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableInput = true;
-        }
-    }
+			PlayerAndTerritoryManager.instance.mainPlayer.input.EndDisableInput(inputID);
+		}
+	}
 }
