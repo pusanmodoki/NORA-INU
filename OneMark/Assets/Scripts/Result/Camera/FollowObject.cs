@@ -9,7 +9,10 @@ using UnityEngine;
 
 public class FollowObject : MonoBehaviour
 {
-    [Tooltip("追従するオブジェクト")]
+	public bool isCompleteStartMoveEnter { get; private set; } = false;
+	public bool isCompleteResultMoveEnter { get; private set; } = false;
+
+	[Tooltip("追従するオブジェクト")]
     private GameObject followingObject = null;
 
     [Tooltip("注視するオブジェクト")]
@@ -20,27 +23,25 @@ public class FollowObject : MonoBehaviour
 
     [Tooltip("スタート判定")]
     public bool startFlg = false;
-
-    [SerializeField, Tooltip("スタートの時にカメラが動くスピード")]
-    private float startCameraSpeed = 0.03f;
-
-    [SerializeField, Tooltip("スタートの時にカメラが動き出す時間")]
-    private float followObjectMoveTime = 5.0f;
+	
+	[SerializeField]
+	float m_startCameraMoveSeconds = 0.5f;
+	[SerializeField]
+	float m_startCameraWaitSeconds = 2.5f;
 
     [Tooltip("リザルト判定")]
     public bool resultFlg = false;
 
-    [SerializeField, Tooltip("リザルトの時にカメラが動くスピード")]
-    private float resultCameraSpeed = 0.03f;
-
-    [SerializeField, Tooltip("リザルトの時にカメラが動き出す時間")]
-    private float lookPointMoveTime = 5.0f;
+	[SerializeField]
+	float m_resultCameraMoveSeconds = 0.5f;
 
     [SerializeField]
     PlayerCovering m_covering = null;
 
-    [SerializeField]
-    Animator m_uiAnimator = null;
+	Timer m_moveTimer = new Timer();
+	Vector3 m_moveStartPosition = Vector3.zero;
+	Animator m_uiAnimator = null;
+	int m_staretState = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -48,22 +49,46 @@ public class FollowObject : MonoBehaviour
 		playerObject = PlayerAndTerritoryManager.instance.mainPlayer.gameObject;
 		lookObject = PlayerAndTerritoryManager.instance.mainPlayer.resultCameraLookPoint;
 		followingObject = PlayerAndTerritoryManager.instance.mainPlayer.resultCameraMovePoint;
+		m_uiAnimator = GameObject.Find("StageName").GetComponent<Animator>();
+
+		StartFlg();
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-        if (startFlg == true) 
+		if (isCompleteStartMoveEnter) isCompleteStartMoveEnter = false;
+		if (isCompleteResultMoveEnter) isCompleteResultMoveEnter = false;
+
+		if (startFlg == true) 
         {
-            followingObject.transform.localPosition = new Vector3(0.0f, 1.0f, 4.0f);
+			if (m_staretState == 0)
+			{
+				followingObject.transform.localPosition = new Vector3(0.0f, 1.0f, 4.0f);
 
-            this.transform.position =
-                Vector3.Slerp(this.transform.position, followingObject.transform.position, startCameraSpeed);
+				transform.position = Vector3.Lerp(m_moveStartPosition, followingObject.transform.position,
+					m_moveTimer.elapasedTime / m_startCameraMoveSeconds);
 
-            this.transform.LookAt(lookObject.transform.position - new Vector3(0.0f, 0.0f, 0.0f));
+				transform.LookAt(lookObject.transform.position);
 
-            Invoke("MoveCameraPoint", followObjectMoveTime);
-        }
+				if (m_moveTimer.elapasedTime >= m_startCameraMoveSeconds)
+				{
+					transform.position = followingObject.transform.position;
+					m_staretState = 1;
+					m_moveTimer.Start();
+				}
+			}
+			else if (m_staretState == 1)
+			{
+				if (m_moveTimer.elapasedTime >= m_startCameraWaitSeconds)
+				{
+					m_covering.isMoving = true;
+					isCompleteStartMoveEnter = true;
+					MoveCameraPoint();
+					m_moveTimer.Stop();
+				}
+			}
+		}
 
         // リザルト
         if (resultFlg == true) 
@@ -74,30 +99,43 @@ public class FollowObject : MonoBehaviour
             followingObject.transform.localPosition = new Vector3(0.0f, 1.5f, 4.0f);
 
             // カメラポイントオブジェクトについていく
-            this.transform.position =
-            Vector3.Slerp(this.transform.position, followingObject.transform.position, resultCameraSpeed);
+            transform.position = Vector3.Lerp(m_moveStartPosition, followingObject.transform.position,
+				m_moveTimer.elapasedTime / m_resultCameraMoveSeconds);
 
             // プレイヤーを見る
-            this.transform.LookAt(lookObject.transform);
-
-            Invoke("MoveLookPoint", lookPointMoveTime);
-        }
-    }
+            transform.LookAt(lookObject.transform);
+			
+			if (m_moveTimer.elapasedTime >= m_resultCameraMoveSeconds)
+			{
+				isCompleteResultMoveEnter = true;
+				//MoveLookPoint();
+				m_moveTimer.Stop();
+			}
+		}
+	}
 
     public void StartFlg()
     {
         startFlg = true;
         resultFlg = false;
-    }
+		m_staretState = 0;
+		m_moveStartPosition = transform.position;
+		m_covering.isMoving = false;
 
-    public void ResultFlg()
+		m_moveTimer.Start();
+	}
+
+	public void ResultFlg()
     {
-
         m_covering.isMoving = false;
         resultFlg = true;
-    }
+		startFlg = false;
+		m_moveStartPosition = transform.position;
 
-    private void MoveCameraPoint()
+		m_moveTimer.Start();
+	}
+
+	private void MoveCameraPoint()
     {
         //followingObject.transform.localPosition =
         //    Vector3.Lerp(followingObject.transform.localPosition, new Vector3(0.0f, 33.0f, -13.0f), startCameraSpeed);
@@ -112,10 +150,10 @@ public class FollowObject : MonoBehaviour
         m_uiAnimator.SetTrigger("SetPosition");
     }
 
-    private void MoveLookPoint()
-    {
-        lookObject.transform.localPosition =
-            Vector3.Lerp(lookObject.transform.localPosition, new Vector3(-2.0f, 1.5f, 0.0f), resultCameraSpeed);
-    }
+    //private void MoveLookPoint()
+    //{
+    //    lookObject.transform.localPosition =
+    //        Vector3.Lerp(lookObject.transform.localPosition, new Vector3(-2.0f, 1.5f, 0.0f), resultCameraSpeed);
+    //}
 
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_cover: {fileID: 7195776834400370261}
   m_isMoving: 1
-  m_late: 0.01
+  m_late: 1.2
 --- !u!1 &7195776833592062120
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,11 +165,6 @@ PrefabInstance:
     - target: {fileID: 0}
       propertyPath: m_cover
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1664029199780888505, guid: 23e437d39c64b0b46af679a713df1ae6,
-        type: 3}
-      propertyPath: startFlg
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1664029199780888505, guid: 23e437d39c64b0b46af679a713df1ae6,
         type: 3}

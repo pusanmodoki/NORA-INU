@@ -6,11 +6,15 @@ using UnityEngine;
 [DefaultExecutionOrder(-100)]
 public class CheckPointManager : MonoBehaviour
 {
+	public delegate void ChangeStateCallback(int linkPlayerID, int linkPointID, bool isLink);
+
 	/// <summary>Static instance</summary>
 	public static CheckPointManager instance { get; private set; } = null;
 
 	/// <summary>Manage check points</summary>
 	public ReadOnlyDictionary<int, BaseCheckPoint> allPoints { get; private set; } = null;
+
+	public ChangeStateCallback changeStateCallback { get; set; } = null;
 
 	/// <summary>Manage check points</summary>
 	Dictionary<int, BaseCheckPoint> m_points = null;

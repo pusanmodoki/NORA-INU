@@ -19,5 +19,6 @@ public class StageStart : MonoBehaviour
         m_isAnimation = false;
 
         PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableInput = true;
-    }
+		TutorialUIManager.instance.GameStart();
+	}
 }

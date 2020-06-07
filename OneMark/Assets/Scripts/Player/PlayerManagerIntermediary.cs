@@ -61,9 +61,9 @@ public class PlayerManagerIntermediary : MonoBehaviour
 	/// [ChangeTerritory]
 	/// テリトリー変更のコールバック
 	/// </summary>
-	public void ChangeTerritory()
+	public void ChangeTerritory(bool isAdd)
 	{
-		if (m_isPauseFirstPoint)
+		if (m_isPauseFirstPoint & isAdd)
 		{
 			m_firstPoint.SetLockFirstPoint(false);
 			m_isPauseFirstPoint = false;

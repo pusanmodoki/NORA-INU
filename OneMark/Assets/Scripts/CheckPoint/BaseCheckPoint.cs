@@ -45,6 +45,7 @@ public abstract class BaseCheckPoint : MonoBehaviour
 	/// </summary>
 	public virtual void LinkPlayer(int playerInstanceID)
 	{
+		CheckPointManager.instance.changeStateCallback?.Invoke(playerInstanceID, pointInstanceID, true);
 		linkPlayerID = playerInstanceID;
 	}
 	/// <summary>
@@ -53,6 +54,7 @@ public abstract class BaseCheckPoint : MonoBehaviour
 	/// </summary>
 	public virtual void UnlinkPlayer()
 	{
+		CheckPointManager.instance.changeStateCallback?.Invoke(linkPlayerID, pointInstanceID, false);
 		linkPlayerID = -1;
 	}
 

@@ -98,11 +98,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startFlg: 0
-  startCameraSpeed: 0.8
-  followObjectMoveTime: 2
+  m_startCameraMoveSeconds: 1.3
+  m_startCameraWaitSeconds: 1.5
   resultFlg: 0
-  resultCameraSpeed: 0.1
-  lookPointMoveTime: 5
+  m_resultCameraMoveSeconds: 1
   m_covering: {fileID: 0}
 --- !u!114 &2736012011453258278
 MonoBehaviour:

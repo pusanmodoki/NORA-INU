@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 [DefaultExecutionOrder(-100)]
 public class PlayerAndTerritoryManager : MonoBehaviour
 {
-	public delegate void ChangeTerritoryCallback();
+	public delegate void ChangeTerritoryCallback(bool isAdd);
 
 	/// <summary>
 	/// Playerの情報を記録するPlayerInfo
@@ -159,7 +159,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 
 			//追加->Callback->計算予約
 			allTerritorys.Add(point);
-			changeTerritoryCallback?.Invoke();
+			changeTerritoryCallback?.Invoke(true);
 			PlayerAndTerritoryManager.instance.ReserveCalucrateTerritory(instanceID);
 		}
 		/// <summary>
@@ -179,7 +179,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 
 			//削除->Callback->計算予約
 			allTerritorys.Remove(point);
-			changeTerritoryCallback?.Invoke();
+			changeTerritoryCallback?.Invoke(false);
 			PlayerAndTerritoryManager.instance.ReserveCalucrateTerritory(instanceID);
 		}
 	}

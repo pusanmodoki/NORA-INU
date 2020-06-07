@@ -34,16 +34,17 @@ public class PlayerCovering : BaseMovePoint
         {
             transform.SetParent(null);
         }
+
         SetPosition();
     }
 
     public override void MovePointUpdate(Vector3 _vec)
     {
         Vector3 point = m_cover.startPoint.position + _vec;
-        transform.position = Vector3.Lerp(transform.position, point, m_late);
+        transform.position = Vector3.Lerp(transform.position, point, m_late * Time.deltaTime);
 
         Look();
-    }
+	}
 
     private void SetPosition()
     {

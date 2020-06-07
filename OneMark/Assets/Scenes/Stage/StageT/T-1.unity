@@ -690,11 +690,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7195776834448709991, guid: db18e744c1781784e868ecf77b3ed2c8,
-        type: 3}
-      propertyPath: m_late
-      value: 0.02
-      objectReference: {fileID: 0}
     - target: {fileID: 7195776834580239471, guid: db18e744c1781784e868ecf77b3ed2c8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1740,6 +1735,44 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_stageStart
+      value: 
+      objectReference: {fileID: 389157693}
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105601178622261366, guid: cbf556fd441b7b84cb07f868ccf8e370,
+        type: 3}
+      propertyPath: m_textPresets.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105601178622261366, guid: cbf556fd441b7b84cb07f868ccf8e370,
+        type: 3}
+      propertyPath: m_textPresets.Array.data[9].m_orConditions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105601178622261366, guid: cbf556fd441b7b84cb07f868ccf8e370,
+        type: 3}
+      propertyPath: m_textPresets.Array.data[9].m_orConditions.Array.data[0].m_andConditions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105601178622261366, guid: cbf556fd441b7b84cb07f868ccf8e370,
+        type: 3}
+      propertyPath: m_textPresets.Array.data[9].m_text
+      value: TEST
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105601178622261366, guid: cbf556fd441b7b84cb07f868ccf8e370,
+        type: 3}
+      propertyPath: m_textPresets.Array.data[9].m_orConditions.Array.data[0].m_andConditions.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6152061771638746206, guid: cbf556fd441b7b84cb07f868ccf8e370,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6152061771722053179, guid: cbf556fd441b7b84cb07f868ccf8e370,
         type: 3}
       propertyPath: m_Name
@@ -1860,21 +1893,51 @@ PrefabInstance:
       propertyPath: m_Name
       value: text1-1
       objectReference: {fileID: 0}
+    - target: {fileID: 6152061772789311906, guid: cbf556fd441b7b84cb07f868ccf8e370,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6152061772789311908, guid: cbf556fd441b7b84cb07f868ccf8e370,
         type: 3}
       propertyPath: m_Text
       value: "\u307E\u305A\u306F\u5DE6\u30B9\u30C6\u30A3\u30C3\u30AF\u3067\u79FB\u52D5\u3057\u3066\r\n\u300C\u3067\u3093\u3061\u3085\u3046\u300D\u3092\u9078\u3093\u3067\u307F\u3066\uFF01"
       objectReference: {fileID: 0}
+    - target: {fileID: 6152061773107196336, guid: cbf556fd441b7b84cb07f868ccf8e370,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6152061773107196350, guid: cbf556fd441b7b84cb07f868ccf8e370,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7269967376003631040, guid: cbf556fd441b7b84cb07f868ccf8e370,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7646765447024218892, guid: cbf556fd441b7b84cb07f868ccf8e370,
+    - target: {fileID: 7269967376003631040, guid: cbf556fd441b7b84cb07f868ccf8e370,
         type: 3}
-      propertyPath: m_stageStart
-      value: 
-      objectReference: {fileID: 389157693}
+      propertyPath: m_Name
+      value: UI Parent
+      objectReference: {fileID: 0}
+    - target: {fileID: 7514587397230502791, guid: cbf556fd441b7b84cb07f868ccf8e370,
+        type: 3}
+      propertyPath: m_firstTarget.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7514587397230502791, guid: cbf556fd441b7b84cb07f868ccf8e370,
+        type: 3}
+      propertyPath: m_secondMoveSeconds
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7514587397230502791, guid: cbf556fd441b7b84cb07f868ccf8e370,
+        type: 3}
+      propertyPath: m_drawSpeedPerSeconds
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 7948568699674960240, guid: cbf556fd441b7b84cb07f868ccf8e370,
         type: 3}
       propertyPath: m_Name
