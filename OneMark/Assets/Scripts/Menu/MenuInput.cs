@@ -150,4 +150,9 @@ public class MenuInput : MonoBehaviour
         yield return new WaitForSeconds(m_interval);
         isSelectInput = true;
     }
+
+    void SetActiveInput(bool _isInput)
+    {
+        isEnableInput = _isInput;
+    }
 }
