@@ -122,6 +122,11 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	/// ポイントの更新を行う
 	/// </summary>
 	public abstract void UpdatePoint();
+	/// <summary>
+	/// [IsMovePoint] (Virtual)
+	/// return: 自身が動くポイントか否か
+	/// </summary>
+	public abstract bool IsMovePoint();
 
 	/// <summary>
 	/// [AddFirstLinkBonus]
@@ -269,7 +274,7 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	/// <summary>[Awake]</summary>
 	void Awake()
 	{
-		pointInstanceID = ++m_instanceIDCounter;
+		pointInstanceID = m_instanceIDCounter++;
 	
 		MarkPointManager.instance.AddMarkPoint(this);
 

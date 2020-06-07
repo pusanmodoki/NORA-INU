@@ -29,4 +29,9 @@ public class DefaultMarkPoint : BaseMarkPoint
 	public override void UnlinkPoint()
 	{
 	}
+
+	public override bool IsMovePoint()
+	{
+		return false;
+	}
 }

@@ -228,6 +228,36 @@ public static class CollisionTerritory
 		return false;
 	}
 
+	public static bool HitRayTerritory(List<Vector3> territoryArea, Vector3 position, Vector3 direction, float distance, 
+		out Vector3 normal, out Vector3 hitPoint, out int index0, out int index1)
+	{
+		index0 = index1 = 0;
+		m_lineStart1 = position;
+		m_lineEnd1 = position + direction * distance;
+
+		for (int i = 0, count = territoryArea.Count - 1; i < count; ++i)
+		{
+			if (HitSegments(territoryArea[i], territoryArea[i + 1], out hitPoint))
+			{
+				index0 = i; index1 = i + 1;
+				normal = Vector3.Cross(
+					(territoryArea[index1] - territoryArea[index0]).normalized, Vector3.up).normalized;
+				return true;
+			}
+		}
+
+		if (HitSegments(territoryArea[territoryArea.Count - 1], territoryArea[0], out hitPoint))
+		{
+			index0 = territoryArea.Count - 1; index1 = 0;
+			normal = Vector3.Cross(
+				(territoryArea[index1] - territoryArea[index0]).normalized, Vector3.up).normalized;
+			return true;
+		}
+
+		hitPoint = normal = Vector3.zero;
+		return false;
+	}
+
 	static bool HitCircleSegment(Vector3 lineStart0, Vector3 lineEnd0)
 	{
 		/*

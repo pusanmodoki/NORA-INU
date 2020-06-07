@@ -44,8 +44,9 @@ public class PlayerInput : MonoBehaviour
 #endif
 
 	Vector3 m_moveInput = Vector3.zero;
-
+	List<int> m_disableEvents = new List<int>();
 	Timer m_shotTimers = new Timer();
+	int m_disableCounter = 0;
 
 	public void GameClearAnimation()
 	{
@@ -58,6 +59,17 @@ public class PlayerInput : MonoBehaviour
 		m_animator.SetTrigger(m_cResultID);
 		m_state = AnimationState.GameOver;
 		m_animator.SetInteger(m_cStateID, (int)m_state);
+	}
+
+	public void StartDisableInput(out int disableID)
+	{
+		m_disableEvents.Add(m_disableCounter);
+		disableID = m_disableCounter++;
+	}
+	public void EndDisableInput(int disableID)
+	{
+		if (m_disableEvents.Contains(disableID))
+			m_disableEvents.Remove(disableID);
 	}
 	
 	void Start()
@@ -80,7 +92,7 @@ public class PlayerInput : MonoBehaviour
     {
         m_moveInput = Vector3.zero;
 
-		if (!isEnableInput)
+		if (!isEnableInput || m_disableEvents.Count > 0)
 			return;
 
 		m_moveInput.x = Input.GetAxis("Horizontal");

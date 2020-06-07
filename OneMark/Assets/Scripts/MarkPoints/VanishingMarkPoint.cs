@@ -7,6 +7,11 @@ public class VanishingMarkPoint : BaseMarkPoint
 	[SerializeField]
 	float m_waitingToReturnSeconds = 5.0f;
 
+	public override bool IsMovePoint()
+	{
+		return false;
+	}
+
 	public override void UnlinkPoint()
 	{
 		MarkPointManager.instance.RegisterTemporarilyDeactive(this, m_waitingToReturnSeconds);

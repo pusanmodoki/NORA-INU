@@ -250,6 +250,11 @@ public class MoveMarkPoint : BaseMarkPoint
 	}
 
 
+	public override bool IsMovePoint()
+	{
+		return true;
+	}
+
 #if UNITY_EDITOR
 	static readonly Vector3 m_dScale = new Vector3(0.1f, 5.0f, 0.1f);
 	new void OnDrawGizmos()

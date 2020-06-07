@@ -93,6 +93,8 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		public List<Vector3> territorialArea { get; private set; } = new List<Vector3>();
 		/// <summary>ボリュームを加えた安全なテリトリー圏 (ポジション)</summary>
 		public List<Vector3> safetyTerritorialArea { get; private set; } = new List<Vector3>();
+		/// <summary>ボリュームを加えた移動しないテリトリー圏 (ポジション)</summary>
+		public List<int> territorialAreaBelongIndexes { get; private set; } = new List<int>();
 		/// <summary>Follow point game objects</summary>
 		public GameObject[] followPoints { get; private set; } = null;
 		/// <summary>Result camera look point game objects</summary>
@@ -101,6 +103,17 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		public GameObject resultCameraMovePoint { get; private set; } = null;
 		/// <summary>テリトリー変更時にCallされるコールバック (計算時ではなく, AddMarkPoint, RemoveMarkPoint実行でCall)</summary>
 		public ChangeTerritoryCallback changeTerritoryCallback { get; set; } = null;
+		/// <summary>最短のテリトリー線分座標</summary>
+		public Vector3 shortestTerritoryBorderPoint { get; private set; } = default;
+		/// <summary>最短のテリトリー線分index0 (PointInstanceID)</summary>
+		public int shortestTerritoryPointInstanceID0 { get; private set; } = 0;
+		/// <summary>最短のテリトリー線分index1 (PointInstanceID)</summary>
+		public int shortestTerritoryPointInstanceID1 { get; private set; } = 0;
+		/// <summary>最短のテリトリー線分index0</summary>
+		public int shortestTerritoryPointIndex0 { get; private set; } = 0;
+		/// <summary>最短のテリトリー線分index1</summary>
+		public int shortestTerritoryPointIndex1 { get; private set; } = 0;
+
 		/// <summary>Link event now?</summary>
 		public bool isLinkEvent { get; private set; }
 		/// <summary>ゲームオーバー猶予期間</summary>
@@ -118,6 +131,17 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		/// Set isLinkEvent
 		/// </summary>
 		public void SetLinkEvent(bool isSet) { isLinkEvent = isSet; }
+		/// <summary>
+		/// [SetShortestTerritoryPointIndex]
+		/// Set ShortestTerritoryPoint And Index
+		/// </summary>
+		public void SetShortestTerritoryPoint(Vector3 point, int index0, int index1)
+		{
+			shortestTerritoryBorderPoint = point;
+			shortestTerritoryPointIndex0 = index0; shortestTerritoryPointIndex1 = index1;
+			shortestTerritoryPointInstanceID0 = territorialAreaBelongIndexes[index0];
+			shortestTerritoryPointInstanceID1 = territorialAreaBelongIndexes[index1];
+		}
 		/// <summary>
 		/// [AddMarkPoint]
 		/// MarkPointを追加する
@@ -299,8 +323,9 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 	{
 		//リストクリア
 		playerInfo.territorialArea.Clear();
-		m_grahamResult.Clear();
 		playerInfo.borderTerritorys.Clear();
+		playerInfo.territorialAreaBelongIndexes.Clear();
+		m_grahamResult.Clear();
 
 		//ソート用リスト構築
 		for (int i = 0, count = playerInfo.allTerritorys.Count; i < count; ++i)
@@ -319,13 +344,16 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		for (int i = 0, count = m_grahamResult.Count; i < count; ++i)
 		{
 			for (int k = 0, length = m_volumePoints.Length; k < length; ++k)
-				m_grahamResult.Add(new GrahamScan.CustomFormat(m_grahamResult[i].position + m_volumePoints[k], -1));
+				m_grahamResult.Add(new GrahamScan.CustomFormat(m_grahamResult[i].position + m_volumePoints[k], i));
 		}
 		result = GrahamScan.Run(m_grahamResult);
 
 		//結果をリストに構築
 		for (int i = 0; i < result; ++i)
+		{
 			playerInfo.territorialArea.Add(m_grahamResult[i].position);
+			playerInfo.territorialAreaBelongIndexes.Add(playerInfo.allTerritorys[m_grahamResult[i].userID].pointInstanceID);
+		}
 
 		playerInfo.areaMesh.MeshCreate(playerInfo.territorialArea);
 		playerInfo.areaBorderMesh.CreateBorder(playerInfo.territorialArea);

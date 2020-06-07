@@ -169,6 +169,9 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 
 	/// <summary>CheckMarkPointで使用するヒットリスト</summary>
 	List<BaseMarkPoint> m_checkPoints = new List<BaseMarkPoint>();
+
+	List<int> m_searchIndexes = new List<int>();
+
 	/// <summary>PlayerInfo</summary>
 	PlayerAndTerritoryManager.PlayerInfo m_playerInfo = null;
 	/// <summary>Forward方向のテリトリー法線</summary>
@@ -236,6 +239,17 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		
 		return false;
 	}
+	public void ResetTerritoryHitInfo(bool isHit)
+	{
+		isTerritoryStay = isHit;
+		isTerritoryEnter = false;
+		isTerritoryExit = false;
+
+		isFixedTerritoryStay = isHit;
+		isFixedTerritoryEnter = false;
+		isFixedTerritoryExit = false;
+	}
+
 
 	/// <summary>[Awake]</summary>
 	void Awake()
@@ -268,8 +282,17 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			//MarkPointチェック
 			CheckMarkPoint(ref position);
 
+			CheckShortestPoints(ref position);
+
 			//タイマーリスタート
 			m_judgmentTimer.Start();
+		}
+		else
+		{
+			//負荷軽減
+			Vector3 position = transform.position;
+
+			CheckShortestPoints(ref position);
 		}
 
 		//フラグ判定
@@ -612,6 +635,118 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			m_checkPoints[i].SetPlayerNearby(true);
 	}
 
+	void CheckShortestPoints(ref Vector3 position)
+	{
+		Vector3 minPoint = default, point;
+		float minDistance = 1000000.0f;
+		float distance = 0.0f;
+		int minIndex = 0;
+
+		m_searchIndexes.Clear();
+
+		if (m_playerInfo.borderTerritorys.Count > 1)
+		{
+			int index0, index1;
+			for (int i = 0, count = m_playerInfo.borderTerritorys.Count - 1; i < count; ++i)
+			{
+				distance = (CalculatePerpendicular(m_playerInfo.borderTerritorys[i],
+					m_playerInfo.borderTerritorys[i + 1], ref position) - position).sqrMagnitude;
+
+				if (minDistance > distance)
+				{
+					minDistance = distance;
+					minIndex = i;
+				}
+			}
+
+			distance = (CalculatePerpendicular(m_playerInfo.borderTerritorys[m_playerInfo.borderTerritorys.Count - 1],
+					m_playerInfo.borderTerritorys[0], ref position) - position).sqrMagnitude;
+
+			if (minDistance > distance)
+			{
+				index0 = m_playerInfo.borderTerritorys[m_playerInfo.borderTerritorys.Count - 1].pointInstanceID;
+				index1 = m_playerInfo.borderTerritorys[0].pointInstanceID;
+			}
+			else
+			{
+				index0 = m_playerInfo.borderTerritorys[minIndex].pointInstanceID;
+				index1 = m_playerInfo.borderTerritorys[minIndex + 1].pointInstanceID;
+			}
+
+
+			for (int i = 0, count = m_playerInfo.territorialAreaBelongIndexes.Count; i < count; ++i)
+			{
+				if (m_playerInfo.territorialAreaBelongIndexes[i] == index0 || m_playerInfo.territorialAreaBelongIndexes[i] == index1)
+					m_searchIndexes.Add(i);
+			}
+		}
+		else
+		{
+			for (int i = 0, count = m_playerInfo.territorialAreaBelongIndexes.Count; i < count; ++i)
+			{
+				m_searchIndexes.Add(i);
+			}
+		}
+
+
+		{
+			minDistance = 1000000.0f;
+			minIndex = 0;
+
+			for (int i = 0, count = m_searchIndexes.Count; i < count; ++i)
+			{
+				if (m_playerInfo.territorialArea.Count - 1 > m_searchIndexes[i])
+				{
+					point = CalculatePerpendicular(ref position, m_searchIndexes[i], m_searchIndexes[i] + 1);
+					distance = (point - position).sqrMagnitude;
+				}
+				else
+				{
+					point = CalculatePerpendicular(ref position, m_searchIndexes[i], 0);
+					distance = (point- position).sqrMagnitude;
+				}
+
+				if (minDistance > distance)
+				{
+					minPoint = point;
+					minDistance = distance;
+					minIndex = i;
+				}
+			}
+
+			if (m_playerInfo.territorialArea.Count - 1 > m_searchIndexes[minIndex])
+				m_playerInfo.SetShortestTerritoryPoint(minPoint, minIndex, minIndex + 1);
+			else
+				m_playerInfo.SetShortestTerritoryPoint(minPoint, minIndex, 0);
+		}
+	}
+	Vector3 CalculatePerpendicular(ref Vector3 position, int index0, int index1)
+	{
+		Vector3 positionXZ = position;
+		Vector3 startToEnd = m_playerInfo.territorialArea[index1] - m_playerInfo.territorialArea[index0];
+		Vector3 startToPosition = position - m_playerInfo.territorialArea[index0];
+		positionXZ.y = startToPosition.y = startToEnd.y = 0.0f;
+
+		float t = Vector3.Dot(startToEnd.normalized, startToPosition) / startToEnd.magnitude;
+
+		if (t < 0) return m_playerInfo.territorialArea[index0];
+		else if (t > 1) return m_playerInfo.territorialArea[index1];
+		else return position + startToEnd * t- startToPosition;
+	}
+	Vector3 CalculatePerpendicular(BaseMarkPoint start, BaseMarkPoint end, ref Vector3 position)
+	{
+		Vector3 positionXZ = position, startPositionXZ = start.transform.position.ToYZero();
+		Vector3 startToEnd = end.transform.position.ToYZero() - startPositionXZ;
+		Vector3 startToPosition = position - startPositionXZ;
+		positionXZ.y = startToPosition.y = startToEnd.y = 0.0f;
+
+		float t = Vector3.Dot(startToEnd.normalized, startToPosition) / startToEnd.magnitude;
+
+		if (t < 0) return startPositionXZ;
+		else if (t > 1) return end.transform.position.ToYZero();
+		else return position + startToEnd * t - startToPosition;
+	}
+
 
 	//debug only
 #if UNITY_EDITOR
@@ -620,6 +755,9 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	/// <summary>[OnDrawGizmos]</summary>
 	void OnDrawGizmos()
 	{
+		if (UnityEditor.EditorApplication.isPlaying)
+			Gizmos.DrawCube(m_playerInfo.shortestTerritoryBorderPoint, new Vector3(0.1f, 10, 0.1f));
+
 		if (!m_dIsDrawGizmos) return;
 
 		Vector3 position = transform.position;

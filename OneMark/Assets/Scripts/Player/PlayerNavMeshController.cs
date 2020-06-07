@@ -28,6 +28,7 @@ public class PlayerNavMeshController : MonoBehaviour
 	Vector3 m_dVelocity = Vector3.zero;
 #endif
 
+	PlayerAndTerritoryManager.PlayerInfo m_player = null;
 	BaseUniqueOffMeshLink m_pointUniqueOffMeshLink = null;
 	BaseUniqueOffMeshLink m_copyUniqueOffMeshLink = null;
 	Vector3 m_position = Vector3.zero;
@@ -36,6 +37,7 @@ public class PlayerNavMeshController : MonoBehaviour
 	Vector3 m_destination = Vector3.zero;
 	Vector3 m_territoryNormal = Vector3.zero;
 	Vector3 m_territoryHitPoint = Vector3.zero;
+	int m_oldPointID0, m_oldPointID1;
 
 	public bool LinkManualUniqueOffMeshLink(BaseUniqueOffMeshLink pointUniqueOffMeshLink ,
 		BaseUniqueOffMeshLink copyUniqueOffMeshLink)
@@ -51,6 +53,10 @@ public class PlayerNavMeshController : MonoBehaviour
 			return false;
 	}
 
+	void Start()
+	{
+		m_player =  PlayerAndTerritoryManager.instance.allPlayers[gameObject.GetInstanceID()];
+	}
 	// Update is called once per frame
 	void Update()
 	{
@@ -67,6 +73,21 @@ public class PlayerNavMeshController : MonoBehaviour
 
 	void Move()
 	{
+		if (m_player.manualCollisionAdministrator.isTerritoryExit)
+		{
+			if (MarkPointManager.instance.allPoints[m_oldPointID0].linkPlayerID == m_player.instanceID
+				&& MarkPointManager.instance.allPoints[m_oldPointID1].linkPlayerID == m_player.instanceID)
+			{
+				navMeshAgent.Warp(m_player.shortestTerritoryBorderPoint + 
+					Vector3.Cross((m_player.territorialArea[m_player.shortestTerritoryPointIndex1] 
+					- m_player.territorialArea[m_player.shortestTerritoryPointIndex0]).normalized, Vector3.up).normalized * 0.1f);
+				m_player.manualCollisionAdministrator.ResetTerritoryHitInfo(true);
+			}
+		}
+		m_oldPointID0 = m_player.shortestTerritoryPointInstanceID0;
+		m_oldPointID1 = m_player.shortestTerritoryPointInstanceID1;
+
+
 		if (m_input.moveInput.x == 0.0f && m_input.moveInput.z == 0.0f)
 		{
 			navMeshAgent.isStopped = true;
@@ -75,32 +96,37 @@ public class PlayerNavMeshController : MonoBehaviour
 
 		transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(m_input.moveInput), m_rotationSpeed * Time.deltaTime);
 
+		int index0, index1;
 		m_position = transform.position;
 		m_velocity = m_input.moveInput * m_moveSpeed * Time.deltaTime;
-		m_destination = transform.position + m_velocity;
+		m_destination = m_position + m_velocity;
 
-		if (m_maualCollisionAdministrator.isTerritoryStay & m_maualCollisionAdministrator.isTerritorySegmentStay
-			& !PlayerAndTerritoryManager.instance.allPlayers[gameObject.GetInstanceID()].isGameOverGracePeiod)
+		if (m_maualCollisionAdministrator.isTerritoryStay 
+			& m_maualCollisionAdministrator.isTerritorySegmentStay & !m_player.isGameOverGracePeiod)
 		{
-			if (CollisionTerritory.HitRayTerritory(PlayerAndTerritoryManager.instance.mainPlayer.territorialArea,
-				transform.position - m_velocity, m_input.moveInput, m_velocity.magnitude * 2,
-				out m_territoryNormal, out m_territoryHitPoint))
+			CollisionTerritory.HitRayTerritory(m_player.territorialArea, m_position - m_velocity, m_input.moveInput,
+				m_velocity.magnitude * 2, out m_territoryNormal, out m_territoryHitPoint, out index0, out index1);
+
+
+			if (CollisionTerritory.HitRayTerritory(m_player.territorialArea, m_position - m_velocity, m_input.moveInput, 
+				m_velocity.magnitude * 2, out m_territoryNormal, out m_territoryHitPoint, out index0, out index1))
 			{
+
 				m_velocity += m_territoryNormal *
 					  (new Vector3(m_destination.x, 0.0f, m_destination.z) - m_territoryHitPoint).magnitude;
 			}
 		}
 
 		m_navMeshAgent.Move(m_velocity);
-		m_moveVelocity = transform.position - m_position;
+		m_position = transform.position;
+		m_moveVelocity = m_position - m_position;
 
-		if (m_moveVelocity != m_velocity && !PlayerAndTerritoryManager.instance.allPlayers[gameObject.GetInstanceID()].isGameOverGracePeiod)
+		if (m_moveVelocity != m_velocity && !m_player.isGameOverGracePeiod)
 		{
-			if (CollisionTerritory.HitRayTerritory(PlayerAndTerritoryManager.instance.mainPlayer.territorialArea,
-				m_position - m_moveVelocity, m_moveVelocity.normalized, m_moveVelocity.magnitude * 2.0f,
-				out m_territoryNormal, out m_territoryHitPoint))
+			if (CollisionTerritory.HitRayTerritory(m_player.territorialArea, m_position - m_moveVelocity, m_moveVelocity.normalized,
+				m_moveVelocity.magnitude * 2.0f, out m_territoryNormal, out m_territoryHitPoint, out index0, out index1))
 			{
-				m_destination = transform.position + m_moveVelocity;
+				m_destination = m_position + m_moveVelocity;
 
 				m_moveVelocity += m_territoryNormal *
 					  (new Vector3(m_destination.x, 0.0f, m_destination.z) - m_territoryHitPoint).magnitude;
