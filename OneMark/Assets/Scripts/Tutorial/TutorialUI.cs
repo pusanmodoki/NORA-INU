@@ -117,6 +117,8 @@ public  class TutorialUI : MonoBehaviour
 
 	public bool OnTutorialUpdate()
 	{
+		if (TutorialUIManager.instance.dogAnimator == null) return true;
+
 		switch(m_state)
 		{
 			case State.Start:
