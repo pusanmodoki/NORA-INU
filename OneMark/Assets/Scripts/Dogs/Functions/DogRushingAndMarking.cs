@@ -198,9 +198,6 @@ public class DogRushingAndMarking : BaseDogAIFunction
 						//強制的に増加させる
 						if (m_markPoint.linkPlayerID != dogAIAgent.linkPlayer.GetInstanceID())
 							m_markPoint.AddFirstLinkBonus();
-						//ポイントをリンクさせる
-						m_markPoint.LinkPlayer(dogAIAgent.linkPlayer, dogAIAgent);
-						m_markPoint.LinkMarkingStart();
 						//待て！
 						dogAIAgent.SetWaitAndRun(true, m_markPoint);
 
@@ -228,6 +225,10 @@ public class DogRushingAndMarking : BaseDogAIFunction
 					{
 						//Animation Set
 						m_animationController.editAnimation.TriggerMarking();
+
+						//ポイントをリンクさせる
+						m_markPoint.LinkPlayer(dogAIAgent.linkPlayer, dogAIAgent);
+						m_markPoint.LinkMarkingStart();
 
 						m_sePlayer.PlaySE(m_markingSEIndex, true);
 						m_bgmChangeAgentID = dogAIAgent.aiAgentInstanceID;
