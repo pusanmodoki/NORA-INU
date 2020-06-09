@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class DefaultSelectButton : BaseSelectedObject
 {
-    [SerializeField]
-    OneMarkSceneManager.SceneState m_state = OneMarkSceneManager.SceneState.Title;
+	public enum SceneTransType
+	{
+		Title = 0,
+		StageSelect,
+		GameStart,
+		NextStage,
+		Restart
+	}
 
     [SerializeField]
-    Vector2Int stageNum = new Vector2Int(0, 1);
+    SceneTransType m_state = SceneTransType.Title;
 
     [SerializeField]
     Color m_selectedColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -32,14 +38,35 @@ public class DefaultSelectButton : BaseSelectedObject
 
     public override void OnEnter()
     {
-        if(m_state != OneMarkSceneManager.SceneState.Stage)
-        {
-            OneMarkSceneManager.instance.MoveScene(m_state);
-        }
-        else
-        {
-            OneMarkSceneManager.instance.MoveStageScene(stageNum);
-        }
+		switch (m_state)
+		{
+			case SceneTransType.Title:
+				{
+					OneMarkSceneManager.instance.MoveScene(OneMarkSceneManager.SceneState.Title);
+					break;
+				}
+			case SceneTransType.StageSelect:
+				{
+					OneMarkSceneManager.instance.MoveScene(OneMarkSceneManager.SceneState.StageSelect);
+					break;
+				}
+			case SceneTransType.GameStart:
+				{
+					OneMarkSceneManager.instance.MoveStageScene(new Vector2Int(0, 1));
+					break;
+				}
+			case SceneTransType.NextStage:
+				{
+					OneMarkSceneManager.instance.MoveNextStage();
+					break;
+				}
+			case SceneTransType.Restart:
+				{
+					OneMarkSceneManager.instance.ReloadScene();
+					break;
+				}
+		}
+
     }
 
 	public override void AwakeCursor()

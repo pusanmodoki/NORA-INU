@@ -150,9 +150,10 @@ public class MenuInput : MonoBehaviour
     }
     
 
-    void SetActiveInput(bool _isInput)
+    void SetActiveInput(int _isInput)
     {
-        isEnableInput = _isInput;
+		if(_isInput == 0) { isEnableInput = false; }
+		else { isEnableInput = true; }
     }
 
 	void OnInputInterval()
