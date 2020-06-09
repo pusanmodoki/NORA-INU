@@ -23,6 +23,7 @@ public class VanishingMarkPoint : BaseMarkPoint
 		{
 			effectiveCounter = 0.0f;
 			ServantManager.instance.allServants[linkServantID].ComeBecauseEndOfMarking(true);
+			effectControler.OffEffectByInteger(0);
 			UnlinkPlayer();
 		}
 	}

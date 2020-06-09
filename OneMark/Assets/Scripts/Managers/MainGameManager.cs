@@ -19,7 +19,7 @@ public class MainGameManager : MonoBehaviour
 	
 	public Vector2 stageSize { get { return m_stageSize; } private set { m_stageSize = value; } }
 	public ResultState resultState { get; private set; } = ResultState.Null;
-	public float waitGamerOverCount01 { get { return Mathf.Clamp01(m_gameOverWaitTimer.elapasedTime / m_waitGameOverSeconds); } }
+	public float waitGameOverCount01 { get { return Mathf.Clamp01(m_gameOverWaitTimer.elapasedTime / m_waitGameOverSeconds); } }
 
 	[SerializeField]
     private Vector2 m_stageSize = new Vector3(30.0f, 30.0f);
@@ -93,7 +93,7 @@ public class MainGameManager : MonoBehaviour
 				PlayerAndTerritoryManager.instance.mainPlayer.SetGameOverGracePeiod(false);
 				m_gameOverWaitTimer.Stop();
 			}
-			else if (waitGamerOverCount01 >= 1.0f)
+			else if (waitGameOverCount01 >= 1.0f)
 			{
 				resultState = ResultState.GameEnd;
 				PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableInput = false;
@@ -103,12 +103,12 @@ public class MainGameManager : MonoBehaviour
 		}
 		else if (resultState == ResultState.GameClear)
 		{
-			if (m_resultTimer.elapasedTime > m_waitResultClearSeconds)
+			if (!TutorialUIManager.instance.isOnTutorial && m_resultTimer.elapasedTime > m_waitResultClearSeconds)
 				GameClear();
 		}
 		else if (resultState == ResultState.GameEnd)
 		{
-			if (m_resultTimer.elapasedTime > m_waitResultOverSeconds)
+			if (!TutorialUIManager.instance.isOnTutorial && m_resultTimer.elapasedTime > m_waitResultOverSeconds)
 				GameOver();
 		}
 	}

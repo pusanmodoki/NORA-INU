@@ -99,6 +99,8 @@ public class OneMarkSceneManager : MonoBehaviour
 	[Header("Scene Transition"), SerializeField]
 	SceneName m_gameStartSceneName = default;
 	[SerializeField]
+	SceneName m_logoSceneName = default;
+	[SerializeField]
 	SceneName m_titleSceneName = default;
 	[SerializeField]
 	SceneName m_stageSelectSceneName = default;
@@ -214,7 +216,7 @@ public class OneMarkSceneManager : MonoBehaviour
 			Init();
 
 			if (SceneManager.GetSceneByName(m_gameStartSceneName).IsValid())
-				StartCoroutine(LoadScene(m_titleSceneName, false, true));
+				StartCoroutine(LoadScene(m_logoSceneName, false, true));
 			else if (isNowStageScene)
 			{
 				StartCoroutine(LoadSceneOptionAndAccessory(true));

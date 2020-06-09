@@ -58,6 +58,7 @@ public class TutorialUIManager : MonoBehaviour
 	static bool m_isCreateInstance = false;
 
 	public Animator dogAnimator { get; private set; } = null;
+	public bool isOnTutorial { get { return m_tutorialUI.isOnTutorial || m_onWaitTutorials.Count > 0; } }
 	public int onWaitTutorials { get { return m_onWaitTutorials.Count; } }
 
 	[SerializeField]

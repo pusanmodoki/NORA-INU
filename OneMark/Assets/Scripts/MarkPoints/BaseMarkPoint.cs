@@ -10,6 +10,7 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	/// <summary>Instance counter(static)</summary>
 	static int m_instanceIDCounter = 0;
 
+	public EffectControler effectControler { get { return m_effectControler; } }
 	/// <summary>Marking target point</summary>
 	public Vector3 markingTarget { get; private set; } = Vector3.zero;
 	/// <summary>Marking target point(移動する等の再計算が必要な場合のみ使用)</summary>
