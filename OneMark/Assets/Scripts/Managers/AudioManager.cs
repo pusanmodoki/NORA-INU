@@ -250,10 +250,7 @@ public class AudioManager : MonoBehaviour
 	}
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
-			FadeoutBgm("Marking", FadeoutOption.AutoFadein);
-
-		float minVolume = allVolumeChangePresets[m_volumePresetUniqueKey].ScalingMinVolume(m_startVolume);
+		float minVolume = m_state != State.Null ?  allVolumeChangePresets[m_volumePresetUniqueKey].ScalingMinVolume(m_startVolume) : 0.0f;
 
 		switch (m_state)
 		{
