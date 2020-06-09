@@ -59,7 +59,7 @@ public class MenuInput : MonoBehaviour
 			m_selectedObjects[m_nowSelectIndex].OnCursor();
 			isSelectInput = false;
 			m_selectedObjects[m_nowSelectIndex].isSelected = true;
-			StartCoroutine("InputInterval");
+			//StartCoroutine("InputInterval");
 		}
 	}
 

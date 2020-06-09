@@ -9,8 +9,8 @@ public class SelectStageButton : BaseSelectedObject
 	Image m_image = null;
 	[SerializeField]
 	StageSlide m_stageSlide = null;
-	[SerializeField]
-	SelectSoundPlayer m_soundPlayer = null;
+	//[SerializeField]
+	//SelectSoundPlayer m_soundPlayer = null;
 
 	void Update()
 	{
@@ -20,13 +20,13 @@ public class SelectStageButton : BaseSelectedObject
 
 	public override void OnEnter()
 	{
-		m_soundPlayer.EnterPlay();
+		//m_soundPlayer.EnterPlay();
 		OneMarkSceneManager.instance.MoveStageScene(StageSelectIndexer.index);
 	}
 
 	public override void OnCursor()
 	{
-		m_soundPlayer.SelectPlay();
+		//m_soundPlayer.SelectPlay();
 		m_image.color = Color.white;
 		StageSelectIndexer.index.y = menu.nowSelectIndex + 1;
 	}
