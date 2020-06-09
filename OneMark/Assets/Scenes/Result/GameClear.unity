@@ -389,11 +389,12 @@ MonoBehaviour:
   m_inputMove: Vertical
   m_inputDirected: Fire1
   m_deadZone: 0.1
-  m_isInverse: 0
-  m_interval: 0.5
+  m_isInverse: 1
+  m_interval: 0.2
+  m_isEnableInput: 0
   m_nowSelectIndex: 0
   m_selectedObjects:
-  - {fileID: 0}
+  - {fileID: 615043954622005981}
   - {fileID: 6146115067355194165}
   - {fileID: 9198214017623041483}
   m_isStartCallOffCursor: 1
@@ -843,7 +844,44 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 233950226, guid: 51edd2833232753479b068be6b377a46, type: 3}
+    - {fileID: 2892776865767669825, guid: 51edd2833232753479b068be6b377a46, type: 3}
+    - {fileID: 8018161432800060828, guid: 51edd2833232753479b068be6b377a46, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 51edd2833232753479b068be6b377a46, type: 3}
+--- !u!114 &615043954622005979 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8018161432800060831, guid: 51edd2833232753479b068be6b377a46,
+    type: 3}
+  m_PrefabInstance: {fileID: 615043954622005978}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615043954622005980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &615043954622005980 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8018161432800060826, guid: 51edd2833232753479b068be6b377a46,
+    type: 3}
+  m_PrefabInstance: {fileID: 615043954622005978}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &615043954622005981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615043954622005980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498dc5b1c5bf2fd4dbafe93c75f0904b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_isSelected: 0
+  m_state: 3
+  m_selectedColor: {r: 1, g: 1, b: 1, a: 1}
+  m_nonSelectedColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+  m_image: {fileID: 615043954622005979}
 --- !u!1001 &6146115067355194162
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -997,7 +1035,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: StageSlectButton
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6094482850228676187, guid: b4e8c9d9ff77fcd459458a53bcdc6720, type: 3}
+    - {fileID: 2128296858455704279, guid: b4e8c9d9ff77fcd459458a53bcdc6720, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b4e8c9d9ff77fcd459458a53bcdc6720, type: 3}
 --- !u!224 &6146115067355194163 stripped
 RectTransform:
@@ -1025,10 +1065,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_isSelected: 0
   m_state: 1
-  stageNum: {x: 0, y: 1}
   m_selectedColor: {r: 1, g: 1, b: 1, a: 1}
   m_nonSelectedColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
-  m_image: {fileID: 0}
+  m_image: {fileID: 6146115067355194166}
+--- !u!114 &6146115067355194166 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6094482850228676184, guid: b4e8c9d9ff77fcd459458a53bcdc6720,
+    type: 3}
+  m_PrefabInstance: {fileID: 6146115067355194162}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6146115067355194164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &9198214017623041481
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1193,6 +1244,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 841499051, guid: e3532a26c418bae419b180fcbfc77cb8, type: 3}
+    - {fileID: 1759137835529918065, guid: e3532a26c418bae419b180fcbfc77cb8, type: 3}
+    - {fileID: 5058476982593602151, guid: e3532a26c418bae419b180fcbfc77cb8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e3532a26c418bae419b180fcbfc77cb8, type: 3}
 --- !u!1 &9198214017623041482 stripped
 GameObject:
@@ -1214,7 +1267,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_isSelected: 0
   m_state: 0
-  stageNum: {x: 0, y: 1}
   m_selectedColor: {r: 1, g: 1, b: 1, a: 1}
   m_nonSelectedColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
-  m_image: {fileID: 0}
+  m_image: {fileID: 9198214017623041484}
+--- !u!114 &9198214017623041484 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1759137835529918066, guid: e3532a26c418bae419b180fcbfc77cb8,
+    type: 3}
+  m_PrefabInstance: {fileID: 9198214017623041481}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9198214017623041482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
