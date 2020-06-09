@@ -1011,6 +1011,21 @@ PrefabInstance:
       propertyPath: m_Shadows.m_Type
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2114107772662954614, guid: 4263f78d2e41ada418a3cdbf008c6beb,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2114107772662954614, guid: 4263f78d2e41ada418a3cdbf008c6beb,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2114107772662954614, guid: 4263f78d2e41ada418a3cdbf008c6beb,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2114107772662954615, guid: 4263f78d2e41ada418a3cdbf008c6beb,
         type: 3}
       propertyPath: m_Name
