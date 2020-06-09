@@ -282,7 +282,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			//MarkPointチェック
 			CheckMarkPoint(ref position);
 
-			CheckShortestPoints(ref position);
+			CheckShortestPoints(ref position, true);
 
 			//タイマーリスタート
 			m_judgmentTimer.Start();
@@ -292,7 +292,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			//負荷軽減
 			Vector3 position = transform.position;
 
-			CheckShortestPoints(ref position);
+			CheckShortestPoints(ref position, false);
 		}
 
 		//フラグ判定
@@ -635,7 +635,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			m_checkPoints[i].SetPlayerNearby(true);
 	}
 
-	void CheckShortestPoints(ref Vector3 position)
+	void CheckShortestPoints(ref Vector3 position, bool isFixedUpdate)
 	{
 		Vector3 minPoint = default, point;
 		float minDistance = 1000000.0f;
@@ -715,9 +715,9 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			}
 
 			if (m_playerInfo.territorialArea.Count - 1 > m_searchIndexes[minIndex])
-				m_playerInfo.SetShortestTerritoryPoint(minPoint, minIndex, minIndex + 1);
+				m_playerInfo.SetShortestTerritoryPoint(minPoint, minIndex, minIndex + 1, isFixedUpdate);
 			else
-				m_playerInfo.SetShortestTerritoryPoint(minPoint, minIndex, 0);
+				m_playerInfo.SetShortestTerritoryPoint(minPoint, minIndex, 0, isFixedUpdate);
 		}
 	}
 	Vector3 CalculatePerpendicular(ref Vector3 position, int index0, int index1)

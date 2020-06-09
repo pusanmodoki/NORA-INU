@@ -109,10 +109,18 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		public int shortestTerritoryPointInstanceID0 { get; private set; } = 0;
 		/// <summary>最短のテリトリー線分index1 (PointInstanceID)</summary>
 		public int shortestTerritoryPointInstanceID1 { get; private set; } = 0;
+		/// <summary>最短のテリトリー線分index0 (PointInstanceID, Fixed)</summary>
+		public int fixedShortestTerritoryPointInstanceID0 { get; private set; } = 0;
+		/// <summary>最短のテリトリー線分index1 (PointInstanceID, Fixed)</summary>
+		public int fixedShortestTerritoryPointInstanceID1 { get; private set; } = 0;
 		/// <summary>最短のテリトリー線分index0</summary>
 		public int shortestTerritoryPointIndex0 { get; private set; } = 0;
 		/// <summary>最短のテリトリー線分index1</summary>
 		public int shortestTerritoryPointIndex1 { get; private set; } = 0;
+		/// <summary>最短のテリトリー線分index0</summary>
+		public int fixedShortestTerritoryPointIndex0 { get; private set; } = 0;
+		/// <summary>最短のテリトリー線分index1</summary>
+		public int fixedShortestTerritoryPointIndex1 { get; private set; } = 0;
 
 		/// <summary>Link event now?</summary>
 		public bool isLinkEvent { get; private set; }
@@ -135,12 +143,21 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		/// [SetShortestTerritoryPointIndex]
 		/// Set ShortestTerritoryPoint And Index
 		/// </summary>
-		public void SetShortestTerritoryPoint(Vector3 point, int index0, int index1)
+		public void SetShortestTerritoryPoint(Vector3 point, int index0, int index1, bool isSetFixed)
 		{
 			shortestTerritoryBorderPoint = point;
-			shortestTerritoryPointIndex0 = index0; shortestTerritoryPointIndex1 = index1;
-			shortestTerritoryPointInstanceID0 = territorialAreaBelongIndexes[index0];
-			shortestTerritoryPointInstanceID1 = territorialAreaBelongIndexes[index1];
+			if (!isSetFixed)
+			{
+				shortestTerritoryPointIndex0 = index0; shortestTerritoryPointIndex1 = index1;
+				shortestTerritoryPointInstanceID0 = territorialAreaBelongIndexes[index0];
+				shortestTerritoryPointInstanceID1 = territorialAreaBelongIndexes[index1];
+			}
+			else
+			{
+				fixedShortestTerritoryPointIndex0 = index0; fixedShortestTerritoryPointIndex1 = index1;
+				fixedShortestTerritoryPointInstanceID0 = territorialAreaBelongIndexes[index0];
+				fixedShortestTerritoryPointInstanceID1 = territorialAreaBelongIndexes[index1];
+			}
 		}
 		/// <summary>
 		/// [AddMarkPoint]

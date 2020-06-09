@@ -84,9 +84,9 @@ public class PlayerNavMeshController : MonoBehaviour
 				m_player.manualCollisionAdministrator.ResetTerritoryHitInfo(true);
 			}
 		}
-		m_oldPointID0 = m_player.shortestTerritoryPointInstanceID0;
-		m_oldPointID1 = m_player.shortestTerritoryPointInstanceID1;
 
+		m_oldPointID0 = m_player.fixedShortestTerritoryPointInstanceID0;
+		m_oldPointID1 = m_player.fixedShortestTerritoryPointInstanceID1;
 
 		if (m_input.moveInput.x == 0.0f && m_input.moveInput.z == 0.0f)
 		{
