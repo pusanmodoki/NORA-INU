@@ -192,7 +192,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 8400000, guid: f3af0e07105be4643a742639a5834928, type: 2}
+      objectReference: {fileID: 8400000, guid: 13ecf947446fbbe49be2d0e0659daa4a, type: 2}
     - target: {fileID: 2005519165271903561, guid: 5c52f1b585705334a9936097b760b2e7,
         type: 3}
       propertyPath: m_texture
@@ -2462,6 +2462,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8526488377165057769, guid: 051217b7a25d8fd4d8ae3ae72f72bdff,
+        type: 3}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 8400000, guid: 0359029ac08110d4183105edb52103dc, type: 2}
     - target: {fileID: 8740790345037677472, guid: 051217b7a25d8fd4d8ae3ae72f72bdff,
         type: 3}
       propertyPath: m_Name

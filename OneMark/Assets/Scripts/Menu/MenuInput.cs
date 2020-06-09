@@ -97,7 +97,9 @@ public class MenuInput : MonoBehaviour
     void Select()
     {
         int prevIndex = m_nowSelectIndex;
-		m_nowSelectIndex = MoveInputCheck();
+		int inputValue = MoveInputCheck();
+
+		AddSelectIndex(inputValue);
 
         if(m_nowSelectIndex != prevIndex)
         {
@@ -108,11 +110,23 @@ public class MenuInput : MonoBehaviour
 			OnInputInterval();
             m_selectedObjects[m_nowSelectIndex].isSelected = true;
 
-            if (m_soundSelect)
-            {
-                m_soundSelect.Play();
-            }
-        }
+            if (m_soundSelect) { m_soundSelect.Play(); }
+
+			if (m_cursorObject)
+			{
+				m_cursorObject.SelectUpdate(inputValue);
+				if ((nowSelectIndex == 0 && m_isInverse) ||
+					(nowSelectIndex == objectCount - 1 && !m_isInverse)) 
+				{
+					m_cursorObject.SelectTopIndex();
+				}
+				else if ((nowSelectIndex == 0 && !m_isInverse) ||
+					(nowSelectIndex == objectCount - 1 && m_isInverse))
+				{
+					m_cursorObject.SelectBottomIndex();
+				}
+			}
+		}
     }
 
     void Direct()
@@ -121,10 +135,8 @@ public class MenuInput : MonoBehaviour
 			&& Input.GetButtonDown(m_inputDirected))
         {
             m_selectedObjects[m_nowSelectIndex].OnEnter();
-            if (m_soundEnter)
-            {
-                m_soundEnter.Play();
-            }
+            if (m_soundEnter) { m_soundEnter.Play(); }
+			if (m_cursorObject) { m_cursorObject.OnEnter(); }
         }
     }
 
@@ -135,19 +147,28 @@ public class MenuInput : MonoBehaviour
         if ((inputValue > m_deadZone && !m_isInverse) ||
             (inputValue < -m_deadZone && m_isInverse))
         {
-            m_nowSelectIndex += 1;
-
-			return m_nowSelectIndex >= objectCount ? objectCount - 1 : m_nowSelectIndex;
+            return 1;
 		}
 		else if ((inputValue > m_deadZone && m_isInverse) ||
             (inputValue < -m_deadZone && !m_isInverse))
         {
-            m_nowSelectIndex  -= 1;
-
-			return m_nowSelectIndex < 0 ? 0 : m_nowSelectIndex;
+			return -1;
 		}
-        return m_nowSelectIndex;
+		return 0;
     }
+
+	void AddSelectIndex(int _add)
+	{
+		m_nowSelectIndex += _add;
+		if (m_nowSelectIndex < 0)
+		{
+			m_nowSelectIndex = 0;
+		}
+		else if (m_nowSelectIndex >= objectCount)
+		{
+			m_nowSelectIndex = objectCount - 1;
+		}
+	}
     
 
     void SetActiveInput(int _isInput)

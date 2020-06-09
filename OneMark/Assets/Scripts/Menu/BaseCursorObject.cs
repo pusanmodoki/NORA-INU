@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseCursorObject : MonoBehaviour
+public abstract class BaseCursorObject : MonoBehaviour
 {
 
     public MenuInput menu { get; private set; } = null;
@@ -13,4 +13,26 @@ public class BaseCursorObject : MonoBehaviour
     {
         menu = _menu;
     }
+
+	public abstract void UpSelect();
+
+	public abstract void DownSelect();
+
+	public abstract void Enter();
+
+	public virtual void SelectTopIndex() { }
+
+	public virtual void SelectBottomIndex() { }
+
+	public void SelectUpdate(int _direction)
+	{
+		if(_direction > 0)
+		{
+			UpSelect();
+		}
+		else if(_direction < 0)
+		{
+			DownSelect();
+		}
+	} 
 }
