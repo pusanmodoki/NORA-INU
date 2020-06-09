@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
-[DefaultExecutionOrder(-10)]
+//[DefaultExecutionOrder(-10)]
 public class TutorialUIManager : MonoBehaviour
 {
 	[System.Serializable]
@@ -81,9 +81,6 @@ public class TutorialUIManager : MonoBehaviour
 	/// <summary>[Start]</summary>
 	void Start()
 	{
-		var obj = Instantiate(m_tutorialModelAndCamera);
-		dogAnimator = obj.GetComponentInChildren<Animator>();
-
 		if (!m_isCreateInstance)
 		{
 			m_isCreateInstance = true;
@@ -93,11 +90,20 @@ public class TutorialUIManager : MonoBehaviour
 			for (int i = 0, length = m_enableImages.Length; i < length; ++i)
 				m_enableImages[i].enabled = false;
 
+			var obj = Instantiate(m_tutorialModelAndCamera);
+			UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(obj, OneMarkSceneManager.instance.nowScene);
+			dogAnimator = obj.GetComponentInChildren<Animator>();
+
 			m_tutorialConditions.StartCondition();
 		}
 		else
 		{
 			instance.m_tutorialConditions.StartCondition();
+
+			var obj = Instantiate(m_tutorialModelAndCamera);
+			UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(obj, OneMarkSceneManager.instance.nowScene);
+			instance.dogAnimator = obj.GetComponentInChildren<Animator>();
+
 			Destroy(gameObject);
 		}
 	}
