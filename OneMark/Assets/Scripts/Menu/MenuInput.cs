@@ -19,6 +19,9 @@ public class MenuInput : MonoBehaviour
     [SerializeField, Tooltip("カーソル移動のインターバル")]
     float m_interval = 0.5f;
 
+	[SerializeField, Tooltip("入力受付状態")]
+	bool m_isEnableInput = true;
+
     [SerializeField, Header("Selected Object Infomation"), Tooltip("参照してるインデックス")]
     int m_nowSelectIndex = 0;
 
@@ -38,10 +41,12 @@ public class MenuInput : MonoBehaviour
     [SerializeField]
     AudioSource m_soundSelect = null;
 
+	Timer m_timer = new Timer();
+
     public int objectCount { get { return m_selectedObjects.Count; } }
-    public bool isSelectInput { get; private set; } = true;
+    public bool isIntervalInput { get; private set; } = true;
     public int nowSelectIndex { get { return m_nowSelectIndex; } }
-	public bool isEnableInput { get; set; } = true;
+	public bool isEnableInput { get { return m_isEnableInput; } set { m_isEnableInput = value; } }
 
     public List<BaseSelectedObject> selectedObjects { get { return m_selectedObjects; } }
 
@@ -57,9 +62,8 @@ public class MenuInput : MonoBehaviour
 			m_nowSelectIndex = index;
 
 			m_selectedObjects[m_nowSelectIndex].OnCursor();
-			isSelectInput = false;
+			OnInputInterval();
 			m_selectedObjects[m_nowSelectIndex].isSelected = true;
-			//StartCoroutine("InputInterval");
 		}
 	}
 
@@ -84,7 +88,8 @@ public class MenuInput : MonoBehaviour
     {
 		if (!isEnableInput) return;
 
-        if (isSelectInput) { Select(); }
+        if (!isIntervalInput) { Select(); }
+		else { CheckInputIntervalTimer(); }
         Direct();
     }
 
@@ -100,9 +105,8 @@ public class MenuInput : MonoBehaviour
             m_selectedObjects[prevIndex].isSelected = false;
 
             m_selectedObjects[m_nowSelectIndex].OnCursor();
-            isSelectInput = false;
+			OnInputInterval();
             m_selectedObjects[m_nowSelectIndex].isSelected = true;
-            StartCoroutine("InputInterval");
 
             if (m_soundSelect)
             {
@@ -145,14 +149,25 @@ public class MenuInput : MonoBehaviour
         return m_nowSelectIndex;
     }
     
-    IEnumerator InputInterval()
+
+    void SetActiveInput(int _isInput)
     {
-        yield return new WaitForSeconds(m_interval);
-        isSelectInput = true;
+		if(_isInput == 0) { isEnableInput = false; }
+		else { isEnableInput = true; }
     }
 
-    void SetActiveInput(bool _isInput)
-    {
-        isEnableInput = _isInput;
-    }
+	void OnInputInterval()
+	{
+		isIntervalInput = true;
+		m_timer.Start();
+	}
+
+	void CheckInputIntervalTimer()
+	{
+		if(m_timer.elapasedTime > m_interval)
+		{
+			isIntervalInput = false;
+			m_timer.Stop();
+		}
+	}
 }
