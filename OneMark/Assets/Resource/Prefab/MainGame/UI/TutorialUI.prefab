@@ -618,7 +618,7 @@ MonoBehaviour:
   m_jumpMoveSeconds: 0.5
   m_numJump: 4
   m_scalingTextBoxSeconds: 0.1
-  m_drawSpeedPerSeconds: 3
+  m_drawSpeedPerSeconds: 30
   m_pushButtonWaitSeconds: 0.2
   m_aButtonJumpSeconds: 0.25
   m_aButtonJumpHeight: 20
