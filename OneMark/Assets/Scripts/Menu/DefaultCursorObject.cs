@@ -19,18 +19,18 @@ public class DefaultCursorObject : BaseCursorObject
         rectTransform = GetComponent<RectTransform>();
     }
 
-	public override void UpSelect()
+	public override void OnUpSelect()
 	{
 		rectTransform.position = menu.selectedObjects[menu.nowSelectIndex].GetComponent<RectTransform>().position;
 	}
 
-	public override void DownSelect()
+	public override void OnDownSelect()
 	{
 		rectTransform.position = menu.selectedObjects[menu.nowSelectIndex].GetComponent<RectTransform>().position;
 	}
 
-	public override void Enter()
+	public override void OnEnter()
 	{
-		throw new System.NotImplementedException();
 	}
+
 }

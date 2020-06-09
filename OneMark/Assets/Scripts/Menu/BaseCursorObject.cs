@@ -14,11 +14,11 @@ public abstract class BaseCursorObject : MonoBehaviour
         menu = _menu;
     }
 
-	public abstract void UpSelect();
+	public abstract void OnUpSelect();
 
-	public abstract void DownSelect();
+	public abstract void OnDownSelect();
 
-	public abstract void Enter();
+	public abstract void OnEnter();
 
 	public virtual void SelectTopIndex() { }
 
@@ -28,11 +28,11 @@ public abstract class BaseCursorObject : MonoBehaviour
 	{
 		if(_direction > 0)
 		{
-			UpSelect();
+			OnUpSelect();
 		}
 		else if(_direction < 0)
 		{
-			DownSelect();
+			OnDownSelect();
 		}
 	} 
 }
