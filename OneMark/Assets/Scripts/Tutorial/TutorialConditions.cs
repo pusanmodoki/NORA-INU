@@ -17,6 +17,8 @@ public class TutorialConditions : MonoBehaviour
 		UnlinkCheckPoint,
 		StageT3,
 		StageT4,
+		StageTutorial,
+		MarkPointChikaChika,
 		Max
 	}
 
@@ -64,6 +66,13 @@ public class TutorialConditions : MonoBehaviour
 				return OneMarkSceneManager.instance.nowStageSceneIndex == new Vector2Int(0, 3);
 			case Conditions.StageT4:
 				return OneMarkSceneManager.instance.nowStageSceneIndex == new Vector2Int(0, 4);
+			case Conditions.StageTutorial:
+				return OneMarkSceneManager.instance.nowStageSceneIndex.x == 0;
+			case Conditions.MarkPointChikaChika:
+				if (PlayerAndTerritoryManager.instance == null) return false;
+				foreach(var point in PlayerAndTerritoryManager.instance.mainPlayer.allTerritorys)
+					if (point.isLinked && point.effectiveCounter01 <= 0.5f) return true;
+				return false;
 			default: return false;
 		}
 	}
