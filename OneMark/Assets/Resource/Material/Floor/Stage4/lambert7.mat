@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Osu_togh1
-  m_Shader: {fileID: 4800000, guid: d8c60dee0c7be324b8982e7e0a95dd4a, type: 3}
+  m_Name: lambert7
+  m_Shader: {fileID: 4800000, guid: abfc9d6b0a077774c8dde8607d00cb19, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _AreaTex:
+        m_Texture: {fileID: 8400000, guid: 0359029ac08110d4183105edb52103dc, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -40,7 +44,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 7a55532a409104b4eb8839cc61c2039d, type: 3}
+        m_Texture: {fileID: 2800000, guid: d67d089e50741b04899a82a66de1ffcc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -59,6 +63,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: c3168e00de2cbd640a586b3ef5eb86d0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SafetyAreaTex:
+        m_Texture: {fileID: 8400000, guid: 13ecf947446fbbe49be2d0e0659daa4a, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
@@ -74,8 +82,10 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _StageHeight: 0
+    - _StageWidth: 0
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.27889773, g: 0.036889683, b: 0.036889683, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Osu_mouse
-  m_Shader: {fileID: 4800000, guid: 1a6c477b79f1afe459deb7087ff414f1, type: 3}
+  m_Shader: {fileID: 4800000, guid: d8c60dee0c7be324b8982e7e0a95dd4a, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0

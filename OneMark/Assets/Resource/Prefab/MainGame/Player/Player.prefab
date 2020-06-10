@@ -739,7 +739,7 @@ PrefabInstance:
     - target: {fileID: -6502914011733408818, guid: 08908cd7bf76a9c46bcd9e40bde8b1b1,
         type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -6502914011733408818, guid: 08908cd7bf76a9c46bcd9e40bde8b1b1,
         type: 3}
@@ -749,7 +749,7 @@ PrefabInstance:
     - target: {fileID: -6226853274785032276, guid: 08908cd7bf76a9c46bcd9e40bde8b1b1,
         type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -6226853274785032276, guid: 08908cd7bf76a9c46bcd9e40bde8b1b1,
         type: 3}
@@ -834,7 +834,7 @@ PrefabInstance:
     - target: {fileID: -709565824681733986, guid: 08908cd7bf76a9c46bcd9e40bde8b1b1,
         type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -709565824681733986, guid: 08908cd7bf76a9c46bcd9e40bde8b1b1,
         type: 3}
@@ -844,7 +844,7 @@ PrefabInstance:
     - target: {fileID: 3039113674714108066, guid: 08908cd7bf76a9c46bcd9e40bde8b1b1,
         type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3039113674714108066, guid: 08908cd7bf76a9c46bcd9e40bde8b1b1,
         type: 3}
@@ -854,7 +854,7 @@ PrefabInstance:
     - target: {fileID: 3311962708648403459, guid: 08908cd7bf76a9c46bcd9e40bde8b1b1,
         type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3311962708648403459, guid: 08908cd7bf76a9c46bcd9e40bde8b1b1,
         type: 3}
@@ -864,7 +864,7 @@ PrefabInstance:
     - target: {fileID: 3546364848120239360, guid: 08908cd7bf76a9c46bcd9e40bde8b1b1,
         type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3546364848120239360, guid: 08908cd7bf76a9c46bcd9e40bde8b1b1,
         type: 3}
@@ -874,7 +874,7 @@ PrefabInstance:
     - target: {fileID: 7294831946527786452, guid: 08908cd7bf76a9c46bcd9e40bde8b1b1,
         type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7294831946527786452, guid: 08908cd7bf76a9c46bcd9e40bde8b1b1,
         type: 3}

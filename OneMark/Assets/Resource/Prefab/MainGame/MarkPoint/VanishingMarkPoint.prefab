@@ -129,7 +129,7 @@ MonoBehaviour:
   m_linkAscendingPerSeconds: 1
   m_unlinkDecreasingPerSeconds: 1
   m_effectiveMaxLimiter: 7.5
-  m_effectiveFirstLinkBonusRatio: 0.5
+  m_effectiveFirstLinkBonusRatio: 0
   m_isJoinSafetyAreaWhenLink: 0
   m_waitingToReturnSeconds: 5
 --- !u!82 &2105173661276678690
