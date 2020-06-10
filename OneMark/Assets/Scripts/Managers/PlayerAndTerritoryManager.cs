@@ -28,6 +28,8 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 				isCalucrateNextUpdate = false;
 			}
 
+			public Dictionary<int, Vector3> movePointPositions { get; private set; } = new Dictionary<int, Vector3>();
+			public Dictionary<int, Vector3> movePointPositionsBuf { get; private set; } = new Dictionary<int, Vector3>();
 			/// <summary>次回テリトリー計算するフレーム数</summary>
 			public int nextForceCalucrateFrameCount;
 			/// <summary>次回の通常更新で計算する？</summary>
@@ -121,7 +123,7 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		public int fixedShortestTerritoryPointIndex0 { get; private set; } = 0;
 		/// <summary>最短のテリトリー線分index1</summary>
 		public int fixedShortestTerritoryPointIndex1 { get; private set; } = 0;
-
+		public float maxPointMoveDistance { get; private set; } = 0.0f;
 		/// <summary>Link event now?</summary>
 		public bool isLinkEvent { get; private set; }
 		/// <summary>ゲームオーバー猶予期間</summary>
@@ -129,6 +131,10 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		/// <summary>Used manager valus</summary>
 		public UsedManager usedManager { get; private set; } = new UsedManager();
 
+		public void SetMaxPointMoveDistance(float distance)
+		{
+			maxPointMoveDistance = distance;
+		}
 		/// <summary>
 		/// [SetGameOverGracePeiod]
 		/// Set isGameOverGracePeiod
@@ -344,6 +350,10 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		playerInfo.territorialAreaBelongIndexes.Clear();
 		m_grahamResult.Clear();
 
+		playerInfo.usedManager.movePointPositionsBuf.Clear();
+		foreach (var item in playerInfo.usedManager.movePointPositions)
+			playerInfo.usedManager.movePointPositionsBuf.Add(item.Key, item.Value);
+
 		//ソート用リスト構築
 		for (int i = 0, count = playerInfo.allTerritorys.Count; i < count; ++i)
 			m_grahamResult.Add(new GrahamScan.CustomFormat(playerInfo.allTerritorys[i].transform.position, i));
@@ -374,6 +384,27 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 
 		playerInfo.areaMesh.MeshCreate(playerInfo.territorialArea);
 		playerInfo.areaBorderMesh.CreateBorder(playerInfo.territorialArea);
+
+
+		playerInfo.usedManager.movePointPositions.Clear();
+		playerInfo.SetMaxPointMoveDistance(0.0f);
+		foreach (var item in playerInfo.allTerritorys)
+		{
+			if (!item.IsMovePoint()) continue;
+
+			playerInfo.usedManager.movePointPositions.Add(item.pointInstanceID, item.transform.position);
+
+			if (playerInfo.usedManager.movePointPositionsBuf.ContainsKey(item.pointInstanceID))
+			{
+				float distance = Vector3.Distance(playerInfo.usedManager.movePointPositions[item.pointInstanceID],
+					playerInfo.usedManager.movePointPositionsBuf[item.pointInstanceID]);
+
+				if (distance > playerInfo.maxPointMoveDistance)
+				{
+					playerInfo.SetMaxPointMoveDistance(distance);
+				}
+			}
+		}
 	}
 	/// <summary>
 	/// [CalucrateSafetyTerritory]

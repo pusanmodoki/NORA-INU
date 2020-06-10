@@ -43,6 +43,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		public int instanceID;
 	}
 
+	public float collisionRadius { get { return m_collisionRadius; } }
 	/// <summary>ポイントタイマーロック判定に使用する距離</summary>
 	public float personalDistance { get { return m_personalRadius; } }
 	/// <summary>視界判定に使用する距離</summary>

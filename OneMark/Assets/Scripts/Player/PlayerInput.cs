@@ -24,6 +24,8 @@ public class PlayerInput : MonoBehaviour
 	/// <summary>This PlayerMaualCollisionAdministrator</summary>
 	[SerializeField, Tooltip("This PlayerMaualCollisionAdministrator")]
 	PlayerMaualCollisionAdministrator m_maualCollisionAdministrator = null;
+	[SerializeField]
+	SEPlayer m_sePlayer = null;
 	/// <summary>
 	/// アニメーションコントローラ
 	/// </summary>
@@ -148,6 +150,7 @@ public class PlayerInput : MonoBehaviour
 				m_maualCollisionAdministrator.IsHitInstructionsReturnDog(ServantManager.instance.allServants[linkServantID])))
 			{
 				m_animator.SetTrigger(m_cCallID);
+				m_sePlayer.PlaySE(0);
 				m_shotTimers.Start();
 			}
 		}
@@ -173,6 +176,7 @@ public class PlayerInput : MonoBehaviour
 					.GoSoStartOfMarking(m_maualCollisionAdministrator.hitVisibilityMarkPoint))
 			{
 				m_animator.SetTrigger(m_cCommandID);
+				m_sePlayer.PlaySE(0);
 				m_shotTimers.Start();
 			}
 		}

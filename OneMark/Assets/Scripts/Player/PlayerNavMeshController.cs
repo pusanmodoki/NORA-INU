@@ -27,7 +27,7 @@ public class PlayerNavMeshController : MonoBehaviour
 	[SerializeField, Tooltip("Velocity drawing"), Header("Debug Only")]
 	Vector3 m_dVelocity = Vector3.zero;
 #endif
-
+	
 	PlayerAndTerritoryManager.PlayerInfo m_player = null;
 	BaseUniqueOffMeshLink m_pointUniqueOffMeshLink = null;
 	BaseUniqueOffMeshLink m_copyUniqueOffMeshLink = null;
@@ -37,7 +37,8 @@ public class PlayerNavMeshController : MonoBehaviour
 	Vector3 m_destination = Vector3.zero;
 	Vector3 m_territoryNormal = Vector3.zero;
 	Vector3 m_territoryHitPoint = Vector3.zero;
-	int m_oldPointID0, m_oldPointID1;
+	Vector3 m_oldFixedPosition = Vector3.zero;
+	Vector3 m_fixedPosition = Vector3.zero;
 
 	public bool LinkManualUniqueOffMeshLink(BaseUniqueOffMeshLink pointUniqueOffMeshLink ,
 		BaseUniqueOffMeshLink copyUniqueOffMeshLink)
@@ -68,6 +69,9 @@ public class PlayerNavMeshController : MonoBehaviour
 	{
 		if (isOnManualUniqueOffMeshLink)
 			CheckManualUniqueOffMeshLink(false);
+
+		m_oldFixedPosition = m_fixedPosition;
+		m_fixedPosition = transform.position;
 	}
 
 
@@ -75,8 +79,10 @@ public class PlayerNavMeshController : MonoBehaviour
 	{
 		if (m_player.manualCollisionAdministrator.isTerritoryExit)
 		{
-			if (MarkPointManager.instance.allPoints[m_oldPointID0].linkPlayerID == m_player.instanceID
-				&& MarkPointManager.instance.allPoints[m_oldPointID1].linkPlayerID == m_player.instanceID)
+			if (CollisionTerritory.HitCircleTerritory(m_player.territorialArea, transform.position, 
+				m_player.maxPointMoveDistance * 2.0f 
+				+ Vector3.Distance(m_oldFixedPosition, transform.position) * 2.0f 
+				+ m_player.manualCollisionAdministrator.collisionRadius))
 			{
 				navMeshAgent.Warp(m_player.shortestTerritoryBorderPoint + 
 					Vector3.Cross((m_player.territorialArea[m_player.shortestTerritoryPointIndex1] 
@@ -84,9 +90,6 @@ public class PlayerNavMeshController : MonoBehaviour
 				m_player.manualCollisionAdministrator.ResetTerritoryHitInfo(true);
 			}
 		}
-
-		m_oldPointID0 = m_player.fixedShortestTerritoryPointInstanceID0;
-		m_oldPointID1 = m_player.fixedShortestTerritoryPointInstanceID1;
 
 		if (m_input.moveInput.x == 0.0f && m_input.moveInput.z == 0.0f)
 		{
@@ -111,7 +114,6 @@ public class PlayerNavMeshController : MonoBehaviour
 			if (CollisionTerritory.HitRayTerritory(m_player.territorialArea, m_position - m_velocity, m_input.moveInput, 
 				m_velocity.magnitude * 2, out m_territoryNormal, out m_territoryHitPoint, out index0, out index1))
 			{
-
 				m_velocity += m_territoryNormal *
 					  (new Vector3(m_destination.x, 0.0f, m_destination.z) - m_territoryHitPoint).magnitude;
 			}
