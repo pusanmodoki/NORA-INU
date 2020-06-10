@@ -72,12 +72,15 @@ public class MarkPointManager : MonoBehaviour
 			}
 		}
 
-		foreach (var e in m_points)
+		if (!MainGameManager.instance.isPauseStay)
 		{
-			if (e.Value.gameObject.activeSelf)
+			foreach (var e in m_points)
 			{
-				e.Value.UpdateBasePoint();
-				e.Value.UpdatePoint();
+				if (e.Value.gameObject.activeSelf)
+				{
+					e.Value.UpdateBasePoint();
+					e.Value.UpdatePoint();
+				}
 			}
 		}
 	}

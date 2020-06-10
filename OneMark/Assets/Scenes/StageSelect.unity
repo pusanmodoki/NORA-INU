@@ -1202,6 +1202,7 @@ MonoBehaviour:
   - {fileID: 1027740087}
   - {fileID: 765271276}
   - {fileID: 1247896467}
+  m_selectedObjectPresets: []
   m_isStartCallOffCursor: 0
   m_cursorObject: {fileID: 0}
   m_soundEnter: {fileID: 0}
@@ -2191,7 +2192,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1899539771}
   - component: {fileID: 1899539770}
-  - component: {fileID: 1899539769}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: Untagged
@@ -2199,14 +2199,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1899539769
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1899539768}
-  m_Enabled: 1
 --- !u!20 &1899539770
 Camera:
   m_ObjectHideFlags: 0

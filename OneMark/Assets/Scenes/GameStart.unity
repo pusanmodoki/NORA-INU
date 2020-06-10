@@ -223,7 +223,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1091824345}
   - component: {fileID: 1091824344}
-  - component: {fileID: 1091824343}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -231,14 +230,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1091824343
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1091824342}
-  m_Enabled: 1
 --- !u!20 &1091824344
 Camera:
   m_ObjectHideFlags: 0
@@ -431,6 +422,56 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AudioManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
+        type: 3}
+      propertyPath: m_bgmForEachScenes.Array.size
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
+        type: 3}
+      propertyPath: m_bgmForEachScenes.Array.data[27].m_loadBgmKeys.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
+        type: 3}
+      propertyPath: m_bgmForEachScenes.Array.data[28].m_loadBgmKeys.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
+        type: 3}
+      propertyPath: m_bgmForEachScenes.Array.data[29].m_loadBgmKeys.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
+        type: 3}
+      propertyPath: m_bgmForEachScenes.Array.data[27].m_sceneName
+      value: no1-2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
+        type: 3}
+      propertyPath: m_bgmForEachScenes.Array.data[27].m_loadBgmKeys.Array.data[0]
+      value: Stage4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
+        type: 3}
+      propertyPath: m_bgmForEachScenes.Array.data[28].m_sceneName
+      value: TeamLogo
+      objectReference: {fileID: 0}
+    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
+        type: 3}
+      propertyPath: m_bgmForEachScenes.Array.data[28].m_loadBgmKeys.Array.data[0]
+      value: Stage4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
+        type: 3}
+      propertyPath: m_bgmForEachScenes.Array.data[29].m_sceneName
+      value: Pause
+      objectReference: {fileID: 0}
+    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
+        type: 3}
+      propertyPath: m_bgmForEachScenes.Array.data[29].m_loadBgmKeys.Array.data[0]
+      value: Stage4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67b7352149fdd1c47a9a09200de21955, type: 3}

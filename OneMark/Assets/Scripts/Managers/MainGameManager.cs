@@ -17,9 +17,13 @@ public class MainGameManager : MonoBehaviour
 	/// <summary>Static instance</summary>
 	public static MainGameManager instance { get; private set; } = null;
 	
-	public Vector2 stageSize { get { return m_stageSize; } private set { m_stageSize = value; } }
 	public ResultState resultState { get; private set; } = ResultState.Null;
+	public Vector2 stageSize { get { return m_stageSize; } private set { m_stageSize = value; } }
 	public float waitGameOverCount01 { get { return Mathf.Clamp01(m_gameOverWaitTimer.elapasedTime / m_waitGameOverSeconds); } }
+	public bool isPauseStay { get; private set; } = false; 
+	public bool isPauseEnter { get { return Time.frameCount == m_pauseEnterFrame; } }
+	public bool isPauseExit { get { return Time.frameCount == m_pauseExitFrame; } }
+	public void SetPauseStayFalse() { isPauseStay = false; m_pauseExitFrame = Time.frameCount + 1; }
 
 	[SerializeField]
     private Vector2 m_stageSize = new Vector3(30.0f, 30.0f);
@@ -36,6 +40,8 @@ public class MainGameManager : MonoBehaviour
     FollowObject m_mainCamera = null;
 	Timer m_gameOverWaitTimer = new Timer();
 	Timer m_resultTimer = new Timer();
+	int m_pauseEnterFrame = 0;
+	int m_pauseExitFrame = 0;
 
     /// <summary>[Awake]</summary>
     void Awake()
@@ -57,11 +63,19 @@ public class MainGameManager : MonoBehaviour
         m_mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<FollowObject>();
 	}
 
+	void Update()
+	{
+		
+	}
+
 	/// <summary>[LateUpdate]</summary>
 	void LateUpdate()
 	{
-		if (m_isEnd) return;
+		bool isOldExit = isPauseExit;
 		
+		if (m_isEnd || isPauseStay)
+			return;
+
 		if (resultState == ResultState.Null)
 		{
 			int checkCounter = 0;
@@ -82,6 +96,13 @@ public class MainGameManager : MonoBehaviour
 				PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableActionInput = false;
 				PlayerAndTerritoryManager.instance.mainPlayer.SetGameOverGracePeiod(true);
 				m_gameOverWaitTimer.Start();
+			}
+
+			if (resultState == ResultState.Null && !isOldExit && Input.GetButtonDown("ActionPause"))
+			{
+				isPauseStay = true;
+				m_pauseEnterFrame = Time.frameCount + 1;
+				OneMarkSceneManager.instance.SetActiveAccessoryScene("Pause", true);
 			}
 		}
 		else if (resultState == ResultState.GameOverWait)

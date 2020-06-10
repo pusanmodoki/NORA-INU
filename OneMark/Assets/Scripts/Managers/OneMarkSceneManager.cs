@@ -104,8 +104,8 @@ public class OneMarkSceneManager : MonoBehaviour
 	SceneName m_titleSceneName = default;
 	[SerializeField]
 	SceneName m_stageSelectSceneName = default;
-	[SerializeField]
-	SceneName m_optionSceneName = default;
+	//[SerializeField]
+	//SceneName m_optionSceneName = default;
 	[SerializeField]
 	SceneName m_loadScenename = default;
 	[SerializeField]
@@ -123,7 +123,7 @@ public class OneMarkSceneManager : MonoBehaviour
 	Dictionary<string, Scene> m_accessoryScenes = null;
 	Scene m_nowScene = default;
 	Scene m_optionScene = default;
-	AsyncOperation m_optionOperation = null;
+//	AsyncOperation m_optionOperation = null;
 
 	public void MoveScene(SceneState sceneState)
 	{
@@ -177,17 +177,20 @@ public class OneMarkSceneManager : MonoBehaviour
 	}
 	public void SetActiveAccessoryScene(string sceneName, bool isSet)
 	{
-		if ((!m_accessoryScenes.ContainsKey(sceneName) || !m_accessoryScenes[sceneName].IsValid())
-			&& (m_optionSceneName == sceneName && m_optionScene.IsValid()))
-			return;
 
-		if (m_optionSceneName == sceneName)
-		{
-			var gameObjects = m_optionScene.GetRootGameObjects();
-			for (int i = 0, length = gameObjects.Length; i < length; ++i)
-				gameObjects[i].SetActive(isSet);
-		}
-		else
+		if (!m_accessoryScenes.ContainsKey(sceneName) || !m_accessoryScenes[sceneName].IsValid())
+			return;
+		//	if ((!m_accessoryScenes.ContainsKey(sceneName) || !m_accessoryScenes[sceneName].IsValid())
+		//		&& (m_optionSceneName == sceneName && m_optionScene.IsValid()))
+		//		return;
+
+		//if (m_optionSceneName == sceneName)
+		//{
+		//	var gameObjects = m_optionScene.GetRootGameObjects();
+		//	for (int i = 0, length = gameObjects.Length; i < length; ++i)
+		//		gameObjects[i].SetActive(isSet);
+		//}
+		//else
 		{
 			var gameObjects = m_accessoryScenes[sceneName].GetRootGameObjects();
 			for (int i = 0, length = gameObjects.Length; i < length; ++i)
@@ -357,25 +360,25 @@ public class OneMarkSceneManager : MonoBehaviour
 	{
 		float eachProgress = isLoadAccessory ? (0.1f / (m_accessoryScenes.Count + 1)) : 0.1f;
 
-		{
-			AsyncOperation optionOperation = null;
-			AudioManager.instance.LoadAudios(m_optionSceneName);
-			yield return LoadOptionScene(optionOperation, eachProgress);
+		//{
+		//	AsyncOperation optionOperation = null;
+		//	AudioManager.instance.LoadAudios(m_optionSceneName);
+		//	yield return LoadOptionScene(optionOperation, eachProgress);
 
-			AudioManager.instance.WaitLoadAudios(m_optionSceneName);
-			m_optionOperation.allowSceneActivation = true;
-			yield return null;
-			while (true)
-			{
-				var optionScene = SceneManager.GetSceneByName(m_optionSceneName);
-				if (optionScene.IsValid() && optionScene.isLoaded && optionScene.name == m_optionSceneName)
-				{
-					m_optionScene = optionScene;
-					break;
-				}
-				else yield return null;
-			}
-		}
+		//	AudioManager.instance.WaitLoadAudios(m_optionSceneName);
+		//	m_optionOperation.allowSceneActivation = true;
+		//	yield return null;
+		//	while (true)
+		//	{
+		//		var optionScene = SceneManager.GetSceneByName(m_optionSceneName);
+		//		if (optionScene.IsValid() && optionScene.isLoaded && optionScene.name == m_optionSceneName)
+		//		{
+		//			m_optionScene = optionScene;
+		//			break;
+		//		}
+		//		else yield return null;
+		//	}
+		//}
 
 		if (isLoadAccessory)
 		{
@@ -413,20 +416,20 @@ public class OneMarkSceneManager : MonoBehaviour
 			}
 		}
 	}
-	IEnumerator LoadOptionScene(AsyncOperation operation, float thisProgress)
-	{
-		float progress = loadProgress;
-		m_optionOperation = SceneManager.LoadSceneAsync(m_optionSceneName, LoadSceneMode.Additive);
-		m_optionOperation.allowSceneActivation = false;
+	//IEnumerator LoadOptionScene(AsyncOperation operation, float thisProgress)
+	//{
+	//	float progress = loadProgress;
+	//	m_optionOperation = SceneManager.LoadSceneAsync(m_optionSceneName, LoadSceneMode.Additive);
+	//	m_optionOperation.allowSceneActivation = false;
 
-		while (true)
-		{
-			loadProgress = progress + (thisProgress / (m_optionOperation.progress / 0.9f));
+	//	while (true)
+	//	{
+	//		loadProgress = progress + (thisProgress / (m_optionOperation.progress / 0.9f));
 
-			if (m_optionOperation.progress < 0.9f) yield return null;
-			else yield break;
-		}
-	}
+	//		if (m_optionOperation.progress < 0.9f) yield return null;
+	//		else yield break;
+	//	}
+	//}
 	IEnumerator UnloadScenes()
 	{
 		bool isResult = AudioManager.instance.FadeoutBgm("SceneChange", AudioManager.FadeoutOption.AutoStop);
@@ -442,11 +445,11 @@ public class OneMarkSceneManager : MonoBehaviour
 			}
 		}
 
-		if (m_optionScene.IsValid())
-		{
-			yield return UnloadScene(m_optionSceneName);
-			m_optionScene = default;
-		}
+		//if (m_optionScene.IsValid())
+		//{
+		//	yield return UnloadScene(m_optionSceneName);
+		//	m_optionScene = default;
+		//}
 
 		if (nowLoadSceneName != "")
 			AudioManager.instance.UnloadAudios(nowLoadSceneName);

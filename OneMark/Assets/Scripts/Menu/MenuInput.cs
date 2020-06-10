@@ -62,7 +62,7 @@ public class MenuInput : MonoBehaviour
 
     public List<BaseSelectedObject> selectedObjects { get { return m_selectedObjects; } }
 
-
+	public void ResetNowSelectIndex() { m_nowSelectIndex = 0; }
 	public void ForceSelect(int index)
 	{
 		if (index >= m_selectedObjects.Count) return;
@@ -122,7 +122,7 @@ public class MenuInput : MonoBehaviour
 			OnInputInterval();
             m_selectedObjects[m_nowSelectIndex].isSelected = true;
 
-            if (m_soundSelect) { m_soundSelect.Play(); }
+            if (m_soundSelect) { m_soundSelect.PlayOneShot(m_soundSelect.clip); }
 
 			if (m_cursorObject)
 			{
@@ -145,10 +145,10 @@ public class MenuInput : MonoBehaviour
     {
         if (m_inputDirected != null && m_inputDirected.Length > 0
 			&& Input.GetButtonDown(m_inputDirected))
-        {
-            m_selectedObjects[m_nowSelectIndex].OnEnter();
-            if (m_soundEnter) { m_soundEnter.Play(); }
+		{
+			if (m_soundEnter) { m_soundEnter.PlayOneShot(m_soundEnter.clip); }
 			if (m_cursorObject) { m_cursorObject.OnEnter(); }
+			m_selectedObjects[m_nowSelectIndex].OnEnter();
         }
     }
 

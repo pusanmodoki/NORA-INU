@@ -94,7 +94,8 @@ public class PlayerInput : MonoBehaviour
     {
         m_moveInput = Vector3.zero;
 
-		if (!isEnableInput || m_disableEvents.Count > 0)
+		if (!isEnableInput || m_disableEvents.Count > 0
+			|| MainGameManager.instance.isPauseStay)
 			return;
 
 		m_moveInput.x = Input.GetAxis("Horizontal");
@@ -116,7 +117,8 @@ public class PlayerInput : MonoBehaviour
 
     void ShotInput()
     {
-		if (!isEnableInputAndActionInput || m_disableEvents.Count > 0)
+		if (!isEnableInputAndActionInput || m_disableEvents.Count > 0 
+			|| MainGameManager.instance.isPauseStay)
 			return;
 
 		//if (Input.GetButtonDown("Fire1")

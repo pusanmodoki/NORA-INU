@@ -40,10 +40,12 @@ public class MoveMarkPoint : BaseMarkPoint
 	Quaternion[] m_firstRotations= null;
 	Quaternion m_toNextRotation = Quaternion.identity;
 	Vector3 m_toNextRotationEuler = Vector3.zero;
+	Vector3 m_returnDestination = Vector3.zero;
 	Vector2Int m_moveIndexInfo = new Vector2Int(0, 1);
 	Timer m_timer = new Timer();
 	State m_state = State.MoveStart;
 	float m_moleDistance = 0.0f;
+	float m_navMeshSpeed = 0.0f;
 	bool m_isWaitMarking = false;
 	bool m_isWaitMarkingEnd = false;
 
@@ -57,6 +59,7 @@ public class MoveMarkPoint : BaseMarkPoint
 
 			isMove = true;
 			m_navMeshAgent.SetDestination(m_targetPoints[m_moveIndexInfo.x]);
+			m_returnDestination = m_navMeshAgent.destination;
 		}
 	}
 	/// <summary>
@@ -66,6 +69,12 @@ public class MoveMarkPoint : BaseMarkPoint
 	public override void UpdatePoint()
 	{
 		if (m_targetPoints == null || m_targetPoints.Length <= 1) return;
+		
+		if (MainGameManager.instance.resultState != MainGameManager.ResultState.Null)
+		{
+			m_navMeshAgent.enabled = false;
+			return;
+		}
 
 		if (isLinked)
 			PlayerAndTerritoryManager.instance.ReserveCalucrateTerritory(linkPlayerID);
@@ -150,7 +159,8 @@ public class MoveMarkPoint : BaseMarkPoint
 
 	void Start()
 	{
-		m_state = State.MoveStart;	
+		m_state = State.MoveStart;
+		m_navMeshSpeed = m_navMeshAgent.speed;
 		m_moleAnimator.SetTrigger(m_cMoleAnimationStartMoveID);
 		m_moleAnimator.SetTrigger(m_cMoleAnimationEscapeMoveID);
 
@@ -213,6 +223,22 @@ public class MoveMarkPoint : BaseMarkPoint
 #endif
 		}
 	}
+
+	void Update()
+	{
+		if (MainGameManager.instance.isPauseEnter)
+		{
+			m_navMeshAgent.speed = 0.0f;
+			m_navMeshAgent.destination = transform.position;
+		}
+		else if (MainGameManager.instance.isPauseExit)
+		{
+			m_navMeshAgent.speed = m_navMeshSpeed;
+			m_navMeshAgent.SetDestination(m_returnDestination);
+		}
+	}
+
+
 	void ProceedTargetAndSetMoleAndParticles()
 	{
 		int oldIndex = m_moveIndexInfo.x;

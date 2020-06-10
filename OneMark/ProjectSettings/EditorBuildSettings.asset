@@ -92,4 +92,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TeamLogo.unity
     guid: 7090719831c873f4ebb9745ffe25605d
+  - enabled: 1
+    path: Assets/Scenes/Pause.unity
+    guid: 9b2c9a92cd55f394988c9ea0b935a55e
   m_configObjects: {}
