@@ -7,6 +7,8 @@
 			_BumpMap("Bumpmap", 2D) = "bump" {}
 			_AreaTex("AreaTexture", 2D) = "white"{}
 			_SafetyAreaTex("SafetyAreaTexture", 2D) = "white"{}
+			_StageHeight(":StageHeight", Float) = 0
+			_StageWidth(":StageWidth", Float) = 0
 	}
 		
 	SubShader
@@ -24,6 +26,10 @@
 		sampler2D _SafetyAreaTex;
 		sampler2D _RampTex;
 		sampler2D _BumpMap;
+
+		float _StageHeight;
+		float _StageWidth;
+
 
 		struct Input {
 				float2 uv_MainTex;
@@ -44,10 +50,14 @@
 		}
 
 		void surf(Input IN, inout SurfaceOutput o) {
-				fixed4 c = tex2D(_MainTex, float2(IN.worldPos.x / 10, IN.worldPos.z / 10)) * _Color;
-				fixed4 dangerMask = tex2D(_AreaTex, IN.uv_MainTex);
-				fixed4 mask = tex2D(_AreaTex, IN.uv_MainTex);
-				fixed4 safetyMask = tex2D(_SafetyAreaTex, IN.uv_MainTex);
+				fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
+				float2 uvArea;
+				uvArea.x = 1.0f - IN.worldPos.x / _StageWidth;
+				uvArea.y = 1.0f - IN.worldPos.z / _StageHeight;
+
+				fixed4 dangerMask = tex2D(_AreaTex, uvArea);
+				fixed4 mask = tex2D(_AreaTex, uvArea);
+				fixed4 safetyMask = tex2D(_SafetyAreaTex, uvArea);
 				mask.r = mask.g = mask.b = max(step(mask.b, 0), mask.r);
 				c.rgb = c.rgb * mask.rgb;
 				c.r = lerp(c.r, dangerMask.r, mask.a * (1 - safetyMask.a));
@@ -55,7 +65,7 @@
 				c.b = lerp(c.b, dangerMask.b, mask.a * (1 - safetyMask.a));
 				o.Albedo = c.rgb;
 				o.Alpha = c.a;
-				o.Normal = UnpackNormal(tex2D(_BumpMap, float2(IN.worldPos.x / 10, IN.worldPos.z / 10)));
+				o.Normal = UnpackNormal(tex2D(_BumpMap, IN.uv_MainTex));
 		} 
 		ENDCG
 	}
