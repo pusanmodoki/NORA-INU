@@ -3,7 +3,12 @@ guid: 4d3132695bf1fe24f8610affe78799cd
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert6
+    second: {fileID: 2100000, guid: 775e3a70104fc524ca12350e2d572471, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -31,7 +36,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
