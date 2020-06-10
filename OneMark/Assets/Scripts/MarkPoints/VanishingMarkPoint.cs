@@ -18,7 +18,7 @@ public class VanishingMarkPoint : BaseMarkPoint
 	}
 
 	public override void UpdatePoint()
-	{
+	{		
 		if (effectiveCounter01 >= 1.0f)
 		{
 			effectiveCounter = 0.0f;
