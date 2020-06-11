@@ -30,9 +30,9 @@ public class TutorialUIManager : MonoBehaviour
 		[SerializeField, Multiline(2)]
 		string m_text = "";
 		[SerializeField]
-		bool m_isEnableTriggerEvent;
+		bool m_isEnableTriggerEvent = false;
 		[SerializeField]
-		string m_triggerEventKey;
+		string m_triggerEventKey = "";
 		[SerializeField]
 		Condition[] m_orConditions = null;
 
@@ -77,7 +77,7 @@ public class TutorialUIManager : MonoBehaviour
 	[SerializeField]
 	TutorialConditions m_tutorialConditions = null;
 	[SerializeField]
-	TriggerEvent m_onTutorialTriggerEvent;
+	TriggerEvent m_onTutorialTriggerEvent = null;
 	[SerializeField]
 	Behaviour[] m_enableImages = null;
 	[SerializeField]
