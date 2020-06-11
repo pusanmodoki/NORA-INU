@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &7195776834448709991
+--- !u!114 &8969140089991897420
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3467774738872016686}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fed2611bca036604a80aef434c38ffd3, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a6c65efbc3abbf458e608885dcdc09d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_cover: {fileID: 7195776834400370261}
-  m_isMoving: 1
-  m_late: 1.2
+  m_lookPoint: {fileID: 7195776834580239471}
+  m_movePoint: {fileID: 7195776833592062121}
+  m_moveSeconds: 1
 --- !u!1 &7195776833592062120
 GameObject:
   m_ObjectHideFlags: 0
@@ -25,7 +25,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7195776833592062121}
   m_Layer: 0
-  m_Name: End
+  m_Name: CameraPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86,7 +86,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7195776834400370260}
-  - component: {fileID: 7195776834400370261}
   m_Layer: 0
   m_Name: Points
   m_TagString: Untagged
@@ -110,21 +109,6 @@ Transform:
   m_Father: {fileID: 7195776834371998396}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7195776834400370261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7195776834400370259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a6c65efbc3abbf458e608885dcdc09d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_startPoint: {fileID: 7195776834580239471}
-  m_endPoint: {fileID: 7195776833592062121}
-  m_movePoint: {fileID: 7195776834448709991}
 --- !u!1 &7195776834580239470
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,7 +119,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7195776834580239471}
   m_Layer: 0
-  m_Name: Start
+  m_Name: LookPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,7 +133,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7195776834580239470}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 25, y: 30, z: -25}
+  m_LocalPosition: {x: 25, y: 0, z: 15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7195776834400370260}
@@ -170,7 +154,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_covering
       value: 
-      objectReference: {fileID: 7195776834448709991}
+      objectReference: {fileID: 0}
     - target: {fileID: 1664029199780888505, guid: 23e437d39c64b0b46af679a713df1ae6,
         type: 3}
       propertyPath: resultCameraSpeed
@@ -181,6 +165,11 @@ PrefabInstance:
       propertyPath: followObjectMoveTime
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1664029199780888505, guid: 23e437d39c64b0b46af679a713df1ae6,
+        type: 3}
+      propertyPath: m_cameraSrart
+      value: 
+      objectReference: {fileID: 8969140089991897420}
     - target: {fileID: 6051863903506868340, guid: 23e437d39c64b0b46af679a713df1ae6,
         type: 3}
       propertyPath: m_LocalPosition.x
