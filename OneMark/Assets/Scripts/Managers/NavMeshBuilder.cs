@@ -50,25 +50,31 @@ public class NavMeshBuilder : MonoBehaviour
 	}
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
 	{
 		if (m_bakeIntervalTimer.elapasedTime > m_bakeInterval)
 		{
 			for (int index = 0, length = m_notVolumeNavMeshSurfaces.Length; index < length; ++index)
 				m_notVolumeNavMeshSurfaces[index].BuildNavMesh();
 
-			Vector3 setPosition = Vector3.zero, playerPosition = Vector3.zero;
+			Vector3 playerPosition = Vector3.zero;
 			int i = 0;
 			foreach(var e in PlayerAndTerritoryManager.instance.allPlayers)
 			{
-				if (!e.Value.groundFlag.isStay) continue;
-
 				playerPosition = e.Value.gameObject.transform.position;
+				if (e.Value.groundFlag.isStay)
+					playerPosition.y = e.Value.groundFlag.boxCastResult.position.y;
+				else
+				{
+					RaycastHit hit = default;
+					if (Physics.Raycast(e.Value.groundFlag.centerPosition, 
+						e.Value.groundFlag.direction, out hit, 100.0f, e.Value.groundFlag.layerMask))
+					{
+						playerPosition.y = hit.point.y;
+					}
+				}
 
-				setPosition.Set(playerPosition.x, 
-					e.Value.groundFlag.boxCastResult.position.y, playerPosition.z);
-
-				m_navMeshSurfaceObjects[i].transform.position = setPosition;
+				m_navMeshSurfaceObjects[i].transform.position = playerPosition;
 				m_navMeshSurfaces[i].BuildNavMesh();
 				++i;
 			}

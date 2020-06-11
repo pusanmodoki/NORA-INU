@@ -101,6 +101,9 @@ public class BoxCastFlags : MonoBehaviour
 	/// <summary>Raycast Center Position</summary>
 	public Vector3 centerPosition { get; private set; } = Vector3.zero;
 
+	public Vector3 direction { get { return GetBoxCastDirection(centerPosition); } }
+	public LayerMaskEx layerMask { get { return m_raycastLayerMask; } }
+
 	/// <summary>Direction of BoxCast</summary>
 	[Header("BoxCast Info"), Tooltip("Direction of BoxCast"), SerializeField]
     BoxCastDirection m_direction = BoxCastDirection.Down;

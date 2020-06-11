@@ -150,10 +150,10 @@ public class PlayerNavMeshController : MonoBehaviour
 			|| (!isUpdate && !m_copyUniqueOffMeshLink.CalledFixedUpdateOffMeshLink()))
 		{
 			m_pointUniqueOffMeshLink.UnacquisitionRightToUse();
+			Debug.Log(m_pointUniqueOffMeshLink.nowUseAgent);
 			m_copyUniqueOffMeshLink.Unlink();
 			Object.Destroy(m_copyUniqueOffMeshLink);
 			m_copyUniqueOffMeshLink = null;
-			m_navMeshAgent.updatePosition = true;
 		}
 	}
 }
