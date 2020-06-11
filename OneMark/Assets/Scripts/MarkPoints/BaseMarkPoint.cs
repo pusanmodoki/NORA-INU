@@ -53,8 +53,11 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	public bool isForceAscendingEffective { get; private set; } = false;
 	/// <summary>リンク中Safetyエリアに加えるか？</summary>
 	public bool isJoinSafetyAreaWhenLink { get { return m_isJoinSafetyAreaWhenLink; } }
+	public bool isDeactive { get; private set; } = false;
 	public bool isMove { get; protected set; } = false;
     public bool isTarget { get; set; } = false;
+	public bool isCompleteMarking { get; private set; } = false;
+	public bool isForceLockEffectiveCounter { get; protected set; } = false;
 
 	//Debug only
 #if UNITY_EDITOR
@@ -118,6 +121,9 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	/// ポイントがリンク解除された際にコールバックされる関数
 	/// </summary>
 	public virtual void UnlinkPoint() { }
+
+	public virtual void ReactivePoint() { }
+
 	/// <summary>
 	/// [UpdatePoint] (Virtual)
 	/// ポイントの更新を行う
@@ -155,6 +161,14 @@ public abstract class BaseMarkPoint : MonoBehaviour
 
 		isLockFirstPoint = isSet;
 	}
+	public void SetDeacticve(bool isSet)
+	{
+		if (isDeactive & !isSet) ReactivePoint();
+
+		isDeactive = isSet;
+	}
+	public void SetCompleteMarking(bool isSet) { isCompleteMarking = isSet; }
+
 
 
 
@@ -166,7 +180,10 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	public void ChangeAgent(DogAIAgent dogAIAgent)
 	{
 		if (isLinked)
+		{
 			linkServantID = dogAIAgent != null ? dogAIAgent.aiAgentInstanceID : -1;
+			if (dogAIAgent == null) SetCompleteMarking(false);
+		}
 	}
 	/// <summary>
 	/// [LinkPlayer]
@@ -224,13 +241,15 @@ public abstract class BaseMarkPoint : MonoBehaviour
 		m_dIsLockFirstPoint = isLockFirstPoint;
 #endif
 
-		if (isPlayerNearby | isLockFirstPoint | isForceAscendingEffective)
-			effectiveCounter += acendingDeltaCount;
-		else
-			effectiveCounter -= decreasingDeltaCount;
+		if (!isForceLockEffectiveCounter)
+		{
+			if (isPlayerNearby | isLockFirstPoint | isForceAscendingEffective)
+				effectiveCounter += acendingDeltaCount;
+			else
+				effectiveCounter -= decreasingDeltaCount;
 
-		effectiveCounter = Mathf.Clamp(effectiveCounter, 0.0f, effectiveMaxLimiter);
-
+			effectiveCounter = Mathf.Clamp(effectiveCounter, 0.0f, effectiveMaxLimiter);
+		}
 		if (isLinked && effectiveCounter <= 0.0f)
 			UnlinkPlayer();
 

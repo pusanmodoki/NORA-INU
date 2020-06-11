@@ -47,8 +47,10 @@ public class PlayerInput : MonoBehaviour
 
 	Vector3 m_moveInput = Vector3.zero;
 	List<int> m_disableEvents = new List<int>();
+	List<int> m_disableActionEvents = new List<int>();
 	Timer m_shotTimers = new Timer();
 	int m_disableCounter = 0;
+	int m_disableActionCounter = 0;
 
 	public void GameClearAnimation()
 	{
@@ -73,7 +75,18 @@ public class PlayerInput : MonoBehaviour
 		if (m_disableEvents.Contains(disableID))
 			m_disableEvents.Remove(disableID);
 	}
-	
+
+	public void StartDisableActionInput(out int disableID)
+	{
+		m_disableActionEvents.Add(m_disableCounter);
+		disableID = m_disableActionCounter++;
+	}
+	public void EndDisableActionInput(int disableID)
+	{
+		if (m_disableActionEvents.Contains(disableID))
+			m_disableActionEvents.Remove(disableID);
+	}
+
 	void Start()
     {
 		m_shotTimers = new Timer();
@@ -118,7 +131,7 @@ public class PlayerInput : MonoBehaviour
     void ShotInput()
     {
 		if (!isEnableInputAndActionInput || m_disableEvents.Count > 0 
-			|| MainGameManager.instance.isPauseStay)
+			|| m_disableActionEvents.Count > 0 || MainGameManager.instance.isPauseStay)
 			return;
 
 		//if (Input.GetButtonDown("Fire1")

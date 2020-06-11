@@ -420,8 +420,10 @@ public class PlayerAndTerritoryManager : MonoBehaviour
 		//外周のポイントでソート用リスト構築
 		for (int i = 0, count = playerInfo.borderTerritorys.Count; i < count; ++i)
 		{
-			if (playerInfo.borderTerritorys[i].isJoinSafetyAreaWhenLink
-				&& playerInfo.borderTerritorys[i].effectiveCounter01 > m_safetyTerritoryExcludeSeconds)
+			if (playerInfo.borderTerritorys[i].isJoinSafetyAreaWhenLink && 
+				(playerInfo.borderTerritorys[i].effectiveCounter01 > m_safetyTerritoryExcludeSeconds
+					|| playerInfo.borderTerritorys[i].isPlayerNearby 
+					|| (playerInfo.borderTerritorys[i].linkServantID != -1 && playerInfo.borderTerritorys[i].isCompleteMarking)))
 			{
 				m_grahamResult.Add(new GrahamScan.CustomFormat(playerInfo.borderTerritorys[i].transform.position, i));
 			}

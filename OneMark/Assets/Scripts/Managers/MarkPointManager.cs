@@ -66,13 +66,13 @@ public class MarkPointManager : MonoBehaviour
 		{
 			if (m_temporarilyDeactivePoints[i].isDesignatedTimeElapsed)
 			{
-				allPoints[m_temporarilyDeactivePoints[i].pointInstanceID].gameObject.SetActive(true);
+				allPoints[m_temporarilyDeactivePoints[i].pointInstanceID].SetDeacticve(false);
 				m_temporarilyDeactivePoints.RemoveAt(i);
 				--i;
 			}
 		}
 
-		if (!MainGameManager.instance.isPauseStay)
+		if (!MainGameManager.instance.isPauseStay && !TutorialUIManager.instance.isOnTutorial)
 		{
 			foreach (var e in m_points)
 			{
@@ -122,6 +122,6 @@ public class MarkPointManager : MonoBehaviour
 		if (!m_temporarilyDeactivePoints.Contains(newInfo))
 			m_temporarilyDeactivePoints.Add(newInfo);
 
-		markPoint.gameObject.SetActive(false);
+		markPoint.SetDeacticve(true);
 	}
 }

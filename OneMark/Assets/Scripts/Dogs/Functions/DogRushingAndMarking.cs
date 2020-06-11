@@ -195,12 +195,6 @@ public class DogRushingAndMarking : BaseDogAIFunction
 					if ((position - m_moveTarget).sqrMagnitude 
 						< (!m_markPoint.isMove ? m_cRemainingCheckDistance : m_cIfPointMoveRemainingCheckDistance))
 					{
-						//強制的に増加させる
-						if (m_markPoint.linkPlayerID != dogAIAgent.linkPlayer.GetInstanceID())
-							m_markPoint.AddFirstLinkBonus();
-						//待て！
-						dogAIAgent.SetWaitAndRun(true, m_markPoint);
-
 						//移動, 回転停止
 						navMeshAgent.isStopped = true;
 						dogAIAgent.speedChanger.SetManualAcceleration(0.0f);
@@ -226,8 +220,15 @@ public class DogRushingAndMarking : BaseDogAIFunction
 						//Animation Set
 						m_animationController.editAnimation.TriggerMarking();
 
+						//強制的に増加させる
+						if (m_markPoint.linkPlayerID != dogAIAgent.linkPlayer.GetInstanceID())
+							m_markPoint.AddFirstLinkBonus();
+						//待て！
+						dogAIAgent.SetWaitAndRun(true, m_markPoint);
+
 						//ポイントをリンクさせる
 						m_markPoint.LinkPlayer(dogAIAgent.linkPlayer, dogAIAgent);
+						m_markPoint.SetCompleteMarking(true);
 						m_markPoint.LinkMarkingStart();
 
 						m_sePlayer.PlaySE(m_markingSEIndex, true);
