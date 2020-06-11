@@ -19,6 +19,7 @@ public class TutorialConditions : MonoBehaviour
 		StageT4,
 		StageTutorial,
 		MarkPointChikaChika,
+		ServantEmpty,
 		Max
 	}
 
@@ -73,6 +74,10 @@ public class TutorialConditions : MonoBehaviour
 				foreach(var point in PlayerAndTerritoryManager.instance.mainPlayer.allTerritorys)
 					if (point.isLinked && point.effectiveCounter01 <= 0.5f) return true;
 				return false;
+			case Conditions.ServantEmpty:
+				foreach (var servant in ServantManager.instance.servantByMainPlayer)
+					if (servant.isAccompanyingPlayer) return false;
+				return true;
 			default: return false;
 		}
 	}
