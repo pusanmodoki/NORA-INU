@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_lookPoint: {fileID: 7195776834580239471}
   m_movePoint: {fileID: 7195776833592062121}
-  m_moveSeconds: 1
+  m_moveSeconds: 20
+  m_moveLookPointSeconds: 20
 --- !u!1 &7195776833592062120
 GameObject:
   m_ObjectHideFlags: 0
