@@ -10,11 +10,11 @@ public class TutorialEvents : TriggerEvent
 	{
 		switch (key)
 		{
-			case "EnableShot":
+			case "DisableShot":
 				if (m_disableAction == -1)
 					PlayerAndTerritoryManager.instance.mainPlayer.input.StartDisableActionInput(out m_disableAction);
 				break;
-			case "DisableShot":
+			case "EnableShot":
 				if (m_disableAction != -1)
 					PlayerAndTerritoryManager.instance.mainPlayer.input.EndDisableActionInput(m_disableAction);
 				break;
