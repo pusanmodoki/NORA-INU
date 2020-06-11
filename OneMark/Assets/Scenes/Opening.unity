@@ -1354,8 +1354,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 950959006}
-  m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
-  m_LocalPosition: {x: 2.88, y: 2, z: 69}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1513,6 +1513,8 @@ PlayableDirector:
     value: {fileID: 1351308440}
   - key: {fileID: -4282794385007441222, guid: f7d81d94b0e2066409febc0386877f28, type: 2}
     value: {fileID: 263348444}
+  - key: {fileID: -7694921671534993790, guid: f7d81d94b0e2066409febc0386877f28, type: 2}
+    value: {fileID: 1351308444}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &1098976137
@@ -1721,6 +1723,7 @@ GameObject:
   - component: {fileID: 1351308443}
   - component: {fileID: 1351308442}
   - component: {fileID: 1351308441}
+  - component: {fileID: 1351308444}
   m_Layer: 0
   m_Name: MesuCamera
   m_TagString: Untagged
@@ -1793,6 +1796,25 @@ Transform:
   m_Father: {fileID: 2110968488}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 132.341, y: -12.890015, z: -175.795}
+--- !u!95 &1351308444
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351308440}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2240ff4c43841494ab2e88c2575f1478, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &1513976477
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2693,7 +2715,7 @@ PrefabInstance:
     - target: {fileID: 6567744926787301273, guid: 6a1a5639a023ca94daba7e9b39e2605c,
         type: 3}
       propertyPath: m_BlendShapeWeights.Array.data[0]
-      value: 66.5
+      value: 0.00000166893
       objectReference: {fileID: 0}
     - target: {fileID: 6567744926787301273, guid: 6a1a5639a023ca94daba7e9b39e2605c,
         type: 3}
@@ -2886,7 +2908,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2110968487}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 135, y: 0, z: 39}
+  m_LocalPosition: {x: 135, y: 0, z: 25}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_Children:
   - {fileID: 263348443}
