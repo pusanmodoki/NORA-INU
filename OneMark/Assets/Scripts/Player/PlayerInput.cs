@@ -78,7 +78,7 @@ public class PlayerInput : MonoBehaviour
 
 	public void StartDisableActionInput(out int disableID)
 	{
-		m_disableActionEvents.Add(m_disableCounter);
+		m_disableActionEvents.Add(m_disableActionCounter);
 		disableID = m_disableActionCounter++;
 	}
 	public void EndDisableActionInput(int disableID)

@@ -34,6 +34,8 @@ public class MarkPointManager : MonoBehaviour
 		}
 	}
 
+	public static readonly int m_cEndTriggerID = Animator.StringToHash("End");
+
 	/// <summary>Static instance</summary>
 	public static MarkPointManager instance { get; private set; } = null;
 
@@ -46,6 +48,12 @@ public class MarkPointManager : MonoBehaviour
 	Dictionary<int, BaseMarkPoint> m_points = null;
 	/// <summary>非アクティブ化ポイントリスト</summary>
 	List<TemporarilyDeactiveInfo> m_temporarilyDeactivePoints = new List<TemporarilyDeactiveInfo>();
+
+	public void GameEnd()
+	{
+		foreach(var e in m_points)
+			e.Value.animator.SetTrigger(m_cEndTriggerID);
+	}
 
 	/// <summary>[Awake]</summary>
 	void Awake()

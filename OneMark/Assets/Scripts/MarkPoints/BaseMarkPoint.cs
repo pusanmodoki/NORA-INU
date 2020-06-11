@@ -10,6 +10,7 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	/// <summary>Instance counter(static)</summary>
 	static int m_instanceIDCounter = 0;
 
+	public Animator animator { get { return m_selectAnimation; } }
 	public EffectControler effectControler { get { return m_effectControler; } }
 	/// <summary>Marking target point</summary>
 	public Vector3 markingTarget { get; private set; } = Vector3.zero;

@@ -125,12 +125,18 @@ public class MainGameManager : MonoBehaviour
 		else if (resultState == ResultState.GameClear)
 		{
 			if (!TutorialUIManager.instance.isOnTutorial && m_resultTimer.elapasedTime > m_waitResultClearSeconds)
+			{
+				MarkPointManager.instance.GameEnd();
 				GameClear();
+			}
 		}
 		else if (resultState == ResultState.GameEnd)
 		{
 			if (!TutorialUIManager.instance.isOnTutorial && m_resultTimer.elapasedTime > m_waitResultOverSeconds)
+			{
+				MarkPointManager.instance.GameEnd();
 				GameOver();
+			}
 		}
 	}
 
