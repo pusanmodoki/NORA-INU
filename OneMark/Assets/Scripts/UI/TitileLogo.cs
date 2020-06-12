@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TitileLogo : MonoBehaviour
 {
+    private bool Title_Flg = false;
+
     public void ToOpening()
     {
         OneMarkSceneManager.instance.MoveScene(OneMarkSceneManager.SceneState.Opening);
@@ -11,6 +13,11 @@ public class TitileLogo : MonoBehaviour
 
     public void ToTitle()
     {
-        OneMarkSceneManager.instance.MoveScene(OneMarkSceneManager.SceneState.Title);
+        if(Title_Flg==false)
+        {
+            Debug.Log("aaaaaaaaaaaaaaa");
+            OneMarkSceneManager.instance.MoveScene(OneMarkSceneManager.SceneState.Title);
+            Title_Flg = true;
+        }
     }
 }
