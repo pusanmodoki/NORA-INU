@@ -53,26 +53,66 @@ public class EffectControler : MonoBehaviour
     }
 
     public void OffEffectByString(string _effectName)
-    {
-        m_effectDictionary[_effectName].SetActive(false);
+	{
+		if (!m_effectDictionary.ContainsKey(_effectName))
+		{
+#if UNITY_EDITOR
+			Debug.Log("!m_effectDictionary.ContainsKey(_effectName) : " + _effectName);
+#endif
+			return;
+		}
+
+		m_effectDictionary[_effectName].SetActive(false);
     }
 
     public void OffEffectByInteger(int _effectNum)
-    {
-        m_effects[_effectNum].SetActive(false);
+	{
+		if (m_effects.Count < _effectNum)
+		{
+#if UNITY_EDITOR
+			Debug.Log("m_effects.Count < _effectNum : " + _effectNum);
+#endif
+			return;
+		}
+
+		m_effects[_effectNum].SetActive(false);
     }
 
     public bool IsPlayByString(string _effectName)
-    {
-        return m_effectDictionary[_effectName].activeSelf;
+	{
+		if (!m_effectDictionary.ContainsKey(_effectName))
+		{
+#if UNITY_EDITOR
+			Debug.Log("!m_effectDictionary.ContainsKey(_effectName) : " + _effectName);
+#endif
+			return false;
+		}
+
+		return m_effectDictionary[_effectName].activeSelf;
     }
     public bool IsPlayByInteger(int _effectNum)
-    {
-        return m_effects[_effectNum].activeSelf;
+	{
+		if (m_effects.Count < _effectNum)
+		{
+#if UNITY_EDITOR
+			Debug.Log("m_effects.Count < _effectNum : " + _effectNum);
+#endif
+			return false;
+		}
+
+		return m_effects[_effectNum].activeSelf;
     }
 
     public ParticleSystem GetParticleSystem(string _effectName)
-    {
-        return m_particleSystems[_effectName];
+	{
+		if (!m_effectDictionary.ContainsKey(_effectName))
+		{
+#if UNITY_EDITOR
+			Debug.Log("!m_effectDictionary.ContainsKey(_effectName) : " + _effectName);
+#endif
+			return null;
+		}
+
+		return m_particleSystems[_effectName];
     }
 }
