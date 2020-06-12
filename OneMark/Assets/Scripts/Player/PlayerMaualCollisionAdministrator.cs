@@ -353,7 +353,8 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			var point = collisions[i].GetComponent<BaseMarkPoint>();
 
 			//Nullかリンクありでコンティニュー
-			if (point == null || (point.isLockFirstPoint) || point.isDeactive) continue;
+			if (point == null || (point.isLockFirstPoint | point.isDeactive | point.isInvisible))
+				continue;
 
 			Vector3 pointXZ = point.transform.position; pointXZ.y = 0.0f;
 			Vector3 absolute = pointXZ - positionXZ;

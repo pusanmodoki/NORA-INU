@@ -59,6 +59,7 @@ public abstract class BaseMarkPoint : MonoBehaviour
     public bool isTarget { get; set; } = false;
 	public bool isCompleteMarking { get; private set; } = false;
 	public bool isForceLockEffectiveCounter { get; protected set; } = false;
+	public bool isInvisible { get; protected set; } = false;
 
 	//Debug only
 #if UNITY_EDITOR

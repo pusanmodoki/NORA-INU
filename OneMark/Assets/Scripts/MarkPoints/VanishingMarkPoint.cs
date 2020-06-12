@@ -22,6 +22,15 @@ public class VanishingMarkPoint : BaseMarkPoint
 		isForceLockEffectiveCounter = false;
 	}
 
+	/// <summary>
+	/// [LinkPoint] (Virtual)
+	/// ポイントがリンクされた際にコールバックされる関数
+	/// </summary>
+	public override void LinkPoint()
+	{
+		isInvisible = true;
+	}
+
 	public override void UnlinkPoint()
 	{
 		MarkPointManager.instance.RegisterTemporarilyDeactive(this, m_waitingToReturnSeconds);
@@ -35,6 +44,7 @@ public class VanishingMarkPoint : BaseMarkPoint
 			effectControler.OffEffectByInteger(0);
 			UnlinkPlayer();
 
+			isInvisible = false;
 			isForceLockEffectiveCounter = true;
 			effectiveCounter = effectiveMaxLimiter;
 		}
