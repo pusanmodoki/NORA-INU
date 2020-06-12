@@ -152,6 +152,18 @@ MonoBehaviour:
   - m_sceneName: 4-4
     m_loadBgmKeys:
     - Stage4
+  - m_sceneName: no1-2
+    m_loadBgmKeys:
+    - Stage4
+  - m_sceneName: TeamLogo
+    m_loadBgmKeys:
+    - Title
+  - m_sceneName: Pose
+    m_loadBgmKeys:
+    - Title
+  - m_sceneName: Opening
+    m_loadBgmKeys:
+    - Title
   m_allVolumeChangePresets:
   - m_uniqueKey: SceneChange
     m_minVolume: 0
