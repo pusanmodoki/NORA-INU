@@ -798,7 +798,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 6.483333
-    functionName: ToTitle
+    functionName: ToOpening
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

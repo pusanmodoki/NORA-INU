@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bgmSource: {fileID: 1051493700475355825}
+  m_freeAudioSource: {fileID: 0}
   m_allBgms:
   - m_uniqueKey: Title
     m_clip: {fileID: 8300000, guid: 6ef43763567ff0c468317822412af461, type: 3}
@@ -158,10 +159,10 @@ MonoBehaviour:
   - m_sceneName: TeamLogo
     m_loadBgmKeys:
     - Title
-  - m_sceneName: Pose
+  - m_sceneName: Opening
     m_loadBgmKeys:
     - Title
-  - m_sceneName: Opening
+  - m_sceneName: Pause
     m_loadBgmKeys:
     - Title
   m_allVolumeChangePresets:

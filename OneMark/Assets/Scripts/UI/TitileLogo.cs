@@ -6,7 +6,7 @@ public class TitileLogo : MonoBehaviour
 {
     public void ToOpening()
     {
-        OneMarkSceneManager.instance.MoveScene(OneMarkSceneManager.SceneState.Title);
+        OneMarkSceneManager.instance.MoveScene(OneMarkSceneManager.SceneState.Opening);
     }
 
     public void ToTitle()
