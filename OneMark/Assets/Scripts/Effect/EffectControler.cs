@@ -21,7 +21,14 @@ public class EffectControler : MonoBehaviour
     }
     public void OnEffectByString(string _effectName)
     {
-        if (m_effectDictionary[_effectName].activeSelf)
+		if (!m_effectDictionary.ContainsKey(_effectName))
+		{
+#if UNITY_EDITOR
+			Debug.Log("!m_effectDictionary.ContainsKey(_effectName) : " + _effectName);
+#endif
+			return;
+		}
+		if (m_effectDictionary[_effectName].activeSelf)
         {
             m_effectDictionary[_effectName].SetActive(false);
         }
@@ -29,8 +36,16 @@ public class EffectControler : MonoBehaviour
     }
 
     public void OnEffectByInteger(int _effectNum)
-    {
-        if (m_effects[_effectNum].activeSelf)
+	{
+		if (m_effects.Count < _effectNum)
+		{
+#if UNITY_EDITOR
+			Debug.Log("m_effects.Count < _effectNum : " + _effectNum);
+#endif
+			return;
+		}
+
+		if (m_effects[_effectNum].activeSelf)
         {
             m_effects[_effectNum].SetActive(false);
         }

@@ -1434,7 +1434,6 @@ GameObject:
   m_Component:
   - component: {fileID: 950959009}
   - component: {fileID: 950959008}
-  - component: {fileID: 950959007}
   - component: {fileID: 950959010}
   m_Layer: 0
   m_Name: Main Camera
@@ -1443,14 +1442,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &950959007
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 950959006}
-  m_Enabled: 1
 --- !u!20 &950959008
 Camera:
   m_ObjectHideFlags: 0
@@ -2090,7 +2081,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1351308443}
   - component: {fileID: 1351308442}
-  - component: {fileID: 1351308441}
   - component: {fileID: 1351308444}
   m_Layer: 0
   m_Name: MesuCamera
@@ -2099,14 +2089,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!81 &1351308441
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1351308440}
-  m_Enabled: 1
 --- !u!20 &1351308442
 Camera:
   m_ObjectHideFlags: 0

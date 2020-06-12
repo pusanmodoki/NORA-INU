@@ -423,53 +423,47 @@ PrefabInstance:
       propertyPath: m_Name
       value: AudioManager
       objectReference: {fileID: 0}
-    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
-        type: 3}
+    - target: {fileID: 0}
       propertyPath: m_bgmForEachScenes.Array.size
-      value: 30
+      value: 31
       objectReference: {fileID: 0}
-    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
-        type: 3}
+    - target: {fileID: 0}
       propertyPath: m_bgmForEachScenes.Array.data[27].m_loadBgmKeys.Array.size
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
-        type: 3}
+    - target: {fileID: 0}
       propertyPath: m_bgmForEachScenes.Array.data[28].m_loadBgmKeys.Array.size
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
-        type: 3}
+    - target: {fileID: 0}
       propertyPath: m_bgmForEachScenes.Array.data[29].m_loadBgmKeys.Array.size
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
-        type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_bgmForEachScenes.Array.data[30].m_loadBgmKeys.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
       propertyPath: m_bgmForEachScenes.Array.data[27].m_sceneName
       value: no1-2
       objectReference: {fileID: 0}
-    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
-        type: 3}
+    - target: {fileID: 0}
       propertyPath: m_bgmForEachScenes.Array.data[27].m_loadBgmKeys.Array.data[0]
       value: Stage4
       objectReference: {fileID: 0}
-    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
-        type: 3}
+    - target: {fileID: 0}
       propertyPath: m_bgmForEachScenes.Array.data[28].m_sceneName
       value: TeamLogo
       objectReference: {fileID: 0}
-    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
-        type: 3}
+    - target: {fileID: 0}
       propertyPath: m_bgmForEachScenes.Array.data[28].m_loadBgmKeys.Array.data[0]
       value: Stage4
       objectReference: {fileID: 0}
-    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
-        type: 3}
+    - target: {fileID: 0}
       propertyPath: m_bgmForEachScenes.Array.data[29].m_sceneName
       value: Pause
       objectReference: {fileID: 0}
-    - target: {fileID: 1051493700475355824, guid: 67b7352149fdd1c47a9a09200de21955,
-        type: 3}
+    - target: {fileID: 0}
       propertyPath: m_bgmForEachScenes.Array.data[29].m_loadBgmKeys.Array.data[0]
       value: Stage4
       objectReference: {fileID: 0}
