@@ -15,7 +15,6 @@ public class TitileLogo : MonoBehaviour
     {
         if(Title_Flg==false)
         {
-            Debug.Log("aaaaaaaaaaaaaaa");
             OneMarkSceneManager.instance.MoveScene(OneMarkSceneManager.SceneState.Title);
             Title_Flg = true;
         }

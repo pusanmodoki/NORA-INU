@@ -75,6 +75,9 @@ MonoBehaviour:
   - m_uniqueKey: Stage4
     m_clip: {fileID: 8300000, guid: 43df3beef321a5447a6c034db96cc2b4, type: 3}
     m_volume: 0.45
+  - m_uniqueKey: Opening
+    m_clip: {fileID: 8300000, guid: f0ad4861a0267bb4f9490e58b577e97b, type: 3}
+    m_volume: 0.123
   m_bgmForEachScenes:
   - m_sceneName: GameStart
     m_loadBgmKeys: []
@@ -163,7 +166,7 @@ MonoBehaviour:
     m_loadBgmKeys: []
   - m_sceneName: Opening
     m_loadBgmKeys:
-    - Title
+    - Opening
   m_allVolumeChangePresets:
   - m_uniqueKey: SceneChange
     m_minVolume: 0
