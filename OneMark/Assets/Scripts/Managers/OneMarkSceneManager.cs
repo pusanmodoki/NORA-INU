@@ -9,6 +9,7 @@ public class OneMarkSceneManager : MonoBehaviour
 {
 	public enum SceneState
 	{
+		Opening,
 		Title,
 		StageSelect,
 		Stage
@@ -102,6 +103,8 @@ public class OneMarkSceneManager : MonoBehaviour
 	[SerializeField]
 	SceneName m_logoSceneName = default;
 	[SerializeField]
+	SceneName m_opeingSceneName = default;
+	[SerializeField]
 	SceneName m_titleSceneName = default;
 	[SerializeField]
 	SceneName m_stageSelectSceneName = default;
@@ -138,6 +141,11 @@ public class OneMarkSceneManager : MonoBehaviour
 			case SceneState.StageSelect:
 				{
 					StartCoroutine(LoadScene(m_stageSelectSceneName, false));
+					break;
+				}
+			case SceneState.Opening:
+				{
+					StartCoroutine(LoadScene(m_opeingSceneName, false));
 					break;
 				}
 		}

@@ -221,12 +221,12 @@ MonoBehaviour:
     m_sceneName: GameStart
   m_logoSceneName:
     m_sceneName: TeamLogo
+  m_opeingSceneName:
+    m_sceneName: Opening
   m_titleSceneName:
     m_sceneName: Title
   m_stageSelectSceneName:
     m_sceneName: StageSelect
-  m_optionSceneName:
-    m_sceneName: Option
   m_loadScenename:
     m_sceneName: Load
   m_accessoriesForStageScenes:
