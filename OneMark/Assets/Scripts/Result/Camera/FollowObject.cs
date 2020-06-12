@@ -36,7 +36,7 @@ public class FollowObject : MonoBehaviour
 	float m_resultCameraMoveSeconds = 0.5f;
 
     [SerializeField]
-    PlayerCovering m_covering = null;
+    MainCameraStartSet m_cameraSrart = null;
 
 	Timer m_moveTimer = new Timer();
 	Vector3 m_moveStartPosition = Vector3.zero;
@@ -82,7 +82,7 @@ public class FollowObject : MonoBehaviour
 			{
 				if (m_moveTimer.elapasedTime >= m_startCameraWaitSeconds)
 				{
-					m_covering.isMoving = true;
+					m_cameraSrart.StartMove();
 					isCompleteStartMoveEnter = true;
 					MoveCameraPoint();
 					m_moveTimer.Stop();
@@ -120,14 +120,14 @@ public class FollowObject : MonoBehaviour
         resultFlg = false;
 		m_staretState = 0;
 		m_moveStartPosition = transform.position;
-		m_covering.isMoving = false;
+		//m_covering.isMoving = false;
 
 		m_moveTimer.Start();
 	}
 
 	public void ResultFlg()
     {
-        m_covering.isMoving = false;
+        //m_covering.isMoving = false;
         resultFlg = true;
 		startFlg = false;
 		m_moveStartPosition = transform.position;
@@ -144,7 +144,7 @@ public class FollowObject : MonoBehaviour
         //        Vector3.Slerp(this.transform.position, followingObject.transform.position, startCameraSpeed);
 
         //this.transform.LookAt(lookObject.transform);
-        m_covering.isMoving = true;
+        //m_covering.isMoving = true;
         startFlg = false;
         //playerObject.GetComponent<PlayerInput>().isEnableInput = true;
         m_uiAnimator.SetTrigger("SetPosition");

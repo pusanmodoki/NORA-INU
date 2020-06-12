@@ -25,6 +25,7 @@ namespace Editor
 		static readonly string m_cDefaultKey = "Default key";
 
 		SerializedProperty m_bgmSource = null;
+		SerializedProperty m_freeAudioSource = null;
 		SerializedProperty m_allBgms = null;
 		SerializedProperty m_allVolumeChangePresets = null;
 		SerializedProperty m_bgmForEachScenes = null;
@@ -40,6 +41,7 @@ namespace Editor
 			m_allBgms = serializedObject.FindProperty("m_allBgms");
 			m_allVolumeChangePresets = serializedObject.FindProperty("m_allVolumeChangePresets");
 			m_bgmForEachScenes = serializedObject.FindProperty("m_bgmForEachScenes");
+			m_freeAudioSource = serializedObject.FindProperty("m_freeAudioSource");
 		}
 		public override void OnInspectorGUI()
 		{
@@ -168,6 +170,7 @@ namespace Editor
 			EditorGUILayout.LabelField("Play Source And Clips", style);
 
 			EditorGUILayout.PropertyField(m_bgmSource);
+			EditorGUILayout.PropertyField(m_freeAudioSource);
 
 			EditorGUILayout.BeginHorizontal();
 			{

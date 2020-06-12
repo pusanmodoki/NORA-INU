@@ -24,6 +24,8 @@ public class PlayerInput : MonoBehaviour
 	/// <summary>This PlayerMaualCollisionAdministrator</summary>
 	[SerializeField, Tooltip("This PlayerMaualCollisionAdministrator")]
 	PlayerMaualCollisionAdministrator m_maualCollisionAdministrator = null;
+	[SerializeField]
+	SEPlayer m_sePlayer = null;
 	/// <summary>
 	/// アニメーションコントローラ
 	/// </summary>
@@ -45,8 +47,10 @@ public class PlayerInput : MonoBehaviour
 
 	Vector3 m_moveInput = Vector3.zero;
 	List<int> m_disableEvents = new List<int>();
+	List<int> m_disableActionEvents = new List<int>();
 	Timer m_shotTimers = new Timer();
 	int m_disableCounter = 0;
+	int m_disableActionCounter = 0;
 
 	public void GameClearAnimation()
 	{
@@ -71,7 +75,18 @@ public class PlayerInput : MonoBehaviour
 		if (m_disableEvents.Contains(disableID))
 			m_disableEvents.Remove(disableID);
 	}
-	
+
+	public void StartDisableActionInput(out int disableID)
+	{
+		m_disableActionEvents.Add(m_disableActionCounter);
+		disableID = m_disableActionCounter++;
+	}
+	public void EndDisableActionInput(int disableID)
+	{
+		if (m_disableActionEvents.Contains(disableID))
+			m_disableActionEvents.Remove(disableID);
+	}
+
 	void Start()
     {
 		m_shotTimers = new Timer();
@@ -92,7 +107,8 @@ public class PlayerInput : MonoBehaviour
     {
         m_moveInput = Vector3.zero;
 
-		if (!isEnableInput || m_disableEvents.Count > 0)
+		if (!isEnableInput || m_disableEvents.Count > 0
+			|| MainGameManager.instance.isPauseStay)
 			return;
 
 		m_moveInput.x = Input.GetAxis("Horizontal");
@@ -114,7 +130,8 @@ public class PlayerInput : MonoBehaviour
 
     void ShotInput()
     {
-		if (!isEnableInputAndActionInput || m_disableEvents.Count > 0)
+		if (!isEnableInputAndActionInput || m_disableEvents.Count > 0 
+			|| m_disableActionEvents.Count > 0 || MainGameManager.instance.isPauseStay)
 			return;
 
 		//if (Input.GetButtonDown("Fire1")
@@ -148,6 +165,7 @@ public class PlayerInput : MonoBehaviour
 				m_maualCollisionAdministrator.IsHitInstructionsReturnDog(ServantManager.instance.allServants[linkServantID])))
 			{
 				m_animator.SetTrigger(m_cCallID);
+				m_sePlayer.PlaySE(0);
 				m_shotTimers.Start();
 			}
 		}
@@ -173,6 +191,7 @@ public class PlayerInput : MonoBehaviour
 					.GoSoStartOfMarking(m_maualCollisionAdministrator.hitVisibilityMarkPoint))
 			{
 				m_animator.SetTrigger(m_cCommandID);
+				m_sePlayer.PlaySE(0);
 				m_shotTimers.Start();
 			}
 		}

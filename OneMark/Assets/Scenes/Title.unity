@@ -567,7 +567,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &483298569
 RectTransform:
   m_ObjectHideFlags: 0
@@ -906,7 +906,6 @@ GameObject:
   m_Component:
   - component: {fileID: 610398138}
   - component: {fileID: 610398137}
-  - component: {fileID: 610398136}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -914,14 +913,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &610398136
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 610398135}
-  m_Enabled: 1
 --- !u!20 &610398137
 Camera:
   m_ObjectHideFlags: 0
@@ -1869,7 +1860,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1616259788
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1989,11 +1980,13 @@ MonoBehaviour:
   m_deadZone: 0.1
   m_isInverse: 1
   m_interval: 0.2
+  m_isEnableInput: 1
   m_nowSelectIndex: 0
   m_selectedObjects:
   - {fileID: 1554845373}
   - {fileID: 990359803}
   - {fileID: 1215087135}
+  m_selectedObjectPresets: []
   m_isStartCallOffCursor: 1
   m_cursorObject: {fileID: 1616259789}
   m_soundEnter: {fileID: 1153927025}

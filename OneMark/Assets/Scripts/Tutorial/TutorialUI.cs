@@ -215,7 +215,8 @@ public  class TutorialUI : MonoBehaviour
 					m_aButton.localScale = Vector3.Lerp(Vector3.zero, Vector3.one,
 						Mathf.Clamp01(m_timer2.elapasedTime / (m_pushButtonWaitSeconds * 0.5f)));
 
-					if (m_timer2.elapasedTime > m_pushButtonWaitSeconds && Input.GetButtonDown("Fire3"))
+					if (m_timer2.elapasedTime > m_pushButtonWaitSeconds 
+						&& !MainGameManager.instance.isPauseStay && Input.GetButtonDown("Fire3"))
 					{
 						m_dogTransform.position = m_firstPosition;
 						m_state = State.End;

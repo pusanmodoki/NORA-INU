@@ -106,6 +106,8 @@ public class AudioManager : MonoBehaviour
 	[SerializeField]
 	AudioSource m_bgmSource = null;
 	[SerializeField]
+	AudioSource m_freeAudioSource = null;
+	[SerializeField]
 	List<AudioInfo> m_allBgms = new List<AudioInfo>();
 	[SerializeField]
 	List<LoadBgmInfo> m_bgmForEachScenes = new List<LoadBgmInfo>();
@@ -123,6 +125,12 @@ public class AudioManager : MonoBehaviour
 	State m_state = State.Null;
 	FadeoutOption m_fadeoutOption = FadeoutOption.None;
 
+	public void FreePlaySE(AudioSource source)
+	{
+		m_freeAudioSource.volume = source.volume;
+		m_freeAudioSource.pitch = source.pitch;
+		m_freeAudioSource.PlayOneShot(source.clip);
+	}
 	public void LoadAudios(string sceneName)
 	{
 		if (!bgmForEachScenes.ContainsKey(sceneName)) return;
@@ -242,6 +250,13 @@ public class AudioManager : MonoBehaviour
 			instance = this;
 			InitDictionary();
 			DontDestroyOnLoad(gameObject);
+
+			var listener = new GameObject("Listener");
+			listener.AddComponent<AudioListener>();
+			listener.transform.position = Vector3.zero;
+			listener.transform.localScale = Vector3.zero;
+			listener.transform.rotation = Quaternion.identity;
+			DontDestroyOnLoad(listener);
 		}
 		else
 		{

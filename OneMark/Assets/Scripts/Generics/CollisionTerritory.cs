@@ -166,6 +166,26 @@ public static class CollisionTerritory
 		return hitCount % 2 == 1;
 	}
 
+	public static bool HitCircleTerritory(List<Vector3> territoryArea, Vector3 position, float circleRadius)
+	{
+		if (territoryArea.Count <= 1) return false;
+
+		m_lineStart1 = position;
+		m_lineStart1ToVec2.Set(position.x, 0.0f, position.z);
+		m_radius = circleRadius;
+		
+		for (int i = 0, count = territoryArea.Count - 1; i < count; ++i)
+		{
+			if (HitCircleSegment(territoryArea[i], territoryArea[i + 1]))
+				return true;
+		}
+
+		if (HitCircleSegment(territoryArea[territoryArea.Count - 1], territoryArea[0]))
+			return true;
+
+		return false;
+	}
+
 	public static bool HitSegmentTerritory(List<Vector3> territoryArea, Vector3 start, Vector3 end, float rayDistance = 1000.0f)
 	{
 		int hitCount = 0;
@@ -260,41 +280,17 @@ public static class CollisionTerritory
 
 	static bool HitCircleSegment(Vector3 lineStart0, Vector3 lineEnd0)
 	{
-		/*
-		参考にしたサイト 
-		https://yttm-work.jp/collision/collision_0006.html
-		 */
+		Vector3 positionXZ = m_lineStart1;
+		Vector3 startToEnd = lineEnd0 - lineStart0;
+		Vector3 startToPosition = m_lineStart1 - lineStart0;
+		positionXZ.y = startToPosition.y = startToEnd.y = 0.0f;
 
-		// ベクトルの作成
-		Vector2 startToCenter = new Vector2(m_lineStart1ToVec2.x - lineStart0.x, m_lineStart1ToVec2.z - lineStart0.z);
-		Vector2 endToCenter = new Vector2(m_lineStart1ToVec2.x - lineEnd0.x, m_lineStart1ToVec2.z - lineEnd0.z);
-		Vector2 startToEnd = new Vector2(lineEnd0.x - lineStart0.x, lineEnd0.z - lineStart0.z);
 
-		// 単位ベクトル化する
-		Vector2 startToEndNormalized= startToEnd.normalized;
+		float t = Vector3.Dot(startToEnd.normalized, startToPosition) / startToEnd.magnitude;
 
-		/*
-			射影した線分の長さ
-				始点と円の中心で外積を行う
-				※始点 => 終点のベクトルは単位化しておく
-		*/
-		// 線分と円の最短の長さが半径よりも小さい
-		if (Mathf.Abs(startToCenter.x * startToEndNormalized.y 
-			- startToEndNormalized.x * startToCenter.y) < m_radius)
-		{
-			// 始点 => 終点と始点 => 円の中心の内積を計算する
-			float dot01 = startToCenter.x * startToEnd.x + startToCenter.y * startToEnd.y;
-			// 始点 => 終点と終点 => 円の中心の内積を計算する
-			float dot02 = endToCenter.x * startToEnd.x + endToCenter.y * startToEnd.y;
-
-			// 二つの内積の掛け算結果が0以下なら当たり
-			if (dot01 * dot02 <= 0.0f)
-				return true;
-			else
-				return false;
-		}
-		else
-			return false;	
+		if (t < 0) return (lineStart0 - positionXZ).sqrMagnitude < m_radius * m_radius;
+		else if (t > 1) return (lineEnd0 - positionXZ).sqrMagnitude < m_radius * m_radius;
+		else return ((positionXZ + startToEnd * t - startToPosition) - positionXZ).sqrMagnitude < m_radius * m_radius;
 	}
 
 	static bool HitSegments(Vector3 lineStart0, Vector3 lineEnd0, out Vector3 hitPoint)

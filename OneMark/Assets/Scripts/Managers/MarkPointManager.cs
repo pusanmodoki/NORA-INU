@@ -34,6 +34,8 @@ public class MarkPointManager : MonoBehaviour
 		}
 	}
 
+	public static readonly int m_cEndTriggerID = Animator.StringToHash("End");
+
 	/// <summary>Static instance</summary>
 	public static MarkPointManager instance { get; private set; } = null;
 
@@ -46,6 +48,12 @@ public class MarkPointManager : MonoBehaviour
 	Dictionary<int, BaseMarkPoint> m_points = null;
 	/// <summary>非アクティブ化ポイントリスト</summary>
 	List<TemporarilyDeactiveInfo> m_temporarilyDeactivePoints = new List<TemporarilyDeactiveInfo>();
+
+	public void GameEnd()
+	{
+		foreach(var e in m_points)
+			e.Value.animator.SetTrigger(m_cEndTriggerID);
+	}
 
 	/// <summary>[Awake]</summary>
 	void Awake()
@@ -66,18 +74,21 @@ public class MarkPointManager : MonoBehaviour
 		{
 			if (m_temporarilyDeactivePoints[i].isDesignatedTimeElapsed)
 			{
-				allPoints[m_temporarilyDeactivePoints[i].pointInstanceID].gameObject.SetActive(true);
+				allPoints[m_temporarilyDeactivePoints[i].pointInstanceID].SetDeacticve(false);
 				m_temporarilyDeactivePoints.RemoveAt(i);
 				--i;
 			}
 		}
 
-		foreach (var e in m_points)
+		if (!MainGameManager.instance.isPauseStay && !TutorialUIManager.instance.isOnTutorial)
 		{
-			if (e.Value.gameObject.activeSelf)
+			foreach (var e in m_points)
 			{
-				e.Value.UpdateBasePoint();
-				e.Value.UpdatePoint();
+				if (e.Value.gameObject.activeSelf)
+				{
+					e.Value.UpdateBasePoint();
+					e.Value.UpdatePoint();
+				}
 			}
 		}
 	}
@@ -119,6 +130,6 @@ public class MarkPointManager : MonoBehaviour
 		if (!m_temporarilyDeactivePoints.Contains(newInfo))
 			m_temporarilyDeactivePoints.Add(newInfo);
 
-		markPoint.gameObject.SetActive(false);
+		markPoint.SetDeacticve(true);
 	}
 }

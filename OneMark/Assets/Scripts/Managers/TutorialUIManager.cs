@@ -30,6 +30,10 @@ public class TutorialUIManager : MonoBehaviour
 		[SerializeField, Multiline(2)]
 		string m_text = "";
 		[SerializeField]
+		bool m_isEnableTriggerEvent = false;
+		[SerializeField]
+		string m_triggerEventKey = "";
+		[SerializeField]
 		Condition[] m_orConditions = null;
 
 		public bool IsCondition(TutorialConditions conditions)
@@ -50,7 +54,12 @@ public class TutorialUIManager : MonoBehaviour
 			return isResult;
 		}
 
-		public void OnUI() { isComplete = true; }
+		public void OnUI()
+		{
+			isComplete = true;
+			if (m_isEnableTriggerEvent)
+				instance.m_onTutorialTriggerEvent.OnTrigger(m_triggerEventKey);
+		}
 	}
 
 	/// <summary>Static instance</summary>
@@ -58,8 +67,8 @@ public class TutorialUIManager : MonoBehaviour
 	static bool m_isCreateInstance = false;
 
 	public Animator dogAnimator { get; private set; } = null;
-	public bool isOnTutorial { get { return m_tutorialUI.isOnTutorial || m_onWaitTutorials.Count > 0; } }
 	public int onWaitTutorials { get { return m_onWaitTutorials.Count; } }
+	public bool isOnTutorial { get { return m_tutorialUI.isOnTutorial || m_onWaitTutorials.Count > 0; } }
 
 	[SerializeField]
 	TutorialUI m_tutorialUI = null;
@@ -67,6 +76,8 @@ public class TutorialUIManager : MonoBehaviour
 	GameObject m_tutorialModelAndCamera = null;
 	[SerializeField]
 	TutorialConditions m_tutorialConditions = null;
+	[SerializeField]
+	TriggerEvent m_onTutorialTriggerEvent = null;
 	[SerializeField]
 	Behaviour[] m_enableImages = null;
 	[SerializeField]

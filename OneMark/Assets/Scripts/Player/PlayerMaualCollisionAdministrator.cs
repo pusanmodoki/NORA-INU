@@ -43,6 +43,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		public int instanceID;
 	}
 
+	public float collisionRadius { get { return m_collisionRadius; } }
 	/// <summary>ポイントタイマーロック判定に使用する距離</summary>
 	public float personalDistance { get { return m_personalRadius; } }
 	/// <summary>視界判定に使用する距離</summary>
@@ -352,7 +353,8 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			var point = collisions[i].GetComponent<BaseMarkPoint>();
 
 			//Nullかリンクありでコンティニュー
-			if (point == null || (point.isLockFirstPoint)) continue;
+			if (point == null || (point.isLockFirstPoint | point.isDeactive | point.isInvisible))
+				continue;
 
 			Vector3 pointXZ = point.transform.position; pointXZ.y = 0.0f;
 			Vector3 absolute = pointXZ - positionXZ;
@@ -626,7 +628,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		for (int i = 0, length = collisions.Length; i < length; ++i)
 		{
 			var component = collisions[i].GetComponent<BaseMarkPoint>();
-			if (component != null && !m_checkPoints.Contains(component))
+			if (component != null && component.isLinked && !m_checkPoints.Contains(component))
 				m_checkPoints.Add(component);
 		}
 
