@@ -106,7 +106,7 @@ MonoBehaviour:
   m_stageSize: {x: 30, y: 30}
   m_waitResultClearSeconds: 2
   m_waitResultOverSeconds: 0.1
-  m_waitGameOverSeconds: 3
+  m_waitGameOverSeconds: 0
 --- !u!114 &8109872767512352151
 MonoBehaviour:
   m_ObjectHideFlags: 0
