@@ -2956,8 +2956,8 @@ MonoBehaviour:
   m_Name: AnimationPlayableAsset
   m_EditorClassIdentifier: 
   m_Clip: {fileID: 7400000, guid: 19b6c16b04246a34883ebc1d0a5ce7f0, type: 2}
-  m_Position: {x: -0.04, y: 0.11, z: 0.04}
-  m_EulerAngles: {x: 13.1, y: 117, z: 0}
+  m_Position: {x: 0.7, y: 0.11, z: 0.04}
+  m_EulerAngles: {x: 13.1, y: 150, z: 0}
   m_UseTrackMatchFields: 1
   m_MatchTargetFields: 63
   m_RemoveStartOffset: 1
