@@ -19,7 +19,7 @@ public class OneMarkSceneManager : MonoBehaviour
 	(
 		new string[]
 		{
-			"T-1", "T-2", "T-3", "T-4",
+			"T-1", "T-2", "T-3", 
 			"1-1", "1-2", "1-3", "1-4",
 			"2-1", "2-2", "2-3", "2-4",
 			"3-1", "3-2", "3-3", "3-4",
@@ -30,7 +30,7 @@ public class OneMarkSceneManager : MonoBehaviour
 	(
 		new Vector2Int[]
 		{
-			new Vector2Int(0, 1), new Vector2Int(0, 2), new Vector2Int(0, 3), new Vector2Int(0, 4),
+			new Vector2Int(0, 1), new Vector2Int(0, 2), new Vector2Int(0, 3),
 			new Vector2Int(1, 1), new Vector2Int(1, 2), new Vector2Int(1, 3), new Vector2Int(1, 4),
 			new Vector2Int(2, 1), new Vector2Int(2, 2), new Vector2Int(2, 3), new Vector2Int(2, 4),
 			new Vector2Int(3, 1), new Vector2Int(3, 2), new Vector2Int(3, 3), new Vector2Int(3, 4),
@@ -68,30 +68,13 @@ public class OneMarkSceneManager : MonoBehaviour
 			if (result == cInvalidStageIndex 
 				|| (result == cStageSceneIndexes[cStageSceneIndexes.Count - 1])) return cInvalidStageIndex;
 
-			if (++result.y > cStageSceneIndexes[cStageSceneIndexes.Count - 1].y)
-			{
-				result.y = 1;
+			for (int i = 0; i < cStageSceneIndexes.Count - 1; ++i)
+				if (result == cStageSceneIndexes[i]) return cStageSceneIndexes[i + 1];
 
-				if (++result.x > cStageSceneIndexes[cStageSceneIndexes.Count - 1].x)
-					result.x = 0;
-			}
-
-			return result;
+			return cInvalidStageIndex;
 		}
 	}
-	public bool isNowStageScene
-	{
-		get
-		{
-			int parse = 0;
-			bool isResult = true;
-			isResult &= ((nowLoadSceneName[0] == 'T') || (int.TryParse(nowLoadSceneName[0].ToString(), out parse)));
-			isResult &= (nowLoadSceneName[1] == '-');
-			isResult &= (int.TryParse(nowLoadSceneName[2].ToString(), out parse));
-
-			return isResult;
-		}
-	}
+	public bool isNowStageScene { get { return nowStageSceneIndex != cInvalidStageIndex; } }
 	public string nowLoadSceneName { get; private set; } = "";
 	public float loadProgress { get; private set; } = 0.0f;
 	public bool isNowFinalStage { get { return m_nowScene.isLoaded && m_nowScene.name == "4-4"; } }

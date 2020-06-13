@@ -154,7 +154,8 @@ public class PlayerInput : MonoBehaviour
 
 	void ShotServant()
 	{
-		if (m_maualCollisionAdministrator.hitVisibilityMarkPoint == null) return;
+		if (m_maualCollisionAdministrator.hitVisibilityMarkPoint == null
+			|| m_maualCollisionAdministrator.isBitFar) return;
 
 		int linkServantID = m_maualCollisionAdministrator.hitVisibilityMarkPoint.linkServantID;
 

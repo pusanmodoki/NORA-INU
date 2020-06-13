@@ -314,6 +314,7 @@ GameObject:
   - component: {fileID: 1018284382}
   - component: {fileID: 1018284386}
   - component: {fileID: 1018284387}
+  - component: {fileID: 1018284388}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -440,16 +441,28 @@ MonoBehaviour:
   m_deadZone: 0.1
   m_isInverse: 1
   m_interval: 0.2
-  m_isEnableInput: 0
   m_nowSelectIndex: 0
   m_selectedObjects:
   - {fileID: 1025287984313773801}
   - {fileID: 1303129065}
   - {fileID: 1096775308}
+  m_selectedObjectPresets: []
   m_isStartCallOffCursor: 1
   m_cursorObject: {fileID: 0}
   m_soundEnter: {fileID: 626942985}
   m_soundSelect: {fileID: 626942986}
+--- !u!114 &1018284388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1018284381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2531e6188e04b7745b979d55f3a41404, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1096775305
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -634,6 +647,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_isSelected: 0
   m_state: 0
+  m_triggerEvent: {fileID: 1018284388}
   m_selectedColor: {r: 1, g: 1, b: 1, a: 1}
   m_nonSelectedColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
   m_image: {fileID: 1096775309}
@@ -832,6 +846,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_isSelected: 0
   m_state: 1
+  m_triggerEvent: {fileID: 1018284388}
   m_selectedColor: {r: 1, g: 1, b: 1, a: 1}
   m_nonSelectedColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
   m_image: {fileID: 1303129066}
@@ -1042,6 +1057,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_isSelected: 0
   m_state: 4
+  m_triggerEvent: {fileID: 1018284388}
   m_selectedColor: {r: 1, g: 1, b: 1, a: 1}
   m_nonSelectedColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
   m_image: {fileID: 1025287984313773799}

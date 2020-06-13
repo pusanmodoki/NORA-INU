@@ -15,13 +15,18 @@ public class SelectWorldObject : BaseSelectedObject
 	MenuInput m_stageSelect = null;
 	[SerializeField]
 	SelectSoundPlayer m_soundPlayer = null;
-    //[SerializeField]
+	//[SerializeField]
 
+	int m_disableID = -1;
 
 	void Update()
 	{
-		if (isSelected)
-			menu.isEnableInput = !m_stageSlide.isSlide;
+		if (!isSelected) return;
+
+		if (m_stageSlide.isSlide && m_disableID == -1)
+			menu.StartDisableEvent(out m_disableID);
+		else if (!m_stageSlide.isSlide && m_disableID != -1)
+			menu.EndDisableEvent(m_disableID);
 	}
 
 	public override void OnEnter() { }

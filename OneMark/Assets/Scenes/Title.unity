@@ -1980,7 +1980,6 @@ MonoBehaviour:
   m_deadZone: 0.1
   m_isInverse: 1
   m_interval: 0.2
-  m_isEnableInput: 1
   m_nowSelectIndex: 0
   m_selectedObjects:
   - {fileID: 1554845373}
@@ -2293,6 +2292,11 @@ PrefabInstance:
       propertyPath: m_enterSound
       value: 
       objectReference: {fileID: 1153927025}
+    - target: {fileID: 1199573596558400175, guid: dc5241dce5f035b48ac129d658b5e729,
+        type: 3}
+      propertyPath: m_state
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7480241901153954629, guid: dc5241dce5f035b48ac129d658b5e729,
         type: 3}
       propertyPath: sceneName

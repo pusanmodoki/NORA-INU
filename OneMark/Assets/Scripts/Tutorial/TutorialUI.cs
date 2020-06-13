@@ -75,6 +75,25 @@ public  class TutorialUI : MonoBehaviour
 	int m_textLength = 0;
 	int m_textIndex = 0;
 
+	public void ForceEnd()
+	{
+		if (!isOnTutorial) return;
+
+		textPreset.ResetIsComplete();
+		isOnTutorial = false;
+		m_text.enabled = false;
+		PlayerAndTerritoryManager.instance.mainPlayer.input.EndDisableInput(m_disableInputID);
+		m_disableInputID = -1;
+
+		m_state = State.End;
+		m_subState = 0;
+		m_textIndex = 0;
+		m_text.text = "";
+		m_textBox.localScale = Vector3.zero;
+		m_aButton.localScale = Vector3.zero;
+		m_aButtonFirstPosition = m_aButton.position;
+		m_dogTransform.position = m_startPoint;
+	}
 	public void EnableTutorial(TutorialUIManager.TextPreset textPreset, bool isJumpStart)
 	{
 		TutorialUIManager.instance.dogAnimator.SetInteger(m_cStateID, m_cStateWait);

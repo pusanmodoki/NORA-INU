@@ -15,7 +15,7 @@ public class PauseSceneEscapeToReturn : TriggerEvent
 	{
 		if (key == cDefaultEnable)
 		{
-			m_input.ResetNowSelectIndex();
+	//		m_input.ResetNowSelectIndex();
 			AudioManager.instance.FreePlaySE(m_enterSE);
 			MainGameManager.instance.SetPauseStayFalse();
 		}

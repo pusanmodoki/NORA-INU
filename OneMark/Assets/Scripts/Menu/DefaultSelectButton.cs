@@ -11,7 +11,8 @@ public class DefaultSelectButton : BaseSelectedObject
 		GameStart,
 		NextStage,
 		Restart,
-		Return
+		Return,
+		QuitApplication
 	}
 
     [SerializeField]
@@ -81,6 +82,13 @@ public class DefaultSelectButton : BaseSelectedObject
 						gameObject.scene.name, false);
 					break;
 				}
+			case SceneTransType.QuitApplication:
+#if UNITY_EDITOR
+				UnityEditor.EditorApplication.isPlaying = false;
+#elif UNITY_STANDALONE
+				 UnityEngine.Application.Quit();
+#endif
+				break;
 		}
 
     }

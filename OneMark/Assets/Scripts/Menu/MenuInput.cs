@@ -27,10 +27,7 @@ public class MenuInput : MonoBehaviour
 
     [SerializeField, Tooltip("カーソル移動のインターバル")]
     float m_interval = 0.5f;
-
-	[SerializeField, Tooltip("入力受付状態")]
-	bool m_isEnableInput = true;
-
+	
     [SerializeField, Header("Selected Object Infomation"), Tooltip("参照してるインデックス")]
     int m_nowSelectIndex = 0;
 
@@ -54,15 +51,45 @@ public class MenuInput : MonoBehaviour
     AudioSource m_soundSelect = null;
 
 	Timer m_timer = new Timer();
+	Dictionary<string, int> m_useAnimationDisableEvents = new Dictionary<string, int>();
+	List<int> m_disableEvents = new List<int>();
+	int m_disableCounter = 0;
 
     public int objectCount { get { return m_selectedObjects.Count; } }
     public bool isIntervalInput { get; private set; } = true;
     public int nowSelectIndex { get { return m_nowSelectIndex; } }
-	public bool isEnableInput { get { return m_isEnableInput; } set { m_isEnableInput = value; } }
+	public bool isEnableInput { get { return m_disableEvents.Count == 0; } }
 
     public List<BaseSelectedObject> selectedObjects { get { return m_selectedObjects; } }
 
-	public void ResetNowSelectIndex() { m_nowSelectIndex = 0; }
+	public void StartAnimationDisableEvent(string key)
+	{
+		if (m_useAnimationDisableEvents.ContainsKey(key)) return;
+
+		int outID;
+		StartDisableEvent(out outID);
+		m_useAnimationDisableEvents.Add(key, outID);
+	}
+	public void EndAnimationDisableEvent(string key)
+	{
+		if (!m_useAnimationDisableEvents.ContainsKey(key)) return;
+
+		EndDisableEvent(m_useAnimationDisableEvents[key]);
+		m_useAnimationDisableEvents.Remove(key);
+	}
+
+
+	public void StartDisableEvent(out int disableID)
+	{
+		m_disableEvents.Add(m_disableCounter);
+		disableID = m_disableCounter++;
+	}
+	public void EndDisableEvent(int disableID)
+	{
+		if (m_disableEvents.Contains(disableID))	
+			m_disableEvents.Remove(disableID);
+	}
+
 	public void ForceSelect(int index)
 	{
 		if (index >= m_selectedObjects.Count) return;
@@ -80,18 +107,22 @@ public class MenuInput : MonoBehaviour
 	}
 
     private void Start()
-    {
-        foreach(var obj in m_selectedObjects)
+	{
+		m_nowSelectIndex = 0;
+
+		foreach (var obj in m_selectedObjects)
         {
 			if (m_isStartCallOffCursor) obj.OffCursor();
             obj.SetMenu(this);
         }
-        m_selectedObjects[nowSelectIndex].AwakeCursor();
 
-        if (m_cursorObject)
+		m_selectedObjects[nowSelectIndex].AwakeCursor();
+
+		if (m_cursorObject)
         {
             m_cursorObject.SetMenu(this);
-        }
+			m_cursorObject.SelectUpdate(0);
+		}
     }
 
 
@@ -104,9 +135,19 @@ public class MenuInput : MonoBehaviour
 		else { CheckInputIntervalTimer(); }
         Direct();
     }
+	void OnEnable()
+	{
+		m_cursorObject?.SelectUpdate(0);
+        m_selectedObjects[nowSelectIndex].AwakeCursor();
+	}
+	void OnDisable()
+	{
+		m_selectedObjects[m_nowSelectIndex].OffCursor();
+		m_selectedObjects[m_nowSelectIndex].isSelected = false;
+	}
 
 
-    void Select()
+	void Select()
     {
         int prevIndex = m_nowSelectIndex;
 		int inputValue = MoveInputCheck();
@@ -181,13 +222,6 @@ public class MenuInput : MonoBehaviour
 			m_nowSelectIndex = objectCount - 1;
 		}
 	}
-    
-
-    void SetActiveInput(int _isInput)
-    {
-		if(_isInput == 0) { isEnableInput = false; }
-		else { isEnableInput = true; }
-    }
 
 	void OnInputInterval()
 	{

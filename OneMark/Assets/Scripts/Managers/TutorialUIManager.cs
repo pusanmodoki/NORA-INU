@@ -60,6 +60,11 @@ public class TutorialUIManager : MonoBehaviour
 			if (m_isEnableTriggerEvent)
 				instance.m_onTutorialTriggerEvent.OnTrigger(m_triggerEventKey);
 		}
+
+		public void ResetIsComplete()
+		{
+			isComplete = false;
+		}
 	}
 
 	/// <summary>Static instance</summary>
@@ -84,10 +89,22 @@ public class TutorialUIManager : MonoBehaviour
 	TextPreset[] m_textPresets = null; 
 
 	List<int> m_onWaitTutorials = new List<int>();
+	bool m_isForceEnd = false;
 
 	public void GameStart()
 	{
 		m_tutorialConditions.isGameStart = true;
+	}
+	public void ResetTutorial()
+	{
+		for (int i = 0; i < m_textPresets.Length; ++i)
+			m_textPresets[i].ResetIsComplete();
+	}
+	public void ForceEndTutorial()
+	{
+		m_onWaitTutorials.Clear();
+		m_tutorialUI.ForceEnd();
+		m_isForceEnd = true;
 	}
 
 	/// <summary>[Start]</summary>
@@ -118,11 +135,15 @@ public class TutorialUIManager : MonoBehaviour
 
 			Destroy(gameObject);
 		}
+
+		instance.m_isForceEnd = false;
 	}
 
     // Update is called once per frame
     void Update()
     {
+		if (m_isForceEnd) return;
+
 		for (int i = 0, length = m_textPresets.Length; i < length; ++i)
 		{
 			if (!m_onWaitTutorials.Contains(i) && m_textPresets[i].IsCondition(m_tutorialConditions))
