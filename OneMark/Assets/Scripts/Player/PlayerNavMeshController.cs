@@ -79,14 +79,15 @@ public class PlayerNavMeshController : MonoBehaviour
 	{
 		if (m_player.manualCollisionAdministrator.isTerritoryExit)
 		{
-			if (CollisionTerritory.HitCircleTerritory(m_player.territorialArea, transform.position, 
-				m_player.maxPointMoveDistance * 2.0f 
-				+ Vector3.Distance(m_oldFixedPosition, transform.position) * 2.0f 
-				+ m_player.manualCollisionAdministrator.collisionRadius))
+			float distance = (m_player.maxPointMoveDistance * 2.0f
+				+ Vector3.Distance(m_oldFixedPosition, transform.position) * 2.0f
+				+ m_player.manualCollisionAdministrator.collisionRadius);
+			if ((m_player.shortestTerritoryBorderPoint.ToYManual(transform.position.y)
+				- transform.position).sqrMagnitude < distance * distance)
 			{
-				navMeshAgent.Warp(m_player.shortestTerritoryBorderPoint + 
+				navMeshAgent.Warp(m_player.shortestTerritoryBorderPoint.ToYManual(transform.position.y) + 
 					Vector3.Cross((m_player.territorialArea[m_player.shortestTerritoryPointIndex1] 
-					- m_player.territorialArea[m_player.shortestTerritoryPointIndex0]).normalized, Vector3.up).normalized * 0.1f);
+					- m_player.territorialArea[m_player.shortestTerritoryPointIndex0]).normalized, Vector3.up).normalized * 0.5f);
 				m_player.manualCollisionAdministrator.ResetTerritoryHitInfo(true);
 			}
 		}

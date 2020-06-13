@@ -52,6 +52,8 @@ public class MoveMarkPoint : BaseMarkPoint
 
 	public void AnimationEscapeCallback()
 	{
+		if (!m_navMeshAgent.enabled) return; 
+
 		if (m_state == State.MoveStart && !m_isWaitMarking)
 		{
 			m_navMeshAgent.isStopped = false;
@@ -68,9 +70,10 @@ public class MoveMarkPoint : BaseMarkPoint
 	/// </summary>
 	public override void UpdatePoint()
 	{
-		if (m_targetPoints == null || m_targetPoints.Length <= 1) return;
+		if (m_targetPoints == null || m_targetPoints.Length <= 1 || !m_navMeshAgent.enabled) return;
 		
-		if (MainGameManager.instance.resultState != MainGameManager.ResultState.Null)
+		if (MainGameManager.instance.resultState == MainGameManager.ResultState.GameEnd
+			|| MainGameManager.instance.resultState == MainGameManager.ResultState.GameClear)
 		{
 			m_navMeshAgent.enabled = false;
 			return;
