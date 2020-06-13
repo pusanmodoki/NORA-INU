@@ -23,6 +23,7 @@ public class MainGameManager : MonoBehaviour
 	public bool isPauseStay { get; private set; } = false; 
 	public bool isPauseEnter { get { return Time.frameCount == m_pauseEnterFrame; } }
 	public bool isPauseExit { get { return Time.frameCount == m_pauseExitFrame; } }
+	public bool isGameEnd { get; private set; } = false;
 	public void SetPauseStayFalse() { isPauseStay = false; m_pauseExitFrame = Time.frameCount + 1; }
 
 	[SerializeField]
@@ -35,7 +36,6 @@ public class MainGameManager : MonoBehaviour
 	float m_waitGameOverSeconds = 3.0f;
 
 	ReadOnlyDictionary<int, BaseCheckPoint> m_allCheckPoints = null;
-	bool m_isEnd = false;
 	
     FollowObject m_mainCamera = null;
 	Timer m_gameOverWaitTimer = new Timer();
@@ -73,7 +73,7 @@ public class MainGameManager : MonoBehaviour
 	{
 		bool isOldExit = isPauseExit;
 		
-		if (m_isEnd || isPauseStay)
+		if (isGameEnd || isPauseStay)
 			return;
 
 		if (resultState == ResultState.Null)
@@ -142,24 +142,22 @@ public class MainGameManager : MonoBehaviour
 
 	void GameClear()
 	{
-        PlayerAndTerritoryManager.instance.mainPlayer.input.GameClearAnimation();
-		PlayerAndTerritoryManager.instance.mainPlayer.areaBorderMesh.meshRenderer.enabled = false;
+		PlayerAndTerritoryManager.instance.mainPlayer.managerIntermediary.GameEnd();
 		AudioManager.instance.FadeoutAndChangeBgm("MoveResult", "GameClear");
 		OneMarkSceneManager.instance.SetActiveAccessoryScene("GameClear", true);
 		// ResultCall.GameClear();
 		m_mainCamera.ResultFlg();
-		m_isEnd = true;
+		isGameEnd = true;
 		
 	}
 
 	void GameOver()
 	{
-        PlayerAndTerritoryManager.instance.mainPlayer.input.GameOverAnimation();
-		PlayerAndTerritoryManager.instance.mainPlayer.areaBorderMesh.meshRenderer.enabled = false;
+		PlayerAndTerritoryManager.instance.mainPlayer.managerIntermediary.GameEnd();
 		AudioManager.instance.FadeoutAndChangeBgm("MoveResult", "GameOver");
 		OneMarkSceneManager.instance.SetActiveAccessoryScene("GameOver", true);
 		m_mainCamera.ResultFlg();
 		//  ResultCall.GameOver();
-		m_isEnd = true;
+		isGameEnd = true;
 	}
 }

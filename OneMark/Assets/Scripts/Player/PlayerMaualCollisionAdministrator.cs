@@ -43,6 +43,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		public int instanceID;
 	}
 
+	public TargetMarker targetMarker { get { return m_targetMarker; } }
 	public float collisionRadius { get { return m_collisionRadius; } }
 	/// <summary>ポイントタイマーロック判定に使用する距離</summary>
 	public float personalDistance { get { return m_personalRadius; } }
@@ -272,6 +273,8 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	/// <summary>[Update]</summary>
 	void Update()
 	{
+		if (MainGameManager.instance.isGameEnd) return;
+
 		//判定間隔計算
 		if (m_judgmentTimer.elapasedTime >= m_judgmentInterval)
 		{
@@ -311,6 +314,8 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	/// <summary>[FixedUpdate]</summary>
 	private void FixedUpdate()
 	{
+		if (MainGameManager.instance.isGameEnd) return;
+		
 		//負荷軽減
 		Vector3 position = transform.position;
 		//Territoryチェック
@@ -757,7 +762,9 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	/// <summary>[OnDrawGizmos]</summary>
 	void OnDrawGizmos()
 	{
-		if (UnityEditor.EditorApplication.isPlaying)
+		if (m_playerInfo == null) return;
+
+		if (UnityEditor.EditorApplication.isPlaying && m_playerInfo != null)
 			Gizmos.DrawCube(m_playerInfo.shortestTerritoryBorderPoint, new Vector3(0.1f, 10, 0.1f));
 
 		if (!m_dIsDrawGizmos) return;

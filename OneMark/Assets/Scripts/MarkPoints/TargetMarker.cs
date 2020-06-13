@@ -8,7 +8,6 @@ public class TargetMarker : MonoBehaviour
     ParticleSystem m_lineEffect = null;
 
     private List<MeshRenderer> m_renderers = new List<MeshRenderer>();
-	Quaternion rotation = Quaternion.identity;
 
 	Vector3 m_targetPosition = Vector3.zero;
 	bool m_isEnabled = false;
@@ -20,8 +19,6 @@ public class TargetMarker : MonoBehaviour
         {
             m_renderers.Add(transform.GetChild(i).GetComponent<MeshRenderer>());
         }
-
-		rotation = transform.rotation;
 	}
 
 	// Update is called once per frame
@@ -33,10 +30,12 @@ public class TargetMarker : MonoBehaviour
         if (m_isEnabled)
         {
             float distance = Vector3.Distance(transform.position, m_targetPosition);
-            emission.rateOverTime = distance;
+           // emission.rateOverTime = Mathf.Clamp(distance / 3, 1.0f, 100.0f);
             main.startSpeed = distance;
-            m_lineEffect.transform.LookAt(m_targetPosition);
-        }
+
+			m_lineEffect.transform.LookAt(m_targetPosition);
+			main.startRotation = m_lineEffect.transform.eulerAngles.y * Mathf.Deg2Rad;
+		}
 
         //TurningEffect();
     }

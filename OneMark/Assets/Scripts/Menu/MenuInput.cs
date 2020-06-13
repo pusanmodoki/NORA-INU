@@ -137,11 +137,16 @@ public class MenuInput : MonoBehaviour
     }
 	void OnEnable()
 	{
+		if (m_selectedObjects[nowSelectIndex].menu == null)
+			return;
 		m_cursorObject?.SelectUpdate(0);
         m_selectedObjects[nowSelectIndex].AwakeCursor();
 	}
 	void OnDisable()
 	{
+		if (m_selectedObjects[nowSelectIndex].menu == null)
+			return;
+
 		m_selectedObjects[m_nowSelectIndex].OffCursor();
 		m_selectedObjects[m_nowSelectIndex].isSelected = false;
 	}

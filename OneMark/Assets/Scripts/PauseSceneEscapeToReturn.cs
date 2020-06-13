@@ -5,8 +5,6 @@ using UnityEngine;
 public class PauseSceneEscapeToReturn : TriggerEvent
 {
 	[SerializeField]
-	MenuInput m_input = null;
-	[SerializeField]
 	AudioSource m_enterSE = null;
 
 	bool m_isStart = false;

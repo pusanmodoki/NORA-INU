@@ -20,7 +20,11 @@ public class SpriteSelectButton : BaseSelectedObject
 		if (m_stageSlide.isSlide && m_disableID == -1)
 			menu.StartDisableEvent(out m_disableID);
 		else if (!m_stageSlide.isSlide && m_disableID != -1)
+		{
 			menu.EndDisableEvent(m_disableID);
+			m_disableID = -1;
+		}
+	
 	}
 
     public override void OnEnter()

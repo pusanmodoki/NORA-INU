@@ -31,10 +31,10 @@ Transform:
   m_LocalPosition: {x: 94.32922, y: 262.56293, z: -2.7303545}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 6127067326435627834}
-  - {fileID: 6127067326747008148}
-  - {fileID: 6127067327089823938}
   - {fileID: 6127067326352846201}
+  - {fileID: 6127067327089823938}
+  - {fileID: 6127067326747008148}
+  - {fileID: 6127067326435627834}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -54,13 +54,14 @@ MonoBehaviour:
   m_inputDirected: Fire1
   m_deadZone: 0.1
   m_isInverse: 0
-  m_interval: 0.5
+  m_interval: 0.25
   m_nowSelectIndex: 0
   m_selectedObjects:
   - {fileID: 6127067326435627814}
   - {fileID: 6127067326747008144}
   - {fileID: 6127067327089823950}
   - {fileID: 6127067326352846181}
+  m_selectedObjectPresets: []
   m_isStartCallOffCursor: 1
   m_cursorObject: {fileID: 0}
   m_soundEnter: {fileID: 0}
@@ -75,7 +76,7 @@ Animator:
   m_GameObject: {fileID: 3184974269646702505}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d69456ef15e93484f834fd2ca316380b, type: 2}
+  m_Controller: {fileID: 9100000, guid: 34114d1f5b839714db3abd689c5bf430, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -144,7 +145,7 @@ RectTransform:
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 148301872151277139}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -202,7 +203,6 @@ MonoBehaviour:
   m_isSelected: 0
   m_image: {fileID: 6127067326352846183}
   m_stageSlide: {fileID: 0}
-  m_soundPlayer: {fileID: 0}
 --- !u!1 &6127067326435627835
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,7 +234,7 @@ RectTransform:
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 148301872151277139}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -292,7 +292,6 @@ MonoBehaviour:
   m_isSelected: 0
   m_image: {fileID: 6127067326435627832}
   m_stageSlide: {fileID: 0}
-  m_soundPlayer: {fileID: 0}
 --- !u!1 &6127067326747008149
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,7 +323,7 @@ RectTransform:
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 148301872151277139}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -382,7 +381,6 @@ MonoBehaviour:
   m_isSelected: 0
   m_image: {fileID: 6127067326747008146}
   m_stageSlide: {fileID: 0}
-  m_soundPlayer: {fileID: 0}
 --- !u!1 &6127067327089823939
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,7 +412,7 @@ RectTransform:
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 148301872151277139}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -472,4 +470,3 @@ MonoBehaviour:
   m_isSelected: 0
   m_image: {fileID: 6127067327089823936}
   m_stageSlide: {fileID: 0}
-  m_soundPlayer: {fileID: 0}

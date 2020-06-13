@@ -57,6 +57,13 @@ public class PlayerManagerIntermediary : MonoBehaviour
 	/// <summary>初期ポイントがポーズ中か否か</summary>
 	bool m_isPauseFirstPoint = false;
 
+	public void GameEnd()
+	{
+		m_input.GameClearAnimation();
+		m_areaBorderMesh.meshRenderer.enabled = false;
+		m_playerMaualCollisionAdministrator.targetMarker.DisableMarker();
+	}
+
 	/// <summary>
 	/// [ChangeTerritory]
 	/// テリトリー変更のコールバック
