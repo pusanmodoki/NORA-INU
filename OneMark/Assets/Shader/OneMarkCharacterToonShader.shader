@@ -42,7 +42,7 @@
 						fixed4 c = tex2D(_MainTex, IN.uv_MainTex);
 						o.Albedo = c.rgb;
 						o.Alpha = c.a;
-						o.Normal = UnpackNormal(tex2D(_BumpMap, IN.uv_BumpMap));
+						//o.Normal = UnpackNormal(tex2D(_BumpMap, IN.uv_BumpMap));
 				}
 				ENDCG
 					Cull Back
@@ -78,7 +78,7 @@
 					fixed4 c = tex2D(_MainTex, IN.uv_MainTex);
 					o.Albedo = c.rgb;
 					o.Alpha = c.a;
-					o.Normal = UnpackNormal(tex2D(_BumpMap, IN.uv_BumpMap));
+					//o.Normal = UnpackNormal(tex2D(_BumpMap, IN.uv_BumpMap));
 				}
 				ENDCG
 	}
