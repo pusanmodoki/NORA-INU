@@ -75,8 +75,11 @@ public class TutorialConditions : MonoBehaviour
 				return OneMarkSceneManager.instance.nowStageSceneIndex.x == 0;
 			case Conditions.MarkPointChikaChika:
 				if (PlayerAndTerritoryManager.instance == null) return false;
-				foreach(var point in PlayerAndTerritoryManager.instance.mainPlayer.allTerritorys)
-					if (point.isLinked && point.effectiveCounter01 <= 0.5f) return true;
+				foreach (var point in PlayerAndTerritoryManager.instance.mainPlayer.allTerritorys)
+					if (point.isLinked && point.effectiveCounter01 < 0.5f)
+					{
+						return true;
+					}
 				return false;
 			case Conditions.ServantEmpty:
 				foreach (var servant in ServantManager.instance.servantByMainPlayer)

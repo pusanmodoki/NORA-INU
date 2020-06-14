@@ -385,7 +385,7 @@ MonoBehaviour:
     m_triggerEventKey: 
     m_orConditions:
     - m_andConditions: 0100000005000000
-  - m_text: "\u4ECA\u5EA6\uFF12\u5339\u30E2\u30B0\u30E9\u304C\u3044\u308B\u3088\uFF01\n\u4E0A\u624B\u306B\u56F2\u3093\u3067\u307F\u3088\u3046\uFF01"
+  - m_text: "\u4ECA\u5EA6\u306F\uFF12\u5339\u30E2\u30B0\u30E9\u304C\u3044\u308B\u3088\uFF01\n\u4E0A\u624B\u306B\u56F2\u3093\u3067\u307F\u3088\u3046\uFF01"
     m_isEnableTriggerEvent: 0
     m_triggerEventKey: 
     m_orConditions:
