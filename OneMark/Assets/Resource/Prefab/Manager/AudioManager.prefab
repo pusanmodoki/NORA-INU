@@ -52,8 +52,8 @@ MonoBehaviour:
     m_clip: {fileID: 8300000, guid: 6ef43763567ff0c468317822412af461, type: 3}
     m_volume: 0.35
   - m_uniqueKey: Stage1
-    m_clip: {fileID: 8300000, guid: 42a45b907edca9946a5b0d43e5c34a04, type: 3}
-    m_volume: 0.19
+    m_clip: {fileID: 8300000, guid: 60a8af1f0f381df409224f9d8a6224f3, type: 3}
+    m_volume: 0.25
   - m_uniqueKey: GameClear
     m_clip: {fileID: 8300000, guid: 4bc2b7d82c622b34d8b2f638354129e7, type: 3}
     m_volume: 0.35
@@ -67,10 +67,10 @@ MonoBehaviour:
     m_clip: {fileID: 8300000, guid: 4e45d69f9942cad46b340a9bdc1cb0a3, type: 3}
     m_volume: 0.45
   - m_uniqueKey: Stage2
-    m_clip: {fileID: 8300000, guid: 478999a8516364642b7f2f5d07d0a6c0, type: 3}
-    m_volume: 0.1
+    m_clip: {fileID: 8300000, guid: 42a45b907edca9946a5b0d43e5c34a04, type: 3}
+    m_volume: 0.3
   - m_uniqueKey: Stage3
-    m_clip: {fileID: 8300000, guid: ad5106bab9920394b89bd5cdf21762fd, type: 3}
+    m_clip: {fileID: 8300000, guid: 223d30b7d3dc8694ba49b53fce2fbc31, type: 3}
     m_volume: 0.4
   - m_uniqueKey: Stage4
     m_clip: {fileID: 8300000, guid: 43df3beef321a5447a6c034db96cc2b4, type: 3}
