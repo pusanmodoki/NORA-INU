@@ -110,13 +110,13 @@ MonoBehaviour:
     m_size: {x: 1, y: 0.1, z: 0.1}
     m_distance: 2
   m_firstJumpTarget: {x: 0, y: 3.91, z: -0.82}
-  m_firstJumpSeconds: 1.5
+  m_firstJumpSeconds: 1
   m_rotationSpeed: 3
-  m_startSlidingSpeed: 3
+  m_startSlidingSpeed: 5
   m_slidingSpeed: 5
   m_secondJumpStartPoint: {x: 0, y: 0.48, z: 2.45}
-  m_secondJumpStartPointRadius: 1
-  m_secondJumpSeconds: 1.5
+  m_secondJumpStartPointRadius: 1.5
+  m_secondJumpSeconds: 1
   m_dIsDrawGizmos: 1
   m_dDrawGizmosPlayerObjectName: Player
 --- !u!114 &2533053561587699611
