@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8247258726267586114}
   - component: {fileID: 4416330385828465527}
   - component: {fileID: 109858693215818754}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Criff
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 3838473279462455576}
   - component: {fileID: 5790895519721703414}
   - component: {fileID: 2470051739763504977}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Criff (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
