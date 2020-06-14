@@ -16,6 +16,8 @@ public class PlayerInput : MonoBehaviour
 	static readonly int m_cCallID = Animator.StringToHash("Call");
 	static readonly int m_cResultID = Animator.StringToHash("Result");
 
+	static readonly int m_cToEnableID = Animator.StringToHash("ToEnable");
+
 	public Vector3 moveInput { get { return m_moveInput; } }
 	public bool isEnableInput { get; set; } = true;
 	public bool isEnableActionInput { get; set; } = true;
@@ -31,6 +33,8 @@ public class PlayerInput : MonoBehaviour
 	/// </summary>
 	[SerializeField]
     private Animator m_animator = null;
+	[SerializeField]
+	Animator m_cameonFukidashiAnimator = null;
     /// <summary>
     /// プレイヤーの状態
     /// </summary>
@@ -51,6 +55,7 @@ public class PlayerInput : MonoBehaviour
 	Timer m_shotTimers = new Timer();
 	int m_disableCounter = 0;
 	int m_disableActionCounter = 0;
+	int m_playReturnSECounter = 0;
 
 	public void GameClearAnimation()
 	{
@@ -95,6 +100,9 @@ public class PlayerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
 	{
+		if (m_playReturnSECounter > 0 && m_sePlayer.PlaySE(0))
+			--m_playReturnSECounter;
+
 		MoveInput();
 
 		ShotInput();
@@ -165,8 +173,10 @@ public class PlayerInput : MonoBehaviour
 			if (ServantManager.instance.allServants[linkServantID].ComeBecauseEndOfMarking(
 				m_maualCollisionAdministrator.IsHitInstructionsReturnDog(ServantManager.instance.allServants[linkServantID])))
 			{
+				m_cameonFukidashiAnimator.SetTrigger(m_cToEnableID);
 				m_animator.SetTrigger(m_cCallID);
 				m_sePlayer.PlaySE(0);
+				m_playReturnSECounter = 1;
 				m_shotTimers.Start();
 			}
 		}

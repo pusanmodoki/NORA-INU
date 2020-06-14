@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8941065629596136726}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: Rotate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3999491918817270145}
   - component: {fileID: 3065427794344752399}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: Animation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7607028193250475817}
   - component: {fileID: 7607028193250475816}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7607028193878634115}
   - component: {fileID: 7607028193878634116}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -255,8 +255,8 @@ GameObject:
   - component: {fileID: 7607028194092740347}
   - component: {fileID: 4888233655016182295}
   - component: {fileID: 7316109129863863873}
-  m_Layer: 0
-  m_Name: markPointFukidashi
+  m_Layer: 22
+  m_Name: MarkPointFukidashi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -311,7 +311,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7607028194118677686}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: fukidashi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,7 +345,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7607028194834257157}
   - component: {fileID: 7607028194834257156}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: call
   m_TagString: Untagged
   m_Icon: {fileID: 0}
