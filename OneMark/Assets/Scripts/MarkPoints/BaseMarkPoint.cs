@@ -260,15 +260,23 @@ public abstract class BaseMarkPoint : MonoBehaviour
 
 		if (isForceAscendingEffective && effectiveCounter < effectiveMaxLimiter)
 		{
-			ParticleSystem.EmissionModule emission = m_effectControler.GetParticleSystem(m_gaugeEffectName).emission;
+			ParticleSystem particle = m_effectControler.GetParticleSystem(m_gaugeEffectName);
 
-			emission.rateOverTime = 11.0f;
+			if (particle != null)
+			{
+				var emission = particle.emission;
+				emission.rateOverTime = 11.0f;
+			}
 		}
 		else
 		{
-			ParticleSystem.EmissionModule emission = m_effectControler.GetParticleSystem(m_gaugeEffectName).emission;
+			ParticleSystem particle = m_effectControler.GetParticleSystem(m_gaugeEffectName);
 
-			emission.rateOverTime = 0.0f;
+			if (particle != null)
+			{
+				var emission = particle.emission;
+				emission.rateOverTime = 0.0f;
+			}
 		}
 
 		if (isTarget && !m_goFukidashiObject.isEnableEffect && linkServantID == -1)
