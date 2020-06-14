@@ -7,10 +7,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3467774738872016672, guid: db18e744c1781784e868ecf77b3ed2c8,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 388919
+      objectReference: {fileID: 0}
     - target: {fileID: 3467774738872016675, guid: db18e744c1781784e868ecf77b3ed2c8,
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5661524229986727167, guid: db18e744c1781784e868ecf77b3ed2c8,
+        type: 3}
+      propertyPath: m_Name
+      value: FrontCamera
       objectReference: {fileID: 0}
     - target: {fileID: 7195776833592062121, guid: db18e744c1781784e868ecf77b3ed2c8,
         type: 3}

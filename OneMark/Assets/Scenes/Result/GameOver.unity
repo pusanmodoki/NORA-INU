@@ -315,6 +315,7 @@ GameObject:
   - component: {fileID: 1018284386}
   - component: {fileID: 1018284387}
   - component: {fileID: 1018284388}
+  - component: {fileID: 1018284389}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -446,7 +447,6 @@ MonoBehaviour:
   - {fileID: 1025287984313773801}
   - {fileID: 1303129065}
   - {fileID: 1096775308}
-  m_selectedObjectPresets: []
   m_isStartCallOffCursor: 1
   m_cursorObject: {fileID: 0}
   m_soundEnter: {fileID: 626942985}
@@ -463,6 +463,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2531e6188e04b7745b979d55f3a41404, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1018284389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1018284381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 966aff00684ff654fa8c7b363e0c8ab5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_menuInput: {fileID: 1018284387}
+  m_disableStageAndIndex:
+  - {x: 0, y: 1, z: 1}
+  - {x: 0, y: 1, z: 2}
+  - {x: 0, y: 2, z: 1}
+  - {x: 0, y: 2, z: 2}
+  - {x: 0, y: 3, z: 1}
+  - {x: 0, y: 3, z: 2}
+  - {x: 4, y: 4, z: 0}
 --- !u!1001 &1096775305
 PrefabInstance:
   m_ObjectHideFlags: 0

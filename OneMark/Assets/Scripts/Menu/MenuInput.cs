@@ -4,15 +4,6 @@ using UnityEngine;
 
 public class MenuInput : MonoBehaviour
 {
-	[System.Serializable]
-	public class SelectedObjectPreset
-	{
-		[SerializeField]
-		List<BaseSelectedObject> m_list = new List<BaseSelectedObject>();
-
-		int objectCount { get { return m_list.Count; } }
-	}
-
     [SerializeField, Header("Input"), Tooltip("カーソル移動ボタン")]
     string m_inputMove = "Vertical";
 
@@ -33,9 +24,6 @@ public class MenuInput : MonoBehaviour
 
     [SerializeField, Tooltip("選択オブジェクトのリスト（ボタンとか）")]
     List<BaseSelectedObject> m_selectedObjects = new List<BaseSelectedObject>();
-
-	[SerializeField]
-	List<SelectedObjectPreset> m_selectedObjectPresets = new List<SelectedObjectPreset>();
 
 	[SerializeField]
 	bool m_isStartCallOffCursor = true;
@@ -88,6 +76,14 @@ public class MenuInput : MonoBehaviour
 	{
 		if (m_disableEvents.Contains(disableID))	
 			m_disableEvents.Remove(disableID);
+	}
+
+	public void RemoveMenu(int index)
+	{
+		if (m_selectedObjects.Count <= index) return;
+
+		m_selectedObjects[index].gameObject.SetActive(false);
+		m_selectedObjects.RemoveAt(index);
 	}
 
 	public void ForceSelect(int index)

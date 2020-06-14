@@ -4,13 +4,23 @@ using UnityEngine;
 
 public class TargetMarker : MonoBehaviour
 {
+	public bool isEnableMarker { get; private set; } = false;
+
     [SerializeField]
     ParticleSystem m_lineEffect = null;
+	[SerializeField]
+	Canvas m_crossCanvas = null;
 
-    private List<MeshRenderer> m_renderers = new List<MeshRenderer>();
-
+    List<MeshRenderer> m_renderers = new List<MeshRenderer>();
 	Vector3 m_targetPosition = Vector3.zero;
-	bool m_isEnabled = false;
+	float m_crossDistance = 0.0f;
+	bool m_isCrossToTarget = false;
+
+
+	public void SetReallyVisibilityDistance(float set)
+	{
+		m_crossDistance = set;
+	}
 
 	// Start is called before the first frame update
 	void Start()
@@ -19,6 +29,9 @@ public class TargetMarker : MonoBehaviour
         {
             m_renderers.Add(transform.GetChild(i).GetComponent<MeshRenderer>());
         }
+
+		m_crossCanvas.worldCamera = Camera.main;
+		m_crossCanvas.enabled = false;
 	}
 
 	// Update is called once per frame
@@ -27,14 +40,24 @@ public class TargetMarker : MonoBehaviour
         ParticleSystem.EmissionModule emission = m_lineEffect.emission;
         ParticleSystem.MainModule main = m_lineEffect.main;
 
-        if (m_isEnabled)
-        {
-            float distance = Vector3.Distance(transform.position, m_targetPosition);
-           // emission.rateOverTime = Mathf.Clamp(distance / 3, 1.0f, 100.0f);
-            main.startSpeed = distance;
+		if (isEnableMarker)
+		{
+			float distance = Vector3.Distance(transform.position, m_targetPosition);
+			// emission.rateOverTime = Mathf.Clamp(distance / 3, 1.0f, 100.0f);
+			main.startSpeed = distance;
 
 			m_lineEffect.transform.LookAt(m_targetPosition);
 			main.startRotation = m_lineEffect.transform.eulerAngles.y * Mathf.Deg2Rad;
+
+			if (m_crossCanvas.enabled & m_isCrossToTarget)
+			{
+				m_crossCanvas.transform.position = transform.position.ToYZero() +
+					((m_targetPosition - transform.position).normalized * m_crossDistance).ToYManual(m_targetPosition.y);
+			}
+			else if (m_crossCanvas.enabled)
+			{
+				m_crossCanvas.transform.position = m_targetPosition;
+			}
 		}
 
         //TurningEffect();
@@ -57,20 +80,30 @@ public class TargetMarker : MonoBehaviour
 		m_lineEffect.Clear();
 	}
 
+	public void EnableCross(bool isCrossToTarget)
+	{
+		if (!m_crossCanvas.enabled) m_crossCanvas.enabled = true;
+		m_isCrossToTarget = isCrossToTarget;
+	}
+	public void DisableCross()
+	{
+		if (m_crossCanvas.enabled) m_crossCanvas.enabled = false;
+	}
+
 	public void EnableMarker(Vector3 target)
 	{
-		if (!m_isEnabled) m_lineEffect.Play();
+		if (!isEnableMarker) m_lineEffect.Play();
 
 		m_targetPosition = target;
-		m_isEnabled = true;
+		isEnableMarker = true;
 	}
 	public void DisableMarker()
 	{
-		if (m_isEnabled) m_lineEffect.Stop();
+		if (isEnableMarker) m_lineEffect.Stop();
 
 		m_lineEffect.Clear();
 
-		m_isEnabled = false;
+		isEnableMarker = false;
 	}
 
 }

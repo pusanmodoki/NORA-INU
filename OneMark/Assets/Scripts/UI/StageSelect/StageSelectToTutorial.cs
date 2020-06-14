@@ -29,9 +29,6 @@ public class StageSelectToTutorial : MonoBehaviour
 	[SerializeField, Space]
 	MenuInput[] m_thisSceneInputs = null;
 
-	[SerializeField, Header("Debug Only")]
-	float m_dFillAmount = 0.0f;
-
 	int[] m_thisSceneInputDisableIDs = null;
 	Timer m_timer = new Timer();
 	bool m_isMove = false;
@@ -89,10 +86,5 @@ public class StageSelectToTutorial : MonoBehaviour
 				m_thisSceneInputDisableIDs[i] = outID;
 			}
 		}
-
-#if UNITY_EDITOR
-		if (m_timer.isStart) m_dFillAmount = m_timer.elapasedTime / m_moveInputSeconds;
-		else m_dFillAmount = 0.0f;
-#endif
 	}
 }

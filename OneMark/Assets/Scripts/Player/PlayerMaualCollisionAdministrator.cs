@@ -269,6 +269,8 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	{
 		//Timer start
 		m_judgmentTimer.Start();
+
+		m_targetMarker.SetReallyVisibilityDistance(m_reallyVisibilityDistance);
 	}
 	/// <summary>[Update]</summary>
 	void Update()
@@ -406,8 +408,16 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 			isVisibilityExit = (isOldStay ^ false) & isOldStay;
 			isVisibilityStay = false;
 			isBitFar = true;
+			m_targetMarker.EnableCross(true);
 		}
-		else isBitFar = false;
+		else
+		{
+			isBitFar = false;
+			if (hitVisibilityMarkPoint == null && m_targetMarker.isEnableMarker)
+				m_targetMarker.EnableCross(false);
+			else
+				m_targetMarker.DisableCross();
+		}
 	}
 
 	/// <summary>
