@@ -293,7 +293,9 @@ public class DogOffMeshLinkController
 		//destination保存
 		Vector3 destination = m_navMeshAgent.destination;
 		//Warp
-		m_navMeshAgent.Warp(m_transform.position);
+		NavMeshHit hit = default;
+		NavMesh.SamplePosition(m_transform.position, out hit, 100, NavMesh.AllAreas);
+		m_navMeshAgent.Warp(hit.position);
 		//destination再設定
 		m_navMeshAgent.destination = destination;
 	}

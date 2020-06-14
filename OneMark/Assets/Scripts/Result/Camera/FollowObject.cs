@@ -29,13 +29,15 @@ public class FollowObject : MonoBehaviour
 	[SerializeField]
 	float m_startCameraWaitSeconds = 2.5f;
 
-    [Tooltip("リザルト判定")]
+	[Tooltip("リザルト判定")]
     public bool resultFlg = false;
 
 	[SerializeField]
 	float m_resultCameraMoveSeconds = 0.5f;
+	[SerializeField]
+	float m_resultCameraSecondMoveSeconds = 0.5f;
 
-    [SerializeField]
+	[SerializeField]
     MainCameraStartSet m_cameraSrart = null;
 
 	Timer m_moveTimer = new Timer();
@@ -93,23 +95,43 @@ public class FollowObject : MonoBehaviour
         // リザルト
         if (resultFlg == true) 
         {
-            // プレイヤーの向き
-            playerObject.transform.eulerAngles = new Vector3(0.0f, 180.0f, 0.0f);
-
-            followingObject.transform.localPosition = new Vector3(0.0f, 1.5f, 4.0f);
-
-            // カメラポイントオブジェクトについていく
-            transform.position = Vector3.Lerp(m_moveStartPosition, followingObject.transform.position,
-				m_moveTimer.elapasedTime / m_resultCameraMoveSeconds);
-
-            // プレイヤーを見る
-            transform.LookAt(lookObject.transform);
-			
-			if (m_moveTimer.elapasedTime >= m_resultCameraMoveSeconds)
+			if (m_state == 0)
 			{
-				isCompleteResultMoveEnter = true;
-				//MoveLookPoint();
-				m_moveTimer.Stop();
+				// プレイヤーの向き
+				playerObject.transform.eulerAngles = new Vector3(0.0f, 180.0f, 0.0f);
+
+				followingObject.transform.localPosition = new Vector3(0.0f, 1.5f, 4.0f);
+
+				// カメラポイントオブジェクトについていく
+				transform.position = Vector3.Lerp(m_moveStartPosition, followingObject.transform.position,
+					m_moveTimer.elapasedTime / m_resultCameraMoveSeconds);
+
+				// プレイヤーを見る
+				transform.LookAt(lookObject.transform);
+
+				if (m_moveTimer.elapasedTime >= m_resultCameraMoveSeconds)
+				{
+					lookObject.transform.localPosition = new Vector3(-2.0f, 1.5f, 0.0f);
+					m_moveStartPosition = transform.position;
+
+					m_state = 1;
+					//MoveLookPoint();
+					m_moveTimer.Start();
+				}
+			}
+			else if (m_state == 1)
+			{
+				transform.position = Vector3.Lerp(m_moveStartPosition, lookObject.transform.position,
+					m_moveTimer.elapasedTime / m_resultCameraSecondMoveSeconds);
+				// プレイヤーを見る
+				transform.LookAt(lookObject.transform.position);
+
+				if (m_moveTimer.elapasedTime >= m_resultCameraSecondMoveSeconds)
+				{
+					isCompleteResultMoveEnter = true;
+					//MoveLookPoint();
+					m_moveTimer.Stop();
+				}
 			}
 		}
 	}
@@ -130,6 +152,7 @@ public class FollowObject : MonoBehaviour
         //m_covering.isMoving = false;
         resultFlg = true;
 		startFlg = false;
+		m_state = 0;
 		m_moveStartPosition = transform.position;
 
 		m_moveTimer.Start();
@@ -137,23 +160,23 @@ public class FollowObject : MonoBehaviour
 
 	private void MoveCameraPoint()
     {
-        //followingObject.transform.localPosition =
-        //    Vector3.Lerp(followingObject.transform.localPosition, new Vector3(0.0f, 33.0f, -13.0f), startCameraSpeed);
+	//	followingObject.transform.localPosition = new Vector3(0.0f, 33.0f, -13.0f);
+//			Vector3.Lerp(followingObject.transform.localPosition, new Vector3(0.0f, 33.0f, -13.0f), startCameraSpeed);
 
-        //this.transform.position =
-        //        Vector3.Slerp(this.transform.position, followingObject.transform.position, startCameraSpeed);
+		//this.transform.position =
+		//        Vector3.Slerp(this.transform.position, followingObject.transform.position, startCameraSpeed);
 
-        //this.transform.LookAt(lookObject.transform);
-        //m_covering.isMoving = true;
-        startFlg = false;
+		//this.transform.LookAt(lookObject.transform);
+		//m_covering.isMoving = true;
+		startFlg = false;
         //playerObject.GetComponent<PlayerInput>().isEnableInput = true;
         m_uiAnimator.SetTrigger("SetPosition");
     }
 
-    //private void MoveLookPoint()
-    //{
-    //    lookObject.transform.localPosition =
-    //        Vector3.Lerp(lookObject.transform.localPosition, new Vector3(-2.0f, 1.5f, 0.0f), resultCameraSpeed);
-    //}
+	//void MoveLookPoint()
+	//{
+	//	lookObject.transform.localPosition = new Vector3(-2.0f, 1.5f, 0.0f);
+	//		//Vector3.Lerp(lookObject.transform.localPosition, , resultCameraSpeed);
+	//}
 
 }
