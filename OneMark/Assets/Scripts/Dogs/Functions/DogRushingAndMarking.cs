@@ -30,7 +30,7 @@ public class DogRushingAndMarking : BaseDogAIFunction
 	static readonly Quaternion m_targetRotation = Quaternion.LookRotation(-Vector3.forward);
 	static int m_bgmChangeAgentID = -1;
 	static readonly float m_cRemainingCheckDistance = 0.1f * 0.1f;
-	static readonly float m_cIfPointMoveRemainingCheckDistance = 0.2f * 0.2f;
+	static readonly float m_cIfPointMoveRemainingCheckDistance = 0.4f * 0.4f;
 
 	/// <summary>State</summary>
 	public State functionState { get; private set; } = State.Null;

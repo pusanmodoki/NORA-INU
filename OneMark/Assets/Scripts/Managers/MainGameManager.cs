@@ -98,7 +98,8 @@ public class MainGameManager : MonoBehaviour
 				m_gameOverWaitTimer.Start();
 			}
 
-			if (resultState == ResultState.Null && !isOldExit && Input.GetButtonDown("ActionPause"))
+			if (resultState == ResultState.Null && OneMarkSceneManager.instance.nowStageSceneIndex.x > 0
+				&& !isOldExit && Input.GetButtonDown("ActionPause"))
 			{
 				isPauseStay = true;
 				m_pauseEnterFrame = Time.frameCount + 1;

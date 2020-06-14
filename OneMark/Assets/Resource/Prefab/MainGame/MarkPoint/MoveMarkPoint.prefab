@@ -116,6 +116,7 @@ MonoBehaviour:
   m_effectControler: {fileID: 3425003610696155427}
   m_goFukidashiObject: {fileID: 6084301184742719037}
   m_markingTarget: {x: -2, y: 0, z: 0}
+  m_gaugeEffectName: flower
   m_linkAscendingPerSeconds: 1
   m_unlinkDecreasingPerSeconds: 1
   m_effectiveMaxLimiter: 7.5
@@ -327,6 +328,7 @@ MonoBehaviour:
   m_safetyLine: 0.51
   m_dangerLine: 0.5
   m_rate: 200
+  m_isSetColor: 1
   m_safetyColor: {r: 0.31764707, g: 0.36862746, b: 0.9137255, a: 1}
   m_color: {r: 1, g: 1, b: 1, a: 1}
   m_dangerColor: {r: 0.6117647, g: 0.050980393, b: 0.019607844, a: 1}
@@ -24282,6 +24284,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: -5168787587590292500, guid: 2223e2b01f2ac6845a000d859d1deb96,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fcb9ef5154c68924ab11b0a9d4b03d90, type: 2}
+    - target: {fileID: -5168787587590292500, guid: 2223e2b01f2ac6845a000d859d1deb96,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: fcb9ef5154c68924ab11b0a9d4b03d90, type: 2}
     - target: {fileID: -4595886556900098190, guid: 2223e2b01f2ac6845a000d859d1deb96,
         type: 3}
       propertyPath: m_Layer

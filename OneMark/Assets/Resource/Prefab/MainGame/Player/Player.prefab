@@ -164,8 +164,8 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 262656
   m_visibilityAngle: 90
-  m_visibilityDistance: 20
-  m_reallyVisibilityDistance: 16
+  m_visibilityDistance: 22
+  m_reallyVisibilityDistance: 18
   m_visibilityPreferentialDistance: 2.5
   m_markPointLayerMask:
     m_layerMask:
