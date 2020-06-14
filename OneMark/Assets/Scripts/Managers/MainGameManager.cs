@@ -142,7 +142,7 @@ public class MainGameManager : MonoBehaviour
 
 	void GameClear()
 	{
-		PlayerAndTerritoryManager.instance.mainPlayer.managerIntermediary.GameEnd();
+		PlayerAndTerritoryManager.instance.mainPlayer.managerIntermediary.GameEnd(true);
 		AudioManager.instance.FadeoutAndChangeBgm("MoveResult", "GameClear");
 		OneMarkSceneManager.instance.SetActiveAccessoryScene("GameClear", true);
 		// ResultCall.GameClear();
@@ -153,7 +153,7 @@ public class MainGameManager : MonoBehaviour
 
 	void GameOver()
 	{
-		PlayerAndTerritoryManager.instance.mainPlayer.managerIntermediary.GameEnd();
+		PlayerAndTerritoryManager.instance.mainPlayer.managerIntermediary.GameEnd(false);
 		AudioManager.instance.FadeoutAndChangeBgm("MoveResult", "GameOver");
 		OneMarkSceneManager.instance.SetActiveAccessoryScene("GameOver", true);
 		m_mainCamera.ResultFlg();

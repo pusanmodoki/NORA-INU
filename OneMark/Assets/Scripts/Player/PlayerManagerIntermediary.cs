@@ -57,9 +57,10 @@ public class PlayerManagerIntermediary : MonoBehaviour
 	/// <summary>初期ポイントがポーズ中か否か</summary>
 	bool m_isPauseFirstPoint = false;
 
-	public void GameEnd()
+	public void GameEnd(bool isGameClear)
 	{
-		m_input.GameClearAnimation();
+		if (isGameClear) m_input.GameClearAnimation();
+		else m_input.GameOverAnimation();
 		m_areaBorderMesh.meshRenderer.enabled = false;
 		m_playerMaualCollisionAdministrator.targetMarker.DisableMarker();
 	}
