@@ -9,6 +9,8 @@ public class PlayerEventDetection : MonoBehaviour
 	[SerializeField]
 	PlayerManagerIntermediary m_managerIntermediary = null;
 	[SerializeField]
+	FukidashiController m_fukidashiController = null;
+	[SerializeField]
 	string m_inputAxisAsTrigger = "";
 	[SerializeField]
 	float m_detectionIntervalSeconds = 0.1f;
@@ -55,7 +57,10 @@ public class PlayerEventDetection : MonoBehaviour
 		{
 			if (PlayerAndTerritoryManager.instance.mainPlayer.input.isEnableInputAndActionInput
 				&& Input.GetButtonDown(m_inputAxisAsTrigger) && nearbyManualEvent != null)
+			{
 				nearbyManualEvent.TriggerEvent(gameObject);
+				m_fukidashiController.DisableEffect();
+			}
 			else if (nearbyManualEvent != null)
 				nearbyManualEvent.CallNearbyIfManualTrigger();
 
@@ -68,15 +73,24 @@ public class PlayerEventDetection : MonoBehaviour
 		if (m_isEnabledAutoTriggerDetection)
 		{
 			BaseEvent baseEvent = Detection(thisTransform, ref m_autoTriggerDetection, true);
-			if (baseEvent != null) baseEvent.TriggerEvent(gameObject);
+			if (baseEvent != null)
+				baseEvent.TriggerEvent(gameObject);
 		}
 		if (m_isEnabledManualTriggerDetection & !m_managerIntermediary.thisInfo.isLinkEvent)
 		{
 			nearbyManualEvent = Detection(thisTransform, ref m_manualTriggerDetection, false);
 			if (Input.GetButtonDown(m_inputAxisAsTrigger) && nearbyManualEvent != null)
+			{
 				nearbyManualEvent.TriggerEvent(gameObject);
+				m_fukidashiController.DisableEffect();
+			}
 			else if (nearbyManualEvent != null)
+			{
+				m_fukidashiController.EnableEffect();
 				nearbyManualEvent.CallNearbyIfManualTrigger();
+			}
+			else if (nearbyManualEvent == null)
+				m_fukidashiController.DisableEffect();
 		}
 
 		m_intervalTimer.Start();
