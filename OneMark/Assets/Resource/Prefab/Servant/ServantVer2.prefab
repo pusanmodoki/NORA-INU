@@ -5081,7 +5081,7 @@ MonoBehaviour:
   m_indicatedDogCenter: {x: 0, y: 0, z: 0}
   m_indicatedDogRadius: 2
   m_offMeshLinkController:
-    m_jumpSeconds: 1.5
+    m_jumpSeconds: 1
     m_rotationSpeed: 3
   m_speedChanger:
     m_navMeshAgent: {fileID: 8143399947415216742}
