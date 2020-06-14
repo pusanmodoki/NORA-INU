@@ -149,6 +149,7 @@ public class TutorialUIManager : MonoBehaviour
 			if (!m_onWaitTutorials.Contains(i) && m_textPresets[i].IsCondition(m_tutorialConditions))
 				m_onWaitTutorials.Add(i);
 		}
+		m_tutorialConditions.ResetFlags();
 
 		if (m_tutorialUI.isOnTutorial && !m_tutorialUI.OnTutorialUpdate())
 		{

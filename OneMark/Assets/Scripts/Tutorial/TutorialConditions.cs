@@ -32,6 +32,12 @@ public class TutorialConditions : MonoBehaviour
 
 	bool isLinkCheckPoint = false, isUnlinkCheckPoint = false;
 
+	public void ResetFlags()
+	{
+		isLinkMarkPoint = isUnlinkMarkPoint = false;
+		isLinkCheckPoint = isUnlinkCheckPoint = false;
+	}
+
 	public bool IsCondition(Conditions condition)
 	{
 		switch (condition)
@@ -43,26 +49,24 @@ public class TutorialConditions : MonoBehaviour
 			case Conditions.StageT2:
 				return OneMarkSceneManager.instance.nowStageSceneIndex == new Vector2Int(0, 2);
 			case Conditions.LinkMarkPoint:
-				if (isLinkMarkPoint) { isLinkMarkPoint = false; return true; }
-				else return false;
+				return isLinkMarkPoint;
 			case Conditions.UnlinkMarkPoint:
-				if (isUnlinkMarkPoint) { isUnlinkMarkPoint = false; return true; }
-				else return false;
+				return isUnlinkMarkPoint;
 			case Conditions.GameClear:
 				if (MainGameManager.instance == null) return false;
 				if (!isGameClear && MainGameManager.instance.resultState == MainGameManager.ResultState.GameClear)
-					return isGameClear = true;
-				else return false;
+					isGameClear = true;
+
+				return isGameClear;
 			case Conditions.GameOver:
 				if (!isGameOver && MainGameManager.instance.resultState == MainGameManager.ResultState.GameEnd)
-					return isGameOver = true;
-				else return false;
+					isGameOver = true;
+
+				return isGameClear;
 			case Conditions.LinkCheckPoint:
-				if (isLinkCheckPoint) { isLinkCheckPoint = false; return true; }
-				else return false;
+				return isLinkCheckPoint;
 			case Conditions.UnlinkCheckPoint:
-				if (isUnlinkCheckPoint) { isUnlinkCheckPoint = false; return true; }
-				else return false;
+				return isUnlinkCheckPoint;
 			case Conditions.StageT3:
 				return OneMarkSceneManager.instance.nowStageSceneIndex == new Vector2Int(0, 3);
 			case Conditions.StageT4:
