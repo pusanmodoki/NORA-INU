@@ -5,6 +5,8 @@ using UnityEngine;
 public class VanishingMarkPoint : BaseMarkPoint
 {
 	[SerializeField]
+	AudioSource m_se = null;
+	[SerializeField]
 	ParticleSystem[] m_particleSystems = null;
 	[SerializeField]
 	float m_waitingToReturnSeconds = 5.0f;
@@ -29,6 +31,7 @@ public class VanishingMarkPoint : BaseMarkPoint
 	public override void LinkPoint()
 	{
 		isInvisible = true;
+		m_se.Play();
 	}
 
 	public override void UnlinkPoint()

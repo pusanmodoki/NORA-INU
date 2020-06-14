@@ -86,6 +86,8 @@ public abstract class BaseMarkPoint : MonoBehaviour
 	FukidashiController m_goFukidashiObject = null;
 	[SerializeField]
 	Vector3 m_markingTarget = new Vector3(2.0f, 0.0f, 0.0f);
+	[SerializeField]
+	string m_gaugeEffectName = "flower";
 	/// <summary>リンク時のゲージ上昇速度 per seconds</summary>
 	[SerializeField, Tooltip("リンク時のゲージ上昇速度 per seconds")]
 	float m_linkAscendingPerSeconds = 1.0f;
@@ -258,13 +260,13 @@ public abstract class BaseMarkPoint : MonoBehaviour
 
 		if (isForceAscendingEffective && effectiveCounter < effectiveMaxLimiter)
 		{
-			ParticleSystem.EmissionModule emission = m_effectControler.GetParticleSystem("flower").emission;
+			ParticleSystem.EmissionModule emission = m_effectControler.GetParticleSystem(m_gaugeEffectName).emission;
 
 			emission.rateOverTime = 11.0f;
 		}
 		else
 		{
-			ParticleSystem.EmissionModule emission = m_effectControler.GetParticleSystem("flower").emission;
+			ParticleSystem.EmissionModule emission = m_effectControler.GetParticleSystem(m_gaugeEffectName).emission;
 
 			emission.rateOverTime = 0.0f;
 		}

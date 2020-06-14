@@ -12,7 +12,7 @@ public class GaugeEffect : MonoBehaviour
 
     [SerializeField]
     ParticleSystem m_effect = null;
-
+	
     [SerializeField, Range(0.0f, 1.0f)]
     float m_safetyLine = 0.8f;
 
@@ -22,6 +22,8 @@ public class GaugeEffect : MonoBehaviour
     [SerializeField]
     float m_rate = 20.0f;
 
+	[SerializeField]
+	bool m_isSetColor = true;
     [SerializeField]
     Color m_safetyColor = Color.white;
     [SerializeField]
@@ -37,9 +39,9 @@ public class GaugeEffect : MonoBehaviour
 
         float t = m_markPoint.effectiveCounter01;
 
-        pos.y = t * m_gauge.m_maxHeight * 0.8f;
+		pos.y = t * m_gauge.m_maxHeight * 0.8f;
 
-        transform.localPosition = pos;
+		transform.localPosition = pos;
         ParticleSystem.EmissionModule emission = m_effect.emission;
         if(t <= 0 || t >= 1)
         {
@@ -49,6 +51,9 @@ public class GaugeEffect : MonoBehaviour
         {
             emission.rateOverTime = m_rate;
         }
+
+
+		if (!m_isSetColor) return;
 
         ParticleSystem.MainModule main = m_effect.main;
 
