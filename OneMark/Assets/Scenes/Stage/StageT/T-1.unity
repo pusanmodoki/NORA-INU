@@ -1642,6 +1642,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4105601178622261366, guid: cbf556fd441b7b84cb07f868ccf8e370,
+        type: 3}
+      propertyPath: m_textPresets.Array.data[10].m_text
+      value: "\u304A\u305F\u304B\u3089\u304C\u30CA\u30EF\u30D0\u30EA\u304B\u3089\u51FA\u308B\u3068\n\u30E2\u30B0\u30E9\u304C\u623B\u3063\u3066\u304D\u3061\u3083\u3063\u305F......"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105601178622261366, guid: cbf556fd441b7b84cb07f868ccf8e370,
+        type: 3}
+      propertyPath: m_textPresets.Array.data[13].m_text
+      value: "\u304A\u3084\u3001\u76EE\u306E\u524D\u306B\u6BB5\u5DEE\u304C\u3042\u308B\u3088\n\u3042\u306E\u6BB5\u5DEE\u306F\u308F\u305F\u3057\u306B\u306F\u8D85\u3048\u3089\u308C\u306A\u3044....."
+      objectReference: {fileID: 0}
     - target: {fileID: 6152061771722053179, guid: cbf556fd441b7b84cb07f868ccf8e370,
         type: 3}
       propertyPath: m_Name

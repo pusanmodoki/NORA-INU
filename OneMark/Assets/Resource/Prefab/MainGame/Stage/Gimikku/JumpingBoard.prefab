@@ -131,8 +131,8 @@ MonoBehaviour:
   m_relayPoint: {x: 0, y: 1, z: 0}
   m_descentHeight: 0.8
   m_descentAccelerationSeconds: 1
-  m_firstJumpSeconds: 1.5
-  m_secondJumpSeconds: 1.5
+  m_firstJumpSeconds: 1
+  m_secondJumpSeconds: 1
   m_rotationSpeed: 3
   m_dIsDrawGizmos: 1
 --- !u!114 &7637421135212074115
