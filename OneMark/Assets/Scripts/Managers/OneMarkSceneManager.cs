@@ -110,24 +110,32 @@ public class OneMarkSceneManager : MonoBehaviour
 	Dictionary<string, Scene> m_accessoryScenes = null;
 	Scene m_nowScene = default;
 	Scene m_optionScene = default;
+
+	bool m_isMoveNow = false;
+
 //	AsyncOperation m_optionOperation = null;
 
 	public void MoveScene(SceneState sceneState)
 	{
+		if (m_isMoveNow) return;
+
 		switch(sceneState)
 		{
 			case SceneState.Title:
 				{
+					m_isMoveNow = true;
 					StartCoroutine(LoadScene(m_titleSceneName, false));
 					break;
 				}
 			case SceneState.StageSelect:
 				{
+					m_isMoveNow = true;
 					StartCoroutine(LoadScene(m_stageSelectSceneName, false));
 					break;
 				}
 			case SceneState.Opening:
 				{
+					m_isMoveNow = true;
 					StartCoroutine(LoadScene(m_opeingSceneName, false));
 					break;
 				}
@@ -135,33 +143,44 @@ public class OneMarkSceneManager : MonoBehaviour
 	}
 	public void ReloadScene()
 	{
+		if (m_isMoveNow) return;
+
 		if (nowLoadSceneName == m_titleSceneName
 			|| nowLoadSceneName == m_stageSelectSceneName)
 		{
+			m_isMoveNow = true;
 			StartCoroutine(LoadScene(nowLoadSceneName, false));
 		}
 		else
 		{
+			m_isMoveNow = true;
 			StartCoroutine(LoadScene(nowLoadSceneName, true));
 		}
 	}
 	public void MoveStageScene(Vector2Int sceneIndex)
 	{
+		if (m_isMoveNow) return;
 		if (!cStageSceneIndexes.Contains(sceneIndex)) return;
 
+		m_isMoveNow = true;
 		StartCoroutine(LoadScene(sceneIndex.ToStageName(), true));
 	}
 	public void MoveStageScene(int sceneIndex)
 	{
+		if (m_isMoveNow) return;
 		if (cStageSceneIndexes.Count <= sceneIndex || sceneIndex < 0) return;
 
+		m_isMoveNow = true;
 		StartCoroutine(LoadScene(cStageSceneIndexes[sceneIndex].ToStageName(), true));
 	}
 	public bool MoveNextStage()
 	{
+		if (m_isMoveNow) return false;
+
 		Vector2Int index = nextStageSceneIndex;
 		if (index == cInvalidStageIndex) return false;
 
+		m_isMoveNow = true;
 		string stageName = index.ToStageName();
 		StartCoroutine(LoadScene(stageName, true));
 
@@ -346,6 +365,7 @@ public class OneMarkSceneManager : MonoBehaviour
 			AudioManager.instance.FadeinBgm("SceneChange", true);
 		}
 		m_fadeScreen.OnFadeScreen(m_fadeColor, m_fadeSpeedPerSeconds, FadeScreen.FadeState.Fadeout, true);
+		m_isMoveNow = false;
 	}
 
 	IEnumerator LoadSceneOptionAndAccessory(bool isLoadAccessory)
