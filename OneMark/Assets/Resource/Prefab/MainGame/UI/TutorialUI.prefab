@@ -395,7 +395,7 @@ MonoBehaviour:
     m_triggerEventKey: 
     m_orConditions:
     - m_andConditions: 020000000d000000
-  - m_text: "\u304A\u305F\u304B\u3089\u304C\u30CA\u30EF\u30D0\u30EA\u304B\u3089\u51FA\u308B\u3068\n\u30E2\u30B0\u30E9\u304C\u623B\u3063\u3066\u304D\u3061\u3083\u3063\u305F\u3001\u3001\u3001"
+  - m_text: "\u304A\u305F\u304B\u3089\u304C\u30CA\u30EF\u30D0\u30EA\u304B\u3089\u51FA\u308B\u3068\n\u30E2\u30B0\u30E9\u304C\u623B\u3063\u3066\u304D\u3061\u3083\u3063\u305F\u30FB\u30FB\u30FB"
     m_isEnableTriggerEvent: 0
     m_triggerEventKey: 
     m_orConditions:
