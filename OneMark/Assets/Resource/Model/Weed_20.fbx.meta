@@ -3,7 +3,12 @@ guid: f9035256702b8bd4281514274a2b421d
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: weed
+    second: {fileID: 2100000, guid: e8bef7e9a31ef3b4cbd57414384fc730, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
