@@ -102,7 +102,9 @@ MonoBehaviour:
   m_startCameraWaitSeconds: 1.5
   resultFlg: 0
   m_resultCameraMoveSeconds: 1
-  m_covering: {fileID: 0}
+  m_resultCameraWaitSeconds: 2
+  m_resultCameraSecondMoveSeconds: 0.5
+  m_cameraSrart: {fileID: 0}
 --- !u!114 &2736012011453258278
 MonoBehaviour:
   m_ObjectHideFlags: 0

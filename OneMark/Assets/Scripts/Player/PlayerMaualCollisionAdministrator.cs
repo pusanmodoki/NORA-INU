@@ -170,7 +170,7 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	float m_instructionsGoingDogRadius = 10;
 
 	/// <summary>CheckMarkPointで使用するヒットリスト</summary>
-	List<BaseMarkPoint> m_checkPoints = new List<BaseMarkPoint>();
+	List<BaseMarkPoint> m_checkMarkPoints = new List<BaseMarkPoint>();
 
 	List<int> m_searchIndexes = new List<int>();
 
@@ -628,9 +628,9 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 	void CheckMarkPoint(ref Vector3 position)
 	{
 		//まずは全てUnpauseさせる
-		foreach (var e in m_checkPoints)
+		foreach (var e in m_checkMarkPoints)
 			e.SetPlayerNearby(false);
-		m_checkPoints.Clear();
+		m_checkMarkPoints.Clear();
 
 		//Overlap
 		var collisions = Physics.OverlapSphere(position, m_personalRadius, m_markPointLayerMask);
@@ -643,13 +643,13 @@ public class PlayerMaualCollisionAdministrator : MonoBehaviour
 		for (int i = 0, length = collisions.Length; i < length; ++i)
 		{
 			var component = collisions[i].GetComponent<BaseMarkPoint>();
-			if (component != null && component.isLinked && !m_checkPoints.Contains(component))
-				m_checkPoints.Add(component);
+			if (component != null && component.isLinked && !m_checkMarkPoints.Contains(component))
+				m_checkMarkPoints.Add(component);
 		}
 
 		//Pauseさせるループ
-		for (int i = 0, count = m_checkPoints.Count; i < count; ++i)
-			m_checkPoints[i].SetPlayerNearby(true);
+		for (int i = 0, count = m_checkMarkPoints.Count; i < count; ++i)
+			m_checkMarkPoints[i].SetPlayerNearby(true);
 	}
 
 	void CheckShortestPoints(ref Vector3 position, bool isFixedUpdate)

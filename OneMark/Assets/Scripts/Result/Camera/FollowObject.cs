@@ -9,6 +9,8 @@ using UnityEngine;
 
 public class FollowObject : MonoBehaviour
 {
+	static readonly Vector3 m_cLookPosition = new Vector3(-2.0f, 1.5f, 0.0f);
+
 	public bool isCompleteStartMoveEnter { get; private set; } = false;
 	public bool isCompleteResultMoveEnter { get; private set; } = false;
 
@@ -34,6 +36,8 @@ public class FollowObject : MonoBehaviour
 
 	[SerializeField]
 	float m_resultCameraMoveSeconds = 0.5f;
+	[SerializeField]
+	float m_resultCameraWaitSeconds = 0.5f;
 	[SerializeField]
 	float m_resultCameraSecondMoveSeconds = 0.5f;
 
@@ -111,8 +115,7 @@ public class FollowObject : MonoBehaviour
 
 				if (m_moveTimer.elapasedTime >= m_resultCameraMoveSeconds)
 				{
-					lookObject.transform.localPosition = new Vector3(-2.0f, 1.5f, 0.0f);
-					m_moveStartPosition = transform.position;
+					m_moveStartPosition = lookObject.transform.localPosition;
 
 					m_state = 1;
 					//MoveLookPoint();
@@ -121,8 +124,17 @@ public class FollowObject : MonoBehaviour
 			}
 			else if (m_state == 1)
 			{
-				transform.position = Vector3.Lerp(m_moveStartPosition, lookObject.transform.position,
-					m_moveTimer.elapasedTime / m_resultCameraSecondMoveSeconds);
+				if (m_moveTimer.elapasedTime >= m_resultCameraWaitSeconds)
+				{
+					m_state = 2;
+					//MoveLookPoint();
+					m_moveTimer.Start();
+				}
+			}
+			else if (m_state == 2)
+			{
+				lookObject.transform.localPosition = Vector3.Slerp(m_moveStartPosition, m_cLookPosition,
+					m_moveTimer.elapasedTime / m_resultCameraSecondMoveSeconds).ToYManual(m_cLookPosition.y);
 				// プレイヤーを見る
 				transform.LookAt(lookObject.transform.position);
 
@@ -154,6 +166,7 @@ public class FollowObject : MonoBehaviour
 		startFlg = false;
 		m_state = 0;
 		m_moveStartPosition = transform.position;
+		m_cameraSrart.EndMove();
 
 		m_moveTimer.Start();
 	}

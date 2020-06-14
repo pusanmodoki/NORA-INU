@@ -58,4 +58,9 @@ public class MainCameraStartSet : MonoBehaviour
 		m_timer.Start();
 		m_startLookPoint = transform.position + transform.forward;
 	}
+
+	public void EndMove()
+	{
+		m_isMoving = false;
+	}
 }
