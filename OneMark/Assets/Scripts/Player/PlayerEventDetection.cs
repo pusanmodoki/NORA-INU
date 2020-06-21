@@ -109,7 +109,7 @@ public class PlayerEventDetection : MonoBehaviour
 		{
 			var baseEvent = collisions[i].gameObject.GetComponentInParent<BaseEvent>();
 
-			if (baseEvent != null && !m_hitEvents.Contains(baseEvent) 
+			if (baseEvent != null && !m_hitEvents.Contains(baseEvent) && baseEvent.linkPlayerInfo == null
 				&& (!isAutoTrigger || (baseEvent.isAutoTrigger & isAutoTrigger)))
 				m_hitEvents.Add(baseEvent);
 		}

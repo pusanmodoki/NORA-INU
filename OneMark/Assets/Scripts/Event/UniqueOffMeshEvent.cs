@@ -12,6 +12,8 @@ public class UniqueOffMeshEvent : BaseEvent
 	[SerializeField, Tooltip("起動するUnique Off Mesh Link")]
 	BaseUniqueOffMeshLink m_uniqueOffMeshLink = null;
 
+	bool m_isLink = false;
+
 	public bool IsHitTerritoryEndPoint(List<Vector3> terittoryArea, Vector3 position)
 	{
 		//初期地点, 完了地点
@@ -93,11 +95,18 @@ public class UniqueOffMeshEvent : BaseEvent
 
 	protected override void EndEvent()
 	{
+		m_isLink = false;
 	}
 
 	protected override bool UpdateEvent()
 	{
-		return false;
+		if (!m_isLink && linkPlayerInfo.navMeshController.isOnManualUniqueOffMeshLink)
+			m_isLink = true;
+
+		if (m_isLink && !linkPlayerInfo.navMeshController.isOnManualUniqueOffMeshLink)
+			return false;
+		else
+			return true;
 	}
 
 	bool CalculateStartAndEndPoint(ref Vector3 position, out Vector3 startPoint, out Vector3 endPoint)
