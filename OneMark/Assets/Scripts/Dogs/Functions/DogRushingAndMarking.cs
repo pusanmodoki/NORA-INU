@@ -129,10 +129,19 @@ public class DogRushingAndMarking : BaseDogAIFunction
 		{
 			m_sePlayer.Stop(m_markingSEIndex);
 			m_markingEffect.SetActive(false);
-			if (m_bgmChangeAgentID == dogAIAgent.aiAgentInstanceID)
+
+			if (!MainGameManager.instance.isGameEnd
+				&& m_bgmChangeAgentID == dogAIAgent.aiAgentInstanceID)
 			{
 				m_bgmChangeAgentID = -1;
 				AudioManager.instance.FadeinBgm("Marking");
+			}
+			else
+			{
+#if UNITY_EDITOR
+				Debug.Log("DogRushingAndMarking->AIUpdate: if (!MainGameManager.instance.isGameEnd)" +
+					"\n && m_bgmChangeAgentID == dogAIAgent.aiAgentInstanceID");
+#endif
 			}
 		}
 
@@ -231,9 +240,18 @@ public class DogRushingAndMarking : BaseDogAIFunction
 						m_markPoint.SetCompleteMarking(true);
 						m_markPoint.LinkMarkingStart();
 
-						m_sePlayer.PlaySE(m_markingSEIndex, true);
-						m_bgmChangeAgentID = dogAIAgent.aiAgentInstanceID;
-						AudioManager.instance.FadeoutBgm("Marking");
+						if (!MainGameManager.instance.isGameEnd)
+						{
+							m_sePlayer.PlaySE(m_markingSEIndex, true);
+							m_bgmChangeAgentID = dogAIAgent.aiAgentInstanceID;
+							AudioManager.instance.FadeoutBgm("Marking");
+						}
+						else
+						{
+#if UNITY_EDITOR
+							Debug.Log("DogRushingAndMarking->AIUpdate: if (!MainGameManager.instance.isGameEnd)");
+ #endif
+						}
 
 						m_markingEffect.SetActive(true);
 						functionState = State.Marking;
@@ -253,10 +271,19 @@ public class DogRushingAndMarking : BaseDogAIFunction
 						functionState = State.MarkingEnd;
 						m_markingEffect.SetActive(false);
 						m_sePlayer.Stop(m_markingSEIndex);
-						if (m_bgmChangeAgentID == dogAIAgent.aiAgentInstanceID)
+
+						if (!MainGameManager.instance.isGameEnd 
+							&& m_bgmChangeAgentID == dogAIAgent.aiAgentInstanceID)
 						{
 							m_bgmChangeAgentID = -1;
 							AudioManager.instance.FadeinBgm("Marking");
+						}
+						else
+						{
+#if UNITY_EDITOR
+							Debug.Log("DogRushingAndMarking->AIUpdate: if (!MainGameManager.instance.isGameEnd)" +
+								"\n && m_bgmChangeAgentID == dogAIAgent.aiAgentInstanceID");
+#endif
 						}
 						//Animation Set
 						m_animationController.editAnimation.TriggerMarkingEnd();
