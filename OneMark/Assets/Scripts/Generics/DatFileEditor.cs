@@ -8,6 +8,13 @@ public static class DatFileEditor
 {
 	static readonly string m_cExtension = "dat";
 
+	public static bool IsExistsFile(string filePath, string fileName)
+	{
+		string fullFilePath = $"{filePath}/{fileName}.{m_cExtension}";
+
+		return File.Exists(fullFilePath);
+	}
+
 	public static void SaveString(string filePath, string fileName, List<List<string>> data)
 	{
 		if (fileName == null || fileName.Length == 0)

@@ -25,6 +25,7 @@ public class DataManager : MonoBehaviour
 
 		public Directory directory { get { return m_directory; } }
 		public string filePath { get { return m_filePath; } }
+		public string directoryAndFilePath { get { return SelectDirectory(m_directory) + "/" + filePath; } }
 		public string fileName { get { return m_fileName; } }
 
 		[SerializeField]
@@ -33,6 +34,16 @@ public class DataManager : MonoBehaviour
 		string m_filePath;
 		[SerializeField]
 		string m_fileName;
+
+		static string SelectDirectory(Directory directory)
+		{
+			if (directory == Directory.StreamingAssets)
+				return Application.streamingAssetsPath;
+			else if (directory == Directory.PersistentData)
+				return Application.persistentDataPath;
+			else
+				return "";
+		}
 	}
 
 	public struct StageSettings
@@ -54,12 +65,30 @@ public class DataManager : MonoBehaviour
 		public bool isEnabled { get; private set; }
 	}
 
+	public class SaveData
+	{
+		public SaveData(int clearStageIndex)
+		{
+			this.numClearStages = clearStageIndex;
+		}
+		public SaveData(SaveData copy)
+		{
+			this.numClearStages = copy.numClearStages;
+		}
+
+		public int numClearStages { get; private set; } = 0;
+
+		public static SaveData emptyData { get { return new SaveData(0); } }
+		public static SaveData developData { get { return new SaveData(OneMarkSceneManager.cStageSceneIndexes.Count); } }
+	}
+
 	/// <summary>Static instance</summary>
 	public static DataManager instance { get; private set; } = null;
+	public SaveData saveData { get; private set; } = null;
 	/// <summary>Static stage settings</summary>
-	public static ReadOnlyCollection<StageSettings> allStageSettings { get; private set; } = null;
+	public ReadOnlyCollection<StageSettings> allStageSettings { get; private set; } = null;
 	/// <summary>Static now stage settings</summary>
-	public static StageSettings nowStageSettings
+	public StageSettings nowStageSettings
 	{
 		get
 		{
@@ -82,6 +111,15 @@ public class DataManager : MonoBehaviour
 
 	[SerializeField]
 	FullFilePath stagePresetFilePath = new FullFilePath(Directory.StreamingAssets, "Preset", "StageSettings");
+	[SerializeField]
+	FullFilePath m_saveDataFilePath = new FullFilePath(Directory.PersistentData, "app", "sd");
+
+#if UNITY_EDITOR
+	[Header("Debug Only"), SerializeField]
+	bool m_dIsDevelopMode = false;
+
+	bool m_dIsSetDevelopMode = false;
+#endif
 
 	public static void ReadHyphenateVector3(string str, ref Vector3 result)
 	{
@@ -96,23 +134,22 @@ public class DataManager : MonoBehaviour
 		result.Set(float.Parse(lines[0]), float.Parse(lines[1]), float.Parse(lines[2]));
 	}
 
-	public static string SelectDirectory(Directory directory)
-	{
-		if (directory == Directory.StreamingAssets)
-			return Application.streamingAssetsPath;
-		else if (directory == Directory.PersistentData)
-			return Application.persistentDataPath;
-		else
-			return "";
-	}
-
 	/// <summary>[Awake]</summary>
 	void Awake()
 	{
 		instance = this;
 
 		if (allStageSettings == null)
+		{
 			ReadStageSettings();
+
+#if UNITY_EDITOR
+			m_dIsSetDevelopMode = m_dIsDevelopMode;
+			ReadSaveData(m_dIsSetDevelopMode);
+#else
+			ReadSaveData(false);
+#endif
+		}
 	}
 
 	void ReadStageSettings()
@@ -121,8 +158,7 @@ public class DataManager : MonoBehaviour
 		List<List<string>> readData;
 		Vector3 playerPosition = Vector3.zero, playerRotation = Vector3.zero;
 
-		DatFileEditor.LoadString(SelectDirectory(stagePresetFilePath.directory) + "/" + stagePresetFilePath.filePath,
-			stagePresetFilePath.fileName, out readData);
+		DatFileEditor.LoadString(stagePresetFilePath.directoryAndFilePath, stagePresetFilePath.fileName, out readData);
 
 		for (int i = 0, count = readData.Count; i < count; ++i)
 		{
@@ -133,4 +169,36 @@ public class DataManager : MonoBehaviour
 
 		allStageSettings = new ReadOnlyCollection<StageSettings>(convertData.AsReadOnly());
 	}
+
+	void ReadSaveData(bool isDevelop)
+	{
+		if (isDevelop)
+			saveData = SaveData.developData;
+		else
+		{
+			if (!DatFileEditor.IsExistsFile(m_saveDataFilePath.directoryAndFilePath, m_saveDataFilePath.fileName))
+			{
+				var emptyData = SaveData.emptyData;
+				DatFileEditor.SaveObject<SaveData>(m_saveDataFilePath.directoryAndFilePath,
+					m_saveDataFilePath.fileName, ref emptyData);
+
+				saveData = new SaveData(emptyData);
+			}
+			else
+			{
+				SaveData read = null;
+				DatFileEditor.LoadObject<SaveData>(m_saveDataFilePath.directoryAndFilePath,
+					m_saveDataFilePath.fileName, out read);
+
+				saveData = new SaveData(read);
+			}
+		}
+	}
+
+#if UNITY_EDITOR
+	void Update()
+	{
+		m_dIsDevelopMode = m_dIsSetDevelopMode;
+	}
+#endif
 }

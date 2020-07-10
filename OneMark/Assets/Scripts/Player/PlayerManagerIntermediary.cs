@@ -90,7 +90,7 @@ public class PlayerManagerIntermediary : MonoBehaviour
 			m_areaBorderMesh, m_followPoints, m_resultCameraLookPoint, m_resultCameraMovePoint);
 
 		//現在のステージ情報を取得
-		var settings = DataManager.nowStageSettings;
+		var settings = DataManager.instance.nowStageSettings;
 
 		transform.position = settings.playerPosition;
 		transform.rotation = settings.playerRotation;
