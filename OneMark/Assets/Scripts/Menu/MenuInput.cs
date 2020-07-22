@@ -44,6 +44,16 @@ public class MenuInput : MonoBehaviour
 	int m_disableCounter = 0;
 
     public int objectCount { get { return m_selectedObjects.Count; } }
+	public int enableObjectCount
+	{
+		get
+		{
+			int result = 0;
+			for (int i = 0; i < m_selectedObjects.Count; ++i)
+				if (m_selectedObjects[i].isActiveAndEnabled) ++result;
+			return result;
+		}
+	}
     public bool isIntervalInput { get; private set; } = true;
     public int nowSelectIndex { get { return m_nowSelectIndex; } }
 	public bool isEnableInput { get { return m_disableEvents.Count == 0; } }
@@ -150,8 +160,43 @@ public class MenuInput : MonoBehaviour
 
 	void Select()
     {
+		if (!m_selectedObjects[m_nowSelectIndex].isActiveAndEnabled)
+		{
+			bool isSelected = false;
+			for (int i = 0; i < m_selectedObjects.Count; ++i)
+			{
+				if (m_selectedObjects[i].isActiveAndEnabled)
+				{
+					m_selectedObjects[m_nowSelectIndex].OffCursor();
+					m_selectedObjects[m_nowSelectIndex].isSelected = false;
+
+					m_nowSelectIndex = i; isSelected = true;
+
+					m_selectedObjects[m_nowSelectIndex].OnCursor();
+					m_selectedObjects[m_nowSelectIndex].isSelected = true;
+
+					if (m_cursorObject)
+					{
+						if ((nowSelectIndex == 0 && m_isInverse) ||
+							(nowSelectIndex == objectCount - 1 && !m_isInverse))
+						{
+							m_cursorObject.SelectTopIndex();
+						}
+						else if ((nowSelectIndex == 0 && !m_isInverse) ||
+							(nowSelectIndex == objectCount - 1 && m_isInverse))
+						{
+							m_cursorObject.SelectBottomIndex();
+						}
+					}
+				}
+			}
+			if (!isSelected) return;
+		}
+
         int prevIndex = m_nowSelectIndex;
 		int inputValue = MoveInputCheck();
+
+		if (inputValue == 0) return;
 
 		AddSelectIndex(inputValue);
 
@@ -221,6 +266,28 @@ public class MenuInput : MonoBehaviour
 		else if (m_nowSelectIndex >= objectCount)
 		{
 			m_nowSelectIndex = objectCount - 1;
+		}
+
+		if (!m_selectedObjects[m_nowSelectIndex].isActiveAndEnabled)
+		{
+			if (_add == 1)
+			{
+				for (int i = m_nowSelectIndex + 1; i < objectCount; ++i)
+					if (m_selectedObjects[i].isActiveAndEnabled)
+					{
+						m_nowSelectIndex = i; return;
+					}
+				m_nowSelectIndex -= _add;
+			}
+			else if (_add == -1)
+			{
+				for (int i = m_nowSelectIndex - 1; i >= 0; --i)
+					if (m_selectedObjects[i].isActiveAndEnabled)
+					{
+						m_nowSelectIndex = i; return;
+					}
+				m_nowSelectIndex -= _add;
+			}
 		}
 	}
 

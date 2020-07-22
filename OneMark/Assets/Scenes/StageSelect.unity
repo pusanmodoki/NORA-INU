@@ -1713,6 +1713,7 @@ GameObject:
   - component: {fileID: 1355552882}
   - component: {fileID: 1355552883}
   - component: {fileID: 1355552885}
+  - component: {fileID: 1355552884}
   m_Layer: 0
   m_Name: StageSelect
   m_TagString: Untagged
@@ -1752,6 +1753,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interval: 40
   scrollSeconds: 1
+--- !u!114 &1355552884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355552881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b603eb05ccf371142b705aa31e654d3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_worldObjects: []
+  m_stageObjects: []
 --- !u!114 &1355552885
 MonoBehaviour:
   m_ObjectHideFlags: 0

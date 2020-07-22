@@ -16,6 +16,17 @@ namespace Editor
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
+			if (m_data.name == null)
+			{
+				bool isAllNull = true;
+				for (int i = 0; i < m_data.sceneNamesToArray.Length; ++i)
+					if (m_data.sceneNamesToArray[i] != null) isAllNull = false;
+				for (int i = 0; i < m_data.sceneNames.Count; ++i)
+					if (m_data.sceneNames[i] != null) isAllNull = false;
+
+				if (isAllNull) m_data = null;
+			}
+
 			if (m_data == null) 
 			{
 				m_data = LoadScriptableData();
