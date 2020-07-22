@@ -149,7 +149,9 @@ public class MainGameManager : MonoBehaviour
 		// ResultCall.GameClear();
 		m_mainCamera.ResultFlg();
 		isGameEnd = true;
-		
+
+		DataManager.instance.saveData.UpdateNumClearStages();
+		DataManager.instance.WriteSaveData();
 	}
 
 	void GameOver()

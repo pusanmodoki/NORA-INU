@@ -7,6 +7,12 @@ using UnityEngine.SceneManagement;
 [DefaultExecutionOrder(-110)]
 public class DataManager : MonoBehaviour
 {
+	enum DevelopMode
+	{
+		NotDevelop,
+		DevelopAwakeAll,
+		DevelopAwakeEmpty
+	}
 	public enum Directory
 	{
 		StreamingAssets,
@@ -65,6 +71,7 @@ public class DataManager : MonoBehaviour
 		public bool isEnabled { get; private set; }
 	}
 
+	[System.Serializable]
 	public class SaveData
 	{
 		public SaveData(int clearStageIndex)
@@ -76,15 +83,39 @@ public class DataManager : MonoBehaviour
 			this.numClearStages = copy.numClearStages;
 		}
 
-		public int numClearStages { get; private set; } = 0;
-
 		public static SaveData emptyData { get { return new SaveData(0); } }
 		public static SaveData developData { get { return new SaveData(OneMarkSceneManager.cStageSceneIndexes.Count); } }
+
+		public int numClearStages { get { return m_numClearStages; } private set { m_numClearStages = value; } }
+		[SerializeField]
+		int m_numClearStages = 0;
+
+		public void UpdateNumClearStages()
+		{
+			var searchIndex = OneMarkSceneManager.instance.nowStageSceneIndex;
+
+			for (int i = 0; i < OneMarkSceneManager.cStageSceneIndexes.Count; ++i)
+			{
+				if (OneMarkSceneManager.cStageSceneIndexes[i] == searchIndex)
+				{
+					if (numClearStages <= i)
+						numClearStages = i;
+					break;
+				}
+			}
+		}
+
+		public void CopyData(SaveData copy)
+		{
+			this.numClearStages = copy.numClearStages;
+		}
 	}
 
 	/// <summary>Static instance</summary>
 	public static DataManager instance { get; private set; } = null;
-	public SaveData saveData { get; private set; } = null;
+	public SaveData saveData {
+		get { return m_saveData; }
+		private set { if (m_saveData != null) m_saveData.CopyData(value); else m_saveData = value; } } 
 	/// <summary>Static stage settings</summary>
 	public ReadOnlyCollection<StageSettings> allStageSettings { get; private set; } = null;
 	/// <summary>Static now stage settings</summary>
@@ -110,17 +141,42 @@ public class DataManager : MonoBehaviour
 
 
 	[SerializeField]
-	FullFilePath stagePresetFilePath = new FullFilePath(Directory.StreamingAssets, "Preset", "StageSettings");
+	FullFilePath m_stagePresetFilePath = new FullFilePath(Directory.StreamingAssets, "Preset", "StageSettings");
 	[SerializeField]
 	FullFilePath m_saveDataFilePath = new FullFilePath(Directory.PersistentData, "app", "sd");
 
+	static SaveData m_staticSaveData = null;
+	SaveData m_saveData = null;
+
 #if UNITY_EDITOR
 	[Header("Debug Only"), SerializeField]
-	bool m_dIsDevelopMode = false;
+	DevelopMode m_dDevelopMode = DevelopMode.NotDevelop;
+	[SerializeField]
+	bool m_dIsResetEmptyDevelopMode = false;
+	[SerializeField]
+	bool m_dIsResetAllDevelopMode = false;
+	[SerializeField]
+	bool m_dIsWriteDevelopSaveData = false;
+	[SerializeField]
+	bool m_dIsResetEmptySaveData = false;
+	[SerializeField]
+	SaveData m_dDrawingSaveData = null;
 
-	bool m_dIsSetDevelopMode = false;
+	static DevelopMode m_dStaticDevelopMode = DevelopMode.NotDevelop;
+	DevelopMode m_dSetDevelopMode = DevelopMode.NotDevelop;
+	bool m_isEndAwake = false;
 #endif
 
+
+	public void WriteSaveData()
+	{
+#if UNITY_EDITOR
+		if (m_dDevelopMode != DevelopMode.NotDevelop) return;
+#endif
+
+		DatFileEditor.SaveObject<SaveData>(m_saveDataFilePath.directoryAndFilePath,
+			m_saveDataFilePath.fileName, ref m_saveData);
+	}
 	public static void ReadHyphenateVector3(string str, ref Vector3 result)
 	{
 		// StringSplitOption
@@ -143,12 +199,29 @@ public class DataManager : MonoBehaviour
 		{
 			ReadStageSettings();
 
+			if (m_staticSaveData == null)
+			{
 #if UNITY_EDITOR
-			m_dIsSetDevelopMode = m_dIsDevelopMode;
-			ReadSaveData(m_dIsSetDevelopMode);
+				ReadSaveData(m_dDevelopMode);
+
+				m_dSetDevelopMode = m_dDevelopMode;
+				m_dStaticDevelopMode = m_dDevelopMode;
+				m_dDrawingSaveData = m_saveData;
+				m_isEndAwake = true;
 #else
-			ReadSaveData(false);
+				ReadSaveData(false);
 #endif
+
+				m_staticSaveData = saveData;
+			}
+			else
+			{
+				saveData = m_staticSaveData;
+#if UNITY_EDITOR
+				m_dDrawingSaveData = m_staticSaveData;
+				m_dDevelopMode = m_dStaticDevelopMode;
+#endif
+			}
 		}
 	}
 
@@ -158,7 +231,7 @@ public class DataManager : MonoBehaviour
 		List<List<string>> readData;
 		Vector3 playerPosition = Vector3.zero, playerRotation = Vector3.zero;
 
-		DatFileEditor.LoadString(stagePresetFilePath.directoryAndFilePath, stagePresetFilePath.fileName, out readData);
+		DatFileEditor.LoadString(m_stagePresetFilePath.directoryAndFilePath, m_stagePresetFilePath.fileName, out readData);
 
 		for (int i = 0, count = readData.Count; i < count; ++i)
 		{
@@ -170,10 +243,12 @@ public class DataManager : MonoBehaviour
 		allStageSettings = new ReadOnlyCollection<StageSettings>(convertData.AsReadOnly());
 	}
 
-	void ReadSaveData(bool isDevelop)
+	void ReadSaveData(DevelopMode developMode)
 	{
-		if (isDevelop)
+		if (developMode == DevelopMode.DevelopAwakeAll)
 			saveData = SaveData.developData;
+		else if (developMode == DevelopMode.DevelopAwakeEmpty)
+			saveData = SaveData.emptyData;
 		else
 		{
 			if (!DatFileEditor.IsExistsFile(m_saveDataFilePath.directoryAndFilePath, m_saveDataFilePath.fileName))
@@ -196,9 +271,46 @@ public class DataManager : MonoBehaviour
 	}
 
 #if UNITY_EDITOR
-	void Update()
+	void OnValidate()
 	{
-		m_dIsDevelopMode = m_dIsSetDevelopMode;
+		if (m_isEndAwake & (UnityEditor.EditorApplication.isPlaying | UnityEditor.EditorApplication.isPaused))
+			m_dDevelopMode = m_dSetDevelopMode;
+
+		if (m_dIsResetEmptyDevelopMode)
+		{
+			m_dIsResetEmptyDevelopMode = false;
+
+			saveData = SaveData.emptyData;
+		}
+
+		if (m_dIsResetAllDevelopMode)
+		{
+			m_dIsResetAllDevelopMode = false;
+
+			saveData = SaveData.developData;
+		}
+
+		if (m_dIsWriteDevelopSaveData)
+		{
+			m_dIsWriteDevelopSaveData = false;
+
+			DatFileEditor.SaveObject<SaveData>(m_saveDataFilePath.directoryAndFilePath,
+				m_saveDataFilePath.fileName, ref m_saveData);
+		}
+
+		if (m_dIsResetEmptySaveData)
+		{
+			m_dIsResetEmptySaveData = false;
+
+			if (m_dDevelopMode == DevelopMode.NotDevelop)
+			{
+				var emptyData = SaveData.emptyData;
+				DatFileEditor.SaveObject<SaveData>(m_saveDataFilePath.directoryAndFilePath,
+					m_saveDataFilePath.fileName, ref emptyData);
+
+				saveData = new SaveData(emptyData);
+			}
+		}
 	}
 #endif
 }
