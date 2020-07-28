@@ -1585,6 +1585,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 498513245}
     m_Modifications:
+    - target: {fileID: 1348563175501872689, guid: ae700130640c4e84caa266e4891c3d20,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3206492789701547575, guid: ae700130640c4e84caa266e4891c3d20,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3724228400623088230, guid: ae700130640c4e84caa266e4891c3d20,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1644,6 +1654,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BackgroundObjects
+      objectReference: {fileID: 0}
+    - target: {fileID: 5603975656804502025, guid: ae700130640c4e84caa266e4891c3d20,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8650917706185576895, guid: ae700130640c4e84caa266e4891c3d20,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae700130640c4e84caa266e4891c3d20, type: 3}
