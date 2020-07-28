@@ -247,6 +247,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3780443308318177430, guid: 051217b7a25d8fd4d8ae3ae72f72bdff,
+        type: 3}
+      propertyPath: m_texture
+      value: 
+      objectReference: {fileID: 8400000, guid: 7c33fe5eba406d7448576e057ca7f50e, type: 2}
     - target: {fileID: 4580299090591010659, guid: 051217b7a25d8fd4d8ae3ae72f72bdff,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -650,6 +655,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 111057330}
     m_Modifications:
+    - target: {fileID: 99612182317526719, guid: b5fe37bc20384a9459589a926e5dd358,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 34f7a8cc720cf534c9cd041ba1b71c48, type: 2}
     - target: {fileID: 1746442257064567695, guid: b5fe37bc20384a9459589a926e5dd358,
         type: 3}
       propertyPath: m_StartPoint.z
@@ -1197,6 +1207,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SafetyAreaCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 2005519165271903561, guid: 5c52f1b585705334a9936097b760b2e7,
+        type: 3}
+      propertyPath: m_texture
+      value: 
+      objectReference: {fileID: 8400000, guid: bd714e357b220ee47bb206f720d953d0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c52f1b585705334a9936097b760b2e7, type: 3}
 --- !u!1001 &1093391564

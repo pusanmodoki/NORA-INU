@@ -727,6 +727,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SafetyAreaCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 2005519165271903561, guid: 5c52f1b585705334a9936097b760b2e7,
+        type: 3}
+      propertyPath: m_texture
+      value: 
+      objectReference: {fileID: 8400000, guid: bd714e357b220ee47bb206f720d953d0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c52f1b585705334a9936097b760b2e7, type: 3}
 --- !u!4 &539656926 stripped
@@ -837,6 +842,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3780443308318177430, guid: 051217b7a25d8fd4d8ae3ae72f72bdff,
+        type: 3}
+      propertyPath: m_texture
+      value: 
+      objectReference: {fileID: 8400000, guid: 7c33fe5eba406d7448576e057ca7f50e, type: 2}
     - target: {fileID: 4580299090591010659, guid: 051217b7a25d8fd4d8ae3ae72f72bdff,
         type: 3}
       propertyPath: m_LocalPosition.x

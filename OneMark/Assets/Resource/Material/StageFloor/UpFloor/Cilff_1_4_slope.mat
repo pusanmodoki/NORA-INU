@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Cliff
+  m_Name: Cilff_1_4_slope
   m_Shader: {fileID: 4800000, guid: 1a6c477b79f1afe459deb7087ff414f1, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -21,8 +21,8 @@ Material:
     m_TexEnvs:
     - _BumpMap:
         m_Texture: {fileID: 2800000, guid: 2f174ba19ba84ee44945d6cd2ea3092e, type: 3}
-        m_Scale: {x: 4, y: 4}
-        m_Offset: {x: 0, y: 0}
+        m_Scale: {x: 3, y: 1}
+        m_Offset: {x: -0.03, y: -0.08}
     - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -41,8 +41,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 66a533720191ea9438ac4698c6a2bd32, type: 3}
-        m_Scale: {x: 4, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Scale: {x: 3, y: 1}
+        m_Offset: {x: -0.03, y: -0.08}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}

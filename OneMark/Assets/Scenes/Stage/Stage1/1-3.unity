@@ -307,6 +307,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SafetyAreaCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 2005519165271903561, guid: 5c52f1b585705334a9936097b760b2e7,
+        type: 3}
+      propertyPath: m_texture
+      value: 
+      objectReference: {fileID: 8400000, guid: bd714e357b220ee47bb206f720d953d0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c52f1b585705334a9936097b760b2e7, type: 3}
 --- !u!1001 &148851661
@@ -1081,6 +1086,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3780443308318177430, guid: 051217b7a25d8fd4d8ae3ae72f72bdff,
+        type: 3}
+      propertyPath: m_texture
+      value: 
+      objectReference: {fileID: 8400000, guid: 7c33fe5eba406d7448576e057ca7f50e, type: 2}
     - target: {fileID: 4580299090591010659, guid: 051217b7a25d8fd4d8ae3ae72f72bdff,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2336,6 +2346,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 971457457}
     m_Modifications:
+    - target: {fileID: 3874007704164780632, guid: 5f93e130234e8e04d9c2dccc5d7afe9a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4e75c8c27e930554185a1482aeb22a0f, type: 2}
     - target: {fileID: 7408335374721227873, guid: 5f93e130234e8e04d9c2dccc5d7afe9a,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
