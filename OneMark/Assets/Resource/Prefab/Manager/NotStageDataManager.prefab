@@ -43,7 +43,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bc2639efe8f6764a9076a38c6cb44f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stagePresetFilePath:
+  m_stagePresetFilePath:
     m_directory: 0
     m_filePath: Preset
     m_fileName: StageSettings
+  m_saveDataFilePath:
+    m_directory: 1
+    m_filePath: app
+    m_fileName: sd
+  m_dDevelopMode: 0
+  m_dIsResetEmptyDevelopMode: 0
+  m_dIsResetAllDevelopMode: 0
+  m_dIsWriteDevelopSaveData: 0
+  m_dIsResetEmptySaveData: 0
+  m_dDrawingSaveData:
+    m_numClearStages: 0

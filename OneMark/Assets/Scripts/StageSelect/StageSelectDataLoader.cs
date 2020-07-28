@@ -5,24 +5,52 @@ using UnityEngine;
 [DefaultExecutionOrder(-1)]
 public class StageSelectDataLoader : MonoBehaviour
 {
-	[SerializeField]
-	GameObject[] m_worldObjects = null;
-	[SerializeField]
-	GameObject[] m_stageObjects = null;
-
-	void Awake()
+	[System.Serializable]
+	struct WorldInfos
 	{
-		Vector2Int nextStage = OneMarkSceneManager.cStageSceneIndexes[DataManager.instance.saveData.numClearStages - 1];
-
-		for (int i = 0; i < m_worldObjects.Length; ++i)
+		public WorldInfos(GameObject worldObject, GameObject[] stageObjects)
 		{
-			if (nextStage.x <= i) m_worldObjects[i].SetActive(false);
-			else m_worldObjects[i].SetActive(true);
+			m_worldObject = worldObject;
+			m_stageObjects = stageObjects;
 		}
 
-		for (int i = 0; i < m_stageObjects.Length; ++i)
-			if (nextStage.x <= i) m_worldObjects[i].SetActive(false);
-			else m_worldObjects[i].SetActive(true);
+		public GameObject worldObject { get { return m_worldObject; } }
+		public GameObject[] stageObjects { get { return m_stageObjects; } }
+
+		[SerializeField]
+		GameObject m_worldObject;
+
+		[SerializeField]
+		GameObject[] m_stageObjects;
+	}
+
+	[SerializeField]
+	WorldInfos[] m_worldInfos = null;
+	
+	void Awake()
+	{
+		int index = DataManager.instance.saveData.numClearStages;
+		if (index == -1) index = 3;
+		Vector2Int nextStage = OneMarkSceneManager.cStageSceneIndexes[index];
+
+		for (int i = 0; i < m_worldInfos.Length; ++i)
+		{
+			if (nextStage.x <= i)
+			{
+				m_worldInfos[i].worldObject.SetActive(false);
+				continue;
+			}
+			else
+				m_worldInfos[i].worldObject.SetActive(true);
+
+			for (int k = 0; k < m_worldInfos[i].stageObjects.Length; ++k)
+			{
+				if (nextStage.x - 1 ==  i && nextStage.y <= k)
+					m_worldInfos[i].stageObjects[k].SetActive(false);
+				else
+					m_worldInfos[i].stageObjects[k].SetActive(true);
+			}
+		}
 	}
 	// Start is called before the first frame update
 	void Start()

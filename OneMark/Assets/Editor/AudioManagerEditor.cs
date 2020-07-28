@@ -24,6 +24,7 @@ namespace Editor
 
 		static readonly string m_cDefaultKey = "Default key";
 
+		SerializedProperty m_mixer = null;
 		SerializedProperty m_bgmSource = null;
 		SerializedProperty m_freeAudioSource = null;
 		SerializedProperty m_allBgms = null;
@@ -37,6 +38,7 @@ namespace Editor
 
 		void OnEnable()
 		{
+			m_mixer = serializedObject.FindProperty("m_mixer");
 			m_bgmSource = serializedObject.FindProperty("m_bgmSource");
 			m_allBgms = serializedObject.FindProperty("m_allBgms");
 			m_allVolumeChangePresets = serializedObject.FindProperty("m_allVolumeChangePresets");
@@ -169,6 +171,7 @@ namespace Editor
 			style.fontStyle = FontStyle.Bold;
 			EditorGUILayout.LabelField("Play Source And Clips", style);
 
+			EditorGUILayout.PropertyField(m_mixer);
 			EditorGUILayout.PropertyField(m_bgmSource);
 			EditorGUILayout.PropertyField(m_freeAudioSource);
 

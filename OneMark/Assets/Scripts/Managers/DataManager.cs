@@ -74,21 +74,36 @@ public class DataManager : MonoBehaviour
 	[System.Serializable]
 	public class SaveData
 	{
-		public SaveData(int clearStageIndex)
+		public SaveData(int clearStageIndex, int bgmVolumeIndex, int seVolumeIndex)
 		{
 			this.numClearStages = clearStageIndex;
+			m_bgmVolumeIndex = bgmVolumeIndex;
+			m_seVolumeIndex = seVolumeIndex;
 		}
 		public SaveData(SaveData copy)
 		{
 			this.numClearStages = copy.numClearStages;
+			this.bgmVolumeIndex = copy.bgmVolumeIndex;
+			this.seVolumeIndex = copy.seVolumeIndex;
 		}
 
-		public static SaveData emptyData { get { return new SaveData(0); } }
-		public static SaveData developData { get { return new SaveData(OneMarkSceneManager.cStageSceneIndexes.Count); } }
+		static readonly string m_cPrefsNumClearStages = "numClearStages";
+		static readonly string m_cPrefsBgmVolumeIndex = "bgmVolumeIndex";
+		static readonly string m_cPrefsSeVolumeIndex = "seVolumeIndex";
+
+		public static SaveData emptyData { get { return new SaveData(0, 2, 2); } }
+		public static SaveData developData { get { return new SaveData(OneMarkSceneManager.cStageSceneIndexes.Count, 2, 2); } }
 
 		public int numClearStages { get { return m_numClearStages; } private set { m_numClearStages = value; } }
+		public int bgmVolumeIndex { get { return m_bgmVolumeIndex; } private set { m_bgmVolumeIndex = value; } }
+		public int seVolumeIndex { get { return m_seVolumeIndex; } private set { m_seVolumeIndex = value; } }
 		[SerializeField]
 		int m_numClearStages = 0;
+		[SerializeField]
+		int m_bgmVolumeIndex = 2;
+		[SerializeField]
+		int m_seVolumeIndex = 2;
+
 
 		public void UpdateNumClearStages()
 		{
@@ -98,16 +113,49 @@ public class DataManager : MonoBehaviour
 			{
 				if (OneMarkSceneManager.cStageSceneIndexes[i] == searchIndex)
 				{
-					if (numClearStages <= i)
-						numClearStages = i;
+					if (numClearStages <= i + 1)
+						numClearStages = i + 1;
 					break;
 				}
 			}
+		}
+		public void SetBgmVolumeIndex(int index)
+		{
+			m_bgmVolumeIndex = index;
+		}
+		public void SetSeVolumeIndex(int index)
+		{
+			m_seVolumeIndex = index;
 		}
 
 		public void CopyData(SaveData copy)
 		{
 			this.numClearStages = copy.numClearStages;
+			this.bgmVolumeIndex = copy.bgmVolumeIndex;
+			this.seVolumeIndex = copy.seVolumeIndex;
+		}
+
+		public void WritePlayerPrefs()
+		{
+			PlayerPrefs.SetInt(m_cPrefsNumClearStages, numClearStages);
+			PlayerPrefs.SetInt(m_cPrefsBgmVolumeIndex, bgmVolumeIndex);
+			PlayerPrefs.SetInt(m_cPrefsSeVolumeIndex, seVolumeIndex);
+			PlayerPrefs.Save();
+		}
+		public void ReadPlayerPrefs()
+		{
+			bool isHasAllKey = true;
+
+			isHasAllKey &= PlayerPrefs.HasKey(m_cPrefsNumClearStages)
+				& PlayerPrefs.HasKey(m_cPrefsBgmVolumeIndex)
+				& PlayerPrefs.HasKey(m_cPrefsSeVolumeIndex);
+
+			if (isHasAllKey)
+			{
+				numClearStages = PlayerPrefs.GetInt(m_cPrefsNumClearStages, 0);
+				bgmVolumeIndex = PlayerPrefs.GetInt(m_cPrefsBgmVolumeIndex, 2);
+				seVolumeIndex = PlayerPrefs.GetInt(m_cPrefsSeVolumeIndex, 2);
+			}
 		}
 	}
 
@@ -144,6 +192,8 @@ public class DataManager : MonoBehaviour
 	FullFilePath m_stagePresetFilePath = new FullFilePath(Directory.StreamingAssets, "Preset", "StageSettings");
 	[SerializeField]
 	FullFilePath m_saveDataFilePath = new FullFilePath(Directory.PersistentData, "app", "sd");
+	[SerializeField]
+	bool m_isUsePlayerPrefs = true;
 
 	static SaveData m_staticSaveData = null;
 	SaveData m_saveData = null;
@@ -174,9 +224,22 @@ public class DataManager : MonoBehaviour
 		if (m_dDevelopMode != DevelopMode.NotDevelop) return;
 #endif
 
-		DatFileEditor.SaveObject<SaveData>(m_saveDataFilePath.directoryAndFilePath,
-			m_saveDataFilePath.fileName, ref m_saveData);
+		if (!m_isUsePlayerPrefs)
+		{
+			DatFileEditor.SaveObject<SaveData>(m_saveDataFilePath.directoryAndFilePath,
+				m_saveDataFilePath.fileName, ref m_saveData);
+		}
+		else
+		{
+			saveData.WritePlayerPrefs();
+		}
 	}
+
+	public void ResetSaveData()
+	{
+		saveData = SaveData.emptyData;
+	}
+
 	public static void ReadHyphenateVector3(string str, ref Vector3 result)
 	{
 		// StringSplitOption
@@ -209,7 +272,7 @@ public class DataManager : MonoBehaviour
 				m_dDrawingSaveData = m_saveData;
 				m_isEndAwake = true;
 #else
-				ReadSaveData(false);
+				ReadSaveData(DevelopMode.NotDevelop);
 #endif
 
 				m_staticSaveData = saveData;
@@ -223,6 +286,11 @@ public class DataManager : MonoBehaviour
 #endif
 			}
 		}
+	}
+	void Start()
+	{
+		AudioManager.instance.bgmVolume = VolumeChangeManager.cVolumes[saveData.bgmVolumeIndex];
+		AudioManager.instance.seVolume = VolumeChangeManager.cVolumes[saveData.seVolumeIndex];
 	}
 
 	void ReadStageSettings()
@@ -249,7 +317,7 @@ public class DataManager : MonoBehaviour
 			saveData = SaveData.developData;
 		else if (developMode == DevelopMode.DevelopAwakeEmpty)
 			saveData = SaveData.emptyData;
-		else
+		else if (!m_isUsePlayerPrefs)
 		{
 			if (!DatFileEditor.IsExistsFile(m_saveDataFilePath.directoryAndFilePath, m_saveDataFilePath.fileName))
 			{
@@ -267,6 +335,11 @@ public class DataManager : MonoBehaviour
 
 				saveData = new SaveData(read);
 			}
+		}
+		else if (m_isUsePlayerPrefs)
+		{
+			saveData = SaveData.emptyData;
+			saveData.ReadPlayerPrefs();
 		}
 	}
 

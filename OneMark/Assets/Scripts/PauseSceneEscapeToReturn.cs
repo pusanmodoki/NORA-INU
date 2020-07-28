@@ -7,6 +7,7 @@ public class PauseSceneEscapeToReturn : TriggerEvent
 	[SerializeField]
 	AudioSource m_enterSE = null;
 
+	bool m_isOpenOption = false;
 	bool m_isStart = false;
 
 	public override void OnTrigger(string key)
@@ -17,6 +18,12 @@ public class PauseSceneEscapeToReturn : TriggerEvent
 			AudioManager.instance.FreePlaySE(m_enterSE);
 			MainGameManager.instance.SetPauseStayFalse();
 		}
+	}
+
+	void Start()
+	{
+		OneMarkSceneManager.instance.openOptionCallback += OpenOption;
+		OneMarkSceneManager.instance.closeOptionCallback += CloseOption;
 	}
 
 	void OnEnable()
@@ -31,7 +38,7 @@ public class PauseSceneEscapeToReturn : TriggerEvent
 	// Update is called once per frame
 	void LateUpdate()
     {
-		if (!MainGameManager.instance.isPauseStay)
+		if (!MainGameManager.instance.isPauseStay | m_isOpenOption)
 			return;
 
 		if (m_isStart)
@@ -47,4 +54,7 @@ public class PauseSceneEscapeToReturn : TriggerEvent
 				gameObject.scene.name, false);
 		}
     }
+
+	void OpenOption() { m_isOpenOption = true; }
+	void CloseOption() { m_isOpenOption = false; }
 }

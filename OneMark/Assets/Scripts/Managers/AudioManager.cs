@@ -100,9 +100,21 @@ public class AudioManager : MonoBehaviour
 	public ReadOnlyDictionary<string, AudioInfo> allBgms { get; private set; } = null;
 	public ReadOnlyDictionary<string, LoadBgmInfo> bgmForEachScenes { get; private set; } = null;
 	public ReadOnlyDictionary<string, VolumeInfo> allVolumeChangePresets { get; private set; } = null;
+	public float bgmVolume
+	{
+		get { float result; m_mixer.GetFloat("BgmVolume", out result); return result; }
+		set { m_mixer.SetFloat("BgmVolume", Mathf.Clamp(value, -80, 20)); }
+	}
+	public float seVolume
+	{
+		get { float result; m_mixer.GetFloat("SeVolume", out result); return result; }
+		set { m_mixer.SetFloat("SeVolume", Mathf.Clamp(value, -80, 20)); }
+	}
 	public LoadBgmInfo bgmForNowScene { get { return m_bgmForEachScenesDictionary[OneMarkSceneManager.instance.nowLoadSceneName]; } }
 	public bool isCompleteFadeChange { get; private set; } = false;
 
+	[SerializeField]
+	UnityEngine.Audio.AudioMixer m_mixer = null;
 	[SerializeField]
 	AudioSource m_bgmSource = null;
 	[SerializeField]

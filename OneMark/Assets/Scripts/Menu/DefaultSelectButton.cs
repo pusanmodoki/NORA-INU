@@ -12,7 +12,8 @@ public class DefaultSelectButton : BaseSelectedObject
 		NextStage,
 		Restart,
 		Return,
-		QuitApplication
+		QuitApplication,
+		OpenOption
 	}
 
     [SerializeField]
@@ -83,14 +84,21 @@ public class DefaultSelectButton : BaseSelectedObject
 					break;
 				}
 			case SceneTransType.QuitApplication:
+				{
 #if UNITY_EDITOR
-				UnityEditor.EditorApplication.isPlaying = false;
+					UnityEditor.EditorApplication.isPlaying = false;
 #elif UNITY_STANDALONE
 				 UnityEngine.Application.Quit();
 #endif
-				break;
+					break;
+				}
+			case SceneTransType.OpenOption:
+				{
+					menu.OpenOption();
+					OneMarkSceneManager.instance.SetActiveOptionScene(true);
+					break;
+				}
 		}
-
     }
 
 	public override void AwakeCursor()

@@ -15,6 +15,8 @@ public class MenuInput : MonoBehaviour
 
     [SerializeField]
     bool m_isInverse = false;
+	[SerializeField]
+	bool m_isEnableEnter = true;
 
     [SerializeField, Tooltip("カーソル移動のインターバル")]
     float m_interval = 0.5f;
@@ -27,6 +29,8 @@ public class MenuInput : MonoBehaviour
 
 	[SerializeField]
 	bool m_isStartCallOffCursor = true;
+	[SerializeField]
+	bool m_isStartInitSelectIndexZero = true;
 
     [SerializeField, Header("Cursor Objecr")]
     BaseCursorObject m_cursorObject = null;
@@ -42,6 +46,7 @@ public class MenuInput : MonoBehaviour
 	Dictionary<string, int> m_useAnimationDisableEvents = new Dictionary<string, int>();
 	List<int> m_disableEvents = new List<int>();
 	int m_disableCounter = 0;
+	int m_optionDisableEvent = -1;
 
     public int objectCount { get { return m_selectedObjects.Count; } }
 	public int enableObjectCount
@@ -112,9 +117,15 @@ public class MenuInput : MonoBehaviour
 		}
 	}
 
+	public void OpenOption()
+	{
+		if (m_optionDisableEvent == -1)
+			StartDisableEvent(out m_optionDisableEvent);
+	}
+
     private void Start()
 	{
-		m_nowSelectIndex = 0;
+		if (m_isStartInitSelectIndexZero) m_nowSelectIndex = 0;
 
 		foreach (var obj in m_selectedObjects)
         {
@@ -129,6 +140,8 @@ public class MenuInput : MonoBehaviour
             m_cursorObject.SetMenu(this);
 			m_cursorObject.SelectUpdate(0);
 		}
+
+		OneMarkSceneManager.instance.closeOptionCallback += CloseOption;
     }
 
 
@@ -230,8 +243,8 @@ public class MenuInput : MonoBehaviour
 
     void Direct()
     {
-        if (m_inputDirected != null && m_inputDirected.Length > 0
-			&& Input.GetButtonDown(m_inputDirected))
+        if (m_isEnableEnter && m_inputDirected != null && m_inputDirected.Length > 0
+			&& Input.GetButtonDown(m_inputDirected) && m_selectedObjects[m_nowSelectIndex].isActiveAndEnabled)
 		{
 			if (m_soundEnter) { m_soundEnter.PlayOneShot(m_soundEnter.clip); }
 			if (m_cursorObject) { m_cursorObject.OnEnter(); }
@@ -303,6 +316,15 @@ public class MenuInput : MonoBehaviour
 		{
 			isIntervalInput = false;
 			m_timer.Stop();
+		}
+	}
+
+	void CloseOption()
+	{
+		if (m_optionDisableEvent != -1)
+		{
+			EndDisableEvent(m_optionDisableEvent);
+			m_optionDisableEvent = -1;
 		}
 	}
 }
