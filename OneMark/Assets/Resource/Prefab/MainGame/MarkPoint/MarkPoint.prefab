@@ -76,6 +76,7 @@ MonoBehaviour:
   m_effectControler: {fileID: 3425003610696155427}
   m_goFukidashiObject: {fileID: 4377709279828848785}
   m_markingTarget: {x: -2, y: 0, z: 0}
+  m_gaugeEffectName: flower
   m_linkAscendingPerSeconds: 1
   m_unlinkDecreasingPerSeconds: 1
   m_effectiveMaxLimiter: 7.5
@@ -140,7 +141,8 @@ AudioSource:
   m_GameObject: {fileID: 1123188940984015619}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 6733304719465472117, guid: 4df6e964422960e4e93b268530e5d022,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 39740db16d2037844ba4ed8256ac0b8a, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.2
@@ -308,6 +310,7 @@ MonoBehaviour:
   m_safetyLine: 0.51
   m_dangerLine: 0.5
   m_rate: 200
+  m_isSetColor: 1
   m_safetyColor: {r: 0.31764707, g: 0.36862746, b: 0.9137255, a: 1}
   m_color: {r: 1, g: 1, b: 1, a: 1}
   m_dangerColor: {r: 0.6117647, g: 0.050980393, b: 0.019607844, a: 1}
